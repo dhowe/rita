@@ -1,0 +1,77 @@
+{
+  "classes": [
+    {
+      "class": "RiTa",
+      "statics": [
+        "addTransform",
+        "alliterations",
+        "concordance",
+        "conjugate",
+        "evaluate",
+        "hasWord",
+        "isAbbreviation",
+        "isAdjective",
+        "isAdverb",
+        "isAlliteration",
+        "isNoun",
+        "isPunctuation",
+        "isQuestion",
+        "isRhyme",
+        "isVerb",
+        "kwic",
+        "pastParticiple",
+        "phonemes",
+        "pos",
+        "posInline",
+        "presentParticiple",
+        "pluralize",
+        "randomOrdering",
+        "randomSeed",
+        "randomWord",
+        "rhymes",
+        "similarBy",
+        "singularize",
+        "sentences",
+        "stem",
+        "stresses",
+        "syllables",
+        "tokenize",
+        "untokenize",
+        "words"
+      ],
+      "fields": [
+        "VERSION"
+      ]
+    },
+    {
+      "class": "RiTa.Grammar",
+      "functions": [
+        "addRule",
+        "expand",
+        "expandFrom",
+        "loadRules",
+        "removeRule",
+        "toString"
+      ],
+      "constructor": true
+    },
+    {
+      "class": "RiTa.Markov",
+      "functions": [
+        "addText",
+        "addSentences",
+        "completions",
+        "generate",
+        "probability",
+        "probabilities",
+        "size",
+        "toString",
+        "toJSON"
+      ],
+      "constructor": true,
+      "static": [
+        "fromJSON"
+      ]
+    }
+  ]
+}
