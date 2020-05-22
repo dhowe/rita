@@ -2,7 +2,7 @@
   "class": "rita.RiTa",
   "fields": [
     {
-      "name": "RiTa.VERSION",
+      "name": "VERSION",
       "example": "versionNumber = RiTa.VERSION; ",
       "variable": true,
       "description": "the current RiTa version ",
@@ -17,9 +17,11 @@
       "related": "",
       "platform": "Java / JavaScript",
       "note": ""
-    },
+    }
+  ],
+  "statics": [
     {
-      "name": "RiTa.isAbbreviation",
+      "name": "isAbbreviation",
       "example": "RiTa.isAbbreviation(\"Prof.\"); // returns -> true",
       "description": "Returns true if 'input' is an abbreviation",
       "syntax": "RiTa.isAbbreviation(input);<br/>RiTa.isAbbreviation(input, caseSensitive);",
@@ -44,7 +46,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.isQuestion",
+      "name": "isQuestion",
       "example": "RiTa.isQuestion(\"what is this\"); // returns -> true",
       "description": "Returns true if sentence starts with a question word",
       "syntax": "RiTa.isQuestion(sentence);",
@@ -65,7 +67,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.randomSeed",
+      "name": "randomSeed",
       "example": "seed = 345345;<br/>RiTa.randomSeed(seed);",
       "description": "Sets the seed for RiTa's random number generator",
       "syntax": "RiTa.randomSeed(num);",
@@ -81,7 +83,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.randomOrdering",
+      "name": "randomOrdering",
       "example": "array = RiTa.randomOrdering(5);",
       "description": "Returns a randomly ordered array of unique integers from 0 to numElements. <br/>The size of the array will be numElements.",
       "syntax": "RiTa.randomOrdering(numElements);",
@@ -102,7 +104,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.sentences",
+      "name": "sentences",
       "example": "RiTa.sentences(\"\"The boy went fishing.\", he said. Then he went away.\");",
       "description": "Splits 'text' into sentences (according to PENN Treebank conventions)",
       "syntax": "RiTa.sentences(text);<br/>RiTa.sentences(text, regex);",
@@ -127,7 +129,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.stripPunctuation",
+      "name": "stripPunctuation",
       "example": "RiTa.stripPunctuation(\"Please @ me!\"); // returns -> Please  me",
       "description": "Strips all punctuation from the input string",
       "syntax": "RiTa.stripPunctuation(text);",
@@ -148,7 +150,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.tokenize",
+      "name": "tokenize",
       "example": "<br>sentence = \"The doctors treated dogs\";<br>wordArray = RiTa.tokenize(sentence);<br>wordArray = RiTa.tokenize(sentence, \"\\\\\\\\s\");<br><br>",
       "description": "Tokenizes a string (into words) according to Penn Treebank conventions<br/>See: <a href='ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html'>ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html</a>",
       "syntax": "RiTa.tokenize(text);<br/>RiTa.tokenize(text, regex);",
@@ -173,7 +175,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.untokenize",
+      "name": "untokenize",
       "example": "",
       "description": "Joins an array (of words and punctuation) into a String, according to Penn Treebank conventions<br/>See: <a href='ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html'>ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html</a>",
       "syntax": "RiTa.untokenize(wordArray)",
@@ -194,7 +196,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.phonemes",
+      "name": "phonemes",
       "example": "<br>RiTa.phonemes(\"apple\"); // returns -> ae-p-ah-l <br><br>RiTa.phonemes(\"two apples\"); // returns -> t-uw ae-p-ah-l-z <br><br>",
       "description": "Returns a string containing all <a target=_new href='../../PhonemeTags.php'>phonemes</a> for the input text",
       "syntax": "RiTa.phonemes(wordStr)";
@@ -215,7 +217,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.pos",
+      "name": "pos",
       "example": "<br>RiTa.pos(\"I am a cat.\"); <br>// returns -> [ \"prp\", \"vbp\", \"dt\", \"nn\", \".\" ]<br><br>",
       "description": "Uses the default PosTagger to tag the input with tags from the <a href='../../PennTags.html'>PENN tag set</a> or the simplified WordNet tag set [a, r, v, n]",
       "syntax": "RiTa.pos(word);<br/>RiTa.pos(word, bool);",
@@ -240,7 +242,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.posInline",
+      "name": "posInline",
       "example": "<br>sentence = \"The doctors treated dogs\";<br>pos = RiTa.posInline(sentence);<br><br>tokenArray = RiTa.tokenize(sentence);<br>pos = RiTa.posInline(tokenArray);<br><br>",
       "description": "Takes an string returns a combined string of the form:<p><pre>'The/dt doctor/nn treated/vbd dogs/nns'</pre>, using lowercased tags from the <a href='../../PennTags.html'>PENN tag set</a>",
       "syntax": "RiTa.posInline(word);",
@@ -261,7 +263,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.stresses",
+      "name": "stresses",
       "example": "RiTa.stresses(\"apple\"); // returns -> 1/0",
       "description": "Analyzes the input and returns a new string containing the stresses for each syllable of the input text ",
       "syntax": "RiTa.stresses(word);",
@@ -282,7 +284,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.syllables",
+      "name": "syllables",
       "example": "RiTa.syllables(\"apple\"); // returns -> ae/p-ah-l",
       "description": "Analyzes the input and returns a String containing the phonemes for each syllable of each word of the input text,  delimited by dashes (phonemes) and spaces (words) ",
       "syntax": "RiTa.syllables(word);",
@@ -303,7 +305,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.concordance",
+      "name": "concordance",
       "example": "// Java<br><br>args = new HashMap();<br>args.put(\"ignoreCase\", false);<br>args.put(\"ignoreStopWords\", true);<br><br>kwic = RiTa.concordance(text, word, args);<br><br><br>// JavaScript<br><br>args = {<br> ignoreCase: false,<br> ignoreStopWords: true<br>};<br><br>kwic = RiTa.concordance(text, word, args);<br><br>",
       "description": "Creates a concordance, a list of words with their frequency of occurence, from the given text and (optional) options",
       "syntax": "RiTa.concordance(text, word, args);",
@@ -332,7 +334,7 @@
       "note": "See <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a>"
     },
     {
-      "name": "RiTa.kwic",
+      "name": "kwic",
       "example": "// Java<br><br>Map args = new HashMap();<br>args.put(\"ignoreCase\", false);<br>args.put(\"ignoreStopWords\", true);<br><br>String[] lines = RiTa.kwic(text, args);<br><br><br>// JavaScript<br><br>var args = {<br> ignoreCase: false,<br> ignoreStopWords: true<br>};<br><br>var lines = RiTa.kwic(text, args);<br><br>",
       "description": "Creates a Key-Word-In-Context (KWIC) model from a given text, a word to lookup, a wordCount and (optional) options",
       "syntax": "RiTa.kwic(text, word, options);",
@@ -361,7 +363,7 @@
       "note": "See <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a>"
     },
     {
-      "name": "RiTa.conjugate",
+      "name": "conjugate",
       "example": "// Java<br><br>Map args = new HashMap();<br>args.put(\"tense\", RiTa.PAST_TENSE);<br>args.put(\"number\", RiTa.SINGULAR);<br>args.put(\"person\", RiTa.FIRST_PERSON);<br><br>String c = RiTa.conjugate(\"swim\", args);<br><br><br>// JavaScript<br><br>var args = {<br> tense: RiTa.PRESENT_TENSE,<br> number: RiTa.SINGULAR,<br> person: RiTa.THIRD_PERSON<br>};<br><br>var c = RiTa.conjugate('swim', args);<br><br>",
       "description": "Conjugates the 'verb' according to the specified options",
       "syntax": "RiTa.conjugate(verb, args);",
@@ -386,7 +388,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.pastParticiple",
+      "name": "pastParticiple",
       "example": "RiTa.pastParticiple(\"write\"); // returns -> written",
       "description": "Returns the past participle form of the stemmed or non-stemmed 'verb'",
       "syntax": "RiTa.pastParticiple(verb);",
@@ -407,7 +409,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.presentParticiple",
+      "name": "presentParticiple",
       "example": "RiTa.presentParticiple(\"sit\"); // returns -> sitting",
       "description": "Returns the present participle form of the stemmed or non-stemmed 'verb'",
       "syntax": "RiTa.presentParticiple(verb);",
@@ -428,7 +430,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.stem",
+      "name": "stem",
       "example": "<br>s = RiTa.stem(\"cakes\"); // returns -> cake <br><br>y = RiTa.stem(\"cakes\", RiTa.LANCASTER);<br><br>",
       "description": "Extracts base roots from a word according to the specified stemming algorithm <br/>&nbsp;<br/> Note: see <a href='http://text-processing.com/demo/stem/'>http://text-processing.com/demo/stem/</a> for comparison of Lancaster and Porter algorithms or <a href='http://mpii.de/yago-naga/javatools'>http://mpii.de/yago-naga/javatools</a> for info on PlingStemmer",
       "syntax": "RiTa.stem(word, type);",
@@ -453,7 +455,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.pluralize",
+      "name": "pluralize",
       "example": "<br>pluralized = RiTa.pluralize(\"dog\"); // returns \"dogs\"<br><br>pluralized = RiTa.pluralize(\"mouse\"); // returns \"mice\"<br><br>",
       "description": "Pluralizes a noun according to pluralization rules",
       "syntax": "RiTa.pluralize(word);",
@@ -474,7 +476,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.singularize",
+      "name": "singularize",
       "example": "<br>singular = RiTa.singularize(\"dogs\"); // returns \"dog\"<br><br>singular = RiTa.singularize(\"mice\"); // returns \"mouse\"<br><br>",
       "description": "Singularize a word according to singularization rules",
       "syntax": "RiTa.singularize(word);",
@@ -495,7 +497,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.hasWord",
+      "name": "hasWord",
       "example": "RiTa.hasWord(\"apple\");",
       "description": "Returns true if the word exists in the lexicon (case-insensitive)",
       "syntax": "RiTa.hasWord(word);",
@@ -516,7 +518,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.alliterations",
+      "name": "alliterations",
       "example": "RiTa.alliterations(\"cat\"); <br>RiTa.alliterations(\"cat\",10);",
       "description": "Finds alliterations by comparing the phonemes of the input string to those of each word in the lexicon",
       "syntax": "RiTa.alliterations(word);",
@@ -541,7 +543,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.randomWord",
+      "name": "randomWord",
       "example": "RiTa.randomWord(); <br>RiTa.randomWord(\"nn\"); // returns a random noun",
       "description": "Returns a random word from the lexicon. When arguments are supplied part-of-speech and/or syllable-count will be matched as well",
       "syntax": "randomWord()<br/>randomWord(pos);<br/>randomWord(syllableCount);<br/>randomWord(pos, syllableCount);",
@@ -566,7 +568,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.rhymes",
+      "name": "rhymes",
       "example": "RiTa.rhymes(\"cat\")",
       "description": "Two words rhyme are considered as rhyming if their final stressed vowel and all following phonemes are identical",
       "syntax": "RiTa.rhymes(word);",
@@ -587,8 +589,8 @@
       "note": ""
     },
     {
-      "name": "RiTa.words",
-      "example": "RiTa.words(\"tt\");",
+      "name": "words",
+      "example": "RiTa.words(); <br>RiTa.words(\"tting\")",
       "description": "Returns the array of all words in the lexicon or those matching a specific regex. <br/>If specified, the order of the result array is randomized before return.",
       "syntax": "RiTa.words()<br/>RiTa.words(regex);<br/>RiTa.words(shuffled);<br/>RiTa.words(regex, shuffled);",
       "parameters": [
@@ -612,7 +614,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.isAdverb",
+      "name": "isAdverb",
       "example": "RiTa.isAdverb(\"sleepily\");",
       "description": "Returns true if the word has an adverb form. That is, if any of its possible parts of speech are any variant of an adverb in the PENN part-of-speech tag set (e.g. rb, rbr, rbs)",
       "syntax": "RiTa.isAdverb(word);",
@@ -633,7 +635,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.isNoun",
+      "name": "isNoun",
       "example": "RiTa.isNoun(\"cat\");",
       "description": "Returns true if the word has a noun form. That is, if any of its possible parts of speech are any variant of a noun in the PENN part-of-speech tag set(e.g. nn, nns, nnp, nnps)",
       "syntax": "RiTa.isNoun(word);",
@@ -654,7 +656,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.isVerb",
+      "name": "isVerb",
       "example": "RiTa.isVerb(\"run\");",
       "description": "Returns true for if word has a verb form. That is, if any of its possible parts of speech are any variant of a verb in the PENN part-of-speech tag set (e.g. vb, vbg, vbd, vbp, vbz)",
       "syntax": "RiTa.isVerb(word);",
@@ -675,7 +677,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.isAdjective",
+      "name": "isAdjective",
       "example": "RiTa.isAdjective(\"cold\");",
       "description": "Returns true if word has an adjective form. That is, if any of its possible parts of speech are any variant of an adjective in the PENN part-of-speech tag set (e.g. jj, jjr, jjs)",
       "syntax": "RiTa.isAdjective(word);",
@@ -696,7 +698,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.isAlliteration",
+      "name": "isAlliteration",
       "example": "RiTa.isAlliteration(\"cat\",\"kitchen\");",
       "description": "Returns true if the two words are alliterations (iff the first stressed consonant of the two match). Note: returns true if wordA.equals(wordB) and false if either (or both) are null.",
       "syntax": "RiTa.isAlliteration(word1, word2);",
@@ -721,7 +723,7 @@
       "note": ""
     },
     {
-      "name": "RiTa.isRhyme",
+      "name": "isRhyme",
       "example": "RiTa.isRhyme(\"cat\",\"mat\");",
       "description": "Returns true if the two words rhyme, that is, if their final stressed vowel phoneme and all following phonemes are identical, else false.<br/><br/>Note: returns false if word1.equals(word2) or if either (or both) are null;<br/><br/>",
       "syntax": "RiTa.isRhyme(word1, word2)<br>RiTa.isRhyme(word1, word2, useLTS);",
@@ -750,10 +752,10 @@
       "note": ""
     },
     {
-      "name": "RiTa.similarByLetter",
-      "example": "RiTa.similarByLetter(\"happy\");",
+      "name": "spellsLike",
+      "example": "RiTa.spelledLike(\"happy\");",
       "description": "Compares the characters of the input string  (using a version of the min-edit distance algorithm) to each word in the lexicon, returning the set of closest matches.",
-      "syntax": "RiTa.similarByLetter(word);<br/>RiTa.similarByLetter(word, minAllowedDist);<br/>similarByLetter(word, minAllowedDist, preserveLength);",
+      "syntax": "RiTa.spelledLike(word);<br/>RiTa.spelledLike(word, minAllowedDist);<br/>spelledLike(word, minAllowedDist, preserveLength);",
       "parameters": [
         {
           "type": "String",
@@ -779,7 +781,32 @@
       "note": ""
     },
     {
-      "name": "RiTa.similarBy",
+      "name": "soundsLike",
+      "example": "RiTa.soundsLike(\"happy\");",
+      "description": "Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for the phonemes) to each word in the lexicon, returning the set of closest matches.",
+      "syntax": "soundsLike(word)",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "the word to match"
+        },
+        {
+          "type": "object",
+          "desc": "options: type: ['sound', 'letter' ]  (optional, default=letter)"
+        }
+      ],
+      "returns": [
+        {
+          "type": "String[]",
+          "desc": "the matching words"
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "similarBy",
       "example": "RiTa.similarBy(\"happy\");",
       "description": "Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for either letters or phonemes) to each word in the lexicon, returning the set of closest matches.",
       "syntax": "similarBy(word), similarBy(word, {type: 'sound'}), similarBy(word, {type: 'letter'})",

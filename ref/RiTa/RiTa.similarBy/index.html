@@ -58,21 +58,21 @@
 									<th scope="row">Name</th>
 
 									<!-- METHOD NAME -->
-									<td><h3>RiTa.similarBy</h3></td>
+									<td><h3>RiTa.isAbbreviation</h3></td>
 								</tr>
 
 								<tr class="">
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for either letters or phonemes) to each word in the lexicon, returning the set of closest matches.</td>
+									<td>Returns true if 'input' is an abbreviation</td>
 								</tr>
 
 								<tr class='Syntax'>
 									<th scope="row">Syntax</th>
 
 									<!-- SYNTAX  -->
-									<td><pre>similarBy(word), similarBy(word, {type: 'sound'}), similarBy(word, {type: 'letter'})</pre></td>
+									<td><pre>RiTa.isAbbreviation(input);<br/>RiTa.isAbbreviation(input, caseSensitive);</pre></td>
 								</tr>
 
 
@@ -82,7 +82,7 @@
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the word to match</td></tr><tr class=''><th width='25%' scope='row' class=nobold>object</th><td width='75%'>options: type: ['sound', 'letter' ]  (optional, default=letter)</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>text input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>caseSensitive (optional, default=false)</td></tr></table>
 									</td>
 								</tr>
 
@@ -93,7 +93,7 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>the matching words</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>true if 'input' is an abbreviation</td></tr></table>
 									</td>
 								</tr>
 
@@ -101,23 +101,23 @@
 									<th scope="row">Related</th>
 
 									<!-- RELATED  -->
-									<td>tmp_related</td>
+									<td><a href='../RiTa.randomWord'>RiTa.randomWord</a>, <a href='../RiTa.randomOrdering'>RiTa.randomOrdering</a>,</td>
 								</tr>
 
 								<tr class='Note' style='display:none'>
 									<th scope="row">Note</th>
 									<!-- NOTE  -->
-									<td>tmp_note</td>
+									<td>See <a href="https://en.wikipedia.org/wiki/Concordance_%28publishing%29">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a></td>
 								</tr>
 
-								<tr class='Example'>
+								<tr class='Example' style='display:none'>
 									<th scope='row'>Example</th>
 									<td>
 										<div class="example">
 
 											<!-- EXAMPLE  -->
 											<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-											<pre class="margin">RiTa.similarBy("happy");</pre>
+											<pre class="margin">RiTa.isAbbreviation("Prof."); // returns -> true</pre>
 										</div>
 									</td>
 								</tr>

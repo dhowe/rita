@@ -58,21 +58,21 @@
 									<th scope="row">Name</th>
 
 									<!-- METHOD NAME -->
-									<td><h3>RiTa.randomSeed</h3></td>
+									<td><h3>RiTa.isAbbreviation</h3></td>
 								</tr>
 
 								<tr class="">
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Sets the seed for RiTa's random number generator</td>
+									<td>Returns true if 'input' is an abbreviation</td>
 								</tr>
 
 								<tr class='Syntax'>
 									<th scope="row">Syntax</th>
 
 									<!-- SYNTAX  -->
-									<td><pre>RiTa.randomSeed(num);</pre></td>
+									<td><pre>RiTa.isAbbreviation(input);<br/>RiTa.isAbbreviation(input, caseSensitive);</pre></td>
 								</tr>
 
 
@@ -82,7 +82,7 @@
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>int</th><td width='75%'>numElements</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>text input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>caseSensitive (optional, default=false)</td></tr></table>
 									</td>
 								</tr>
 
@@ -93,11 +93,11 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table">void</table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>true if 'input' is an abbreviation</td></tr></table>
 									</td>
 								</tr>
 
-								<tr class='Related'>
+								<tr class='Related' style='display:none'>
 									<th scope="row">Related</th>
 
 									<!-- RELATED  -->
@@ -117,7 +117,7 @@
 
 											<!-- EXAMPLE  -->
 											<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-											<pre class="margin">seed = 345345;<br/>RiTa.randomSeed(seed);</pre>
+											<pre class="margin">RiTa.isAbbreviation("Prof."); // returns -> true</pre>
 										</div>
 									</td>
 								</tr>

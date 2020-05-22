@@ -24,9 +24,11 @@ public class MakeDocs extends PApplet
       returnDesc, returns, related, thePlatform, note, parameter;
   static boolean[] hidden, isVariable;
   static String outputTemplate;
-  static String[] CLASS_NAMES = { "RiTa", "RiGrammar", "RiMarkov" };
+  static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
   static Map<String, ArrayList<String>> API = new HashMap<String, ArrayList<String>>();
   static boolean DBUG = false;
+  static String[] types = new String[] { "fields", "functions", "statics" };
+  static String warnings = "";
 
   static {
     System.out.println("[INFO] DocGen.version [" + VERSION + "]");
@@ -58,15 +60,20 @@ public class MakeDocs extends PApplet
     outputTemplate = DATA_DIR + "/template." + OUTPUT_TYPE;
     System.out.println("Files to generate: " + CLASS_NAMES.length);
     parseAPI();
-    if (1 == 1) return;
+    System.out.println(API.keySet());
+
+    // if (1 == 1) return;
     for (int i = 0; i < CLASS_NAMES.length; i++) {
       pln("\n******     " + CLASS_NAMES[i] + "     ******\n");
       pln("  Template : " + outputTemplate);
       parseJSON(CLASS_NAMES[i]);
+      // return;
     }
 
     pln("\nDONE: files written to " + OUTPUT_DIR +
         "*." + OUTPUT_TYPE + " (from " + System.getProperty("user.dir") + ")");
+    
+    System.err.println(warnings);
   }
 
   static void parseAPI()
@@ -74,50 +81,32 @@ public class MakeDocs extends PApplet
     try {
       String jsonFile = DATA_DIR + "/API.json";
       String result = stringFrom(jsonFile);
-      // result = "{ \"success\": true, \"pagination\": { \"current\": 1,
-      // \"max\": 1 }, \"refobj\": " + result + "}";
       JSONObject raw = JSONObject.parse(result);
       JSONArray classes = raw.getJSONArray("classes");
       if (classes != null) {
+        pln("API:");
         int numOfClasses = classes.size();
         for (int j = 0; j < numOfClasses; j++) {
           JSONObject c = classes.getJSONObject(j);
           String className = c.getString("class");
-          pln("  Class : " + className);
+          pln("  " + className);
 
-          ArrayList<String> tmp = null;
-          JSONArray fields = c.getJSONArray("fields");
-          if (fields != null) {
-            tmp = new ArrayList<String>();
-            for (int k = 0; k < fields.size(); k++) {
-              String name = fields.getString(k);
-              tmp.add(name);
-              pln("    " + name);
+          for (int i = 0; i < types.length; i++) {
+            JSONArray fields = c.getJSONArray(types[i]);
+            // System.out.println("CHECK: " + className + "." + types[i]);
+            if (fields != null) {
+              ArrayList<String> tmp = new ArrayList<String>();
+              for (int k = 0; k < fields.size(); k++) {
+                String name = fields.getString(k);
+                tmp.add(name);
+                pln("    " + name);
+              }
+              API.put(className + "." + types[i], tmp);
             }
-            API.put(className + ".fields", tmp);
-          }
-          JSONArray statics = c.getJSONArray("statics");
-          if (statics != null) {
-            tmp = new ArrayList<String>();
-            for (int k = 0; k < statics.size(); k++) {
-              String name = statics.getString(k);
-              tmp.add(name);
-              pln("    " + name);
-            }
-            API.put(className + ".statics", tmp);
-          }
-          JSONArray functions = c.getJSONArray("functions");
-          if (functions != null) {
-            tmp = new ArrayList<String>();
-            for (int k = 0; k < functions.size(); k++) {
-              String name = functions.getString(k);
-              tmp.add(name);
-              pln("    " + name);
-            }
-            API.put(className + ".functions", tmp);
           }
         }
       }
+
     } catch (Exception e) {
       System.err.println("\nError parsing the JSONObject!");
       throw new RuntimeException(e);
@@ -127,7 +116,6 @@ public class MakeDocs extends PApplet
   static void parseJSON(String shortName)
   {
     String jsonFile = DATA_DIR + "/" + shortName + ".json";
-
     try {
 
       pln("  DocFile : " + jsonFile);
@@ -141,75 +129,101 @@ public class MakeDocs extends PApplet
       String className = json.getString("class");
       pln("  Class : " + className);
 
-      JSONArray items = json.getJSONArray("fields");
-      if (items != null) {
-        numOfMethods = items.size();
-
-        pln("  Fields(" + numOfMethods + ") : ");
-
-        initArrays();
-
-        for (int j = 0; j < numOfMethods; j++) {
-          lines = stringsFrom(outputTemplate);
-
-          JSONObject entry = items.getJSONObject(j);
-
-          hidden[j] = false;
-          if (!entry.isNull("hidden")) {
-            hidden[j] = entry.getBoolean("hidden");
-          }
-
-          isVariable[j] = false;
-          if (!entry.isNull("variable")) {
-            isVariable[j] = entry.getBoolean("variable");
-          }
-
-          methodName[j] = entry.getString("name");
-          pln("    " + methodName[j]);
-
-          example[j] = "";
-          if (!entry.isNull("example")) {
-            example[j] = entry.getString("example");
-          }
-
-          description[j] = entry.getString("description");
-          syntax[j] = entry.getString("syntax");
-
-          JSONArray parametersJSON = entry.getJSONArray("parameters");
-          numOfparameters = parametersJSON.size();
-          parameter = new String[numOfparameters];
-          parameterType = new String[numOfparameters];
-          parameterDesc = new String[numOfparameters];
-
-          for (int k = 0; k < numOfparameters; k++) {
-            JSONObject parametersJSONEntry = parametersJSON.getJSONObject(k);
-            parameterType[k] = parametersJSONEntry.getString("type");
-            parameterDesc[k] = parametersJSONEntry.getString("desc");
-          }
-
-          JSONArray returnsJSON = entry.getJSONArray("returns");
-          numOfReturns = returnsJSON.size();
-          theReturn = new String[numOfReturns];
-          returnType = new String[numOfReturns];
-          returnDesc = new String[numOfReturns];
-          for (int k = 0; k < numOfReturns; k++) {
-            JSONObject returnsJSONEntry = returnsJSON.getJSONObject(k);
-            returnType[k] = returnsJSONEntry.getString("type");
-            returnDesc[k] = returnsJSONEntry.getString("desc");
-          }
-          related[j] = entry.getString("related");
-          thePlatform[j] = entry.getString("platform");
-          note[j] = entry.getString("note");
-
-          template(j, shortName);
-
-          plnMarkup(shortName, methodName[j], isVariable[j]);
-        }
+      for (int i = 0; i < types.length; i++) {
+        processEntry(types[i], shortName, json);
       }
+
     } catch (Exception e) {
       System.err.println("\nError parsing the JSONObject!");
       throw new RuntimeException(e);
     }
+  }
+
+  private static void processEntry(String type, String shortName, JSONObject json) throws Exception
+  {
+    JSONArray items = json.getJSONArray(type);
+    ArrayList<String> check = API.get(shortName + "." + type);
+    ArrayList<String> extra = new ArrayList<String>();
+
+    if (items != null && items.size() > 0) {
+      numOfMethods = items.size();
+
+      pln("  " + ucf(type) + "(" + numOfMethods + ") : ");
+
+      initArrays();
+
+      lines = stringsFrom(outputTemplate);
+
+      for (int j = 0; j < numOfMethods; j++) {
+
+        JSONObject entry = items.getJSONObject(j);
+
+        methodName[j] = entry.getString("name");
+        pln("    " + methodName[j]);
+
+        if (check.contains(methodName[j])) {
+          check.remove(methodName[j]);
+        } else {
+          extra.add(methodName[j]);
+        }
+
+        hidden[j] = false;
+        if (!entry.isNull("hidden")) {
+          hidden[j] = entry.getBoolean("hidden");
+        }
+
+        isVariable[j] = false;
+        if (!entry.isNull("variable")) {
+          isVariable[j] = entry.getBoolean("variable");
+        }
+
+        example[j] = "";
+        if (!entry.isNull("example")) {
+          example[j] = entry.getString("example");
+        }
+
+        description[j] = entry.getString("description");
+        syntax[j] = entry.getString("syntax");
+
+        JSONArray parametersJSON = entry.getJSONArray("parameters");
+        numOfparameters = parametersJSON.size();
+        parameter = new String[numOfparameters];
+        parameterType = new String[numOfparameters];
+        parameterDesc = new String[numOfparameters];
+
+        for (int k = 0; k < numOfparameters; k++) {
+          JSONObject parametersJSONEntry = parametersJSON.getJSONObject(k);
+          parameterType[k] = parametersJSONEntry.getString("type");
+          parameterDesc[k] = parametersJSONEntry.getString("desc");
+        }
+
+        JSONArray returnsJSON = entry.getJSONArray("returns");
+        numOfReturns = returnsJSON.size();
+        theReturn = new String[numOfReturns];
+        returnType = new String[numOfReturns];
+        returnDesc = new String[numOfReturns];
+        for (int k = 0; k < numOfReturns; k++) {
+          JSONObject returnsJSONEntry = returnsJSON.getJSONObject(k);
+          returnType[k] = returnsJSONEntry.getString("type");
+          returnDesc[k] = returnsJSONEntry.getString("desc");
+        }
+        related[j] = entry.getString("related");
+        thePlatform[j] = entry.getString("platform");
+        note[j] = entry.getString("note");
+
+        template(j, shortName);
+
+        plnMarkup(shortName, methodName[j], isVariable[j]);
+      }
+      if (extra.size() > 0) warnings += "EXTRA:    " + extra + "\n";
+      if (check.size() > 0) warnings += "MISSING:    " + check + "\n";
+      // if (check.size() > 0) System.err.println("MISSING: " + check);
+    }
+  }
+
+  private static String ucf(String s)
+  {
+    return (s.charAt(0) + "").toUpperCase() + s.substring(1);
   }
 
   static String stringFrom(String fname) throws Exception
@@ -271,6 +285,7 @@ public class MakeDocs extends PApplet
 
     String fname = OUTPUT_DIR + "/" + shortName + "/" + folder_methodName + "/index." + OUTPUT_TYPE;
 
+    if (lines == null) throw new RuntimeException("NULL ARRAY");
     lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
     lines = replaceArr(lines, "tmp_className", shortName);
     lines = replaceArr(lines, "tmp_methodName", methodName[idx]);
@@ -365,7 +380,6 @@ public class MakeDocs extends PApplet
 
   static String[] replaceArr(String[] in, String from, String to)
   {
-
     String delim = "_XXX_"; // hack
     String joined = String.join(delim, in);
     joined = joined.replaceAll(from, to);

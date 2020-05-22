@@ -1,0 +1,103 @@
+{
+  "class": "rita.RiGrammar",
+  "fields": [],
+  "statics": [],
+  "functions": [
+    {
+      "name": "addRule",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "expand",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "expandFrom",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "loadRules",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "removeRule",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "toString",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    }
+  ]
+}

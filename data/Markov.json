@@ -1,0 +1,168 @@
+{
+  "class": "rita.Markov",
+  "fields": [],
+  "statics": [
+    {
+      "name": "fromJSON",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    }
+  ],
+  "functions": [
+    {
+      "name": "addText",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "addSentences",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "completions",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "generate",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "probability",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "probabilities",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "size",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "toString",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    },
+    {
+      "name": "toJSON",
+      "example": "",
+      "description": "",
+      "syntax": "",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": ""
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
+    }
+  ]
+}
