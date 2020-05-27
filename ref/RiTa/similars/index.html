@@ -50,7 +50,7 @@
 
 									<!-- ClASS -->
 									<td><h3>
-											<a href="../../Markov.html">Markov</a>
+											<a href="../../RiTa.html">RiTa</a>
 										</h3></td>
 								</tr>
 
@@ -58,31 +58,31 @@
 									<th scope="row">Name</th>
 
 									<!-- METHOD NAME -->
-									<td><h3>addText</h3></td>
+									<td><h3>isAbbreviation</h3></td>
 								</tr>
 
 								<tr class="">
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Loads text into the model. If a raw string is provided, it will be split into sentences (using RiTa.sentences(). If an array is provided, each string is treated as an individual sentence.</td>
+									<td>Returns true if 'input' is an abbreviation</td>
 								</tr>
 
 								<tr class='Syntax'>
 									<th scope="row">Syntax</th>
 
 									<!-- SYNTAX  -->
-									<td><pre>addText(text);<br>addText(text, multiplier);<br>addText(text, multiplier,regex);</pre></td>
+									<td><pre>RiTa.isAbbreviation(input);<br/>RiTa.isAbbreviation(input, caseSensitive);</pre></td>
 								</tr>
 
 
-								<tr class='Parameters' style='display:none'>
+								<tr class='Parameters'>
 									<th scope="row">Parameters</th>
 									<td>
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String or String[]</th><td width='75%'>an array of sentences or the raw text to be split into sentences</td></tr><tr class=''><th width='25%' scope='row' class=nobold>int</th><td width='75%'>weighting for text (optional, default=1) </td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>text input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>caseSensitive (optional, default=false)</td></tr></table>
 									</td>
 								</tr>
 
@@ -93,7 +93,7 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Markov</th><td width='75%'>this Markov</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>true if 'input' is an abbreviation</td></tr></table>
 									</td>
 								</tr>
 
@@ -101,23 +101,23 @@
 									<th scope="row">Related</th>
 
 									<!-- RELATED  -->
-									<td>tmp_related</td>
+									<td><a href='../RiTa.randomWord'>RiTa.randomWord</a>, <a href='../RiTa.randomOrdering'>RiTa.randomOrdering</a>,</td>
 								</tr>
 
 								<tr class='Note' style='display:none'>
 									<th scope="row">Note</th>
 									<!-- NOTE  -->
-									<td>tmp_note</td>
+									<td>See <a href="https://en.wikipedia.org/wiki/Concordance_%28publishing%29">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a></td>
 								</tr>
 
-								<tr class='Example'>
+								<tr class='Example' style='display:none'>
 									<th scope='row'>Example</th>
 									<td>
 										<div class="example">
 
 											<!-- EXAMPLE  -->
 											<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-											<pre class="margin">sample = "One reason people lie is to achieve personal power.";<br>rm = new Markov(3);<br>rm.addText(sample);<br> OR <br>rm.addText(sentencesArray);</pre>
+											<pre class="margin">RiTa.isAbbreviation("Prof."); // returns -> true</pre>
 										</div>
 									</td>
 								</tr>

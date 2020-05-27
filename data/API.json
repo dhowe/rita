@@ -30,9 +30,9 @@
         "randomWord",
         "rhymes",
         "sentences",
+        "similars",
         "singularize",        
         "soundsLike",
-        "spellsLike",
         "stem",
         "stresses",
         "syllables",
@@ -60,7 +60,6 @@
       "class": "Markov",
       "functions": [
         "addText",
-        "addSentences",
         "completions",
         "generate",
         "probability",

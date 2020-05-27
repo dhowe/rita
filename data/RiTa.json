@@ -752,10 +752,10 @@
       "note": ""
     },
     {
-      "name": "spellsLike",
-      "example": "RiTa.spelledLike(\"happy\");",
+      "name": "similars",
+      "example": "RiTa.similars(\"happy\");",
       "description": "Compares the characters of the input string  (using a version of the min-edit distance algorithm) to each word in the lexicon, returning the set of closest matches.",
-      "syntax": "RiTa.spelledLike(word);<br/>RiTa.spelledLike(word, minAllowedDist);<br/>spelledLike(word, minAllowedDist, preserveLength);",
+      "syntax": "RiTa.similars(word);<br/>RiTa.similars(word, minAllowedDist);<br/>similars(word, minAllowedDist, preserveLength);",
       "parameters": [
         {
           "type": "String",
@@ -806,7 +806,7 @@
       "note": ""
     },
     {
-      "name": "similarBy",
+      "name": "similars",
       "example": "RiTa.similarBy(\"happy\");",
       "description": "Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for either letters or phonemes) to each word in the lexicon, returning the set of closest matches.",
       "syntax": "similarBy(word), similarBy(word, {type: 'sound'}), similarBy(word, {type: 'letter'})",

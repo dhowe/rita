@@ -28,7 +28,7 @@ public class MakeDocs extends PApplet
   static Map<String, ArrayList<String>> API = new HashMap<String, ArrayList<String>>();
   static boolean DBUG = false;
   static String[] types = new String[] { "fields", "functions", "statics" };
-  static String warnings = "";
+  static String warnings = "", errors = "";
 
   static {
     System.out.println("[INFO] DocGen.version [" + VERSION + "]");
@@ -60,7 +60,6 @@ public class MakeDocs extends PApplet
     outputTemplate = DATA_DIR + "/template." + OUTPUT_TYPE;
     System.out.println("Files to generate: " + CLASS_NAMES.length);
     parseAPI();
-    System.out.println(API.keySet());
 
     // if (1 == 1) return;
     for (int i = 0; i < CLASS_NAMES.length; i++) {
@@ -72,8 +71,9 @@ public class MakeDocs extends PApplet
 
     pln("\nDONE: files written to " + OUTPUT_DIR +
         "*." + OUTPUT_TYPE + " (from " + System.getProperty("user.dir") + ")");
-    
+
     System.err.println(warnings);
+    System.err.println(errors);
   }
 
   static void parseAPI()
@@ -134,7 +134,7 @@ public class MakeDocs extends PApplet
       }
 
     } catch (Exception e) {
-      System.err.println("\nError parsing the JSONObject!");
+      System.err.println("\nError parsing class: " + shortName);
       throw new RuntimeException(e);
     }
   }
@@ -183,7 +183,13 @@ public class MakeDocs extends PApplet
         }
 
         description[j] = entry.getString("description");
+        if (description[j].length() == 0) {
+          warnings += "Missing Desc: " + shortName + "." + methodName[j] + "()\n";
+        }
         syntax[j] = entry.getString("syntax");
+        if (syntax[j].length() == 0) {
+          warnings += "Missing Syntax: " + shortName + "." + methodName[j] + "()\n";
+        }
 
         JSONArray parametersJSON = entry.getJSONArray("parameters");
         numOfparameters = parametersJSON.size();
@@ -209,15 +215,18 @@ public class MakeDocs extends PApplet
         }
         related[j] = entry.getString("related");
         thePlatform[j] = entry.getString("platform");
+        if (thePlatform[j] == null || thePlatform[j].length()==0) {
+          thePlatform[j] = "Java / JavaScript";
+        }
         note[j] = entry.getString("note");
 
         template(j, shortName);
 
         plnMarkup(shortName, methodName[j], isVariable[j]);
       }
-      if (extra.size() > 0) warnings += "EXTRA:    " + extra + "\n";
-      if (check.size() > 0) warnings += "MISSING:    " + check + "\n";
-      // if (check.size() > 0) System.err.println("MISSING: " + check);
+
+      if (extra.size() > 0) errors += "Extra Docs:    " + extra + "\n";
+      if (check.size() > 0) errors += "No Doc For:    " + check + "\n";
     }
   }
 
@@ -367,15 +376,13 @@ public class MakeDocs extends PApplet
 
   static void handleOptionalTag(String name, String data)
   {
-
     String uname = upperCaseFirst(name);
-    lines = (data.length() > 0) ? replaceArr(lines, "tmp_" + name, data) : replaceArr(lines, "<tr class='" + uname + "'>", "<tr class='" + uname + "' style='display:none'>");
+    lines = (data != null && data.length() > 0) ? replaceArr(lines, "tmp_" + name, data) : replaceArr(lines, "<tr class='" + uname + "'>", "<tr class='" + uname + "' style='display:none'>");
   }
 
   static String upperCaseFirst(String value)
   {
-
-    return Character.toString(value.charAt(0)).toUpperCase() + value.substring(1);
+    return (value != null) ? Character.toString(value.charAt(0)).toUpperCase() + value.substring(1) : "";
   }
 
   static String[] replaceArr(String[] in, String from, String to)

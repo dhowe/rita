@@ -14,10 +14,7 @@
           "type": "String",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "expand",
@@ -30,10 +27,7 @@
           "type": "String",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "expandFrom",
@@ -46,10 +40,7 @@
           "type": "String",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "loadRules",
@@ -62,10 +53,7 @@
           "type": "String",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "removeRule",
@@ -78,10 +66,7 @@
           "type": "String",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "toString",
@@ -94,10 +79,7 @@
           "type": "String",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     }
   ]
 }
