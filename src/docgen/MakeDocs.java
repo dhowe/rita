@@ -99,7 +99,7 @@ public class MakeDocs extends PApplet {
 						if (types[j] != "functions") {
 							dsp = cls + "." + dsp;
 						}
-						contents += "    <a href=\"ref/" + cls + "/" + ent + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
+						contents += "    <a href=\"" + cls + "/" + ent + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
 						if (k == 17) {
 							contents += "  </div>\n";
 							contents += "</div>\n\n";
