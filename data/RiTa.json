@@ -711,7 +711,7 @@
           "desc": "the word to match"
         },
         {
-          "type": "object",
+          "type": "Object",
           "desc": "options: type: ['sound', 'letter' ]  (optional, default=letter)"
         }
       ],
@@ -723,18 +723,14 @@
       ]
     },
     {
-      "name": "similars",
-      "example": "RiTa.similarBy(\"happy\");",
+      "name": "spellsLike",
+      "example": "RiTa.spellsLike(\"happy\");",
       "description": "Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for either letters or phonemes) to each word in the lexicon, returning the set of closest matches.",
-      "syntax": "similarBy(word), similarBy(word, {type: 'sound'}), similarBy(word, {type: 'letter'})",
+      "syntax": "spellsLike(word)",
       "parameters": [
         {
           "type": "String",
           "desc": "the word to match"
-        },
-        {
-          "type": "object",
-          "desc": "options: type: ['sound', 'letter' ]  (optional, default=letter)"
         }
       ],
       "returns": [
