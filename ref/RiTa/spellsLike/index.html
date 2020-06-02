@@ -58,21 +58,21 @@
 									<th scope="row">Name</th>
 
 									<!-- METHOD NAME -->
-									<td><h3>soundsLike</h3></td>
+									<td><h3>spellsLike</h3></td>
 								</tr>
 
 								<tr class="">
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for the phonemes) to each word in the lexicon, returning the set of closest matches.</td>
+									<td>Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for either letters or phonemes) to each word in the lexicon, returning the set of closest matches.</td>
 								</tr>
 
 								<tr class='Syntax'>
 									<th scope="row">Syntax</th>
 
 									<!-- SYNTAX  -->
-									<td><pre>soundsLike(word)</pre></td>
+									<td><pre>spellsLike(word)</pre></td>
 								</tr>
 
 
@@ -82,7 +82,7 @@
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the word to match</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object</th><td width='75%'>options: type: ['sound', 'letter' ]  (optional, default=letter)</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the word to match</td></tr></table>
 									</td>
 								</tr>
 
@@ -117,7 +117,7 @@
 
 											<!-- EXAMPLE  -->
 											<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-											<pre class="margin">RiTa.soundsLike("happy");</pre>
+											<pre class="margin">RiTa.spellsLike("happy");</pre>
 										</div>
 									</td>
 								</tr>
