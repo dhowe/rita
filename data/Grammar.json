@@ -1,83 +1,98 @@
 {
-  "class": "rita.RiGrammar",
+  "class": "rita.Grammar",
   "fields": [],
   "statics": [],
   "functions": [
     {
       "name": "addRule",
-      "example": "",
-      "description": "",
-      "syntax": "",
-      "parameters": [],
-      "returns": [
+      "example": "rg = new Grammar();<br/>rg.addRule(\"start\", \"\\$animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");",
+      "description": "Adds a rule to the existing grammar, replacing any existing rule with the same name",
+      "syntax": "addRule(name, definition);",
+      "parameters": [
         {
           "type": "String",
-          "desc": ""
+          "desc": "the rule name"
+        },
+        {
+          "type": "String",
+          "desc": "the rule definition"
+        }
+      ],
+      "returns": [
+        {
+          "type": "Grammar",
+          "desc": "this Grammar"
         }
       ]
     },
     {
       "name": "expand",
-      "example": "",
-      "description": "",
-      "syntax": "",
-      "parameters": [],
-      "returns": [
+      "example": "rg = new Grammar(rules); <br/>result = rg.expand(ruleName);",
+      "description": "Expands a grammar from the supplied rule. If no rule is provided the \\$start and #60;start&#62;' symbols will be checked respectively.",
+      "syntax": "expand();<br/>expand(callbackObject);",
+      "parameters": [
         {
           "type": "String",
-          "desc": ""
+          "desc": "the rule name to be expanded"
+        },
+        {
+          "type": "Object",
+          "desc": "the JavaScript context for any referenced variables or functions (optional)"
         }
-      ]
-    },
-    {
-      "name": "expandFrom",
-      "example": "",
-      "description": "",
-      "syntax": "",
-      "parameters": [],
+      ],
       "returns": [
         {
           "type": "String",
-          "desc": ""
-        }
-      ]
-    },
-    {
-      "name": "loadRules",
-      "example": "",
-      "description": "",
-      "syntax": "",
-      "parameters": [],
-      "returns": [
-        {
-          "type": "String",
-          "desc": ""
+          "desc": "the result of the expansion (or an error if the rule is not found)"
         }
       ]
     },
     {
       "name": "removeRule",
-      "example": "",
-      "description": "",
-      "syntax": "",
-      "parameters": [],
-      "returns": [
+      "example": "rg = new Grammar(); <br>rg.addRule(\"pet\", \"dog | hawk | crow\", 1); <br>rg.removeRule(\"pet\");",
+      "description": "Deletes the named rule from the grammar",
+      "syntax": "removeRule(name);",
+      "parameters": [
         {
           "type": "String",
-          "desc": ""
+          "desc": "the rule name"
+        }
+      ],
+      "returns": [
+        {
+          "type": "Grammar",
+          "desc": "this Grammar"
+        }
+      ]
+    },
+    {
+      "name": "setRules",
+      "example": "rg = new Grammar(); <br>rg.setRules(rules);",
+      "description": "Loads a grammar from a String or JSON object.",
+      "syntax": "setRules(grammarRules);",
+      "parameters": [
+        {
+          "type": "String or Object",
+          "desc": "a String or JSON Object representation of the grammar"
+        }
+      ],
+      "returns": [
+        {
+          "type": "Object",
+          "desc": "this Grammar object"
         }
       ]
     },
     {
       "name": "toString",
-      "example": "",
-      "description": "",
-      "syntax": "",
+      "example": "rm = new Grammar(rules);<br/>s = rm.toString();",
+      "description": "Returns a formatted version of this grammar",
+      "syntax": "toString();",
       "parameters": [],
       "returns": [
         {
           "type": "String",
-          "desc": ""
+          "desc": "this object as a String"
         }
       ]
     }

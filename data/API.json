@@ -31,7 +31,7 @@
         "rhymes",
         "sentences",
         "similars",
-        "singularize",        
+        "singularize",
         "soundsLike",
         "stem",
         "stresses",
@@ -49,9 +49,8 @@
       "functions": [
         "addRule",
         "expand",
-        "expandFrom",
-        "loadRules",
         "removeRule",
+        "setRules",
         "toString"
       ],
       "constructor": true
