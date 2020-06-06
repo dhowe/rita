@@ -1,9 +1,15 @@
 package docgen;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.GZIPOutputStream;
@@ -13,6 +19,7 @@ import processing.data.JSONArray;
 import processing.data.JSONObject;
 
 public class MakeDocs extends PApplet {
+	
 	static final String OUTPUT_TYPE = "html";
 	static final String VERSION = "2.01";
 	static final boolean OUTPUT_MARKUP = false;

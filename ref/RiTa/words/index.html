@@ -65,14 +65,14 @@
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Returns the array of all words in the lexicon or those matching a specific regex. <br/>If specified, the order of the result array is randomized before return.</td>
+									<td>Searches for words in the lexicon that match the given criteria, either by phoneme, stress, or letters. <br/>If specified, the order of the result array is randomized before return.</td>
 								</tr>
 
 								<tr class='Syntax'>
 									<th scope="row">Syntax</th>
 
 									<!-- SYNTAX  -->
-									<td><pre>RiTa.words()<br/>RiTa.words(regex);<br/>RiTa.words(shuffled);<br/>RiTa.words(regex, shuffled);</pre></td>
+									<td><pre>RiTa.words()<br/>RiTa.words(regex);<br/>RiTa.words(opts);</pre></td>
 								</tr>
 
 
@@ -82,7 +82,7 @@
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>regex pattern to match (optional)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>In randomized order when true (default=false)</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>regex pattern to match (optional)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object</th><td width='75%'>options for the search (optional)</td></tr></table>
 									</td>
 								</tr>
 
@@ -93,7 +93,7 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>all (or the matching) words in the lexicon</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string[]</th><td width='75%'>array of words matching the search criteria in the lexicon (or all words if no criteria is provided)</td></tr></table>
 									</td>
 								</tr>
 
