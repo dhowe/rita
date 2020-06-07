@@ -115,7 +115,7 @@
       ],
       "returns": [
         {
-          "type": "Object",
+          "type": "object",
           "desc": "An object (JS) or HashMap (Java) mapping words to probabilities"
         }
       ]

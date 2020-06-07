@@ -87,7 +87,7 @@
         }
       ],
       "returns": [],
-      "related": "<a href='../RiTa.randomWord'>RiTa.randomWord</a>, <a href='../RiTa.randomOrdering'>RiTa.randomOrdering</a>,",
+      "related": "<a href='../randomWord'>RiTa.randomWord</a>, <a href='../randomOrdering'>RiTa.randomOrdering</a>"
     },
     {
       "name": "randomOrdering",
@@ -158,7 +158,7 @@
           "desc": "the input"
         },
         {
-          "type": "Object",
+          "type": "object",
           "desc": "the JavaScript context for any referenced variables or functions (optional)"
         }
       ],
@@ -191,7 +191,7 @@
           "desc": "in which each element is a single token (or word)"
         }
       ],
-      "related": "<a href='../RiTa.untokenize'>RiTa.untokenize</a>",
+      "related": "<a href='../untokenize'>RiTa.untokenize</a>"
     },
     {
       "name": "untokenize",
@@ -210,14 +210,14 @@
           "desc": "in which the elements have been joined into a single string"
         }
       ],
-      "related": "<a href='../RiTa.tokenize'>RiTa.tokenize</a>",
+      "related": "<a href='../tokenize'>RiTa.tokenize</a>"
     },
     {
       "name": "phonemes",
       "example": "<br/>RiTa.phonemes(\"apple\"); // returns -> ae-p-ah-l <br/><br/>RiTa.phonemes(\"two apples\"); // returns -> t-uw ae-p-ah-l-z <br/><br/>",
       "description": "Returns a string containing all <a target=_new href='../../PhonemeTags.php'>phonemes</a> for the input text",
-      "syntax": "RiTa.phonemes(wordStr)";
-    "parameters": [
+      "syntax": "RiTa.phonemes(wordStr)",
+      "parameters": [
         {
           "type": "string",
           "desc": "text to analyze"
@@ -233,8 +233,8 @@
     {
       "name": "pos",
       "example": "<br/>RiTa.pos(\"I am a cat.\"); <br/>// returns -> [ \"prp\", \"vbp\", \"dt\", \"nn\", \".\" ]<br/><br/>",
-      "description": "Uses the default PosTagger to tag the input with tags from the <a href='../../PennTags.html'>PENN tag set</a> or the simplified WordNet tag set [a, r, v, n]",
-      "syntax": "RiTa.pos(word);<br/>RiTa.pos(word, bool);",
+      "description": "Uses the default PosTagger to tag the input with tags from the <a href='../../PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]",
+      "syntax": "RiTa.pos(word);<br/>RiTa.pos(word, boolean);",
       "parameters": [
         {
           "type": "string",
@@ -251,7 +251,7 @@
           "desc": ""
         }
       ],
-      "related": "<a href='../../PennTags.html'>the PENN tagset</a>",
+      "related": "<a href='../../PennTags.html'>the PENN tagset</a>"
     },
     {
       "name": "posInline",
@@ -270,7 +270,7 @@
           "desc": "a combined string of words and pos tags"
         }
       ],
-      "related": "<a href='../../PennTags.html'>the PENN tagset</a>",
+      "related": "<a href='../../PennTags.html'>the PENN tagset</a>"
     },
     {
       "name": "stresses",
@@ -323,13 +323,13 @@
           "desc": "the word to lookup"
         },
         {
-          "type": "Object<br/>(or Map in Java)",
+          "type": "object<br/>(or Map in Java)",
           "desc": "options (optional) the relevant options for the KWIK model:<br/><br/>{int} options.wordCount: <br/># of words of context on either side of input word<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{string[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br/><br/>"
         }
       ],
       "returns": [
         {
-          "type": "Object<br/>(or Map in Java)",
+          "type": "object<br/>(or Map in Java)",
           "desc": "the concordance"
         }
       ],
@@ -350,7 +350,7 @@
           "desc": "the word to lookup"
         },
         {
-          "type": "Object<br/>(or Map in Java)",
+          "type": "object<br/>(or Map in Java)",
           "desc": "options (optional) the relevant options for the KWIC model:<br/><br/>{int} options.wordCount: <br/># of words/punctuation of context on either side of input word<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{string[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br/><br/>"
         }
       ],
@@ -373,8 +373,8 @@
           "desc": "the root verb"
         },
         {
-          "type": "Object",
-          "desc": "Object containing the relevant options (tense, number, person) for the conjugator"
+          "type": "object",
+          "desc": "object containing the relevant options (tense, number, person) for the conjugator"
         }
       ],
       "returns": [
@@ -494,17 +494,17 @@
     },
     {
       "name": "alliterations",
-      "example": "RiTa.alliterations(\"cat\"); <br/>RiTa.alliterations(\"cat\", 10);",
+      "example": "RiTa.alliterations(\"cat\"); <br/>RiTa.alliterations(\"cat\", {limit: 10});<br/>RiTa.alliterations(\"cat\", { maxLength: 4, numSyllables: 1 });",
       "description": "Finds alliterations by comparing the phonemes of the input string to those of each word in the lexicon",
-      "syntax": "RiTa.alliterations(word);",
+      "syntax": "RiTa.alliterations(word);<br/>RiTa.alliterations(word, opts);",
       "parameters": [
         {
           "type": "string",
-          "desc": "word input"
+          "desc": "input word"
         },
         {
-          "type": "int",
-          "desc": "minimum length of word to return (optional, default=4)"
+          "type": "object<br/>(or Map in Java)",
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -512,17 +512,18 @@
           "type": "string[]",
           "desc": "array of alliterations"
         }
-      ]
+      ],
+      "related": "<a href='../rhymes'>RiTa.rhymes</a>,<a href='../search'>RiTa.search</a>,<a href='../soundsLike'>RiTa.soundsLike</a>,<a href='../spellsLike'>RiTa.spellsLike</a>"
     },
     {
       "name": "randomWord",
-      "example": "// a random word from the lexicon<br/>RiTa.randomWord();<br/><br/>// a random plural noun from the lexicon<br/>RiTa.randomWord({ pos: \"nns\"});<br/><br/>// a random word with 3 syllables and length 4 or 5<br/>RiTa.randomWord({ numSyllables: 3, maxWordLength: 5});",
+      "example": "// a random word from the lexicon<br/>RiTa.randomWord();<br/><br/>// a random plural noun from the lexicon<br/>RiTa.randomWord({ pos: \"nns\"});<br/><br/>// a random word with 3 syllables and length 3 or 4<br/>RiTa.randomWord({ numSyllables: 3, maxLength: 4});",
       "description": "Returns a random word from the lexicon according to specified options",
       "syntax": "randomWord()<br/>randomWord(opts);",
       "parameters": [
         {
-          "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minWordLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxWordLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either a PENN or simple(n,v,r,a) tag<br/><br/>"
+          "type": "object<br/>(or Map in Java)",
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -531,39 +532,44 @@
           "desc": "the random word"
         }
       ],
-      "related": "<a href='../../PennTags.html'>the PENN tagset</a>"      
+      "related": "<a href='../randomSeed'>RiTa.randomSeed</a>"
     },
     {
       "name": "rhymes",
-      "example": "RiTa.rhymes(\"cat\")",
-      "description": "Two words rhyme are considered as rhyming if their final stressed vowel and all following phonemes are identical",
+      "example": "RiTa.rhymes(\"cat\"); <br/>RiTa.rhymes(\"cat\", {limit: 10});<br/>RiTa.rhymes(\"cat\", { maxLength: 4, numSyllables: 1 });",
+      "description": "Two words are considered as rhyming if their final stressed vowel and all following phonemes are identical",
       "syntax": "RiTa.rhymes(word);",
       "parameters": [
         {
           "type": "string",
           "desc": "word"
+        },
+        {
+          "type": "object<br/>(or Map in Java)",
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either a PENN or simple(n,v,r,a) tag<br/><br/>"
         }
       ],
       "returns": [
         {
           "type": "string[]",
-          "desc": "rhymes for word, or an empty array if none are found"
+          "desc": "rhymes for the word, or an empty array if none are found"
         }
-      ]
+      ],
+      "related": "<a href='../spellsLike'>RiTa.alliterations</a>,<a href='../search'>RiTa.search</a>,<a href='../soundsLike'>RiTa.soundsLike</a>,<a href='../spellsLike'>RiTa.spellsLike</a>"
     },
     {
-      "name": "words",
-      "example": "RiTa.words(); <br/>RiTa.words(\"tting\")",
-      "description": "Searches for words in the lexicon that match the given criteria, either by phoneme, stress, or letters. <br/>If specified, the order of the result array is randomized before return.",
-      "syntax": "RiTa.words()<br/>RiTa.words(regex);<br/>RiTa.words(opts);",
+      "name": "search",
+      "example": "RiTa.search();<br/>RiTa.search(\"tting\")",
+      "description": "Searches for words in the lexicon that match the given criteria, either by phoneme, stress, or letters. If no regex or options are supplied, the full set of words is returned.",
+      "syntax": "RiTa.search()<br/>RiTa.search(regex);<br/>RiTa.search(regex, opts);",
       "parameters": [
         {
           "type": "string",
           "desc": "regex pattern to match (optional)"
         },
         {
-          "type": "Object",
-          "desc": "options for the search (optional)"
+          "type": "object<br/>(or Map in Java)",
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either a PENN or simple(n,v,r,a) tag<br/><br/>"
         }
       ],
       "returns": [
@@ -571,7 +577,8 @@
           "type": "string[]",
           "desc": "array of words matching the search criteria in the lexicon (or all words if no criteria is provided)"
         }
-      ]
+      ],
+      "related": "<a href='../spellsLike'>RiTa.alliterations</a>,<a href='../rhymes'>RiTa.rhymes</a>,<a href='../soundsLike'>RiTa.soundsLike</a>,<a href='../spellsLike'>RiTa.spellsLike</a>"
     },
     {
       "name": "isAdverb",
@@ -695,17 +702,17 @@
     },
     {
       "name": "soundsLike",
-      "example": "RiTa.soundsLike(\"happy\");",
+      "example": "RiTa.soundsLike(\"happy\");<br/>RiTa.soundsLike(\"happy\", { limit: 10 });<br/>RiTa.soundsLike(\"happy\", { limit: 10, minDistance: 2 });<br/>RiTa.soundsLike(\"happy\", { numSyllables: 2, minDistance: 2 });<br/>RiTa.soundsLike(\"happy\", { minWordLength:10, numSyllables:2 });",
       "description": "Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for the phonemes) to each word in the lexicon, returning the set of closest matches.",
-      "syntax": "soundsLike(word)",
+      "syntax": "RiTa.soundsLike(word)<br/>RiTa.soundsLike(word, opts)",
       "parameters": [
         {
           "type": "string",
           "desc": "the word to match"
         },
         {
-          "type": "Object",
-          "desc": "options: type: ['sound', 'letter' ]  (optional, default=letter)"
+          "type": "object<br/>(or Map in Java)",
+          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either a PENN or simple(n,v,r,a) tag<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
@@ -713,17 +720,22 @@
           "type": "string[]",
           "desc": "the matching words"
         }
-      ]
+      ],
+      "related": "<a href='../spellsLike'>RiTa.spellsLike</a>"
     },
     {
       "name": "spellsLike",
-      "example": "RiTa.spellsLike(\"happy\");",
-      "description": "Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm for either letters or phonemes) to each word in the lexicon, returning the set of closest matches.",
-      "syntax": "spellsLike(word)",
+      "example": "RiTa.spellsLike(\"happy\");<br/>RiTa.spellsLike(\"happy\", { limit: 10 });<br/>RiTa.spellsLike(\"happy\", { limit: 10, minDistance: 2 });<br/>RiTa.spellsLike(\"happy\", { numSyllables: 2, minDistance: 2 });<br/>RiTa.spellsLike(\"happy\", { minWordLength:10, numSyllables:2 });",
+      "description": "Compares the letters of the input word (using a version of the Levenstein min-edit distance algorithm for either letters or phonemes) to each word in the lexicon, returning the set of closest matches.",
+      "syntax": "RiTa.spellsLike(word)<br/>RiTa.spellsLike(word, opts)",
       "parameters": [
         {
           "type": "string",
           "desc": "the word to match"
+        },
+        {
+          "type": "object<br/>(or Map in Java)",
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either a PENN or simple(n,v,r,a) tag<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
@@ -731,7 +743,8 @@
           "type": "string[]",
           "desc": "the matching words"
         }
-      ]
+      ],
+      "related": "<a href='../soundsLike'>RiTa.soundsLike</a>"
     }
   ]
 }

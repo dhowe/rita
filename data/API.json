@@ -29,6 +29,7 @@
         "randomSeed",
         "randomWord",
         "rhymes",
+        "search",
         "sentences",
         "singularize",
         "soundsLike",
@@ -37,8 +38,7 @@
         "stresses",
         "syllables",
         "tokenize",
-        "untokenize",
-        "words"
+        "untokenize"
       ],
       "fields": [
         "VERSION"

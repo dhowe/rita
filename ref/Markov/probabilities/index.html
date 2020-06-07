@@ -68,14 +68,19 @@
 									<td>Returns the full set of possible next tokens as a map, given an array of tokens representing the path down the tree (with length less than n).<br/>&nbsp;<br/>Note: seed arrays of any size (>0) may be input, but only the last n-1 elements will be considered.   </td>
 								</tr>
 
-								<tr class='Syntax'>
-									<th scope="row">Syntax</th>
+					
 
-									<!-- SYNTAX  -->
-									<td><pre>probabilities(pathString);<br/>probabilities(pathArray);</pre></td>
-								</tr>
+<tr class='Example'>
+	<th scope='row'>Example</th>
+	<td>
+		<div class="example">
 
-
+			<!-- EXAMPLE  -->
+			<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
+			<pre class="margin">rm = new Markov(3); <br/>rm.loadText(theText);<br/>rm.probabilities(["be", "thought"]);</pre>
+		</div>
+	</td>
+</tr>
 								<tr class='Parameters'>
 									<th scope="row">Parameters</th>
 									<td>
@@ -93,7 +98,7 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Object</th><td width='75%'>An object (JS) or HashMap (Java) mapping words to probabilities</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>object</th><td width='75%'>An object (JS) or HashMap (Java) mapping words to probabilities</td></tr></table>
 									</td>
 								</tr>
 
@@ -110,17 +115,15 @@
 									<td>tmp_note</td>
 								</tr>
 
-								<tr class='Example'>
-									<th scope='row'>Example</th>
-									<td>
-										<div class="example">
-
-											<!-- EXAMPLE  -->
-											<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-											<pre class="margin">rm = new Markov(3); <br/>rm.loadText(theText);<br/>rm.probabilities(["be", "thought"]);</pre>
-										</div>
-									</td>
-								</tr>
+			<tr class='Syntax'>
+				<th scope="row">Syntax</th>
+			
+				<!-- SYNTAX  -->
+				<td>
+					<pre>probabilities(pathString);<br/>probabilities(pathArray);</pre>
+				</td>
+			</tr>
+								
 
 								<tr class="">
 									<th scope="row">Platform</th>

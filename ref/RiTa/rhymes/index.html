@@ -65,24 +65,29 @@
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Two words rhyme are considered as rhyming if their final stressed vowel and all following phonemes are identical</td>
+									<td>Two words are considered as rhyming if their final stressed vowel and all following phonemes are identical</td>
 								</tr>
 
-								<tr class='Syntax'>
-									<th scope="row">Syntax</th>
+					
 
-									<!-- SYNTAX  -->
-									<td><pre>RiTa.rhymes(word);</pre></td>
-								</tr>
+<tr class='Example'>
+	<th scope='row'>Example</th>
+	<td>
+		<div class="example">
 
-
+			<!-- EXAMPLE  -->
+			<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
+			<pre class="margin">RiTa.rhymes("cat"); <br/>RiTa.rhymes("cat", {limit: 10});<br/>RiTa.rhymes("cat", { maxLength: 4, numSyllables: 1 });</pre>
+		</div>
+	</td>
+</tr>
 								<tr class='Parameters'>
 									<th scope="row">Parameters</th>
 									<td>
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>word</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>word</td></tr><tr class=''><th width='25%' scope='row' class=nobold>object<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either a PENN or simple(n,v,r,a) tag<br/><br/></td></tr></table>
 									</td>
 								</tr>
 
@@ -93,15 +98,15 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string[]</th><td width='75%'>rhymes for word, or an empty array if none are found</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string[]</th><td width='75%'>rhymes for the word, or an empty array if none are found</td></tr></table>
 									</td>
 								</tr>
 
-								<tr class='Related' style='display:none'>
+								<tr class='Related'>
 									<th scope="row">Related</th>
 
 									<!-- RELATED  -->
-									<td>tmp_related</td>
+									<td><a href='../spellsLike'>RiTa.alliterations</a>,<a href='../search'>RiTa.search</a>,<a href='../soundsLike'>RiTa.soundsLike</a>,<a href='../spellsLike'>RiTa.spellsLike</a></td>
 								</tr>
 
 								<tr class='Note' style='display:none'>
@@ -110,17 +115,15 @@
 									<td>tmp_note</td>
 								</tr>
 
-								<tr class='Example'>
-									<th scope='row'>Example</th>
-									<td>
-										<div class="example">
-
-											<!-- EXAMPLE  -->
-											<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-											<pre class="margin">RiTa.rhymes("cat")</pre>
-										</div>
-									</td>
-								</tr>
+			<tr class='Syntax'>
+				<th scope="row">Syntax</th>
+			
+				<!-- SYNTAX  -->
+				<td>
+					<pre>RiTa.rhymes(word);</pre>
+				</td>
+			</tr>
+								
 
 								<tr class="">
 									<th scope="row">Platform</th>

@@ -50,7 +50,7 @@
 
 									<!-- ClASS -->
 									<td><h3>
-											<a href="../../Grammar.html">Grammar</a>
+											<a href="../../RiTa.html">RiTa</a>
 										</h3></td>
 								</tr>
 
@@ -58,14 +58,14 @@
 									<th scope="row">Name</th>
 
 									<!-- METHOD NAME -->
-									<td><h3>expand</h3></td>
+									<td><h3>search</h3></td>
 								</tr>
 
 								<tr class="">
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Expands a grammar from the supplied rule. If no rule is provided the $start and #60;start&#62;' symbols will be checked respectively.</td>
+									<td>Searches for words in the lexicon that match the given criteria, either by phoneme, stress, or letters. If no regex or options are supplied, the full set of words is returned.</td>
 								</tr>
 
 					
@@ -77,7 +77,7 @@
 
 			<!-- EXAMPLE  -->
 			<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-			<pre class="margin">rg = new Grammar(rules); <br/>result = rg.expand(ruleName);</pre>
+			<pre class="margin">RiTa.search();<br/>RiTa.search("tting")</pre>
 		</div>
 	</td>
 </tr>
@@ -87,7 +87,7 @@
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the rule name to be expanded</td></tr><tr class=''><th width='25%' scope='row' class=nobold>object</th><td width='75%'>the JavaScript context for any referenced variables or functions (optional)</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>regex pattern to match (optional)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>object<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either a PENN or simple(n,v,r,a) tag<br/><br/></td></tr></table>
 									</td>
 								</tr>
 
@@ -98,15 +98,15 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the result of the expansion (or an error if the rule is not found)</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string[]</th><td width='75%'>array of words matching the search criteria in the lexicon (or all words if no criteria is provided)</td></tr></table>
 									</td>
 								</tr>
 
-								<tr class='Related' style='display:none'>
+								<tr class='Related'>
 									<th scope="row">Related</th>
 
 									<!-- RELATED  -->
-									<td>tmp_related</td>
+									<td><a href='../spellsLike'>RiTa.alliterations</a>,<a href='../rhymes'>RiTa.rhymes</a>,<a href='../soundsLike'>RiTa.soundsLike</a>,<a href='../spellsLike'>RiTa.spellsLike</a></td>
 								</tr>
 
 								<tr class='Note' style='display:none'>
@@ -120,7 +120,7 @@
 			
 				<!-- SYNTAX  -->
 				<td>
-					<pre>expand();<br/>expand(callbackobject);</pre>
+					<pre>RiTa.search()<br/>RiTa.search(regex);<br/>RiTa.search(regex, opts);</pre>
 				</td>
 			</tr>
 								
