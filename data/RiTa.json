@@ -78,7 +78,7 @@
     {
       "name": "analyze",
       "example": "result = RiTa.analyze(theText);",
-      "description": "Computes a set of features for the object, including phonemes, syllables, stresses, etc.",
+      "description": "Computes a set of features for the object, including phonemes, syllables, stresses, part-of-speech",
       "syntax": "RiTa.analyze(string);",
       "parameters": [
         {
