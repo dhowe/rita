@@ -76,6 +76,24 @@
       ]
     },
     {
+      "name": "analyze",
+      "example": "result = RiTa.analyze(theText);",
+      "description": "Computes a set of features for the object, including phonemes, syllables, stresses, etc.",
+      "syntax": "RiTa.analyze(string);",
+      "parameters": [
+        {
+          "type": "string",
+          "desc": "the text to analyze"
+        }
+      ],
+      "returns": [
+        {
+          "type": "object<br/>(or Map in Java)",
+          "desc": "keys are [ phones, stresses, syllables, pos, tokens ] "
+        }
+      ]
+    },
+    {
       "name": "randomSeed",
       "example": "seed = 345345;<br/>RiTa.randomSeed(seed);",
       "description": "Sets the seed for RiTa's random number generator",
@@ -278,13 +296,13 @@
       "parameters": [
         {
           "type": "string",
-          "desc": "words to analyze"
+          "desc": "text to analyze"
         }
       ],
       "returns": [
         {
           "type": "string",
-          "desc": "e.g., '01-0-1', with 1's meaning 'stressed', and 0's meaning 'unstressed', "
+          "desc": "e.g., '1-0-1', with 1's meaning 'stressed', and 0's meaning 'unstressed', "
         }
       ]
     },
@@ -296,7 +314,7 @@
       "parameters": [
         {
           "type": "string",
-          "desc": "words to analyze"
+          "desc": "text to analyze"
         }
       ],
       "returns": [

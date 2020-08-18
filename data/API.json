@@ -5,6 +5,7 @@
       "statics": [
         "addTransform",
         "alliterations",
+        "analyze",
         "concordance",
         "conjugate",
         "evaluate",

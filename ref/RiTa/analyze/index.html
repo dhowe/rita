@@ -58,14 +58,14 @@
 									<th scope="row">Name</th>
 
 									<!-- METHOD NAME -->
-									<td><h3>spellsLike</h3></td>
+									<td><h3>analyze</h3></td>
 								</tr>
 
 								<tr class="">
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Compares the letters of the input word (using a version of the Levenstein min-edit distance algorithm) to each word in the lexicon, returning the set of closest matches.</td>
+									<td>Computes a set of features for the object, including phonemes, syllables, stresses, etc.</td>
 								</tr>
 
 					
@@ -77,7 +77,7 @@
 
 			<!-- EXAMPLE  -->
 			<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-			<pre class="margin">RiTa.spellsLike("happy");<br/>RiTa.spellsLike("happy", { limit: 10 });<br/>RiTa.spellsLike("happy", { limit: 10, minDistance: 2 });<br/>RiTa.spellsLike("happy", { numSyllables: 2, minDistance: 2 });<br/>RiTa.spellsLike("happy", { minWordLength:10, numSyllables:2 });</pre>
+			<pre class="margin">result = RiTa.analyze(theText);</pre>
 		</div>
 	</td>
 </tr>
@@ -87,7 +87,7 @@
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>the word to match</td></tr><tr class=''><th width='25%' scope='row' class=nobold>object<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{string} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/></td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>the text to analyze</td></tr></table>
 									</td>
 								</tr>
 
@@ -98,15 +98,15 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string[]</th><td width='75%'>the matching words</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>object<br/>(or Map in Java)</th><td width='75%'>keys are [ phones, stresses, syllables, pos, tokens ] </td></tr></table>
 									</td>
 								</tr>
 
-								<tr class='Related'>
+								<tr class='Related' style='display:none'>
 									<th scope="row">Related</th>
 
 									<!-- RELATED  -->
-									<td><a href='../soundsLike'>RiTa.soundsLike</a></td>
+									<td>tmp_related</td>
 								</tr>
 
 								<tr class='Note' style='display:none'>
@@ -120,7 +120,7 @@
 			
 				<!-- SYNTAX  -->
 				<td>
-					<pre>RiTa.spellsLike(word)<br/>RiTa.spellsLike(word, opts)</pre>
+					<pre>RiTa.analyze(string);</pre>
 				</td>
 			</tr>
 								
