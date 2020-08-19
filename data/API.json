@@ -17,6 +17,7 @@
         "isNoun",
         "isPunctuation",
         "isQuestion",
+        "isStopWord",
         "isRhyme",
         "isVerb",
         "kwic",

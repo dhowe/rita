@@ -78,7 +78,7 @@
     {
       "name": "analyze",
       "example": "result = RiTa.analyze(theText);",
-      "description": "Computes a set of features for the object, including phonemes, syllables, stresses, part-of-speech",
+      "description": "Computes a set of features for the object, including phonemes, syllables, stresses, and part-of-speech",
       "syntax": "RiTa.analyze(string);",
       "parameters": [
         {
@@ -89,7 +89,7 @@
       "returns": [
         {
           "type": "object<br/>(or Map in Java)",
-          "desc": "keys are [ phones, stresses, syllables, pos, tokens ] "
+          "desc": "keys are [ phones, stresses, syllables, pos, tokens, text ] "
         }
       ]
     },
@@ -650,6 +650,24 @@
         }
       ]
     },
+        {
+          "name": "isStopWord",
+          "example": "RiTa.isStopWord(\"the\");",
+          "description": "Returns true if the word is a 'stop word', a commonly used word that is often ignored in text processing. To use your own list, simply set RiTa.STOP_WORDS to a new array of words.",
+          "syntax": "RiTa.isStopWord(word);",
+          "parameters": [
+            {
+              "type": "string",
+              "desc": "the word to test"
+            }
+          ],
+          "returns": [
+            {
+              "type": "boolean",
+              "desc": "true if the word is a stop word, according to RiTa.STOP_WORDS"
+            }
+          ]
+        },
     {
       "name": "isAdjective",
       "example": "RiTa.isAdjective(\"cold\");",
