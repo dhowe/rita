@@ -231,10 +231,10 @@
       "related": "<a href='../tokenize'>RiTa.tokenize</a>"
     },
     {
-      "name": "phonemes",
-      "example": "<br/>RiTa.phonemes(\"apple\"); // returns -> ae-p-ah-l <br/><br/>RiTa.phonemes(\"two apples\"); // returns -> t-uw ae-p-ah-l-z <br/><br/>",
-      "description": "Returns a string containing all <a target=_new href='../../PhonemeTags.php'>phonemes</a> for the input text",
-      "syntax": "RiTa.phonemes(wordStr)",
+      "name": "phones",
+      "example": "<br/>RiTa.phones(\"apple\"); // returns -> ae-p-ah-l <br/><br/>RiTa.phones(\"two apples\"); // returns -> t-uw ae-p-ah-l-z <br/><br/>",
+      "description": "Returns a string containing all <a target=_new href='../../PhonemeTags.php'>phones</a> for the input text",
+      "syntax": "RiTa.phones(wordStr)",
       "parameters": [
         {
           "type": "string",
