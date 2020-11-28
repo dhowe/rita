@@ -206,7 +206,7 @@ public class MakeDocs extends PApplet {
 				methodName[j] = entry.getString("name");
 				pln("    " + methodName[j]);
 
-				if (check.contains(methodName[j])) {
+				if (check != null && check.contains(methodName[j])) {
 					check.remove(methodName[j]);
 				} else {
 					extra.add(methodName[j]);
@@ -274,7 +274,7 @@ public class MakeDocs extends PApplet {
 
 			if (extra.size() > 0)
 				errors += shortName + " has extra docs: " + extra + "\n";
-			if (check.size() > 0)
+			if (check != null && check.size() > 0)
 				errors += shortName + " has missing docs: " + check + "\n";
 		}
 

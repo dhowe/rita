@@ -380,7 +380,7 @@
     },
     {
       "name": "conjugate",
-      "example": "// JavaScript<br/><br/>opts = {<br/> tense: RiTa.PRESENT_TENSE,<br/> number: RiTa.SINGULAR,<br/> person: RiTa.THIRD_PERSON<br/>};<br/><br/>result = RiTa.conjugate('swim', opts);// Java<br/><br/>opts = new HashMap();<br/>opts.put(\"tense\", RiTa.PAST_TENSE);<br/>opts.put(\"number\", RiTa.SINGULAR);<br/>opts.put(\"person\", RiTa.FIRST_PERSON);<br/><br/>result = RiTa.conjugate(\"swim\", opts);<br/><br/><br/><br/><br/>",
+      "example": "// JavaScript<br/><br/>opts = {<br/> tense: RiTa.PRESENT,<br/> number: RiTa.SINGULAR,<br/> person: RiTa.THIRD<br/>};<br/><br/>result = RiTa.conjugate('swim', opts);<br/><br/><br/>// Java<br/><br/>opts = new HashMap();<br/>opts.put(\"tense\", RiTa.PAST);<br/>opts.put(\"number\", RiTa.PLURAL);<br/>opts.put(\"person\", RiTa.FIRST);<br/><br/>result = RiTa.conjugate(\"swim\", opts);<br/><br/>",
       "description": "Conjugates the 'verb' according to the specified options",
       "syntax": "RiTa.conjugate(verb, opts);",
       "parameters": [
@@ -390,7 +390,7 @@
         },
         {
           "type": "object",
-          "desc": "object containing the relevant options (tense, number, person) for the conjugator"
+          "desc": "object containing the relevant options (tense, number, person) for the conjugator<br/><br/>tense -> [PAST, PRESENT, or FUTURE]<br/>number -> [SINGULAR or PLURAL]<br/>person -> [FIRST, SECOND or THIRD]<br/><br/>"
         }
       ],
       "returns": [

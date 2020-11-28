@@ -48,7 +48,7 @@
                   <!-- ClASS -->
                   <td>
                     <h3>
-                      <a href="../../RiTa.html">RiTa</a>
+                      <a href="../../Grammar.html">Grammar</a>
                     </h3>
                   </td>
                 </tr>
@@ -58,7 +58,7 @@
 
                   <!-- METHOD NAME -->
                   <td>
-                    <h3>conjugate</h3>
+                    <h3>toJSON</h3>
                   </td>
                 </tr>
 
@@ -66,7 +66,7 @@
                   <th scope="row">Description</th>
 
                   <!-- DESCRIPTION  -->
-                  <td>Conjugates the 'verb' according to the specified options</td>
+                  <td>Persists the grammar in JSON format</td>
                 </tr>
 
 
@@ -78,16 +78,16 @@
 
                       <!-- EXAMPLE  -->
                       <!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-                      <pre class="margin">// JavaScript<br/><br/>opts = {<br/> tense: RiTa.PRESENT,<br/> number: RiTa.SINGULAR,<br/> person: RiTa.THIRD<br/>};<br/><br/>result = RiTa.conjugate('swim', opts);<br/><br/><br/>// Java<br/><br/>opts = new HashMap();<br/>opts.put("tense", RiTa.PAST);<br/>opts.put("number", RiTa.PLURAL);<br/>opts.put("person", RiTa.FIRST);<br/><br/>result = RiTa.conjugate("swim", opts);<br/><br/></pre>
+                      <pre class="margin">rm = new Grammar(rules);<br/>json = rm.toJSON();</pre>
                     </div>
                   </td>
                 </tr>
-                <tr class='Parameters'>
+                <tr class='Parameters' style='display:none'>
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
 
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>the root verb</td></tr><tr class=''><th width='25%' scope='row' class=nobold>object</th><td width='75%'>object containing the relevant options (tense, number, person) for the conjugator<br/><br/>tense -> [PAST, PRESENT, or FUTURE]<br/>number -> [SINGULAR or PLURAL]<br/>person -> [FIRST, SECOND or THIRD]<br/><br/></td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table">tmp_parameters</table>
                   </td>
                 </tr>
 
@@ -97,7 +97,7 @@
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
 
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>string</th><td width='75%'>the conjugated verb</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>JSON representation</td></tr></table>
                   </td>
                 </tr>
 
@@ -119,7 +119,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>RiTa.conjugate(verb, opts);</pre>
+                    <pre>toJSON();</pre>
                   </td>
                 </tr>
 

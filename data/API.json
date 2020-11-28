@@ -53,7 +53,11 @@
         "expand",
         "removeRule",
         "setRules",
-        "toString"
+        "toString",
+        "toJSON"
+      ],
+      "statics": [
+        "fromJSON"
       ],
       "constructor": true
     },

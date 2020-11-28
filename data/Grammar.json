@@ -1,7 +1,26 @@
 {
   "class": "rita.Grammar",
   "fields": [],
-  "statics": [],
+  "statics": [
+    {
+      "name": "fromJSON",
+      "example": "g = Grammar.fromJSON(jsonData);",
+      "description": "Loads a grammar from a JSON file",
+      "syntax": "Grammar.fromJSON(jsonData);",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "a JSON string containing the grammar"
+        }
+      ],
+      "returns": [
+        {
+          "type": "Grammar",
+          "desc": "a newly created Grammar object"
+        }
+      ]
+    }
+  ],
   "functions": [
     {
       "name": "addRule",
@@ -95,6 +114,22 @@
           "desc": "this object as a String"
         }
       ]
+    },
+    {
+      "name": "toJSON",
+      "example": "rm = new Grammar(rules);<br/>json = rm.toJSON();",
+      "description": "Persists the grammar in JSON format",
+      "syntax": "toJSON();",
+      "parameters": [],
+      "returns": [
+        {
+          "type": "String",
+          "desc": "JSON representation"
+        }
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     }
   ]
 }
