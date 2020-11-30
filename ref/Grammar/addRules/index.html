@@ -50,7 +50,7 @@
 
 									<!-- ClASS -->
 									<td><h3>
-											<a href="../../RiTa.html">RiTa</a>
+											<a href="../../Grammar.html">Grammar</a>
 										</h3></td>
 								</tr>
 
@@ -58,14 +58,14 @@
 									<th scope="row">Name</th>
 
 									<!-- METHOD NAME -->
-									<td><h3>addTransform</h3></td>
+									<td><h3>addRules</h3></td>
 								</tr>
 
 								<tr class="">
 									<th scope="row">Description</th>
 
 									<!-- DESCRIPTION  -->
-									<td>Registers a new RiScript transform function that may then be used in all RiScript evaluations (including within Grammars)</td>
+									<td>Loads a grammar from a String or JSON object.</td>
 								</tr>
 
 					
@@ -77,7 +77,7 @@
 
 			<!-- EXAMPLE  -->
 			<!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
-			<pre class="margin">RiTa.addTransform("uc", (s) => s.toUpperCase());<br/>RiTa.evaluate("This.uc() is an acronym.");</pre>
+			<pre class="margin">rg = new Grammar(); <br>rg.addRules(rules);</pre>
 		</div>
 	</td>
 </tr>
@@ -87,7 +87,7 @@
 										<!-- PARAMETERS  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Function</th><td width='75%'>the function to call, which should accept and return a string</td></tr></table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Obejct<br>(or Map in Java)</th><td width='75%'>an object representation of the grammar</td></tr></table>
 									</td>
 								</tr>
 
@@ -98,15 +98,15 @@
 										<!-- RETURNS/TYPE (for variables)  -->
 
 										<table cellpadding="0" cellspacing="0" border="0"
-											class="sub-table">void</table>
+											class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Grammar</th><td width='75%'>this Grammar</td></tr></table>
 									</td>
 								</tr>
 
-								<tr class='Related'>
+								<tr class='Related' style='display:none'>
 									<th scope="row">Related</th>
 
 									<!-- RELATED  -->
-									<td>See RiScript documentation</td>
+									<td>tmp_related</td>
 								</tr>
 
 								<tr class='Note' style='display:none'>
@@ -120,7 +120,7 @@
 			
 				<!-- SYNTAX  -->
 				<td>
-					<pre>RiTa.addTransform(name, function);</pre>
+					<pre>rg.addRules(grammarRules);</pre>
 				</td>
 			</tr>
 								
