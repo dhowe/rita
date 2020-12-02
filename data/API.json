@@ -50,9 +50,10 @@
       "class": "Grammar",
       "functions": [
         "addRule",
+        "addRules",
         "expand",
         "removeRule",
-        "setRules",
+        "toJSON",
         "toString",
         "toJSON"
       ],
