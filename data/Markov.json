@@ -18,7 +18,10 @@
           "type": "Markov",
           "desc": "a newly created Markov object"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "JavaScript",
+      "note": "This API not available in Java yet"
     }
   ],
   "functions": [
@@ -26,7 +29,7 @@
       "name": "addText",
       "example": "sample = \"One reason people lie is to achieve personal power.\";<br/>rm = new Markov(3);<br/>rm.addText(sample);<br/> OR <br/>rm.addText(sentencesArray);",
       "description": "Loads text into the model. If a raw string is provided, it will be split into sentences (using RiTa.sentences(). If an array is provided, each string is treated as an individual sentence.",
-      "syntax": "addText(text);<br/>addText(text, multiplier);<br/>addText(text, multiplier,regex);",
+      "syntax": "addText(text);<br/>addText(text, multiplier);",
       "parameters": [
         {
           "type": "String or String[]",
@@ -42,7 +45,10 @@
           "type": "Markov",
           "desc": "this Markov"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "completions",
@@ -51,20 +57,23 @@
       "description": "If only one array parameter is provided, this function returns all possible next words, ordered by probability, for the given array.<br/>&nbsp;<br/>If two arrays are provided, it returns an unordered list of possible words <i>w</i> that complete the n-gram consisting of: pre[0]...pre[k], <i>w</i>, post[k+1]...post[n].<br/><br/><pre>result = rm.completions([ &#34;the&#34; ], [ &#34;red&#34;, &#34;ball&#34; ]);</pre>will return all the single words that occur between 'the' and 'red ball' in the current model (assuming n > 3),e.g., [ 'round', 'big', 'bouncy']).<br/><br/>Note: For this operation to be valid, (pre.length + post.length) must be less than the model's n-factor, otherwise an error will be thrown.",
       "parameters": [
         {
-          "type": "String array",
+          "type": "String[]",
           "desc": "pre"
         },
         {
-          "type": "String array",
+          "type": "String[]",
           "desc": "post (optional)"
         }
       ],
       "returns": [
         {
-          "type": "String array",
+          "type": "String[]",
           "desc": "an unordered list of possible next tokens"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "generate",
@@ -74,15 +83,22 @@
       "parameters": [
         {
           "type": "int",
-          "desc": "the number of sentences"
+          "desc": "the number of sentences (optional, default=1)"
+        },
+        {
+          "type": "Object<br>(or Map in Java)",
+          "desc": "the options for generation (optional)<br><br>{int} options.minLength:<br>minimal length of the sentences, default=5<br><br>{int} options.maxLength:<br>maximum length of the sentences, default=35<br><br>{float} options.tempeture:<br>tempeture to control the random level<br><br>{boolean} options.allowDuplicates:<br>if true, allow result to have duplicated sentences<br><br>{String} options.startTokens:<br>tokens as the beginning of the result"
         }
       ],
       "returns": [
         {
-          "type": "String array",
+          "type": "String[]",
           "desc": "the result"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "probability",
@@ -91,60 +107,76 @@
       "syntax": "probability(dataString);<br/>probability(dataArray);",
       "parameters": [
         {
-          "type": "String OR String array",
+          "type": "String OR String[]",
           "desc": "the string (or sequence) to search for"
         }
       ],
       "returns": [
         {
-          "type": "float",
+          "type": "float(when parameter is an array)<br>double(when parameter is a String object)",
           "desc": "probability from 0-1"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "probabilities",
       "example": "rm = new Markov(3); <br/>rm.loadText(theText);<br/>rm.probabilities([\"be\", \"thought\"]);",
       "description": "Returns the full set of possible next tokens as a map, given an array of tokens representing the path down the tree (with length less than n).<br/>&nbsp;<br/>Note: seed arrays of any size (>0) may be input, but only the last n-1 elements will be considered.   ",
-      "syntax": "probabilities(pathString);<br/>probabilities(pathArray);",
+      "syntax": "probabilities(pathString);<br/>probabilities(pathArray);<br>probabilities(pathString, temperature);<br>probabilities(pathArray, temperature);",
       "parameters": [
         {
-          "type": "String OR String array",
+          "type": "String OR String[]",
           "desc": "a single token or array of tokens (strings)"
+        },
+        {
+          "type": "double",
+          "desc": "temperature (optional)"
         }
       ],
       "returns": [
         {
-          "type": "object",
+          "type": "Object<br>(or Map in Java)",
           "desc": "An object (JS) or HashMap (Java) mapping words to probabilities"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "size",
       "example": "rm = new Markov(3);<br/>rm.addText(sentences); if (rm.size() > 10) { ... }",
       "description": "Returns the number of tokens currently in the model",
-      "syntax": "size();",
+      "syntax": "rm.size();",
       "parameters": [],
       "returns": [
         {
           "type": "int",
           "desc": ""
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "toString",
       "example": "rm = new Markov(3);<br/>rm.addText(sentences);<br/>s = rm.toString();",
       "description": "Returns a formatted version of this model",
-      "syntax": "toString();",
+      "syntax": "rm.toString();",
       "parameters": [],
       "returns": [
         {
           "type": "String",
           "desc": "this object as a String"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "toJSON",
@@ -159,8 +191,8 @@
         }
       ],
       "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      "platform": "JavaScript",
+      "note": "This API not available in Java yet"
     }
   ]
 }
