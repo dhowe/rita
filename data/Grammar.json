@@ -4,21 +4,28 @@
   "statics": [
     {
       "name": "fromJSON",
-      "example": "g = Grammar.fromJSON(jsonData);",
-      "description": "Loads a grammar from a JSON file",
-      "syntax": "Grammar.fromJSON(jsonData);",
+      "example": "rg = Grammar.fromJSON(grammarRules);",
+      "description": "Loads a grammar from a JSON object or string",
+      "syntax": "Grammar.fromJSON(grammarRules);<br>Grammar.fromJSON(grammarRules, context);",
       "parameters": [
         {
-          "type": "String",
-          "desc": "a JSON string containing the grammar"
+          "type": "String or Object",
+          "desc": "a String or JSON object representation of the grammar"
+        },
+        {
+          "type": "Object<br>(or Map in Java)",
+          "desc": "the context for any referenced variables or functions (optional)"
         }
       ],
       "returns": [
         {
           "type": "Grammar",
-          "desc": "a newly created Grammar object"
+          "desc": "this Grammar object"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     }
   ],
   "functions": [
@@ -33,7 +40,7 @@
           "desc": "the rule name"
         },
         {
-          "type": "String",
+          "type": "String or String[]",
           "desc": "the rule definition"
         }
       ],
@@ -42,21 +49,24 @@
           "type": "Grammar",
           "desc": "this Grammar"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "expand",
       "example": "rg = new Grammar(rules); <br/>result = rg.expand(ruleName);",
       "description": "Expands a grammar from the supplied rule. If no rule is provided the \\$start and #60;start&#62;' symbols will be checked respectively.",
-      "syntax": "expand();<br/>expand(callbackobject);",
+      "syntax": "expand();<br/>expand(context);",
       "parameters": [
         {
           "type": "String",
-          "desc": "the rule name to be expanded"
+          "desc": "the rule name to be expanded (optional)"
         },
         {
-          "type": "object",
-          "desc": "the JavaScript context for any referenced variables or functions (optional)"
+          "type": "Object<br>(or Map in Java)",
+          "desc": "the context for any referenced variables or functions (optional)"
         }
       ],
       "returns": [
@@ -64,7 +74,10 @@
           "type": "String",
           "desc": "the result of the expansion (or an error if the rule is not found)"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "removeRule",
@@ -82,49 +95,68 @@
           "type": "Grammar",
           "desc": "this Grammar"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
-      "name": "setRules",
-      "example": "rg = new Grammar(); <br>rg.setRules(rules);",
-      "description": "Loads a grammar from a String or JSON object.",
-      "syntax": "setRules(grammarRules);",
+      "name": "addRules",
+      "example": "rg = new Grammar(); <br>rg.addRules(rules);",
+      "description": "Loads a grammar from an object (or Map in Java).",
+      "syntax": "rg.addRules(grammarRules);",
       "parameters": [
         {
-          "type": "String or object",
-          "desc": "a String or JSON object representation of the grammar"
+          "type": "Object<br>(or Map in Java)",
+          "desc": "an object representation of the grammar"
         }
       ],
       "returns": [
         {
-          "type": "object",
-          "desc": "this Grammar object"
+          "type": "Grammar",
+          "desc": "this Grammar"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "toString",
-      "example": "rm = new Grammar(rules);<br/>s = rm.toString();",
+      "example": "rm = new Grammar(rules);<br/>s = rm.toString();//return default formatted string<br>s = rm.toString('/'); //return a string with '/' marking the end of each rule",
       "description": "Returns a formatted version of this grammar",
-      "syntax": "toString();",
-      "parameters": [],
+      "syntax": "rg.toString();",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "a String or a char to mark the end of each rule"
+        }
+      ],
       "returns": [
         {
           "type": "String",
           "desc": "this object as a String"
         }
-      ]
+      ],
+      "related": "",
+      "platform": "Java / JavaScript",
+      "note": ""
     },
     {
       "name": "toJSON",
-      "example": "rm = new Grammar(rules);<br/>json = rm.toJSON();",
-      "description": "Persists the grammar in JSON format",
-      "syntax": "toJSON();",
-      "parameters": [],
+      "example": "rg = new Grammar(rules);<br/>json = rg.toJSON();",
+      "description": "Return a formatted version of this grammar.",
+      "syntax": "rg.toJSON();",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "beautify or not (optional, default=false)"
+        }
+      ],
       "returns": [
         {
           "type": "String",
-          "desc": "JSON representation"
+          "desc": "the grammar as a json string"
         }
       ],
       "related": "",
