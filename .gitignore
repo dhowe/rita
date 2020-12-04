@@ -1,3 +1,6 @@
+# project specific
+ref/*
+
 # Compiled class file
 *.class
 
