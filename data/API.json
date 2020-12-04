@@ -54,8 +54,7 @@
         "expand",
         "removeRule",
         "toJSON",
-        "toString",
-        "toJSON"
+        "toString"
       ],
       "statics": [
         "fromJSON"
