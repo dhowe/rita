@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.GZIPOutputStream;
@@ -93,25 +94,31 @@ public class MakeDocs extends PApplet {
 				String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-				contents += "    <a href=\"\"><b>" + dls + "</b></a>\n";
+				if (cls.equals("RiTa")) {
+					contents += "    <a href=\"\"><b>" + dls + "</b></a>\n";
+				} else {
+					contents += "    <a href=\""+ cls + "/"+ cls +"/index.html\"><b>" + dls + "</b></a>\n";
+				}
 				for (int j = 0; j < types.length; j++) {
 					ArrayList<String> entries = API.get(cls + "." + types[j]);// .toArray(new String[0]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
 						String ent = entries.get(k);
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
 						String dsp = ent;
-						if (types[j] == "functions" || types[j] == "statics") {
-							dsp += "()";
-						}
-						if (types[j] != "functions") {
-							dsp = cls + "." + dsp;
-						}
-						contents += "    <a href=\"" + cls + "/" + ent + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
-						if (k == 17) {
-							contents += "  </div>\n";
-							contents += "</div>\n\n";
-							contents += "<div class=\"section\">\n";
-							contents += "  <div class=\"category\">\n    <br/>\n";
+						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
+							if (types[j] == "functions" || types[j] == "statics") {
+								dsp += "()";
+							}
+							if (types[j] != "functions") {
+								dsp = cls + "." + dsp;
+							}
+							contents += "    <a href=\"" + cls + "/" + ent + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
+							if (k == 17) {
+								contents += "  </div>\n";
+								contents += "</div>\n\n";
+								contents += "<div class=\"section\">\n";
+								contents += "  <div class=\"category\">\n    <br/>\n";
+							}
 						}
 					}
 
@@ -341,14 +348,23 @@ public class MakeDocs extends PApplet {
 
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);
-		lines = replaceArr(lines, "tmp_methodName", methodName[idx]);
 		lines = replaceArr(lines, "tmp_description", description[idx]);
 		lines = replaceArr(lines, "tmp_platform", thePlatform[idx]);
+		if (!methodName[idx].toUpperCase().equals(shortName.toUpperCase())) {
+			lines = replaceArr(lines, "tmp_methodName", methodName[idx]);
+		}
+
+		if (shortName.equals("RiTa")) {
+			lines = replaceArr(lines, "<a href=\"../../RiTa/RiTa/index.html\">RiTa</a>", "RiTa");
+		}
 
 		handleOptionalTag("example", example[idx]);
 		handleOptionalTag("syntax", syntax[idx]);
 		handleOptionalTag("related", related[idx]);
 		handleOptionalTag("note", note[idx]);
+		if (methodName[idx].toUpperCase().equals(shortName.toUpperCase())) {
+			handleOptionalTag("method name", "");
+		}
 
 		handleParameters(parameters[idx]);
 		handleReturns(returns[idx]);
@@ -419,8 +435,12 @@ public class MakeDocs extends PApplet {
 
 	static void handleOptionalTag(String name, String data) {
 		String uname = upperCaseFirst(name);
-		lines = (data != null && data.length() > 0) ? replaceArr(lines, "tmp_" + name, data)
-				: replaceArr(lines, "<tr class='" + uname + "'>", "<tr class='" + uname + "' style='display:none'>");
+		if (name.equals("method name")) {
+			lines = replaceArr(lines, "<tr class=\"name-row\">", "<tr class=\"name-row\" style='display:none'>");
+		} else {
+			lines = (data != null && data.length() > 0) ? replaceArr(lines, "tmp_" + name, data)
+					: replaceArr(lines, "<tr class='" + uname + "'>", "<tr class='" + uname + "' style='display:none'>");
+		}
 	}
 
 	static String upperCaseFirst(String value) {
@@ -430,7 +450,11 @@ public class MakeDocs extends PApplet {
 	static String[] replaceArr(String[] in, String from, String to) {
 		String delim = "_XXX_"; // hack
 		String joined = String.join(delim, in);
-		joined = joined.replaceAll(from, to);
+		if (to.contains("$")) {
+			joined = joined.replaceAll(from, Matcher.quoteReplacement(to));
+		} else {
+			joined = joined.replaceAll(from, to);
+		}
 		return joined.split(delim);
 	}
 

@@ -49,6 +49,7 @@
     {
       "class": "Grammar",
       "functions": [
+        "Grammar",
         "addRule",
         "addRules",
         "expand",
@@ -64,6 +65,7 @@
     {
       "class": "Markov",
       "functions": [
+        "Markov",
         "addText",
         "completions",
         "generate",

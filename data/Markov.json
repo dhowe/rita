@@ -26,6 +26,29 @@
   ],
   "functions": [
     {
+      "name": "Markov",
+      "example": "text = \"This is a example of two sentences. This is the second one. \"<br><br>rm = new Markov(3);<br><br>rm.addText(text);<br><br>sentences = rm.generate(2);<br><br>for (let i = 0; i < sentences.length; i ++ ){<br>  println(sentences[i]);<br>}",
+      "description": "Performs text generation via Markov chains (aka n-grams) with options to process single characters, words, sentences, or arbitrary regular expressions.<br><br>Provides a variety of methods specifically designed for text-generation.",
+      "syntax": "// Constructs a sentence-generating Markov-chain and set its n-factor.<br><br>Markov(nFactor);<br><br>// Also add options to the model<br><br>Markov(nFactor, options);",
+      "parameters": [
+        {
+          "type": "int",
+          "desc": "n-factor -- the length of each n-gram stored in the model"
+        },
+        {
+          "type": "Object<br>(or Map in Java)",
+          "desc": "options for creating the model (optional)<br><br>{Function} options.tokenizer:<br>a customerized tokenizer for the model<br><br>{boolean} options.trace:<br>if true, output debug log to console<br><br>{int} options.maxAttempts:<br>max attempts before throwing error in generation, default=99<br><br>{boolean} options.disableInputChecks:<br>if true, allow result to be in input<br><br>{int} options.maxLengthMatch:<br># of words allowed in result to match with a sequence in input, default=0<br><br>{Function} options.untokenizer(only in JavaScript):<br>customized untokenizer for the model"
+        }
+      ],
+      "returns":[
+        {
+          "type": "Markov",
+          "desc": "a Markov object"
+        }
+      ],
+      "platform": "Java / JavaScript"
+    },
+    {
       "name": "addText",
       "example": "sample = \"One reason people lie is to achieve personal power.\";<br/>rm = new Markov(3);<br/>rm.addText(sample);<br/> OR <br/>rm.addText(sentencesArray);",
       "description": "Loads text into the model. If a raw string is provided, it will be split into sentences (using RiTa.sentences(). If an array is provided, each string is treated as an individual sentence.",
