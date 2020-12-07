@@ -186,24 +186,5 @@
       "platform": "Java / JavaScript",
       "note": ""
     }
-  ],
-  "classDesc": [
-    {
-      "description": "A probabilistic context-free grammar with literary extensions for text-generation<br><br><pre class=\"margin\">rg = new Grammar(ObjectOrMapInJava);<br>result = rg.expand();</pre>RiTa grammars are valid<a href=\"http://json.org\" target=\"new\">JSON </a> or <a herf=\"http://keleshev.com/yaml-quick-introduction\" target=\"new\">YAML</a>formatted strings (or objects), as follows<pre class=\"margin\">{<br> \"&lt;start&gt;\": [ \"&lt;rule1&gt;\", \"&lt;rule2&gt;\", \"&lt;rule3&gt;\" ],<br><br>  \"&lt;rule2&gt;\": [ \"terminal1\", \"terminal2\", \"&lt;rule1&gt;\" ],<br>  ...<br>}</pre>OR (in YAML, where quotes are generally not needed)<br><pre class=\"margin\">&lt;start&gt;: [ &lt;rule1&gt;, &lt;rule2&gt;, &lt;rule3&gt; ]<br><br>&lt;rule2&gt;: [ terminal1, terminal2, &lt;rule1&gt; ]<br>...</pre> <br><li><a href=\"http://keleshev.com/yaml-quick-introduction\" target=\"new\">YAML</a> is a human-friendly superset of JSON, which may be more convenient to use if you're writing your grammar as a string. If you're working in JavaScript, you can alternatively just pass a JavaScript/JSON object instead. If you're not sure whether your grammar is valid YAML or JSON, you can check it at<a href='http://yamllint.com/' target=\"new\"> yamllint.com</a> or <a target=\"new\" href='http://jsonlint.com/'> jsonlint.com</a>.<br><br>;<li>A RiGrammar object will assign (by default) equal weights to all choices in a rule. One can adjust the weights by adding 'multipliers' as follows: (in the rule below, 'terminal1' will be chosen twice as often as the 2 other choices.<p><pre class=\"margin\">&lt;rule2&gt;: terminal1 [2] | terminal2 | &lt;rule1&gt;</pre><br><br><li>The RiGrammar object supports callbacks, from your grammar, back into your code. To generate a callback, add the method call in your grammar, surrounded by back-ticks, as follows: <p><pre class=\"margin\">&lt;rule2&gt;:<br>- The cat ran after the `randomNoun()`<br>- The cat ran after the `pluralize('cat')`<br>- The &lt;noun&gt; ran after the `pluralize(&lt;noun&gt;)`</pre>",
-      "example": "let rg = new Grammar();<br>rg.addRule(\"$start\",\"(cat | dog | fish)\");<br>let result = rg.expand();",
-      "parameters": [
-        {
-          "type": "Object<br>(or Map in Java)",
-          "desc": "the YAML/JSON grammar"
-        },
-        {
-          "type": "Object<br>(or Map in Java)",
-          "desc": "context (optional)"
-        }
-      ],
-      "returns":[],
-      "syntax": "// Initialize an empty Grammar object<br><br>rg = new Grammar();<br><br>//Or specify a grammar in a YAML/JSON object<br><br>rg = Grammar(myJsonObject);<br><br>//Or with context<br><br>rg = Grammar(myJsonObject, context);",
-      "platform": "Java / JavaScript"
-    }
   ]
 }
