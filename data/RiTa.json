@@ -893,5 +893,15 @@
       "related": "<a href='../soundsLike'>RiTa.soundsLike()</a>",
       "platform": "Java / JavaScript"
     }
+  ],
+  "classDesc": [
+    {
+      "description": "A collection of (static) functions for the RiTa library.<br>Note: as of v2.0, many APIs are updated, please checkout the new reference.",
+      "example": "theVersion = RiTa.VERSION;<br>// 2.0<br><br>tokens = RiTa.tokenize(\"The cat ate stinky cheese.\");<br>// The,cat,ate,stinky,cheese,.<br><br>rhymes = RiTa.rhymes(\"apple\");<br>// chapel,grapple",
+      "syntax": "",
+      "parameters":[],
+      "returns":[],
+      "platform": "Java / JavaScript"
+    }
   ]
 }
