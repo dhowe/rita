@@ -26,29 +26,6 @@
   ],
   "functions": [
     {
-      "name": "Markov",
-      "example": "txt = \"This is a two sentence example. This is the second one. \"<br><br>rm = new Markov(3);<br><br>rm.addText(txt);<br><br>sentences = rm.generate(2);<br><br>for (let i = 0; i < sentences.length; i ++ ){<br>  println(sentences[i]);<br>}",
-      "description": "Performs text generation via Markov chains (aka n-grams) with options to process single characters, words, sentences, or arbitrary regular expressions.<br><br>Accepts JSON or RiScript or a combination of both.",
-      "syntax": "// Constructs a Markov object and set its n-factor.<br><br>new Markov(nFactor);<br><br>// Create an object and specify options<br><br>new Markov(nFactor, options);",
-      "parameters": [
-        {
-          "type": "int",
-          "desc": "n-factor - the length of each n-gram stored in the model"
-        },
-        {
-          "type": "Object<br>(or Map in Java)",
-          "desc": "options for creating the model (optional)<br><br>{int} options.maxAttempts:<br>max attempts before throwing an error in generation, default=99<br><br>{boolean} options.disableInputChecks:<br>if true, allow result to be present in the input, default=false<br><br>{int} options.maxLengthMatch:<br># of words allowed in result to match a sequence in the input, default=0<br><br>{boolean} options.trace:<br>if true, output debug log to console<br><br>{Function} options.tokenize[JS only]:<br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} options.untokenize[JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br>"
-        }
-      ],
-      "returns":[
-        {
-          "type": "Markov",
-          "desc": "a RiTa.Markov object"
-        }
-      ],
-      "platform": "Java / JavaScript"
-    },
-    {
       "name": "addText",
       "example": "sample = \"One reason people lie is to achieve personal power.\";<br/>rm = new Markov(3);<br/>rm.addText(sample);<br/> OR <br/>rm.addText(sentencesArray);",
       "description": "Loads text into the model. If a raw string is provided, it will be split into sentences (using RiTa.sentences(). If an array is provided, each string is treated as an individual sentence.",

@@ -87,7 +87,6 @@ public class MakeDocs extends PApplet {
 		String fname = DATA_DIR + "/index-template." + OUTPUT_TYPE;
 		try {
 			String[] tmpl = stringsFrom(fname);
-			System.out.println(API);
 			String contents = "<h3>Reference</h3>\n\n";
 			for (int i = 0; i < CLASS_NAMES.length; i++) {
 				String cls = CLASS_NAMES[i];
@@ -342,9 +341,9 @@ public class MakeDocs extends PApplet {
 	static void template(int idx, String shortName) {
 		if (hidden[idx]) return;
 
-		String folder_methodName = methodName[idx].replaceAll("\\(\\)", "_");
+		String folderMethodName = methodName[idx].replaceAll("\\(\\)", "_");
 
-		String fname = OUTPUT_DIR + "/" + shortName + "/" + folder_methodName + "/index." + OUTPUT_TYPE;
+		String fname = OUTPUT_DIR + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
 
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);
@@ -358,12 +357,12 @@ public class MakeDocs extends PApplet {
 			lines = replaceArr(lines, "<a href=\"../../RiTa/RiTa/index.html\">RiTa</a>", "RiTa");
 		}
 
-		handleOptionalTag("example", example[idx]);
-		handleOptionalTag("syntax", syntax[idx]);
-		handleOptionalTag("related", related[idx]);
-		handleOptionalTag("note", note[idx]);
+		optionalTag("example", example[idx]);
+		optionalTag("syntax", syntax[idx]);
+		optionalTag("related", related[idx]);
+		optionalTag("note", note[idx]);
 		if (methodName[idx].toUpperCase().equals(shortName.toUpperCase())) {
-			handleOptionalTag("method name", "");
+			optionalTag("method name", "");
 		}
 
 		handleParameters(parameters[idx]);
@@ -433,7 +432,7 @@ public class MakeDocs extends PApplet {
 		}
 	}
 
-	static void handleOptionalTag(String name, String data) {
+	static void optionalTag(String name, String data) {
 		String uname = upperCaseFirst(name);
 		if (name.equals("method name")) {
 			lines = replaceArr(lines, "<tr class=\"name-row\">", "<tr class=\"name-row\" style='display:none'>");
