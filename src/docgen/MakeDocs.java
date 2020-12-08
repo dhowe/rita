@@ -93,17 +93,17 @@ public class MakeDocs extends PApplet {
 				String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-				if (cls.equals("RiTa")) {
-					contents += "    <a href=\"\"><b>" + dls + "</b></a>\n";
-				} else {
-					contents += "    <a href=\""+ cls + "/"+ cls +"/index.html\"><b>" + dls + "</b></a>\n";
-				}
+//				if (cls.equals("RiTa")) {
+//					contents += "    <a href=\"\"><b>" + dls + "</b></a>\n";
+//				} else {
+//					contents += "    <a href=\""+ cls + "/"+ cls +"/index.html\"><b>" + dls + "</b></a>\n";
+//				}
+				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls + "</b><span>\n"; // no link
 				for (int j = 0; j < types.length; j++) {
-					ArrayList<String> entries = API.get(cls + "." + types[j]);// .toArray(new String[0]);
+					ArrayList<String> entries = API.get(cls + "." + types[j]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
-						String ent = entries.get(k);
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
-						String dsp = ent;
+						String dsp = entries.get(k);
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
 							if (types[j] == "functions" || types[j] == "statics") {
 								dsp += "()";
@@ -111,7 +111,7 @@ public class MakeDocs extends PApplet {
 							if (types[j] != "functions") {
 								dsp = cls + "." + dsp;
 							}
-							contents += "    <a href=\"" + cls + "/" + ent + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
+							contents += "    <a href=\"" + cls + "/" + dsp + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
 							if (k == 17) {
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
