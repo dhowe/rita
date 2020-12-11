@@ -104,6 +104,7 @@ public class MakeDocs extends PApplet {
 					for (int k = 0; entries != null && k < entries.size(); k++) {
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
 						String dsp = entries.get(k);
+						String rawDsp = dsp; // for the links work correctly
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
 							if (types[j] == "functions" || types[j] == "statics") {
 								dsp += "()";
@@ -111,7 +112,7 @@ public class MakeDocs extends PApplet {
 							if (types[j] != "functions") {
 								dsp = cls + "." + dsp;
 							}
-							contents += "    <a href=\"" + cls + "/" + dsp + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
+							contents += "    <a href=\"" + cls + "/" + rawDsp + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
 							if (k == 17) {
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
