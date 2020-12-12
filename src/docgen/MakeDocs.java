@@ -20,7 +20,7 @@ import processing.data.JSONArray;
 import processing.data.JSONObject;
 
 public class MakeDocs extends PApplet {
-	
+
 	static final String OUTPUT_TYPE = "html";
 	static final String VERSION = "2.01";
 	static final boolean OUTPUT_MARKUP = false;
@@ -47,7 +47,8 @@ public class MakeDocs extends PApplet {
 		if (a.length < 1) {
 			System.out.println("\nusage: java rita.docgen.MakeDocs output-dir [input-dir]\n");
 			System.exit(1);
-		} else {
+		}
+		else {
 			pln("\nCWD: " + System.getProperty("user.dir"));
 
 			OUTPUT_DIR = a[0];
@@ -93,11 +94,11 @@ public class MakeDocs extends PApplet {
 				String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-//				if (cls.equals("RiTa")) {
-//					contents += "    <a href=\"\"><b>" + dls + "</b></a>\n";
-//				} else {
-//					contents += "    <a href=\""+ cls + "/"+ cls +"/index.html\"><b>" + dls + "</b></a>\n";
-//				}
+				//				if (cls.equals("RiTa")) {
+				//					contents += "    <a href=\"\"><b>" + dls + "</b></a>\n";
+				//				} else {
+				//					contents += "    <a href=\""+ cls + "/"+ cls +"/index.html\"><b>" + dls + "</b></a>\n";
+				//				}
 				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls + "</b><span>\n"; // no link
 				for (int j = 0; j < types.length; j++) {
 					ArrayList<String> entries = API.get(cls + "." + types[j]);
@@ -105,13 +106,17 @@ public class MakeDocs extends PApplet {
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
 						String dsp = entries.get(k);
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
+							String href = cls + "/" + dsp
+									+ "/index." + OUTPUT_TYPE;
 							if (types[j] == "functions" || types[j] == "statics") {
 								dsp += "()";
 							}
 							if (types[j] != "functions") {
+								//if (cls.equals("RiTa")) 
 								dsp = cls + "." + dsp;
 							}
-							contents += "    <a href=\"" + cls + "/" + dsp + "/index." + OUTPUT_TYPE + "\">" + dsp + "</a><br/>\n";
+							System.out.println("LINK: " + href);
+							contents += "    <a href=\"" + href + "\">" + dsp + "</a><br/>\n";
 							if (k == 17) {
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
@@ -214,7 +219,8 @@ public class MakeDocs extends PApplet {
 
 				if (check != null && check.contains(methodName[j])) {
 					check.remove(methodName[j]);
-				} else {
+				}
+				else {
 					extra.add(methodName[j]);
 				}
 
@@ -436,7 +442,8 @@ public class MakeDocs extends PApplet {
 		String uname = upperCaseFirst(name);
 		if (name.equals("method name")) {
 			lines = replaceArr(lines, "<tr class=\"name-row\">", "<tr class=\"name-row\" style='display:none'>");
-		} else {
+		}
+		else {
 			lines = (data != null && data.length() > 0) ? replaceArr(lines, "tmp_" + name, data)
 					: replaceArr(lines, "<tr class='" + uname + "'>", "<tr class='" + uname + "' style='display:none'>");
 		}
@@ -451,7 +458,8 @@ public class MakeDocs extends PApplet {
 		String joined = String.join(delim, in);
 		if (to.contains("$")) {
 			joined = joined.replaceAll(from, Matcher.quoteReplacement(to));
-		} else {
+		}
+		else {
 			joined = joined.replaceAll(from, to);
 		}
 		return joined.split(delim);
@@ -480,7 +488,8 @@ public class MakeDocs extends PApplet {
 		if (args.length == 0) {
 			go(new String[] { "ref/", DATA_DIR }); // ALL
 			// go(new String[] {OUTPUT_DIR, DATA_DIR,"RiWordNet"}); // ONE
-		} else {
+		}
+		else {
 			go(args);
 		}
 	}
