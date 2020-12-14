@@ -1,0 +1,44 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>RiTa tokenization</title>
+</head>
+<body>
+
+<h3>Tokenization</h3>
+
+Our tokenization is fairly simple (based on the Penn Treebank standard):
+
+<ul>
+<li>most punctuation is split from adjoining words
+<li>double quotes (<code>"</code>) are changed to doubled single
+     forward- and backward- quotes (<code>``</code> and
+     <code>''</code>)
+<li>verb contractions and the Anglo-Saxon genitive of nouns
+     are split into their component morphemes, and each morpheme is tagged
+     separately.
+     <ul>
+       <li>Examples
+	    <samp>
+	    <ul>
+	      <li> children's --> children 's
+	      <li> parents' --> parents '
+	      <li> won't --> wo n't
+	      <li> gonna --> gon na
+	      <li> I'm --> I 'm
+	    </ul>
+	    </samp>
+     </ul>
+     This tokenization allows us to analyze each component
+     separately, so (for example) "I" can be in the subject Noun
+     Phrase while "'m" is the head of the main verb phrase.
+<li>There are some subtleties for hyphens vs. dashes, elipsis dots (...)  and
+     so on, but these often depend on the particular corpus or application
+     of the tagged data.
+</ul>
+<p>
+</body>
+</html>
