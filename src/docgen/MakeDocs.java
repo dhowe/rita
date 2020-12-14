@@ -115,7 +115,7 @@ public class MakeDocs extends PApplet {
 								//if (cls.equals("RiTa")) 
 								dsp = cls + "." + dsp;
 							}
-							System.out.println("LINK: " + href);
+							//System.out.println("LINK: " + href);
 							contents += "    <a href=\"" + href + "\">" + dsp + "</a><br/>\n";
 							if (k == 17) {
 								contents += "  </div>\n";
