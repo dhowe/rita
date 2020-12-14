@@ -471,7 +471,7 @@
       "name": "kwic",
       "example": "<br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, opts);<br>lines = RiTa.kwic(word, numWords);<br/><br/>",
       "description": "Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.<br><br>Note: RiTa.concordance() must called before calling kwic().<br><br>",
-      "syntax": "RiTa.kwic(word);<br>RiTa.kwic(word, numWords);",
+      "syntax": "RiTa.kwic(word);<br>RiTa.kwic(word, numWords);<br>// in Java only<br>RiTa.kwic(word, options)",
       "parameters": [
         {
           "type": "String",
@@ -480,6 +480,10 @@
         {
           "type": "int",
           "desc": "upper limit of words before/after the keyword (optional, default=6)"
+        },
+        {
+          "type": "Map (only in Java)",
+          "desc": "options that can be set in Java<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set options for the KWIC model, please see <a href=\"../concordance/index.html\">RiTa.concordance()</a> for detail"
         }
       ],
       "returns": [
@@ -489,7 +493,7 @@
         }
       ],
       "note": "See <a href=\"https://en.wikipedia.org/wiki/Key_Word_in_Context\">KeyWordInContext</a> and <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">Concordance</a> on Wikipedia",
-      "platform": "JavaScript"
+      "platform": "Java / JavaScript"
     },
     {
       "name": "conjugate",
