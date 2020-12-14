@@ -269,7 +269,7 @@
     {
       "name": "tokenize",
       "example": "<br/>sentence = \"The doctors treated dogs\";<br/>wordArray = RiTa.tokenize(sentence);<br/>wordArray = RiTa.tokenize(sentence, \"\\\\\\\\s\");<br/><br/>",
-      "description": "Tokenizes a string (into words) according to Penn Treebank conventions<br/>See: <a href='ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html'>ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html</a>",
+      "description": "Tokenizes a string (into words) according to Penn Treebank conventions<br/>See: <a href='../../tokenization.html'>this page</a>",
       "syntax": "RiTa.tokenize(text);<br/>RiTa.tokenize(text, regex);",
       "parameters": [
         {
@@ -293,7 +293,7 @@
     {
       "name": "untokenize",
       "example": "",
-      "description": "Joins an array (of words and punctuation) into a string, according to Penn Treebank conventions<br/>See: <a href='ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html'>ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html</a>",
+      "description": "Joins an array (of words and punctuation) into a string, according to Penn Treebank conventions<br/>See: <a href='../../tokenization.html'>this page</a>",
       "syntax": "RiTa.untokenize(wordArray);//RiTa.untokenize(wordArray, delim);",
       "parameters": [
         {
@@ -317,7 +317,7 @@
     {
       "name": "phones",
       "example": "<br/>RiTa.phones(\"apple\"); // returns -> ae-p-ah-l <br/><br/>RiTa.phones(\"two apples\"); // returns -> t-uw ae-p-ah-l-z <br/><br/>",
-      "description": "Returns a string containing all <a target=_new href='../../PhonemeTags.php'>phones</a> for the input text",
+      "description": "Returns a string containing all <a target=_new href='../../phones.html'>phones</a> for the input text",
       "syntax": "RiTa.phones(wordStr);<br>RiTa.phones(wordStr, options);",
       "parameters": [
         {
@@ -342,7 +342,7 @@
     {
       "name": "pos",
       "example": "<br/>RiTa.pos(\"I am a cat.\"); <br/>// returns -> [ \"prp\", \"vbp\", \"dt\", \"nn\", \".\" ]<br/><br/>",
-      "description": "Uses the default PosTagger to tag the input with tags from the <a href='http://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]",
+      "description": "Uses the default PosTagger to tag the input with tags from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]",
       "syntax": "RiTa.pos(word);<br/>RiTa.pos(word, boolean);<br>RiTa.pos(word, options);",
       "parameters": [
         {
@@ -371,7 +371,7 @@
     {
       "name": "posInline",
       "example": "<br/>sentence = \"The doctors treated dogs\";<br/>pos = RiTa.posInline(sentence);<br/><br/>tokenArray = RiTa.tokenize(sentence);<br/>pos = RiTa.posInline(tokenArray);<br/><br/>",
-      "description": "Takes an string returns a combined string of the form:<p><pre>'The/dt doctor/nn treated/vbd dogs/nns'</pre> using lowercased tags from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a>",
+      "description": "Takes an string returns a combined string of the form:<p><pre>'The/dt doctor/nn treated/vbd dogs/nns'</pre> using lowercased tags from the <a href='../../postags.html'>PENN tag set</a>",
       "syntax": "RiTa.posInline(word);<br>RiTa.posInline(word, simpleTags);<br>RiTa.posInline(word, option);",
       "parameters": [
         {
@@ -471,7 +471,7 @@
       "name": "kwic",
       "example": "<br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, opts);<br>lines = RiTa.kwic(word, numWords);<br/><br/>",
       "description": "Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.<br><br>Note: RiTa.concordance() must called before calling kwic().<br><br>",
-      "syntax": "RiTa.kwic(word);<br>RiTa.kwic(word, numWords);",
+      "syntax": "RiTa.kwic(word);<br>RiTa.kwic(word, numWords);<br>// in Java only<br>RiTa.kwic(word, options)",
       "parameters": [
         {
           "type": "String",
@@ -480,6 +480,10 @@
         {
           "type": "int",
           "desc": "upper limit of words before/after the keyword (optional, default=6)"
+        },
+        {
+          "type": "Map (only in Java)",
+          "desc": "options that can be set in Java<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set options for the KWIC model, please see <a href=\"../concordance/\">RiTa.concordance()</a> for detail"
         }
       ],
       "returns": [
@@ -489,7 +493,7 @@
         }
       ],
       "note": "See <a href=\"https://en.wikipedia.org/wiki/Key_Word_in_Context\">KeyWordInContext</a> and <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">Concordance</a> on Wikipedia",
-      "platform": "JavaScript"
+      "platform": "Java / JavaScript"
     },
     {
       "name": "conjugate",
@@ -662,7 +666,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -682,7 +686,7 @@
       "parameters": [
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -706,7 +710,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -730,7 +734,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for stresses match<br>use \"phones\" to indicate that the regex is for phonemes match<br><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for stresses match<br>use \"phones\" to indicate that the regex is for phonemes match<br><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -745,7 +749,7 @@
     {
       "name": "isAdverb",
       "example": "RiTa.isAdverb(\"sleepily\");",
-      "description": "Returns true if the word has an adverb form. That is, if any of its possible parts of speech are any variant of an adverb in the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> (e.g. rb, rbr, rbs)",
+      "description": "Returns true if the word has an adverb form. That is, if any of its possible parts of speech are any variant of an adverb in the <a href='../../postags.html'>PENN tag set</a> (e.g. rb, rbr, rbs)",
       "syntax": "RiTa.isAdverb(word);",
       "parameters": [
         {
@@ -764,7 +768,7 @@
     {
       "name": "isNoun",
       "example": "RiTa.isNoun(\"cat\");",
-      "description": "Returns true if the word has a noun form. That is, if any of its possible parts of speech are any variant of a noun in the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a>(e.g. nn, nns, nnp, nnps)",
+      "description": "Returns true if the word has a noun form. That is, if any of its possible parts of speech are any variant of a noun in the <a href='../../postags.html'>PENN tag set</a>(e.g. nn, nns, nnp, nnps)",
       "syntax": "RiTa.isNoun(word);",
       "parameters": [
         {
@@ -783,7 +787,7 @@
     {
       "name": "isVerb",
       "example": "RiTa.isVerb(\"run\");",
-      "description": "Returns true for if word has a verb form. That is, if any of its possible parts of speech are any variant of a verb in the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> (e.g. vb, vbg, vbd, vbp, vbz)",
+      "description": "Returns true for if word has a verb form. That is, if any of its possible parts of speech are any variant of a verb in the <a href='../../postags.html'>PENN tag set</a> (e.g. vb, vbg, vbd, vbp, vbz)",
       "syntax": "RiTa.isVerb(word);",
       "parameters": [
         {
@@ -821,7 +825,7 @@
     {
       "name": "isAdjective",
       "example": "RiTa.isAdjective(\"cold\");",
-      "description": "Returns true if word has an adjective form. That is, if any of its possible parts of speech are any variant of an adjective in the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> (e.g. jj, jjr, jjs)",
+      "description": "Returns true if word has an adjective form. That is, if any of its possible parts of speech are any variant of an adjective in the <a href='../../postags.html'>PENN tag set</a> (e.g. jj, jjr, jjs)",
       "syntax": "RiTa.isAdjective(word);",
       "parameters": [
         {
@@ -903,7 +907,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
@@ -927,7 +931,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "Obejct<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='https://rednoise.org/rita/reference/PennTags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "Obejct<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
