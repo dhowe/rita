@@ -4,41 +4,169 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
 <head>
-<title>RiTa tokenization</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title>RiTa Tokenization</title>
+  <link rel="stylesheet" href="../css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="../css/syntax.css" type="text/css" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/normalize.css" type="text/css" />
+  <link rel="stylesheet" href="../css/main.css" type="text/css" />
+  <link rel="shortcut icon" type="image/x-icon" href="https://rednoise.org/rita.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
+
 <body>
 
-<h3>Tokenization</h3>
+  <div class="gd-section pad-large">
+    <div class="gd-center pad-large">
+      <div class="row">
+        <div class="col1"></div>
+        <div class="col10">
+          <h3>Tokenization</h3>
+          <div class="page row">
 
-Our tokenization is fairly simple (based on the Penn Treebank standard):
+            <div class="refbar span3">
+              <div id="index">
+                <!-- begin publish.classesIndex -->
+                <h3></h3>
 
-<ul>
-<li>most punctuation is split from adjoining words
-<li>double quotes (<code>"</code>) are changed to doubled single
-     forward- and backward- quotes (<code>``</code> and
-     <code>''</code>)
-<li>verb contractions and the Anglo-Saxon genitive of nouns
-     are split into their component morphemes, and each morpheme is tagged
-     separately.
-     <ul>
-       <li>Examples
-	    <samp>
-	    <ul>
-	      <li> children's --> children 's
-	      <li> parents' --> parents '
-	      <li> won't --> wo n't
-	      <li> gonna --> gon na
-	      <li> I'm --> I 'm
-	    </ul>
-	    </samp>
-     </ul>
-     This tokenization allows us to analyze each component
-     separately, so (for example) "I" can be in the subject Noun
-     Phrase while "'m" is the head of the main verb phrase.
-<li>There are some subtleties for hyphens vs. dashes, elipsis dots (...)  and
-     so on, but these often depend on the particular corpus or application
-     of the tagged data.
-</ul>
-<p>
+                <!-- end publish.classesIndex -->
+              </div>
+            </div>
+
+
+            <div class="span11">
+              <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
+                <tr class="name-row" style="display: none;">
+                  <!-- add a space here to distinguish with the Name tag-->
+                  <th scope="row">Class</th>
+                  <!-- ------------ METHODS PROPERTIES HERE ------------ -->
+
+                  <!-- ClASS -->
+                  <td>
+
+                  </td>
+                </tr>
+
+                <tr class="name-row" style="display: none;">
+                  <th scope="row">Name</th>
+
+                  <!-- METHOD NAME -->
+                  <td>
+                    <h3></h3>
+                  </td>
+                </tr>
+
+                <tr class="">
+                  <!--th width="25%" scope="row">The table</th-->
+
+                  <!-- DESCRIPTION  -->
+                  <td>
+                    Our tokenization is fairly simple (based on the Penn Treebank standard):
+
+                    <ul>
+                         <li>most punctuation is split from adjoining words
+                         <li>double quotes (<code>"</code>) are changed to doubled single
+                         forward- and backward- quotes (<code>``</code> and
+                         <code>''</code>)
+                         <li>verb contractions and the Anglo-Saxon genitive of nouns
+                         are split into their component morphemes, and each morpheme is tagged
+                         separately.
+                    <ul>
+                         <li>Examples
+	                    <samp>
+	               <ul>
+	                    <li> children's --> children 's
+	                    <li> parents' --> parents '
+	                    <li> won't --> wo n't
+	                    <li> gonna --> gon na
+	                    <li> I'm --> I 'm
+	               </ul>
+	               </samp>
+                     </ul>
+                    This tokenization allows us to analyze each component
+                    separately, so (for example) "I" can be in the subject Noun
+                    Phrase while "'m" is the head of the main verb phrase.
+                    <li>There are some subtleties for hyphens vs. dashes, elipsis dots (...)  and
+                    so on, but these often depend on the particular corpus or application
+                    of the tagged data.
+                    </ul>
+                    <p>
+                  </td>
+                </tr>
+
+                <tr class='Example' style="display: none;">
+                  <th scope='row'>Example</th>
+                  <td>
+                    <div class="example">
+
+                      <!-- EXAMPLE  -->
+                      <!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
+                      <pre class="margin"></pre>
+                    </div>
+                  </td>
+                </tr>
+                <tr class='Parameters' style="display: none;">
+                  <th scope="row">Parameters</th>
+                  <td>
+                    <!-- PARAMETERS  -->
+
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"></table>
+                  </td>
+                </tr>
+
+
+                <tr class='Returns' style="display: none;">
+                  <th scope="row">Returns</th>
+                  <td>
+                    <!-- RETURNS/TYPE (for variables)  -->
+
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"></table>
+                  </td>
+                </tr>
+
+                <tr class='Related' style='display:none'>
+                  <th scope="row">Related</th>
+
+                  <!-- RELATED  -->
+                  <td>tmp_related</td>
+                </tr>
+
+                <tr class='Note' style='display:none'>
+                  <th scope="row">Note</th>
+                  <!-- NOTE  -->
+                  <td>tmp_note</td>
+                </tr>
+
+                <tr class='Syntax' style="display: none;">
+                  <th scope="row">Syntax</th>
+
+                  <!-- SYNTAX  -->
+                  <td>
+                    <pre></pre>
+                  </td>
+                </tr>
+
+
+                <tr class="" style="display: none;">
+                  <th scope="row">Platform</th>
+                  <!-- PLATFORM  -->
+                  <td>Java / JavaScript</td>
+                </tr>
+
+                <tr class="">
+                  <th scope="row"></th>
+                  <td></td>
+                </tr>
+
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col1"></div>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>
