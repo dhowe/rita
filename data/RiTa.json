@@ -145,7 +145,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options (optional)<br><br>{boolean} options.simple:<br> use WordNet style tags or not, default=false<br><br>{boolean} options.silent:<br> silent LTS or not (only in JavaScript, default=false)<br><br>{boolean} options.inline:<br> inline tags or not (only in JavaScript, default=false)"
+          "desc": "options (optional)<br><br>{boolean} options.simple:<br> use simple tags or not, default=false<br><br>{boolean} options.silent:<br> silent LTS or not (only in JavaScript, default=false)<br><br>{boolean} options.inline:<br> inline tags or not (only in JavaScript, default=false)"
         }
       ],
       "returns": [
@@ -269,7 +269,7 @@
     {
       "name": "tokenize",
       "example": "<br/>sentence = \"The doctors treated dogs\";<br/>wordArray = RiTa.tokenize(sentence);<br/>wordArray = RiTa.tokenize(sentence, \"\\\\\\\\s\");<br/><br/>",
-      "description": "Tokenizes a string (into words) according to Penn Treebank conventions<br/>See: <a href='../../tokenization.html'>this page</a>",
+      "description": "Tokenizes a string (into words) according to <a href='../../tokenization.html' target='_new'>Penn Treebank conventions.</a><br/>",
       "syntax": "RiTa.tokenize(text);<br/>RiTa.tokenize(text, regex);",
       "parameters": [
         {
@@ -293,7 +293,7 @@
     {
       "name": "untokenize",
       "example": "",
-      "description": "Joins an array (of words and punctuation) into a string, according to Penn Treebank conventions<br/>See: <a href='../../tokenization.html'>this page</a>",
+      "description": "Joins an array (of words and punctuation) into a string, according to <a href='../../tokenization.html'  target='_new'>Penn Treebank conventions</a><br/>",
       "syntax": "RiTa.untokenize(wordArray);//RiTa.untokenize(wordArray, delim);",
       "parameters": [
         {
@@ -317,21 +317,17 @@
     {
       "name": "phones",
       "example": "<br/>RiTa.phones(\"apple\"); // returns -> ae-p-ah-l <br/><br/>RiTa.phones(\"two apples\"); // returns -> t-uw ae-p-ah-l-z <br/><br/>",
-      "description": "Returns a string containing all <a target=_new href='../../phones.html'>phones</a> for the input text",
+      "description": "Returns a string containing all <a target=_new href='../../phones.html'>Penn phonemes</a> for the input text",
       "syntax": "RiTa.phones(wordStr);<br>RiTa.phones(wordStr, options);",
       "parameters": [
         {
           "type": "String",
           "desc": "text to analyze"
-        },
-        {
-          "type": "Object<br>(or Map in Java)",
-          "options": "options (see <a href=\"../analyze/\">analyze()</a> for detail, optional)"
         }
       ],
       "returns": [
         {
-          "type": "string",
+          "type": "String",
           "desc": "e.g., 'ae-n  eh-l-ax-f-ax-n-t  ih-z  ey  m-ae-m-ax-l'<br/>(for 'An elephant is a mammal')"
         }
       ],
@@ -351,11 +347,11 @@
         },
         {
           "type": "boolean",
-          "desc": "if true, use WordNet style tags (optional, default=false)"
+          "desc": "if true, use simple tags (optional, default=false)"
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "optional way to set the option<br><br>{boolean} option.simple:<br>use WordNet style tag or not"
+          "desc": "optional way to set the option<br><br>{boolean} option.simple:<br>use simple tags or not"
         }
       ],
       "returns": [
@@ -380,16 +376,16 @@
         },
         {
           "type": "boolean",
-          "desc": "use WordNet style tags or not (optional, default=false)"
+          "desc": "use tags or not (optional, default=false)"
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "optional way to set the option<br><br>{boolean} option.simple:<br>use WordNet style tag or not, default=false"
+          "desc": "optional way to set the option<br><br>{boolean} option.simple:<br>use simple tags or not, default=false"
         }
       ],
       "returns": [
         {
-          "type": "string",
+          "type": "String",
           "desc": "a combined string of words and pos tags"
         }
       ],
@@ -441,20 +437,16 @@
     },
     {
       "name": "concordance",
-      "example": "// Java<br/><br/>opts = new HashMap();<br/>opts.put(\"ignoreCase\", false);<br/>opts.put(\"ignoreStopWords\", true);<br/><br/>result = RiTa.concordance(text, word, opts);<br>// or RiTa.concordance(text, opts);<br>// which will return a list of all words in the text<br/><br/><br/>// JavaScript<br/><br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>result = RiTa.concordance(text, opts);<br/><br/>",
-      "description": "Creates a concordance, a list of words with their frequency of occurence, from the given text and (optional) options",
-      "syntax": "RiTa.concordance(text, [word,] opts);",
+      "example": "<br/>// Java<br/><br/>opts = new HashMap();<br/>opts.put(\"ignoreCase\", false);<br/>opts.put(\"ignoreStopWords\", true);<br/><br/>result = RiTa.concordance(text, opts);<br/><br/><br/>// JavaScript<br/><br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>result = RiTa.concordance(text, opts);<br/><br/>",
+      "description": "Creates a concordance, a list of words with their frequency of occurence, from the given text and options",
+      "syntax": "RiTa.concordance(text, opts);",
       "parameters": [
         {
           "type": "String",
           "desc": "the text"
         },
         {
-          "type": "String",
-          "desc": "the word to lookup (not available in JavaScript)"
-        },
-        {
-          "type": "Object<br/>(or Map in Java)",
+          "type": "Object<br/>(or Map<String, Integer) in Java)",
           "desc": "options (optional) the relevant options for the KWIK model:<br/><br/>{int} options.wordCount: <br/># of words of context on either side of input word<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br>"
         }
       ],
@@ -482,8 +474,8 @@
           "desc": "upper limit of words before/after the keyword (optional, default=6)"
         },
         {
-          "type": "Map (only in Java)",
-          "desc": "options that can be set in Java<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set options for the KWIC model, please see <a href=\"../concordance/\">RiTa.concordance()</a> for detail"
+          "type": "String[]",
+          "desc": "options that can be set in Java<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set other concordance options for the model, please see <a href=\"../concordance/\">RiTa.concordance()</a> for detail"
         }
       ],
       "returns": [
