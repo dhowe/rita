@@ -20,7 +20,7 @@ public class MakeDocs extends PApplet {
 	static String WWWINDEX_TEMPLATE = "ritahome.tmpl";
 	static String DATA_DIR = "data";
 	static String WWW_OUTPUT = "www/";
-	static String REF_OUTPUT = WWW_OUTPUT + "reference/";
+	static String REF_OUTPUT = "reference/";
 	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
 
 	static boolean DBUG = false, OUTPUT_MARKUP = false;
@@ -46,7 +46,7 @@ public class MakeDocs extends PApplet {
 	public static void go() {
 		pln("\nCWD: " + System.getProperty("user.dir"));
 		pln("DATA: " + DATA_DIR);
-		pln("OUTPUT: " + REF_OUTPUT);
+		pln("OUTPUT: " + WWW_OUTPUT+REF_OUTPUT);
 
 		outputTemplate = DATA_DIR + "/" + FUNCTION_TEMPLATE;
 		System.out.println("Files to generate: " + CLASS_NAMES.length);
@@ -60,7 +60,7 @@ public class MakeDocs extends PApplet {
 			// return;
 		}
 
-		pln("\nDONE: files written to " + REF_OUTPUT + "*." + OUTPUT_TYPE
+		pln("\nDONE: files written to " + WWW_OUTPUT+REF_OUTPUT + "*." + OUTPUT_TYPE
 				+ " (from " + System.getProperty("user.dir") + ")");
 
 		System.err.println(warnings);
@@ -70,11 +70,11 @@ public class MakeDocs extends PApplet {
 	static void writeIndex() {
 
 		String[] templates = {
-				DATA_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
+				//DATA_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
 				DATA_DIR + "/" + WWWINDEX_TEMPLATE // homepage index
 		};
 		String[] outputs = {
-				REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index
+				//WWW_OUTPUT + REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index
 				WWW_OUTPUT + "index." + OUTPUT_TYPE   // homepage index
 		};
 
@@ -94,14 +94,14 @@ public class MakeDocs extends PApplet {
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
 						String dsp = entries.get(k);
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
-							String href = cls + "/" + dsp + "/index." + OUTPUT_TYPE;
+							String href = REF_OUTPUT + cls + "/" + dsp + "/index." + OUTPUT_TYPE;
 							if (types[j] == "functions" || types[j] == "statics") {
 								dsp += "()";
 							}
 							if (types[j] != "functions") {
 								dsp = cls + "." + dsp;
 							}
-							//System.out.println("LINK: " + href) 
+							System.out.println("LINK: " + href); 
 							contents += "    <a href=\"" + href + "\">" + dsp + "</a><br/>\n";
 							//if (k == 0 && types[j] == "static") contents += "  <br/>\n";
 							if (k == 19) {  // longest column
@@ -329,7 +329,7 @@ public class MakeDocs extends PApplet {
 
 		String folderMethodName = methodName[idx].replaceAll("\\(\\)", "_");
 
-		String fname = REF_OUTPUT + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
+		String fname = WWW_OUTPUT+REF_OUTPUT + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
 
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);
