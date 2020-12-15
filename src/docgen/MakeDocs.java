@@ -1,15 +1,9 @@
 package docgen;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,50 +15,40 @@ import processing.data.JSONObject;
 
 public class MakeDocs extends PApplet {
 
-	static final String OUTPUT_TYPE = "html";
-	static final String VERSION = "2.01";
-	static final boolean OUTPUT_MARKUP = false;
-	static String DATA_DIR = "data", OUTPUT_DIR = "/tmp/";
-	static int numOfMethods, numOfparameters, numOfReturns;
-	static String[] lines, methodName, example, description, syntax, parameterType, parameterDesc, parameters, theReturn,
-			returnType, returnDesc, returns, related, thePlatform, note, parameter;
-	static boolean[] hidden, isVariable;
-	static String outputTemplate;
+	static String FUNCTION_TEMPLATE = "function.tmpl";
+	static String REFINDEX_TEMPLATE = "refindex.tmpl";
+	static String WWWINDEX_TEMPLATE = "ritahome.tmpl";
+	static String DATA_DIR = "data";
+	static String WWW_OUTPUT = "www/";
+	static String REF_OUTPUT = WWW_OUTPUT + "reference/";
 	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
-	// static String[] CLASS_NAMES = { "Grammar" };
-	static Map<String, ArrayList<String>> API = new HashMap<String, ArrayList<String>>();
-	static boolean DBUG = false;
-	static String[] types = new String[] { "fields", "functions", "statics" };
-	static String warnings = "", errors = "";
+
+	static boolean DBUG = false, OUTPUT_MARKUP = false;
+	static final String OUTPUT_TYPE = "html";
+
+	static String[] types = new String[] { "functions", "statics", "fields" };
+
+	static String[] lines, methodName, example, description, syntax, thePlatform;
+	static String[] returnType, returnDesc, returns, related, note, parameter;
+	static String[] parameterType, parameterDesc, parameters, theReturn;
+	static int numOfMethods, numOfparameters, numOfReturns;
+
+	static boolean[] hidden, isVariable;
+	static Map<String, ArrayList<String>> API;
+	static String outputTemplate, warnings = "", errors = "";
 
 	static {
-		System.out.println("[INFO] DocGen.version [" + VERSION + "]");
+		API = new HashMap<String, ArrayList<String>>();
 	}
 
 	// ////////////////////////////////////////////////////////////////
 
-	public static void go(String[] a) {
-		if (a.length < 1) {
-			System.out.println("\nusage: java rita.docgen.MakeDocs output-dir [input-dir]\n");
-			System.exit(1);
-		}
-		else {
-			pln("\nCWD: " + System.getProperty("user.dir"));
+	public static void go() {
+		pln("\nCWD: " + System.getProperty("user.dir"));
+		pln("DATA: " + DATA_DIR);
+		pln("OUTPUT: " + REF_OUTPUT);
 
-			OUTPUT_DIR = a[0];
-
-			if (a.length > 1) DATA_DIR = a[1];
-
-			pln("DATA: " + DATA_DIR);
-			pln("OUTPUT: " + OUTPUT_DIR);
-
-			if (a.length > 2) {
-				CLASS_NAMES = new String[] { a[2] };
-				pln("CLASSES: " + Arrays.asList(CLASS_NAMES));
-			}
-		}
-
-		outputTemplate = DATA_DIR + "/template." + OUTPUT_TYPE;
+		outputTemplate = DATA_DIR + "/" + FUNCTION_TEMPLATE;
 		System.out.println("Files to generate: " + CLASS_NAMES.length);
 		parseAPI();
 		writeIndex();
@@ -76,7 +60,7 @@ public class MakeDocs extends PApplet {
 			// return;
 		}
 
-		pln("\nDONE: files written to " + OUTPUT_DIR + "*." + OUTPUT_TYPE
+		pln("\nDONE: files written to " + REF_OUTPUT + "*." + OUTPUT_TYPE
 				+ " (from " + System.getProperty("user.dir") + ")");
 
 		System.err.println(warnings);
@@ -85,114 +69,112 @@ public class MakeDocs extends PApplet {
 
 	static void writeIndex() {
 
-		String fname = DATA_DIR + "/index-template." + OUTPUT_TYPE;
-		try {
-			String[] tmpl = stringsFrom(fname);
-			String contents = "<h3>Reference</h3>\n\n";
+		String[] templates = {
+				DATA_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
+				DATA_DIR + "/" + WWWINDEX_TEMPLATE // homepage index
+		};
+		String[] outputs = {
+				REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index
+				WWW_OUTPUT + "index." + OUTPUT_TYPE   // homepage index
+		};
+
+		for (int f = 0; f < templates.length; f++) {
+
+			String[] tmpl = stringsFrom(templates[f]);
+			String contents = "";
 			for (int i = 0; i < CLASS_NAMES.length; i++) {
 				String cls = CLASS_NAMES[i];
 				String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls + "</b><span>\n"; // no link
+				contents += "    <h5>" + dls + "</h5>\n"; // no link
 				for (int j = 0; j < types.length; j++) {
 					ArrayList<String> entries = API.get(cls + "." + types[j]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
 						String dsp = entries.get(k);
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
-							String href = cls + "/" + dsp
-									+ "/index." + OUTPUT_TYPE;
+							String href = cls + "/" + dsp + "/index." + OUTPUT_TYPE;
 							if (types[j] == "functions" || types[j] == "statics") {
 								dsp += "()";
 							}
 							if (types[j] != "functions") {
 								dsp = cls + "." + dsp;
 							}
-							//System.out.println("LINK: " + href);
+							//System.out.println("LINK: " + href) 
 							contents += "    <a href=\"" + href + "\">" + dsp + "</a><br/>\n";
-							if (k == 17) {
+							//if (k == 0 && types[j] == "static") contents += "  <br/>\n";
+							if (k == 19) {  // longest column
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
 								contents += "<div class=\"section\">\n";
-								contents += "  <div class=\"category\">\n    <br/>\n";
+								contents += "  <div class=\"category\">\n<br/> <br/>\n";
 							}
 						}
 					}
-
 				}
-				contents += "  </div>\n";
+				contents += "    <br/><br/>\n</div>\n";
 				contents += "</div>\n\n";
 			}
 			tmpl = replaceArr(tmpl, "tmp_contents", contents);
-			writeFile(OUTPUT_DIR + "index." + OUTPUT_TYPE, tmpl);
-		} catch (Exception e) {
-			e.printStackTrace();
+			writeFile(outputs[f], tmpl);
+
 		}
 	}
 
 	static void parseAPI() {
-		try {
-			String jsonFile = DATA_DIR + "/API.json";
-			String result = stringFrom(jsonFile);
-			JSONObject raw = JSONObject.parse(result);
-			JSONArray classes = raw.getJSONArray("classes");
-			if (classes != null) {
-				pln("API:");
-				int numOfClasses = classes.size();
-				for (int j = 0; j < numOfClasses; j++) {
-					JSONObject c = classes.getJSONObject(j);
-					String className = c.getString("class");
-					pln("  " + className);
 
-					for (int i = 0; i < types.length; i++) {
-						JSONArray fields = c.getJSONArray(types[i]);
-						// System.out.println("CHECK: " + className + "." + types[i]);
-						if (fields != null) {
-							ArrayList<String> tmp = new ArrayList<String>();
-							for (int k = 0; k < fields.size(); k++) {
-								String name = fields.getString(k);
-								tmp.add(name);
-								pln("    " + name);
-							}
-							API.put(className + "." + types[i], tmp);
+		String jsonFile = DATA_DIR + "/API.json";
+		String result = stringFrom(jsonFile);
+		JSONObject raw = JSONObject.parse(result);
+		JSONArray classes = raw.getJSONArray("classes");
+		if (classes != null) {
+			pln("API:");
+			int numOfClasses = classes.size();
+			for (int j = 0; j < numOfClasses; j++) {
+				JSONObject c = classes.getJSONObject(j);
+				String className = c.getString("class");
+				pln("  " + className);
+
+				for (int i = 0; i < types.length; i++) {
+					JSONArray fields = c.getJSONArray(types[i]);
+					// System.out.println("CHECK: " + className + "." + types[i]);
+					if (fields != null) {
+						ArrayList<String> tmp = new ArrayList<String>();
+						for (int k = 0; k < fields.size(); k++) {
+							String name = fields.getString(k);
+							tmp.add(name);
+							pln("    " + name);
 						}
+						API.put(className + "." + types[i], tmp);
 					}
 				}
 			}
-
-		} catch (Exception e) {
-			System.err.println("\nError parsing the JSONObject!");
-			throw new RuntimeException(e);
 		}
+
 	}
 
 	static void parseJSON(String shortName) {
 		String jsonFile = DATA_DIR + "/" + shortName + ".json";
-		try {
 
-			pln("  DocFile : " + jsonFile);
-			String result = stringFrom(jsonFile);
+		pln("  DocFile : " + jsonFile);
+		String result = stringFrom(jsonFile);
 
-			result = "{ \"success\": true, \"pagination\": { \"current\": 1, \"max\": 1 }, \"refobj\": " + result + "}";
+		result = "{ \"success\": true, \"pagination\": { \"current\": 1, \"max\": 1 }, \"refobj\": " + result + "}";
 
-			JSONObject raw = JSONObject.parse(result);
-			JSONObject json = raw.getJSONObject("refobj");
+		JSONObject raw = JSONObject.parse(result);
+		JSONObject json = raw.getJSONObject("refobj");
 
-			String className = json.getString("class");
-			pln("  Class : " + className);
+		String className = json.getString("class");
+		pln("  Class : " + className);
 
-			for (int i = 0; i < types.length; i++) {
-				processEntry(types[i], shortName, json);
-			}
-
-		} catch (Exception e) {
-			System.err.println("\nError parsing class: " + shortName);
-			throw new RuntimeException(e);
+		for (int i = 0; i < types.length; i++) {
+			processEntry(types[i], shortName, json);
 		}
+
 	}
 
-	private static void processEntry(String type, String shortName, JSONObject json) throws Exception {
+	private static void processEntry(String type, String shortName, JSONObject json) {
 		JSONArray items = json.getJSONArray(type);
 		ArrayList<String> check = API.get(shortName + "." + type);
 		ArrayList<String> extra = new ArrayList<String>();
@@ -290,18 +272,26 @@ public class MakeDocs extends PApplet {
 		return (s.charAt(0) + "").toUpperCase() + s.substring(1);
 	}
 
-	static String stringFrom(String fname) throws Exception {
-		Stream<String> lines = Files.lines(Paths.get(fname));
-		String result = lines.collect(Collectors.joining("\n"));
-		lines.close();
-		return result;
+	static String stringFrom(String fname) {
+		try {
+			Stream<String> lines = Files.lines(Paths.get(fname));
+			String result = lines.collect(Collectors.joining("\n"));
+			lines.close();
+			return result;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	static String[] stringsFrom(String fname) throws Exception {
-		Stream<String> lines = Files.lines(Paths.get(fname));
-		String[] result = lines.toArray(String[]::new);
-		lines.close();
-		return result;
+	static String[] stringsFrom(String fname) {
+		try {
+			Stream<String> lines = Files.lines(Paths.get(fname));
+			String[] result = lines.toArray(String[]::new);
+			lines.close();
+			return result;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	// ----------------------------------------------------------------------
@@ -320,8 +310,6 @@ public class MakeDocs extends PApplet {
 	}
 
 	static public PrintWriter createWriter(File file) {
-		if (file == null)
-			throw new RuntimeException("null File passed to createWriter()");
 
 		try {
 			createPath(file); // make sure in-between folders exist
@@ -330,10 +318,8 @@ public class MakeDocs extends PApplet {
 				output = new GZIPOutputStream(output);
 			}
 			return createWriter(output);
-
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Couldn't create writer for " + file.getAbsolutePath());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -343,7 +329,7 @@ public class MakeDocs extends PApplet {
 
 		String folderMethodName = methodName[idx].replaceAll("\\(\\)", "_");
 
-		String fname = OUTPUT_DIR + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
+		String fname = REF_OUTPUT + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
 
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);
@@ -477,15 +463,7 @@ public class MakeDocs extends PApplet {
 	}
 
 	public static void main(String[] args) {
-		// System.out.println("ARGS: "+Arrays.asList(args));
-
-		if (args.length == 0) {
-			go(new String[] { "ref/", DATA_DIR }); // ALL
-			// go(new String[] {OUTPUT_DIR, DATA_DIR,"RiWordNet"}); // ONE
-		}
-		else {
-			go(args);
-		}
+		go();
 	}
 
 }

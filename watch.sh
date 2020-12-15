@@ -1,3 +1,3 @@
 #!/bin/sh
 
-find data -name '*.json' | entr ./run.sh
+find data src/docgen css static -name '*.*' | entr ./make-ref.sh
