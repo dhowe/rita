@@ -70,11 +70,11 @@ public class MakeDocs extends PApplet {
 	static void writeIndex() {
 
 		String[] templates = {
-				//DATA_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
+				DATA_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
 				DATA_DIR + "/" + WWWINDEX_TEMPLATE // homepage index
 		};
 		String[] outputs = {
-				//WWW_OUTPUT + REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index
+				WWW_OUTPUT + REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index
 				WWW_OUTPUT + "index." + OUTPUT_TYPE   // homepage index
 		};
 
@@ -101,7 +101,7 @@ public class MakeDocs extends PApplet {
 							if (types[j] != "functions") {
 								dsp = cls + "." + dsp;
 							}
-							System.out.println("LINK: " + href); 
+							//System.out.println("LINK: " + href); 
 							contents += "    <a href=\"" + href + "\">" + dsp + "</a><br/>\n";
 							//if (k == 0 && types[j] == "static") contents += "  <br/>\n";
 							if (k == 19) {  // longest column
