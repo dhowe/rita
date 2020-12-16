@@ -1,5 +1,8 @@
-### Contains website and documentation generator (java)
+## RiTa 2.x Website
 
-#### to generate the website in dist
+#### Building
 
-$./build.sh
+```
+# To create the full website in 'dist' do
+$ ./build.sh
+```
