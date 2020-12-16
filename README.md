@@ -4,5 +4,5 @@
 
 ```
 # To create the full website in 'dist' do
-$ ./build.sh
+$ ./build-www.sh
 ```
