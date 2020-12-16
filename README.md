@@ -1,5 +1,8 @@
-### Contains website and documentation generator (java)
+# Contains website and documentation generator
 
-**To generate the full website in 'dist' do**
+### Building
 
+```
+# To generate the full website in 'dist'
 $./build.sh
+```
