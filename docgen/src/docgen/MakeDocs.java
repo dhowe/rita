@@ -67,7 +67,7 @@ public class MakeDocs extends PApplet {
 				String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-				contents += "    <h5>" + dls + "</h5>\n"; // no link
+				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls +"</b><span><br><br>\n"; // no link
 				for (int j = 0; j < types.length; j++) {
 					ArrayList<String> entries = API.get(cls + "." + types[j]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
@@ -88,7 +88,7 @@ public class MakeDocs extends PApplet {
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
 								contents += "<div class=\"section\">\n";
-								contents += "  <div class=\"category\">\n<br/> <br/>\n";
+								contents += "  <div class=\"category\">\n<br>\n";
 							}
 						}
 					}
