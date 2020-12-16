@@ -1,8 +1,7 @@
 package docgen;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
@@ -15,13 +14,15 @@ import processing.data.JSONObject;
 
 public class MakeDocs extends PApplet {
 
+	static String DATA_DIR = "data";
+	static String STATIC_DIR = "static";
+	static String WWW_OUTPUT = "../dist/";
+	static String REF_OUTPUT = "reference/";
+	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
+
 	static String FUNCTION_TEMPLATE = "function.tmpl";
 	static String REFINDEX_TEMPLATE = "refindex.tmpl";
 	static String WWWINDEX_TEMPLATE = "ritahome.tmpl";
-	static String DATA_DIR = "data";
-	static String WWW_OUTPUT = "www/";
-	static String REF_OUTPUT = "reference/";
-	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
 
 	static boolean DBUG = false, OUTPUT_MARKUP = false;
 	static final String OUTPUT_TYPE = "html";
@@ -42,30 +43,6 @@ public class MakeDocs extends PApplet {
 	}
 
 	// ////////////////////////////////////////////////////////////////
-
-	public static void go() {
-		pln("\nCWD: " + System.getProperty("user.dir"));
-		pln("DATA: " + DATA_DIR);
-		pln("OUTPUT: " + WWW_OUTPUT+REF_OUTPUT);
-
-		outputTemplate = DATA_DIR + "/" + FUNCTION_TEMPLATE;
-		System.out.println("Files to generate: " + CLASS_NAMES.length);
-		parseAPI();
-		writeIndex();
-		// if (1 == 1) return;
-		for (int i = 0; i < CLASS_NAMES.length; i++) {
-			pln("\n******     " + CLASS_NAMES[i] + "     ******\n");
-			pln("  Template : " + outputTemplate);
-			parseJSON(CLASS_NAMES[i]);
-			// return;
-		}
-
-		pln("\nDONE: files written to " + WWW_OUTPUT+REF_OUTPUT + "*." + OUTPUT_TYPE
-				+ " (from " + System.getProperty("user.dir") + ")");
-
-		System.err.println(warnings);
-		System.err.println(errors);
-	}
 
 	static void writeIndex() {
 
@@ -329,7 +306,7 @@ public class MakeDocs extends PApplet {
 
 		String folderMethodName = methodName[idx].replaceAll("\\(\\)", "_");
 
-		String fname = WWW_OUTPUT+REF_OUTPUT + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
+		String fname = WWW_OUTPUT + REF_OUTPUT + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
 
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);
@@ -450,6 +427,32 @@ public class MakeDocs extends PApplet {
 			System.out.println(s);
 	}
 
+	static void copyFolder(String from, String to) {
+		try {
+			// source & destination directories
+			Path src = Paths.get(from + "/");
+			Path dest = Paths.get(to);
+
+			pln("\nCopying statics from " + src + " to " + dest);
+
+			// create stream for `src`
+			Stream<Path> files = Files.walk(src).filter(Files::isRegularFile);
+
+			// copy all files and folders from `src` to `dest`
+			files.forEach(file -> {
+				try {
+					Files.copy(file, dest.resolve(src.relativize(file)),
+							StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			});
+			files.close();
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
 	private static void plnMarkup(String classShortName, String field, boolean isVar) {
 		if (OUTPUT_MARKUP) {
 			field = field.replaceAll("\\(\\)", "");
@@ -463,7 +466,28 @@ public class MakeDocs extends PApplet {
 	}
 
 	public static void main(String[] args) {
-		go();
+		pln("\nCWD: " + System.getProperty("user.dir"));
+		pln("DATA: " + DATA_DIR);
+		pln("OUTPUT: " + WWW_OUTPUT + REF_OUTPUT);
+
+		outputTemplate = DATA_DIR + "/" + FUNCTION_TEMPLATE;
+		System.out.println("Files to generate: " + CLASS_NAMES.length);
+		parseAPI();
+		writeIndex();
+		// if (1 == 1) return;
+		for (int i = 0; i < CLASS_NAMES.length; i++) {
+			pln("\n******     " + CLASS_NAMES[i] + "     ******\n");
+			pln("  Template : " + outputTemplate);
+			parseJSON(CLASS_NAMES[i]);
+		}
+
+		copyFolder(STATIC_DIR, WWW_OUTPUT + REF_OUTPUT);
+
+		pln("\nDONE: files written to " + WWW_OUTPUT + REF_OUTPUT + "*." + OUTPUT_TYPE
+				+ " (from " + System.getProperty("user.dir") + ")");
+
+		System.err.println(warnings);
+		System.err.println(errors);
 	}
 
 }
