@@ -26,6 +26,7 @@ public class MakeDocs extends PApplet {
 
 	static boolean DBUG = false, OUTPUT_MARKUP = false;
 	static final String OUTPUT_TYPE = "html";
+	static boolean SILENT = false;
 
 	static String[] types = new String[] { "functions", "statics", "fields" };
 
@@ -45,6 +46,8 @@ public class MakeDocs extends PApplet {
 	// ////////////////////////////////////////////////////////////////
 
 	static void writeIndex() {
+
+		//if (1==1) throw new RuntimeException("Invalid foo");
 
 		String[] templates = {
 				DATA_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
@@ -78,7 +81,7 @@ public class MakeDocs extends PApplet {
 							if (types[j] != "functions") {
 								dsp = cls + "." + dsp;
 							}
-							//System.out.println("LINK: " + href); 
+							//pln("LINK: " + href); 
 							contents += "    <a href=\"" + href + "\">" + dsp + "</a><br/>\n";
 							//if (k == 0 && types[j] == "static") contents += "  <br/>\n";
 							if (k == 19) {  // longest column
@@ -115,7 +118,7 @@ public class MakeDocs extends PApplet {
 
 				for (int i = 0; i < types.length; i++) {
 					JSONArray fields = c.getJSONArray(types[i]);
-					// System.out.println("CHECK: " + className + "." + types[i]);
+					// pln("CHECK: " + className + "." + types[i]);
 					if (fields != null) {
 						ArrayList<String> tmp = new ArrayList<String>();
 						for (int k = 0; k < fields.size(); k++) {
@@ -423,8 +426,9 @@ public class MakeDocs extends PApplet {
 	}
 
 	private static void pln(String s) {
-		if (!OUTPUT_MARKUP)
+		if (!OUTPUT_MARKUP && !SILENT) {
 			System.out.println(s);
+		}
 	}
 
 	static void copyFolder(String from, String to) {
@@ -461,33 +465,56 @@ public class MakeDocs extends PApplet {
 			sb.append(field + "_/index." + OUTPUT_TYPE + "\">" + field);
 			if (!isVar) sb.append("()");
 			sb.append("</a>");
-			System.out.println(sb.toString());
+			pln(sb.toString());
 		}
 	}
 
 	public static void main(String[] args) {
-		pln("\nCWD: " + System.getProperty("user.dir"));
-		pln("DATA: " + DATA_DIR);
-		pln("OUTPUT: " + WWW_OUTPUT + REF_OUTPUT);
 
-		outputTemplate = DATA_DIR + "/" + FUNCTION_TEMPLATE;
-		System.out.println("Files to generate: " + CLASS_NAMES.length);
-		parseAPI();
-		writeIndex();
-		// if (1 == 1) return;
-		for (int i = 0; i < CLASS_NAMES.length; i++) {
-			pln("\n******     " + CLASS_NAMES[i] + "     ******\n");
-			pln("  Template : " + outputTemplate);
-			parseJSON(CLASS_NAMES[i]);
+		if (args != null && args.length > 0 && args[0].equals("--silent")) {
+			SILENT = true;
 		}
 
-		copyFolder(STATIC_DIR, WWW_OUTPUT + REF_OUTPUT);
+		try {
+			pln("\nCWD: " + System.getProperty("user.dir"));
+			pln("DATA: " + DATA_DIR);
+			pln("OUTPUT: " + WWW_OUTPUT + REF_OUTPUT);
 
-		pln("\nDONE: files written to " + WWW_OUTPUT + REF_OUTPUT + "*." + OUTPUT_TYPE
-				+ " (from " + System.getProperty("user.dir") + ")");
+			//errors += "invalid blah";
 
-		System.err.println(warnings);
-		System.err.println(errors);
+			outputTemplate = DATA_DIR + "/" + FUNCTION_TEMPLATE;
+			pln("Files to generate: " + CLASS_NAMES.length);
+
+			parseAPI();
+			writeIndex();
+			// if (1 == 1) return;
+			for (int i = 0; i < CLASS_NAMES.length; i++) {
+				pln("\n******     " + CLASS_NAMES[i] + "     ******\n");
+				pln("  Template : " + outputTemplate);
+				parseJSON(CLASS_NAMES[i]);
+			}
+
+			copyFolder(STATIC_DIR, WWW_OUTPUT + REF_OUTPUT);
+
+			if (!SILENT && errors.length() > 0) throw new RuntimeException("\n" + errors);
+
+			pln("DONE: reference written to " + WWW_OUTPUT + REF_OUTPUT);
+
+		} catch (Throwable e) {
+
+			if (!SILENT) throw new RuntimeException(e);
+			errors = "EXCEPTION: " + e.getMessage() + "\n" + errors;
+		}
+
+		if (warnings.length() > 0 || errors.length() > 0) {
+			String msg = (warnings.length() > 0 ? "WARNING: " + warnings + "\n" : "")
+					+ (errors.length() > 0 ? "ERROR: " + errors : "");
+			System.err.println("\n" + msg);
+			System.exit(1);
+		}
+		else {
+			System.exit(0);
+		}
 	}
 
 }
