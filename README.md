@@ -1,4 +1,4 @@
-## RiTa 2.x Website (w' auto-generated docs)
+## RiTa 2.x Website
 
 #### Building
 
