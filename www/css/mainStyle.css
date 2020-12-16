@@ -167,6 +167,15 @@ a:focus {
   color: #fff;
 }
 
+#whats-new-wrapper a {
+  text-decoration: none;
+  color: #FEC0CB;
+}
+
+#whats-new-wrapper a:hover {
+    text-decoration: underline;
+}
+
 #whats-new-wrapper h4 {
   text-align: center;
   font-size: 36px;
