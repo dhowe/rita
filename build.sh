@@ -1,9 +1,12 @@
 #!/bin/bash
 
+set -e
+
 # clean
 echo
 echo ...cleaning dist 
-rm -rf dist/*
+rm -rf dist
+mkdir dist
 
 # copy ws
 echo ...making website 
