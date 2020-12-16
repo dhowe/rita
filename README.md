@@ -1,6 +1,6 @@
-# Contains website and documentation generator
+## RiTa website and doc generator
 
-### Building
+#### Building
 
 ```
 # To generate the full website in 'dist'
