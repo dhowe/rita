@@ -1,4 +1,4 @@
-## RiTa website and doc generator
+## RiTa 2.x website and doc generator
 
 #### Building
 
