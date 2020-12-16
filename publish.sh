@@ -8,8 +8,8 @@ RITA_JS=../rita2js
 POM=$RITA_JAVA/pom.xml
 PKG=$RITA_JS/package.json
 
-DO_CHECK=false
-DO_BUILD=false
+DO_CHECK=true
+DO_BUILD=true
 
 echo "\n... checking environment"
 if [ "$DO_CHECK" = true ] ; then
@@ -31,9 +31,8 @@ if [ "$DO_CHECK" = true ] ; then
 fi
 
 pushd $RITA_JS >/dev/null
-VERSION=$(node -p -e "require('../rita2js/package.json').version")
+VERSION=$(node -p -e "require('$PKG').version")
 popd >/dev/null
-
 
 if [ "$DO_CHECK" = true ] ; then
   if [ "$JAVAVER" != "$VERSION" ]; then
@@ -43,20 +42,20 @@ if [ "$DO_CHECK" = true ] ; then
 fi
 
 
-echo "... found $VERSION"
+echo "... found version $VERSION"
 
 if [ "$DO_BUILD" = true ] ; then
 
   # build.test JavaScript
   pushd $RITA_JS >/dev/null
-  echo "\n... building js"
+  echo "... building js"
   yarn build >/dev/null
-  echo "\n... testing js"
-  yarn test.prod
+  echo "... testing js"
+  yarn test.prod >/dev/null
   popd >/dev/null
 
   # build.test Java
-  echo "\n... packaging java"
+  echo "... packaging java"
   pushd $RITA_JAVA >/dev/null
   mvn clean package >/dev/null
   popd >/dev/null
@@ -69,5 +68,5 @@ mkdir -p dist/download
 cp $RITA_JAVA/target/*.jar dist/download
 cp $RITA_JS/dist/*.js  dist/download
 
-echo "... done\n"
+echo "... finished\n"
 ls -l dist/download
