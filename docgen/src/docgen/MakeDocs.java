@@ -16,7 +16,7 @@ public class MakeDocs extends PApplet {
 
 	static String DATA_DIR = "data";
 	static String STATIC_DIR = "static";
-	static String WWW_OUTPUT = "../dist/";
+	static String WWW_OUTPUT = "../pub/";
 	static String REF_OUTPUT = "reference/";
 	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
 

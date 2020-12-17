@@ -3,6 +3,6 @@
 #### Building
 
 ```
-# To create the full website in 'dist' do
-$ ./build-www.sh
+# To create the full website in 'pub' do
+$ ./build-site.sh
 ```
