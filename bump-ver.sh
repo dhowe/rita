@@ -11,15 +11,17 @@ fi
 
 rita_java=../RiTa2
 rita_js=../rita2js
-release=$1
+version=$1
 
+############################# JS ################################
 pushd $rita_js >/dev/null
 changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
-    npm version $version --no-git-tag-version
+    npx npe version $version
     git add .
     git commit -m "bump to ${version}"
-    #head package.json
+    git push
+    head package.json
     #git tag -a "${output}" -m "${version}"
     #git push origin --tags
     #npm publish ./
@@ -28,13 +30,14 @@ else
 fi
 popd >/dev/null
 
+############################# JAVA ################################
 pushd $rita_java >/dev/null
 changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
-    mvn versions:set -DnewVersion=$VERSION
+    mvn versions:set -DnewVersion=$version
     git add .
     git commit -m "bump to ${version}"
-    #head pom.xml
+    head pom.xml
 else
     echo "Uncommitted changes in Java repo"
 fi
