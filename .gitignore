@@ -1,4 +1,4 @@
-dist/*
+dist 
 
 # Compiled class file
 *.class

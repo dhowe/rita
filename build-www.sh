@@ -21,8 +21,7 @@ exitv=$?
 
 # check for errors
 if [ $exitv -eq 0 ]; then
-  echo
-  echo wrote site to ./dist
+  echo ...wrote to ./dist
 else
   echo
   echo "Build failed ***"

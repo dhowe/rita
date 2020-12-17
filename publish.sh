@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DO_JAVA=true
-DO_JS=false
+DO_JS=true
 
 RITA_JAVA=../RiTa2
 RITA_JS=../rita2js
@@ -32,12 +32,16 @@ if [ "$DO_JAVA" = true ] ; then
     #JAVAVER=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout` # too slow!
     JAVAVER=`grep version $POM | grep -v -e '<?xml|~'| head -n 1 | sed 's/[[:space:]]//g' \
     | sed -E 's/<.{0,1}version>//g' | awk '{print $1}'`
+else
+    echo "WARN: skipping Java"
 fi
 
 if [ "$DO_JS" = true ] ; then
     [[ ! -f $PKG ]] && check_err 1 "expected js repo at $RITA_JS"
     VERSION=`npm view rita version`
     #VERSION=`node -p -e "require('$PKG').version"`
+else
+    echo "WARN: skipping JavaScript"
 fi
 
 # check versions are same
@@ -63,7 +67,6 @@ fi
 [ "$DO_JAVA" = true ] && VERSION=$JAVAVER
 
 echo "... found v$VERSION"         ###########################################
-exit
 #echo "... cleaning dist/download"
 #rm -rf dist/download
 
@@ -94,8 +97,7 @@ if [ "$DO_JS" = true ] ; then
     mv $RITA_JS/*.tgz  ./dist/download
     read -p "publish v$VERSION to npm? " -n 1 -r
     echo
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
+    if [[ $REPLY =~ ^[Yy]$ ]] then
         echo "... git-tagging js v$VERSION"
         pushd $RITA_JS >/dev/null
         git tag -a v$VERSION -m "Release v$VERSION"
