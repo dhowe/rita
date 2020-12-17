@@ -1,15 +1,23 @@
 #!/bin/sh
 
+set -e
+
 DO_JAVA=true
 DO_JS=true
 
 RITA_JAVA=../RiTa2
 RITA_JS=../rita2js
 
-set -e
-
 POM=$RITA_JAVA/pom.xml
 PKG=$RITA_JS/package.json
+
+while getopts "v:" option; do
+    case ${option} in
+        v) VERSION=$OPTARG
+            echo "... using version: $VERSION"
+        ;;
+    esac
+done
 
 check_err() {
     local exit_code=$1
@@ -25,9 +33,14 @@ check_err() {
 
 # check version and git status
 ./check-env.sh || check_err $? "env check failed"
-pushd $RITA_JS >/dev/null
-VERSION=`npx npe version`
-popd >/dev/null
+if [ -z $VERSION ] ; then
+    pushd $RITA_JS >/dev/null
+    VERSION=`npx npe version`
+    echo "... found version: $VERSION"
+    popd >/dev/null
+fi
+
+[ -z $VERSION ] && check_err 1 "No version found or supplied"
 
 if [ "$DO_JS" = true ] ; then         # build.test JavaScript
     echo "... building with yarn"
@@ -36,24 +49,17 @@ if [ "$DO_JS" = true ] ; then         # build.test JavaScript
     echo "... testing with yarn"
     yarn --cwd  $RITA_JS test.prod >/dev/null || check_err $? "yarn tests failed"
     
-    echo "... packaging with yarn"
+    echo "... packaging for npm"
     rm -rf $RITA_JS/rita-*.tgz
-    yarn --cwd  $RITA_JS pack >/dev/null || check_err $? "yarn pack failed"
+    pushd $RITA_JS >/dev/null
+    npm pack >/dev/null || check_err $? "npm pack failed"
+    popd >/dev/null
 fi
 
-# if [ "$DO_JAVA" = true ] ; then        # build.test Java
-# echo "... build/test java with maven"
-# pushd $RITA_JAVA >/dev/null
-# mvn clean package >/dev/null || check_err $? "maven build failed"
-# popd >/dev/null
-# fi
-
-echo "... moving js/tgz resources"      ###########################################
-#mkdir -p ./pub/download
+ARTIFACTS=./pub/download
+[[ -d $ARTIFACTS ]] || mkdir $ARTIFACTS
 
 if [ "$DO_JS" = true ] ; then
-    cp $RITA_JS/pub/*.js  ./pub/download
-    mv $RITA_JS/*.tgz  ./pub/download
     echo
     read -p "publish v$VERSION to npm? " -n 1 -r
     echo
@@ -61,11 +67,13 @@ if [ "$DO_JS" = true ] ; then
         echo "... git-tagging js v$VERSION"
         pushd $RITA_JS >/dev/null
         git tag -a v$VERSION -m "Release v$VERSION"
-        git push origin --tags
-        popd >/dev/null
-        NPM_TAR=pub/download/rita-v$VERSION.tgz
+        git push -q origin --tags
+        NPM_TAR=rita-v$VERSION.tgz
         echo "... publishing $NPM_TAR to npm"
-        npm publish $NPM_TAR || check_err $? "npm publish failed"
+        npm publish $NPM_TAR --quiet || check_err $? "npm publish failed"
+        popd >/dev/null
+        cp $RITA_JS/dist/*.js  $ARTIFACTS
+        mv $RITA_JS/*.tgz  $ARTIFACTS
     fi
 fi
 
@@ -77,13 +85,12 @@ if [ "$DO_JAVA" = true ] ; then
         pushd $RITA_JAVA >/dev/null
         echo "... git-tagging java v$VERSION"
         git tag -a v$VERSION -m "Release v$VERSION"
-        git push origin --tags
+        git push -q origin --tags
         #mvn clean deploy -Dmaven.test.skip=true
         echo "... deploying to github packages"
-        mvn clean deploy || check_err $? "maven publish failed"
+        mvn -q clean deploy || check_err $? "maven publish failed"
         popd >/dev/null
-        cp $RITA_JAVA/target/*.jar pub/download
-        #ssh $RED "cd ~/git/RiTa && git stash && git pull && ./create-symlinks.sh ${VERSION}"
+        cp $RITA_JAVA/target/*.jar $ARTIFACTS
     fi
 fi
 
@@ -92,4 +99,4 @@ echo "... cleaning up"
 #rm -rf $RITA_JS/*.tgz
 
 echo "... finished\n"
-ls -l pub/download
+ls -l $ARTIFACTS

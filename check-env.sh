@@ -8,7 +8,7 @@ RITA_JS=../rita2js
 POM=$RITA_JAVA/pom.xml
 PKG=$RITA_JS/package.json
 
-echo "\n... checking environment"
+echo "... checking environment"
 
 check_err() {
     local exit_code=$1
