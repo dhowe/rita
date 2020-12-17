@@ -10,8 +10,7 @@ RITA_JS=../rita2js
 
 POM=$RITA_JAVA/pom.xml
 PKG=$RITA_JS/package.json
-ARTIFACTS=./pub/download
-cp $RITA_JAVA/target/rita-$VERSION* $ARTIFACTS
+
 exit
 check_err() {
     local exit_code=$1
