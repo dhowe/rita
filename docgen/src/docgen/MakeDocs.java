@@ -88,7 +88,7 @@ public class MakeDocs extends PApplet {
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
 								contents += "<div class=\"section\">\n";
-								contents += "  <div class=\"category\">\n<br>\n";
+								contents += "  <div class=\"category\">\n<br><br>\n";
 							}
 						}
 					}
