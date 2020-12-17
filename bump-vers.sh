@@ -6,7 +6,7 @@ function help {
 
 if [ -z "$1" ] || [ "$1" = "help" ]; then
     help
-    exit
+    exit 1;
 fi
 
 rita_java=../RiTa2
@@ -30,8 +30,8 @@ changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
     echo "... bumping js"
     npx npe version $version >/dev/null || check_err $? "npe failed [1]"
-    git add package.json >/dev/null || check_err $? "git add failed [1]"
-    git commit -q -m "bump to ${version}"
+    git add package.json &> /dev/null || check_err $? "git add failed [1]"
+    git commit -q -m "bump to ${version}" &> /dev/null
     git push -q || check_err $? "git push failed [1]"
     #head package.json
     #git tag -a "${output}" -m "${version}"
@@ -48,8 +48,8 @@ changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
     echo "... bumping java"
     mvn versions:set -DnewVersion=$version  >/dev/null || check_err $? "git commit failed [2]"
-    git add pom.xml >/dev/null || check_err $? "git add failed[2]"
-    git commit -q -m "bump to ${version}"
+    git add pom.xml &> /dev/null || check_err $? "git add failed[2]"
+    git commit -q -m "bump to ${version}" &> /dev/null
     git push -q || check_err $? "git push failed [2]"
 else
     echo "Uncommitted changes in Java repo"

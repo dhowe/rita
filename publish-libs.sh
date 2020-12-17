@@ -10,34 +10,36 @@ RITA_JS=../rita2js
 
 POM=$RITA_JAVA/pom.xml
 PKG=$RITA_JS/package.json
-
-while getopts "v:" option; do
-    case ${option} in
-        v) VERSION=$OPTARG
-            echo "... using version: $VERSION"
-        ;;
-    esac
-done
-
+ARTIFACTS=./pub/download
+cp $RITA_JAVA/target/rita-$VERSION* $ARTIFACTS
+exit
 check_err() {
     local exit_code=$1
     shift
-    [[ $exit_code ]] &&               # do nothing if no error code passed
-    ((exit_code != 0)) && {         # do nothing if error code is 0
+    [[ $exit_code ]] &&         
+    ((exit_code != 0)) && {
         printf '\nFATAL: %s\n' "$@" >&2
         exit "$exit_code"
     }
 }
 
-[ "$DO_JAVA" = false ] && [ "$DO_JS" = false ] && check_err 1 "DO_JAVA and DO_JS false"
+[ "$DO_JAVA" = false ] && [ "$DO_JS" = false ] && check_err 1 "DO_JAVA and DO_JS false" #change to skip
 
-# check version and git status
-./check-env.sh || check_err $? "env check failed"
+while getopts "v:" option; do
+    case ${option} in
+        v) VERSION=$OPTARG
+            echo "\n... using version: $VERSION"
+        ;;
+    esac
+done
+
 if [ -z $VERSION ] ; then
     pushd $RITA_JS >/dev/null
     VERSION=`npx npe version`
-    echo "... found version: $VERSION"
+    ./check-env.sh || check_err $? "env check failed"
     popd >/dev/null
+else 
+    ./bump-vers.sh $VERSION || check_err $? "bump-vers.sh failed"
 fi
 
 [ -z $VERSION ] && check_err 1 "No version found or supplied"
@@ -52,7 +54,7 @@ if [ "$DO_JS" = true ] ; then         # build.test JavaScript
     echo "... packaging for npm"
     rm -rf $RITA_JS/rita-*.tgz
     pushd $RITA_JS >/dev/null
-    npm pack >/dev/null || check_err $? "npm pack failed"
+    npm pack --quiet >/dev/null || check_err $? "npm pack failed"
     popd >/dev/null
 fi
 
@@ -64,12 +66,12 @@ if [ "$DO_JS" = true ] ; then
     read -p "publish v$VERSION to npm? " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]] ; then
-        echo "... git-tagging js v$VERSION"
+        echo "... git-tag js v$VERSION"
         pushd $RITA_JS >/dev/null
         git tag -a v$VERSION -m "Release v$VERSION"
         git push -q origin --tags
-        NPM_TAR=rita-v$VERSION.tgz
-        echo "... publishing $NPM_TAR to npm"
+        NPM_TAR=rita-$VERSION.tgz
+        echo "... deploying to npm"
         npm publish $NPM_TAR --quiet || check_err $? "npm publish failed"
         popd >/dev/null
         cp $RITA_JS/dist/*.js  $ARTIFACTS
@@ -83,14 +85,14 @@ if [ "$DO_JAVA" = true ] ; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]] ; then
         pushd $RITA_JAVA >/dev/null
-        echo "... git-tagging java v$VERSION"
+        echo "... git-tag java v$VERSION"
         git tag -a v$VERSION -m "Release v$VERSION"
         git push -q origin --tags
         #mvn clean deploy -Dmaven.test.skip=true
         echo "... deploying to github packages"
         mvn -q clean deploy || check_err $? "maven publish failed"
         popd >/dev/null
-        cp $RITA_JAVA/target/*.jar $ARTIFACTS
+        cp $RITA_JAVA/target/rita-$VERSION* $ARTIFACTS
     fi
 fi
 
