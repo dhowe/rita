@@ -4,12 +4,11 @@ set -e
 
 DO_JAVA=true
 DO_JS=true
-
 RITA_JAVA=../RiTa2
 RITA_JS=../rita2js
-
 POM=$RITA_JAVA/pom.xml
 PKG=$RITA_JS/package.json
+TMP=/tmp
 
 check_err() {
     local exit_code=$1
@@ -56,7 +55,7 @@ if [ "$DO_JS" = true ] ; then         # build.test JavaScript
     popd >/dev/null
 fi
 
-ARTIFACTS=./pub/download
+ARTIFACTS=./artifacts
 [[ -d $ARTIFACTS ]] || mkdir $ARTIFACTS
 
 if [ "$DO_JS" = true ] ; then
@@ -72,10 +71,12 @@ if [ "$DO_JS" = true ] ; then
         echo "... deploying to npm"
         npm publish $NPM_TAR --quiet || check_err $? "npm publish failed"
         popd >/dev/null
-        rm -rf $ARTIFACTS/*.js # remove previous versions
-        cp $RITA_JS/dist/*.js  $ARTIFACTS
         mv $RITA_JS/*.tgz  $ARTIFACTS
     fi
+    compgen -G $ARTIFACTS/*.js && mv $ARTIFACTS/*.js $TMP # clean previous versions
+    compgen -G $ARTIFACTS/*.tgz && mv $ARTIFACTS/*.tgz $TMP 
+    compgen -G $RITA_JS/dist/*.js && cp $RITA_JS/dist/*.js $ARTIFACTS
+    compgen -G $RITA_JS/*.tgz && mv $RITA_JS/*.tgz $ARTIFACTS
 fi
 
 if [ "$DO_JAVA" = true ] ; then
@@ -91,8 +92,8 @@ if [ "$DO_JAVA" = true ] ; then
         mvn -q clean deploy || check_err $? "maven publish failed"
         popd >/dev/null
         # remove previous versions
-        rm -rf $ARTIFACTS/rita-*.jar $ARTIFACTS/rita-*.pom $ARTIFACTS/rita-*.asc
-        cp $RITA_JAVA/target/rita-$VERSION* $ARTIFACTS
+        rm -rf $ARTIFACTS/rita-*.jar $ARTIFACTS/rita-*.pom $ARTIFACTS/rita-*.asc 2>/dev/null 
+        compgen -G $RITA_JAVA/target/rita-$VERSION* && cp $RITA_JAVA/target/rita-$VERSION* $ARTIFACTS 
     fi
 fi
 
