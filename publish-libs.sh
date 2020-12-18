@@ -137,4 +137,4 @@ runtime=$((`date +%s`-start))
 echo "... done in ${runtime}s\n"
 
 ls -l $artifacts
-echo; jar tf $zipfile
+echo zip: ; jar tf $zipfile
