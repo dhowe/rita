@@ -11,7 +11,6 @@ RITA_JS=../rita2js
 POM=$RITA_JAVA/pom.xml
 PKG=$RITA_JS/package.json
 
-exit
 check_err() {
     local exit_code=$1
     shift
@@ -73,6 +72,7 @@ if [ "$DO_JS" = true ] ; then
         echo "... deploying to npm"
         npm publish $NPM_TAR --quiet || check_err $? "npm publish failed"
         popd >/dev/null
+        rm -rf $ARTIFACTS/*.js # remove previous versions
         cp $RITA_JS/dist/*.js  $ARTIFACTS
         mv $RITA_JS/*.tgz  $ARTIFACTS
     fi
@@ -80,17 +80,18 @@ fi
 
 if [ "$DO_JAVA" = true ] ; then
     echo
-    read -p "deploy java v$VERSION to github? " -n 1 -r
+    read -p "publish java v$VERSION to github? " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]] ; then
         pushd $RITA_JAVA >/dev/null
         echo "... git-tag java v$VERSION"
         git tag -a v$VERSION -m "Release v$VERSION"
         git push -q origin --tags
-        #mvn clean deploy -Dmaven.test.skip=true
         echo "... deploying to github packages"
         mvn -q clean deploy || check_err $? "maven publish failed"
         popd >/dev/null
+        # remove previous versions
+        rm -rf $ARTIFACTS/rita-*.jar $ARTIFACTS/rita-*.pom $ARTIFACTS/rita-*.asc
         cp $RITA_JAVA/target/rita-$VERSION* $ARTIFACTS
     fi
 fi
