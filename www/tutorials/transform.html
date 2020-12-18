@@ -34,7 +34,7 @@
         <li class="hidden-sm"><a class="" data-toggle="collapse" href="../index.html#download-wrapper" role="button" aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a></li>
         <li class="hidden-sm"><a href="../index.html#learning-wrapper">Learning</a></li>
         <!--li class="hidden-xs"> <a target="blank" href="http://rednoise.org/dialogic-api">DOCUMENTATION</a></li-->
-        <li class="hidden-sm"><a target="blank" href="../index.html#reference-wrapper">Reference</a></li>
+        <li class="hidden-sm"><a target="blank" href="../index.html#reference">Reference</a></li>
         <li class="hidden-sm"><a target="blank" href="../index.html#gallery-wrapper">Gallery</a></li>
         <li> <a href="https://github.com/dhowe/rita2" target="blank" class="icon m-l-30"> <svg class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github" role="img" xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 496 512" data-fa-i2svg="">
@@ -116,12 +116,12 @@
             </br>
 An example, in JavaScript:
               <pre><code class="language-javascript">
-  var args = {
+  let args = {
     tense: RiTa.PAST_TENSE,
     number: RiTa.SINGULAR,
     person: RiTa.THIRD_PERSON
   };
-  var result = RiTa.conjugate("swim", args);</code></pre>
+  let result = RiTa.conjugate("swim", args);</code></pre>
 
               <p>The outcome of this example will be "swam".</p>
               <div id="content" width=200 height=200></div>
@@ -230,7 +230,7 @@ An example, in JavaScript:
               </p>
 
               <p>An example of untokenizing in RiTa:</p>
-              <pre><code class="language-javascript">  var words = ['I', 'want', 'to', 'have', 'a', 'cup', 'of', 'coffee', '.'];
+              <pre><code class="language-javascript">  let words = ['I', 'want', 'to', 'have', 'a', 'cup', 'of', 'coffee', '.'];
   RiTa.untokenize(words);</code></pre>
 
                 <p>
