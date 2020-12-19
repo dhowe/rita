@@ -30,8 +30,6 @@ fi
 
 popd >/dev/null
 
-ls -l pub
-
 exit 0;
 
 

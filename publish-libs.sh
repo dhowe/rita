@@ -1,5 +1,9 @@
 #!/bin/sh
 
+### NEXT: remove -v option (make it verbose)
+### Fix JS library example links
+### port Java examples
+
 set -e
 
 start=`date +%s`
@@ -10,6 +14,8 @@ rita_java="../RiTa2"
 rita_js="../rita2js"
 pom="$rita_java/pom.xml"
 pkg="$rita_js/package.json"
+artifacts="./artifacts"
+download="./pub/download"
 
 # options
 nojs=false
@@ -70,8 +76,6 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
     popd >/dev/null
 fi
 
-
-artifacts=./artifacts
 echo "... cleaning $artifacts"
 [[ -d $artifacts ]] || mkdir $artifacts
 rm -f $artifacts/*.* >/dev/null 
@@ -128,7 +132,8 @@ if [ "$nojava" = false ] ; then
 fi
 
 if [ "$noproc" = false ] ; then
-  ./build-plib.sh || check_err $? "build-plib.sh failed"
+  ./build-plib.sh $version || check_err $? "build-plib.sh failed"
+  cp "$artifacts/rita-$version-plib.zip" $download
 fi
 
 echo "... creating zip"
@@ -146,4 +151,4 @@ runtime=$((`date +%s`-start))
 
 echo "... done in ${runtime}s\n"
 
-ls -l $artifacts
+ls -l pub/download

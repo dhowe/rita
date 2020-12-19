@@ -538,20 +538,9 @@ public class MakeDocs extends PApplet {
 			System.exit(0);
 		}
 	}
-
-//	public static void copyRefCss(String[] args) {
-//		
-//	}
-//	
+	
 	public static void main(String[] args) {
 
-//		String[] css = { "bootstrap.css", "syntax.css", "style.css", "normalize.css", "main.css" };
-//		try {
-//			Files.copy(Paths.get("../www/css/" + css[0]), Paths.get("/Users/dhowe/Desktop/" + css[0]), StandardCopyOption.REPLACE_EXISTING);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		go(args);
 	}
 
