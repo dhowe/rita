@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function help {
-    echo "Usage: $(basename $0) <version>"
+    echo; echo "Usage: $(basename $0) <version>"
 }
 
 function check_err {
@@ -14,10 +14,10 @@ function check_err {
 }
 
 if [ -z "$1" ] || [ "$1" = "help" ]; then
-   help; #exit 1
+   help; exit 1
 fi
 
-version=${1:-XXX}
+version=$1  #${1:-XXX}
 rita_java="../RiTa2"
 zipfile="rita-$version-proc.zip"
 tmp="/tmp/rita"
@@ -53,8 +53,7 @@ echo "... zipping library"
 rm -f $dest/$zipfile 2>/dev/null 
 (cd $tmp/.. && zip -r - rita) > $dest/$zipfile
 
-ls -l $dest
-jar tf $dest/$zipfile
+ls -l $dest; echo; jar tf $dest/$zipfile
 
 exit 0;
 

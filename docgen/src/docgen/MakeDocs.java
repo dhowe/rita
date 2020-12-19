@@ -15,6 +15,7 @@ import processing.data.JSONObject;
 public class MakeDocs extends PApplet {
 
 	static String DATA_DIR = "data";
+	static String TMPL_DIR = "tmpl";
 	static String STATIC_DIR = "static";
 	static String WWW_OUTPUT = "../pub/";
 	static String REF_OUTPUT = "reference/";
@@ -50,8 +51,8 @@ public class MakeDocs extends PApplet {
 		//if (1==1) throw new RuntimeException("Invalid foo");
 
 		String[] templates = {
-				DATA_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
-				DATA_DIR + "/" + WWWINDEX_TEMPLATE // homepage index
+				TMPL_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
+				TMPL_DIR + "/" + WWWINDEX_TEMPLATE // homepage index
 		};
 		String[] outputs = {
 				WWW_OUTPUT + REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index
@@ -67,7 +68,7 @@ public class MakeDocs extends PApplet {
 				String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls +"</b><span><br><br>\n"; // no link
+				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls + "</b><span><br><br>\n"; // no link
 				for (int j = 0; j < types.length; j++) {
 					ArrayList<String> entries = API.get(cls + "." + types[j]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
@@ -75,7 +76,7 @@ public class MakeDocs extends PApplet {
 						String dsp = entries.get(k);
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
 							String href = (f == 0 ? "./" : REF_OUTPUT) + cls + "/" + dsp + "/index." + OUTPUT_TYPE;
-							System.out.println(f+") "+href);
+							System.out.println(f + ") " + href);
 							if (types[j] == "functions" || types[j] == "statics") {
 								dsp += "()";
 							}
@@ -432,13 +433,31 @@ public class MakeDocs extends PApplet {
 		}
 	}
 
-	static void copyFolder(String from, String to) {
+	/*public static void copyDirectory(String src, String dst) {
+		try {
+			Files.walk(Paths.get(src)).forEach(source -> {
+				Path destination = Paths.get(dst, source.toString()
+						.substring(src.length()));
+				try {
+					System.out.println("copy("+source+","+destination+")");
+					Files.copy(source, destination);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+	
+			});
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}*/
+
+	static void copyFiles(String from, String to) {
 		try {
 			// source & destination directories
 			Path src = Paths.get(from + "/");
 			Path dest = Paths.get(to);
 
-			pln("\nCopying statics from " + src + " to " + dest);
+			pln("\nCopying files from " + src + " to " + dest);
 
 			// create stream for `src`
 			Stream<Path> files = Files.walk(src).filter(Files::isRegularFile);
@@ -446,7 +465,8 @@ public class MakeDocs extends PApplet {
 			// copy all files and folders from `src` to `dest`
 			files.forEach(file -> {
 				try {
-					Files.copy(file, dest.resolve(src.relativize(file)),
+					Path fpath = src.relativize(file);
+					Files.copy(file, dest.resolve(fpath),
 							StandardCopyOption.REPLACE_EXISTING);
 				} catch (IOException e) {
 					throw new RuntimeException(e);
@@ -470,7 +490,7 @@ public class MakeDocs extends PApplet {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void go(String[] args) {
 
 		if (args != null && args.length > 0 && args[0].equals("--silent")) {
 			SILENT = true;
@@ -479,11 +499,12 @@ public class MakeDocs extends PApplet {
 		try {
 			pln("\nCWD: " + System.getProperty("user.dir"));
 			pln("DATA: " + DATA_DIR);
+			pln("TEMPLATES: " + TMPL_DIR);
 			pln("OUTPUT: " + WWW_OUTPUT + REF_OUTPUT);
 
 			//errors += "invalid blah";
 
-			outputTemplate = DATA_DIR + "/" + FUNCTION_TEMPLATE;
+			outputTemplate = TMPL_DIR + "/" + FUNCTION_TEMPLATE;
 			pln("Files to generate: " + CLASS_NAMES.length);
 
 			parseAPI();
@@ -495,7 +516,7 @@ public class MakeDocs extends PApplet {
 				parseJSON(CLASS_NAMES[i]);
 			}
 
-			copyFolder(STATIC_DIR, WWW_OUTPUT + REF_OUTPUT);
+			copyFiles(STATIC_DIR, WWW_OUTPUT + REF_OUTPUT);
 
 			if (!SILENT && errors.length() > 0) throw new RuntimeException("\n" + errors);
 
@@ -516,6 +537,22 @@ public class MakeDocs extends PApplet {
 		else {
 			System.exit(0);
 		}
+	}
+
+//	public static void copyRefCss(String[] args) {
+//		
+//	}
+//	
+	public static void main(String[] args) {
+
+//		String[] css = { "bootstrap.css", "syntax.css", "style.css", "normalize.css", "main.css" };
+//		try {
+//			Files.copy(Paths.get("../www/css/" + css[0]), Paths.get("/Users/dhowe/Desktop/" + css[0]), StandardCopyOption.REPLACE_EXISTING);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		go(args);
 	}
 
 }

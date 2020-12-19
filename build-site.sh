@@ -18,7 +18,6 @@ echo ... generating docs
 pushd docgen >/dev/null
 error=`./generate-docs.sh --silent`
 exitv=$?
-#echo exitval=$exitv
 
 # check for errors
 if [ $exitv -eq 0 ]; then
@@ -30,6 +29,9 @@ else
 fi 
 
 popd >/dev/null
+
+ls -l pub
+
 exit 0;
 
 
