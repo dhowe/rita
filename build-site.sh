@@ -2,31 +2,34 @@
 
 set -e
 
+dest="./pub"
+
 # clean
-echo
-echo ...cleaning pub 
-rm -rf pub
-mkdir pub
+echo ... cleaning $dest
+rm -rf $dest 2>/dev/null
+mkdir $dest
 
 # copy ws
-echo ...making website 
-cp -rf www/* pub/
+echo ... making website 
+cp -rf www/* $dest
 
 # do docs
-echo ...generating docs 
-cd docgen
+echo ... generating docs 
+pushd docgen >/dev/null
 error=`./generate-docs.sh --silent`
 exitv=$?
 #echo exitval=$exitv
 
 # check for errors
 if [ $exitv -eq 0 ]; then
-  echo ...wrote to ./pub
+  echo ... wrote www to $dest
 else
   echo
-  echo "Build failed ***"
+  echo "Site build failed ***"
+  exit $exitv;
 fi 
 
-cd - >/dev/null
+popd >/dev/null
+exit 0;
 
 

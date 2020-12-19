@@ -21,8 +21,8 @@ public class MakeDocs extends PApplet {
 	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
 
 	static String FUNCTION_TEMPLATE = "function.tmpl";
-	static String REFINDEX_TEMPLATE = "refindex.tmpl";
-	static String WWWINDEX_TEMPLATE = "ritahome.tmpl";
+	static String REFINDEX_TEMPLATE = "ref-index.tmpl";
+	static String WWWINDEX_TEMPLATE = "www-index.tmpl";
 
 	static boolean DBUG = false, OUTPUT_MARKUP = false;
 	static final String OUTPUT_TYPE = "html";

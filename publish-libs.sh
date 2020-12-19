@@ -15,6 +15,7 @@ pkg="$rita_js/package.json"
 nojs=false
 nojava=false
 nopub=false
+nowww=false
 
 check_err() {
     local exit_code=$1
@@ -48,6 +49,10 @@ else
 fi
 
 [ -z $version ] && check_err 1 "No version found or supplied"
+
+if [ "$nowww" = false ] ; then         # build website
+  ./build-site.sh || check_err $? "build-site.sh failed"
+fi
 
 if [ "$nojs" = false ] ; then         # build.test JavaScript
     
@@ -137,4 +142,3 @@ runtime=$((`date +%s`-start))
 echo "... done in ${runtime}s\n"
 
 ls -l $artifacts
-echo zip: ; jar tf $zipfile
