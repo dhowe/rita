@@ -5,8 +5,7 @@ function help {
 }
 
 if [ -z "$1" ] || [ "$1" = "help" ]; then
-    help
-    exit 1;
+    help; exit 1
 fi
 
 rita_java=../RiTa2

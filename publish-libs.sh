@@ -6,7 +6,7 @@ start=`date +%s`
 
 # paths
 tmp="/tmp"
-rita_java=."./RiTa2"
+rita_java="../RiTa2"
 rita_js="../rita2js"
 pom="$rita_java/pom.xml"
 pkg="$rita_js/package.json"
@@ -14,6 +14,7 @@ pkg="$rita_js/package.json"
 # options
 nojs=false
 nojava=false
+noproc=false
 nopub=false
 nowww=false
 
@@ -124,6 +125,10 @@ if [ "$nojava" = false ] ; then
     rm -rf $artifacts/rita-*.jar $artifacts/rita-*.pom $artifacts/rita-*.asc 2>/dev/null
     compgen -G $rita_java/target/rita-$version* >/dev/null && cp \
     $rita_java/target/rita-$version* $artifacts
+fi
+
+if [ "$noproc" = false ] ; then
+  ./build-plib.sh || check_err $? "build-plib.sh failed"
 fi
 
 echo "... creating zip"

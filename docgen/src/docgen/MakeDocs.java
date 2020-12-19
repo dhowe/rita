@@ -74,7 +74,8 @@ public class MakeDocs extends PApplet {
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
 						String dsp = entries.get(k);
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
-							String href = REF_OUTPUT + cls + "/" + dsp + "/index." + OUTPUT_TYPE;
+							String href = (f == 0 ? "./" : REF_OUTPUT) + cls + "/" + dsp + "/index." + OUTPUT_TYPE;
+							System.out.println(f+") "+href);
 							if (types[j] == "functions" || types[j] == "statics") {
 								dsp += "()";
 							}
