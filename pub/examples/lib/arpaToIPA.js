@@ -99,9 +99,7 @@ function phoneToIPA(arpaPhone) {
     return ipaPhoneme;
 }
 
-const IPA_STRESS = "ˈ";
-const IPA_2NDSTRESS = "ˌ";
-const PHONES = {
+const IPA_STRESS = "ˈ", IPA_2NDSTRESS = "ˌ", PHONES = {
     "aa": "ɑ", // ɑ or ɒ
     "ae": "æ", // ɑː or æ 
     "ah": "ə", // ə for 'sofa': 'alone'; ʌ for 'but': 'sun'

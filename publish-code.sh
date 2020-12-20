@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+echo not used && exit1
 
 rita_js="../rita2js"
 

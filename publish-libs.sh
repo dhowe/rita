@@ -1,6 +1,5 @@
 #!/bin/sh
 
-### Fix JS library example links
 ### port Java examples
 
 set -e
@@ -35,16 +34,20 @@ check_err() {
     }
 }
 
-while getopts "v:s" option; do
+while getopts "v:p" option; do
     case ${option} in
         v) version=$OPTARG
             echo "\n... using version: $version"
         ;;
         p) nopub=false
-            echo "... skipping publish ***"
+            echo "... publish enabled *"
         ;;
     esac
 done
+
+if [ "$nopub" = true ] ; then         # build website
+    echo "... publish disabled (use -p)"    
+fi
 
 if [ -z $version ] ; then
     ./check-env.sh || check_err $? "env check failed"
@@ -58,7 +61,7 @@ fi
 [ -z $version ] && check_err 1 "No version found or supplied"
 
 if [ "$nowww" = false ] ; then         # build website
-  ./build-site.sh || check_err $? "build-site.sh failed"
+    ./build-site.sh || check_err $? "build-site.sh failed"
 fi
 
 [ "$nojs" = true ] && [ "$nojava" = true ] && check_err 1 "nothing to do"
@@ -80,7 +83,7 @@ fi
 
 echo "... cleaning $artifacts"
 [[ -d $artifacts ]] || mkdir $artifacts
-rm -f $artifacts/*.* >/dev/null 
+rm -f $artifacts/*.* >/dev/null
 
 
 if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
@@ -103,13 +106,13 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
     fi
     
     # clean previous versions
-    compgen -G $artifacts/*.js >/dev/null && mv $artifacts/*.js $tmp  
+    compgen -G $artifacts/*.js >/dev/null && mv $artifacts/*.js $tmp
     compgen -G $artifacts/*.tgz >/dev/null && mv $artifacts/*.tgz $tmp
-
+    
     # copy new versions to artifacts
     compgen -G $jsdist/*.js >/dev/null && cp $jsdist/*.js $artifacts
     compgen -G $rita_js/*.tgz >/dev/null && mv $rita_js/*.tgz $artifacts
-
+    
     # copy new web js to pub/examples/lib
     compgen -G $jsdist/rita-web*.js >/dev/null && \
     cp $jsdist/rita-web*.js $pubdist
@@ -143,14 +146,14 @@ fi
 
 # create processing library
 if [ "$noproc" = false ] ; then
-  ./build-plib.sh $version || check_err $? "build-plib.sh failed"
-  cp "$artifacts/rita-$version-plib.zip" $download
+    ./build-plib.sh $version || check_err $? "build-plib.sh failed"
+    cp "$artifacts/rita-$version-plib.zip" $download
 fi
 
 if [ "$zipart" = true ] ; then  # skip artifact zip
     echo "... zipping artifacts"
     zipfile=rita-$version-all.zip
-    rm -f rita-$version-all.zip 2>/dev/null 
+    rm -f rita-$version-all.zip 2>/dev/null
     pushd $artifacts >/dev/null
     zip ../$zipfile ./* >/dev/null
     popd >/dev/null

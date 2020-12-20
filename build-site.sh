@@ -14,7 +14,7 @@ mkdir $dest
 echo ... making website 
 cp -rf www/* $dest
 
-# if we have build js move it into website (for examples)
+# if we have built js move it into website (for examples)
 compgen -G $ritajs/dist/rita-web*.js >/dev/null && cp $ritajs/dist/rita-web*.js $dest/dist/
 
 # do docs

@@ -1,3 +1,3 @@
 #!/bin/sh
 
-find ./docgen ./www  -name '*' | entr ./build-www.sh
+find ./docgen ./www  -name '*' | entr ./build-site.sh
