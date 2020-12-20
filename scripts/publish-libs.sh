@@ -160,12 +160,16 @@ if [ "$zipart" = true ] ; then  # skip artifact zip
     popd >/dev/null
 fi
 
+echo "... tagging ritaweb"
+git add .
+git tag -a v$version -m "Release v$version"
+git push -q
 
 echo "... cleaning up"
 #rm -rf $ritajs/*.tgz
+
 
 runtime=$((`date +%s`-start))
 
 echo "... done in ${runtime}s\n"
 
-ls -l pub/download
