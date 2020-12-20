@@ -9,13 +9,13 @@ start=`date +%s`
 # paths
 tmp="/tmp"
 pub="./pub"
-rita_java="../RiTa2"
-rita_js="../rita2js"
-pom="$rita_java/pom.xml"
-pkg="$rita_js/package.json"
+ritajava="../rita"
+ritajs="../ritajs"
+pom="$ritajava/pom.xml"
+pkg="$ritajs/package.json"
 artifacts="./artifacts"
 download="$pub/download"
-jsdist="$rita_js/dist"
+jsdist="$ritajs/dist"
 pubdist="$pub/dist"
 
 # options
@@ -51,7 +51,7 @@ fi
 
 if [ -z $version ] ; then
     ./check-env.sh || check_err $? "env check failed"
-    pushd $rita_js >/dev/null
+    pushd $ritajs >/dev/null
     version=`npx npe version`
     popd >/dev/null
 else
@@ -69,14 +69,14 @@ fi
 if [ "$nojs" = false ] ; then         # build.test JavaScript
     
     echo "... building with yarn"
-    yarn --cwd  $rita_js build >/dev/null || check_err $? "yarn build failed"
+    yarn --cwd  $ritajs build >/dev/null || check_err $? "yarn build failed"
     
     echo "... testing with yarn"
-    yarn --cwd  $rita_js test.prod >/dev/null || check_err $? "yarn tests failed"
+    yarn --cwd  $ritajs test.prod >/dev/null || check_err $? "yarn tests failed"
     
     echo "... packaging with npm"
-    rm -rf $rita_js/rita-*.tgz
-    pushd $rita_js >/dev/null
+    rm -rf $ritajs/rita-*.tgz
+    pushd $ritajs >/dev/null
     npm pack --quiet >/dev/null || check_err $? "npm pack failed"
     popd >/dev/null
 fi
@@ -94,14 +94,14 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
         echo
         if [[ $REPLY =~ ^[Yy]$ ]] ; then
             echo "... git-tag js v$version"
-            pushd $rita_js >/dev/null
+            pushd $ritajs >/dev/null
             git tag -a v$version -m "Release v$version"
             git push -q origin --tags
             NPM_TAR=rita-$version.tgz
             echo "... deploying to npm"
             npm publish $NPM_TAR --quiet || check_err $? "npm publish failed"
             popd >/dev/null
-            mv $rita_js/*.tgz  $artifacts
+            mv $ritajs/*.tgz  $artifacts
         fi
     fi
     
@@ -111,7 +111,7 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
     
     # copy new versions to artifacts
     compgen -G $jsdist/*.js >/dev/null && cp $jsdist/*.js $artifacts
-    compgen -G $rita_js/*.tgz >/dev/null && mv $rita_js/*.tgz $artifacts
+    compgen -G $ritajs/*.tgz >/dev/null && mv $ritajs/*.tgz $artifacts
     
     # copy new web js to pub/examples/lib
     compgen -G $jsdist/rita-web*.js >/dev/null && \
@@ -124,7 +124,7 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
         read -p "publish java v$version to github? " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]] ; then
-            pushd $rita_java >/dev/null
+            pushd $ritajava >/dev/null
             echo "... git-tag java v$version"
             git tag -a v$version -m "Release v$version"
             git push -q origin --tags
@@ -133,15 +133,15 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
             popd >/dev/null
         fi
     else
-        pushd $rita_java >/dev/null
+        pushd $ritajava >/dev/null
         echo "... creating maven packages"
         mvn -q -T1C clean package || check_err $? "maven build failed"
         popd >/dev/null
     fi
     # remove previous versions
     rm -rf $artifacts/rita-*.jar $artifacts/rita-*.pom $artifacts/rita-*.asc 2>/dev/null
-    compgen -G $rita_java/target/rita-$version* >/dev/null && cp \
-    $rita_java/target/rita-$version* $artifacts
+    compgen -G $ritajava/target/rita-$version* >/dev/null && cp \
+    $ritajava/target/rita-$version* $artifacts
 fi
 
 # create processing library
@@ -161,7 +161,7 @@ fi
 
 
 echo "... cleaning up"
-#rm -rf $rita_js/*.tgz
+#rm -rf $ritajs/*.tgz
 
 runtime=$((`date +%s`-start))
 

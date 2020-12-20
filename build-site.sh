@@ -3,7 +3,7 @@
 set -e
 
 dest="./pub"
-ritajs="../rita2js"
+ritajs="../ritajs"
 
 # clean
 echo ... cleaning $dest

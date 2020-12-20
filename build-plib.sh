@@ -18,7 +18,7 @@ if [ -z "$1" ] || [ "$1" = "help" ]; then
 fi
 
 version=$1  #${1:-XXX}
-rita_java="../RiTa2"
+ritajava="../rita"
 zipfile="rita-$version-plib.zip"
 plibs="$HOME/Documents/Processing/libraries/"
 tmp="/tmp/rita"
@@ -38,15 +38,15 @@ cp -r $tmp/library.properties $dest/rita.txt
 
 echo "... copying reference, examples"
 cp -r pub/reference $tmp 
-cp -r $rita_java/examples/processing $tmp/examples
+cp -r $ritajava/examples/processing $tmp/examples
 
 echo "... copying source, javadocs"
 cp -r $dest/rita-$version-sources.jar  $tmp/source.jar
 cp -r $dest/rita-$version-javadoc.jar  $tmp/javadoc.jar
 
 echo "... compiling rita.jar with deps"
-(cd $rita_java && mvn -q compile assembly:single) || check_err $? "maven compile failed"
-cp -r $rita_java/target/rita-$version-jar-with-dependencies.jar  $lib/rita.jar
+(cd $ritajava && mvn -q compile assembly:single) || check_err $? "maven compile failed"
+cp -r $ritajava/target/rita-$version-jar-with-dependencies.jar  $lib/rita.jar
 
 echo "... zipping processing library"
 rm -f $dest/$zipfile 2>/dev/null 
@@ -62,7 +62,7 @@ mv $tmp $plibs
 if [ "$openproc" = true ] ; then
   killall Processing
   sleep 1
-  open $rita_java/examples/
+  open $ritajava/examples/
 fi
 
 exit 0;

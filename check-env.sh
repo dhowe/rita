@@ -2,11 +2,11 @@
 
 set -e
 
-RITA_JAVA=../RiTa2
-RITA_JS=../rita2js
+ritajava=../rita
+ritajs=../ritajs
 
-POM=$RITA_JAVA/pom.xml
-PKG=$RITA_JS/package.json
+POM=$ritajava/pom.xml
+PKG=$ritajs/package.json
 
 echo "... checking environment"
 
@@ -20,20 +20,20 @@ check_err() {
     }
 }
 
-[[ ! -f $POM ]] && check_err 1 "expected java repo at $RITA_JAVA"
-[[ ! -f $PKG ]] && check_err 1 "expected js repo at $RITA_JS"
+[[ ! -f $POM ]] && check_err 1 "expected java repo at $ritajava"
+[[ ! -f $PKG ]] && check_err 1 "expected js repo at $ritajs"
 
-pushd $RITA_JS >/dev/null
+pushd $ritajs >/dev/null
 VERSION=`npx npe version`
 STATUS=`git status -s`
-[[ $STATUS ]] && check_err 1 "uncommitted changes in $RITA_JS: $STATUS"
+[[ $STATUS ]] && check_err 1 "uncommitted changes in $ritajs: $STATUS"
 popd >/dev/null
 
-pushd $RITA_JAVA >/dev/null
+pushd $ritajava >/dev/null
 JAVAVER=`grep version $POM | grep -v -e '<?xml|~'| head -n 1 | sed 's/[[:space:]]//g' \
 | sed -E 's/<.{0,1}version>//g' | awk '{print $1}'`
 STATUS=`git status -s`
-[[ $STATUS ]] && check_err 1 "uncommitted changes in $RITA_JAVA: $STATUS"
+[[ $STATUS ]] && check_err 1 "uncommitted changes in $ritajava: $STATUS"
 popd >/dev/null
 
 if [ "$JAVAVER" != "$VERSION" ]; then # check versions are same

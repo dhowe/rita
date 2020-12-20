@@ -8,8 +8,8 @@ if [ -z "$1" ] || [ "$1" = "help" ]; then
     help; exit 1
 fi
 
-rita_java=../RiTa2
-rita_js=../rita2js
+ritajava=../rita
+ritajs=../ritajs
 version=$1
 
 
@@ -25,7 +25,7 @@ check_err() {
 }
 
 ############################# JS ################################
-pushd $rita_js >/dev/null
+pushd $ritajs >/dev/null
 changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
     echo "... bump package.js version"
@@ -43,7 +43,7 @@ fi
 popd >/dev/null
 
 ############################# JAVA ################################
-pushd $rita_java >/dev/null
+pushd $ritajava >/dev/null
 changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
     echo "... bump pom.xml version"

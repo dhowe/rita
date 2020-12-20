@@ -1,1 +1,1 @@
-# rita2doc
+# RiTa documentation generator

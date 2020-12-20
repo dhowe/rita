@@ -3,9 +3,9 @@
 set -e
 echo not used && exit1
 
-rita_js="../rita2js"
+ritajs="../ritajs"
 
-pushd $rita_js >/dev/null
+pushd $ritajs >/dev/null
 version=`npx npe version`
 popd >/dev/null
 
