@@ -1,48 +1,3 @@
-const IPA_STRESS = "ˈ",
-    IPA_2NDSTRESS = "ˌ";
-
-const amap = {
-    "aa": "ɑ", // ɑ or ɒ
-    "ae": "æ", // ɑː or æ 
-    "ah": "ə", // ə for 'sofa': 'alone'; ʌ for 'but': 'sun'
-    "ao": "ɔ",
-    "aw": "aʊ",
-    "ay": "aɪ",
-    "b": "b",
-    "ch": "tʃ",
-    "d": "d",
-    "dh": "ð",
-    "eh": "ɛ",
-    "er": "ə", // ə or ɚ 
-    "ey": "eɪ",
-    "f": "f",
-    "g": "g", // g or ɡ (view the difference in notepad)
-    "hh": "h",
-    "ih": "ɪ",
-    "iy": "i",
-    "jh": "dʒ",
-    "k": "k",
-    "l": "l",
-    "m": "m",
-    "ng": "ŋ",
-    "n": "n",
-    "ow": "əʊ", // əʊ for NAmE; or oʊ in BrE
-    "oy": "ɔɪ",
-    "p": "p",
-    "r": "ɹ", // r or ɹ
-    "sh": "ʃ",
-    "s": "s",
-    "th": "θ",
-    "t": "t",
-    "uh": "ʊ",
-    "uw": "u",
-    "v": "v",
-    "w": "w",
-    "y": "j",
-    "z": "z",
-    "zh": "ʒ"
-};
-
 function arpaToIPA(phones) {
 
     let syllables = phones.trim().split(" "),
@@ -137,9 +92,53 @@ function syllableToIPA(arpaSyl, needStress) {
 }
 
 function phoneToIPA(arpaPhone) {
-    ipaPhoneme = amap[arpaPhone];
+    ipaPhoneme = PHONES[arpaPhone];
     if (ipaPhoneme === null) {
         console.error("Unexpected Phoneme: " + arpaPhone);
     }
     return ipaPhoneme;
 }
+
+const IPA_STRESS = "ˈ";
+const IPA_2NDSTRESS = "ˌ";
+const PHONES = {
+    "aa": "ɑ", // ɑ or ɒ
+    "ae": "æ", // ɑː or æ 
+    "ah": "ə", // ə for 'sofa': 'alone'; ʌ for 'but': 'sun'
+    "ao": "ɔ",
+    "aw": "aʊ",
+    "ay": "aɪ",
+    "b": "b",
+    "ch": "tʃ",
+    "d": "d",
+    "dh": "ð",
+    "eh": "ɛ",
+    "er": "ə", // ə or ɚ 
+    "ey": "eɪ",
+    "f": "f",
+    "g": "g", // g or ɡ (view the difference in notepad)
+    "hh": "h",
+    "ih": "ɪ",
+    "iy": "i",
+    "jh": "dʒ",
+    "k": "k",
+    "l": "l",
+    "m": "m",
+    "ng": "ŋ",
+    "n": "n",
+    "ow": "əʊ", // əʊ for NAmE; or oʊ in BrE
+    "oy": "ɔɪ",
+    "p": "p",
+    "r": "ɹ", // r or ɹ
+    "sh": "ʃ",
+    "s": "s",
+    "th": "θ",
+    "t": "t",
+    "uh": "ʊ",
+    "uw": "u",
+    "v": "v",
+    "w": "w",
+    "y": "j",
+    "z": "z",
+    "zh": "ʒ"
+};

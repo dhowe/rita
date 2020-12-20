@@ -1,6 +1,3 @@
-const IPA_STRESS = "ˈ";
-const IPA_2NDSTRESS = "ˌ";
-
 function arpaToIPA(phones) {
 
     let syllables = phones.trim().split(" "),
@@ -102,6 +99,8 @@ function phoneToIPA(arpaPhone) {
     return ipaPhoneme;
 }
 
+const IPA_STRESS = "ˈ";
+const IPA_2NDSTRESS = "ˌ";
 const PHONES = {
     "aa": "ɑ", // ɑ or ɒ
     "ae": "æ", // ɑː or æ 
