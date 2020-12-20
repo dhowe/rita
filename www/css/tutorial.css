@@ -52,10 +52,9 @@
     margin-top: 1rem;
     text-transform: none;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1.6rem;
 }
 .tutorial h5.sub{
-    font-size: 1.2rem;
     text-transform: uppercase;
     letter-spacing: 0.05rem;
     margin-bottom: 2rem;
@@ -82,13 +81,13 @@
     margin-top: 0.5rem;
 }
 .tutorial .ref p{
-    font-size:0.9rem;
-    line-height: 1.3rem;
+    font-size:1.1rem;
+    line-height: 1.4rem;
     color:grey;
 }
 span.ref{
-    font-size:0.9rem;
-    line-height: 1.3rem;
+    font-size:1.1rem;
+    line-height: 1.4rem;
     color:grey;
 }
 .tutorial .ref a{

@@ -66,7 +66,7 @@
             <h4>
               <a href="../index.html#learning-wrapper">
                 <span>Tutorial ></span>
-              </a>Analyzing Text</h4>
+              </a>Analyzing Text</h4><br />  
             <ul class="sublist">
               <li><a href="#Phonemes">Phonemes</a></li>
               <li><a href="#Stresses">Stresses</a></li>
@@ -90,7 +90,7 @@
               </div>
               <p>The "ch" letter combination has three different pronunciations, which are represented by three different phonemes: /ʃ/, /k/ and /tʃ/.
               </p>
-              <p>In RiTa, we use Arpabet to represent the phonemes. Arpabet is a phonetic transcription code developed by
+              <p>In RiTa, we use Arpabet to represent the phonemes  (or phones). Arpabet is a phonetic transcription code developed by
                 Advanced Research Projects Agency (ARPA) as a part of the Speech Understanding Project. It represents each
                 phoneme of English with a distinct sequence of ASCII characters.
               </p>
@@ -103,15 +103,15 @@
                 </p>
               </div>
 
-              <p>You can use <a href="../reference/RiTa/phonemes/index.html"><b>RiTa.phonemes</b></a> to analyse the phonemes.</p>
+              <p>You can use <a href="../reference/RiTa/phones/index.html"><b>RiTa.phones</b></a> to analyse the phonemes.</p>
 
-              <pre><code class="language-javascript">RiTa.phonemes("An elephant is a mammal");</code></pre>
+              <pre><code class="language-javascript">RiTa.phones("An elephant is a mammal");</code></pre>
 
               <p>It will return: 'ae-n eh-l-ax-f-ax-n-t ih-z ey m-ae-m-ax-l'.</p><br/>
               <div class="ref">
                 <p>A list of the phonemes used in RiTa:
                   <br />
-                  <a href="../reference/PhonemeTags.html">http://www.rednoise.org/rita/reference/PhonemeTags.html</a></p>
+                  <a href="../reference/phones.html">http://www.rednoise.org/rita/reference/phones.html</a></p>
                 <p>The reference list from Arpabet to IPA:
                   <br />
                   <a href="https://en.wikipedia.org/wiki/Arpabet/">https://en.wikipedia.org/wiki/ARPABET</a>
@@ -152,7 +152,7 @@
                <pre><code class="language-javascript">RiTa.pos("I am hungry");</code></pre>
                <p>The outcome would be: ["prp", "vbp", "jj"]</p>
               <p>
-              Here you can find <a href="../reference/PennTags.html">a reference list of PENN part-of-speech tagger in RiTa</a>.
+              Here you can find <a href="../reference/postags.html">a reference list of PENN part-of-speech tagger in RiTa</a>.
               </p>
 
               <p>By default RiTa uses the <b>PENN </b>tag set and it is very detailed. If you only need the very basic POS categories, you can switch to <b>WordNet-style</b> tags,

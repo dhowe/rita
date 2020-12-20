@@ -137,11 +137,11 @@
                 <h3>Downloads</h3>
 
                 <div class="row pad-small">
-                  <h4>Complete</h4>
+                  <h4>Java (complete)</h4>
                   <div class="downloadbox">
-                    <a href="download/rita.zip" download="rita.zip"><span></span></a>
-                    RiTa-complete
-                    <span>java, javascript, examples, source, etc.</span>
+                    <a href="https://rednoise.org/rita/rita.zip" download="rita.zip"><span></span></a>
+                    RiTa
+                    <span>java, examples, reference, source, jar, etc.</span>
                   </div>
                 </div>
 
@@ -155,28 +155,30 @@
                 <div class="row pad-small">
                   <h4>Browser</h4>
                   <div class="downloadbox">
-                    <a target="_blank" href="https://unpkg.com/rita/"> <span></span></a>
-                    Full (with lexicon) via unpkg
+                    <a target="_blank" href="https://unpkg.com/rita"> <span></span></a>
+                    Core libary via unpkg
                     <span class="sizes">
                       <a class="mini default">1.4M</a> </span>
                   </div>
                   <div class="downloadbox">
-                    <a target="_blank" href="https://unpkg.com/rita/"> <span></span></a>
-                    Small (without lexicon) via unpkg
+                    <a target="_blank" href="https://unpkg.com/rita@latest/dist/rita-web-nolex.js"> <span></span></a>
+                    Micro (no lexicon) via unpkg
                     <span class="sizes">
-                      <a class="mini default">560K</a> </span>
+                      <a class="mini default">560K</a>
+                    </span>
                   </div>
                 </div>
 
                 <div class="row pad-small">
                   <h4>Java</h4>
-                  <div class="downloadbox"><a target="_blank"
-                      href="https://search.maven.org/classic/#artifactdetails%7Corg.rednoise%7Crita%7Cv2.0.0-beta.50%7Cjar">
-                      <span></span></a>Via Maven
-                  </div>
                   <div class="downloadbox">
-                    <a target="_blank" href="https://github.com/dhowe/rita/packages/506086"><span></span></a>Via GitHub
+                    <a target="_blank" href="https://github.com/dhowe/rita/packages/"><span></span></a>Via GitHub
+                    Packages
                   </div>
+                  <div class="downloadbox"><a target="_blank" href="https://search.maven.org/artifact/org.rednoise/rita">
+                      <span></span></a>Via Maven Central
+                  </div>
+
                 </div>
 
               </div>
@@ -261,7 +263,8 @@
 
           <br><strong>Version 2</strong> of RiTa is a complete rewrite of the library that is smaller, faster, more
           user-friendly and more easily maintained. But is not backwards-compatible with programs
-          written with <a href="https://rednoise.org/rita1" target="blank">version 1.x</a>. Nearly all of the functionality of v1 is still available (plus lots of new
+          written with <a href="https://rednoise.org/rita1" target="blank">version 1.x</a>. Nearly all of the
+          functionality of v1 is still available (plus lots of new
           features), but much of the organization and many of the function names have changed. Migrating an older work
           to v2 is generally quite straightforward (and I'm happy to help if you
           run into problems)...<br>
@@ -287,7 +290,8 @@
             <li>RiTa v2 is available for Java (via Maven and github-packages) and JavaScript (via npm and unpkg). It is
               also available, of course, as a library for Processing and p5.js.</li>
           </ul>
-          <br/><strong>Note: you can still find an archive of version 1.x <a href="https://rednoise.org/rita1" target="blank">here...</a></strong>
+          <br /><strong>Note: you can still find an archive of version 1.x <a href="https://rednoise.org/rita1"
+              target="blank">here...</a></strong>
         </div>
         <div class="col-md-2">
         </div>
@@ -363,19 +367,10 @@
                     <ul class="list-group">
                       <li class="list-group-item"><a href="https://www.npmjs.com/package/rita" target="_blank">In
                           node.js (via npm)</a></li>
-                      <li class="list-group-item"><a
-                          href="https://github.com/dhowe/RiTaJS/blob/master/README.node.md#in-nodejs" target="_blank">In
-                          node.js (via github)</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTaJS#a-simple-sketch"
-                          target="_blank">In the browser</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTaJS#with-browserify-and-npm"
-                          target="_blank">In the browser with browserify</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTaJS#with-bower"
-                          target="_blank">In the browser with bower</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTaJS#with-p5js" target="_blank">In
-                          the browser with p5.js</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTaJS#with-processingjs"
-                          target="_blank">In the browser with processing.js</a></li>
+                      <li class="list-group-item"><a href="https://github.com/dhowe/ritajs#a-simple-sketch"
+                          target="_blank">In the browser (with unpkg)</a></li>
+                      <li class="list-group-item"><a href="https://github.com/dhowe/ritajs#with-p5js" target="_blank">In
+                          the browser (with p5.js)</a></li>
                     </ul>
                   </div>
                 </div>
@@ -388,23 +383,23 @@
                   </div>
                   <div id="collapseQS2" class="panel-collapse collapse">
                     <ul class="list-group">
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTa#in-processing"
+                      <li class="list-group-item"><a href="https://github.com/dhowe/rita#in-processing"
                           target="_blank">In processing</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTa#in-processing-android-mode"
+                      <!--li class="list-group-item"><a href="https://github.com/dhowe/rita#in-processing-android-mode"
                           target="_blank">In processing for android</a></li>
                       <li class="list-group-item"><a
                           href="https://github.com/dhowe/RiTa/blob/master/README.android.md#in-android"
-                          target="_blank">As a standalone android app (jar)</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTa#a-simple-example-java"
-                          target="_blank">As a standalone java program (jar)</a></li>
+                          target="_blank">As a standalone android app (jar)</a></li-->
+                      <li class="list-group-item"><a href="https://github.com/dhowe/rita#a-simple-example-java"
+                          target="_blank">As a standalone java program</a></li>
 
                       <!-- TODO: update link
-                  <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">In a java program via maven</a></li> -->
+                      <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">In a java program via maven</a></li> -->
                     </ul>
                   </div>
                 </div>
 
-                <div class="panel panel-default">
+                <!--div class="panel panel-default">
                   <div class="panel-heading">
                     <h5 class="panel-title">
                       <a data-toggle="collapse" href="#collapseQS3">Development</a>
@@ -415,17 +410,17 @@
                       <li class="list-group-item"><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse"
                           target="_blank">Eclipse (java) via git/ant</a></li>
 
-                      <!-- TODO: update link
-                  <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">Eclipse (java) via git/maven</a></li> -->
+                      COMMENT: TODO: update link
+                      <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">Eclipse (java) via git/maven</a></li> END-COMMENT
 
                       <li class="list-group-item"><a href="https://github.com/dhowe/RiTaJS#development-setup"
                           target="_blank">Javascript via git/npm/gulp</a></li>
 
-                      <!-- TODO: update link
-                  <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">In a java program via maven</a></li> -->
+                      COMMENT: TODO: update link
+                      <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">In a java program via maven</a></li> END-COMMENT
                     </ul>
                   </div>
-                </div>
+                </div-->
               </div>
             </div>
             <div class="col-md-3">

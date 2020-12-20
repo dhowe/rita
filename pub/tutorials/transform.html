@@ -65,7 +65,7 @@
             <h4>
               <a href="../index.html#learning-wrapper">
                 <span>Tutorial ></span>
-              </a>Transformation</h4>
+              </a>Transformation</h4><br />
             <ul class="sublist">
               <li><a href="#Conjugation">Conjugation</a></li>
               <li><a href="#Stemming">Stemming</a></li>
@@ -107,19 +107,19 @@
               </p>
 
               <div class="example">
-                <p><b>TENSE: &nbsp;</b> PAST_TENSE, PRESENT_TENSE, FUTURE_TENSE
+                <p><b>TENSE: &nbsp;</b> PAST, PRESENT, FUTURE
                   <br/><br/>
                   <b>NUMBER: &nbsp;</b> SINGULAR, PLURAL
                   <br/><br/>
-                  <b>PERSON: &nbsp;</b> FIRST_PERSON, SECOND_PERSON, THIRD_PERSON</p>
+                  <b>PERSON: &nbsp;</b> FIRST, SECOND, THIRD</p>
               </div>
             </br>
 An example, in JavaScript:
               <pre><code class="language-javascript">
   let args = {
-    tense: RiTa.PAST_TENSE,
+    tense: RiTa.PAST,
     number: RiTa.SINGULAR,
-    person: RiTa.THIRD_PERSON
+    person: RiTa.THIRD
   };
   let result = RiTa.conjugate("swim", args);</code></pre>
 
@@ -167,9 +167,9 @@ An example, in JavaScript:
               <pre><code class="language-javascript">RiTa.singularize("apples");</code></pre>
               <div class="example">
 
-                <p> 'apples' -> 'apple'</br>
-                'children' -> 'child'</br>
-                'appendices' -> 'appendix'</p>
+                <p> apples -> apple</br>
+                children -> child</br>
+                appendices -> appendix</p>
               </div>
 
             </div>
@@ -181,21 +181,16 @@ An example, in JavaScript:
                 ...), it does not end a sentence. A period following a single capitalized letter is assumed to be a person's initial, and is not considered the end of a sentence.
               </p>
               <p><a href="../reference/RiTa/sentences/index.html"><b>RiTa.sentences</b></a> splits 'text' into sentences according to the PENN Treebank conventions.
-                <pre><code class="language-javascript">RiTa.sentences("'What's happened to me?' he thought. It wasn't a dream. \
-  His room, a proper human room although a little too small, lay peacefully \
+                <pre><code class="language-javascript">RiTa.sentences("'What's happened to me?' he thought. It wasn't a dream. 
+  His room, a proper human room although a little too small, lay peacefully 
   between its four familiar walls.");</code></pre>
               <p>This will return an array of three sentences:</p>
               <div class="example">
                [0] 'What's happened to me?' he thought. <br />
                [1] It wasn't a dream. <br />
                [2] His room, a proper human room although a little too small, lay peacefully between its four familiar walls.
-
-
               </div>
               <br/>
-
-                <span class="ref">More about <a href="ftp://ftp.cis.upenn.edu/pub/treebank/public_html/tokenization.html">PENN Treebank tokenization</a>
-                </span>
               </p>
             </div>
             <hr />

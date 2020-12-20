@@ -6,9 +6,7 @@ dest="./pub"
 ritajs="../ritajs"
 
 # clean
-echo ... cleaning $dest
-rm -rf $dest 2>/dev/null
-mkdir $dest
+[[ -d $dest ]] || mkdir $dest
 
 # copy ws
 echo ... making website 
