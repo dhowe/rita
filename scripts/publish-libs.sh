@@ -1,6 +1,6 @@
 #!/bin/sh
 
-### port Java examples
+### NEXT: port tutorial, port Java examples
 
 set -e
 
@@ -50,18 +50,18 @@ if [ "$nopub" = true ] ; then         # build website
 fi
 
 if [ -z $version ] ; then
-    ./check-env.sh || check_err $? "env check failed"
+    ./scripts/check-env.sh || check_err $? "env check failed"
     pushd $ritajs >/dev/null
     version=`npx npe version`
     popd >/dev/null
 else
-    ./bump-vers.sh $version || check_err $? "bump-vers.sh failed"
+    ./scripts/bump-vers.sh $version || check_err $? "bump-vers.sh failed"
 fi
 
 [ -z $version ] && check_err 1 "No version found or supplied"
 
 if [ "$nowww" = false ] ; then         # build website
-    ./build-site.sh || check_err $? "build-site.sh failed"
+    ./scripts/build-site.sh || check_err $? "build-site.sh failed"
 fi
 
 [ "$nojs" = true ] && [ "$nojava" = true ] && check_err 1 "nothing to do"
@@ -146,7 +146,7 @@ fi
 
 # create processing library
 if [ "$noproc" = false ] ; then
-    ./build-plib.sh $version || check_err $? "build-plib.sh failed"
+    ./scripts/build-plib.sh $version || check_err $? "build-plib.sh failed"
     cp "$artifacts/rita-$version-plib.zip" $download
 fi
 

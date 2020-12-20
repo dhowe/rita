@@ -19,11 +19,11 @@ fi
 
 version=$1  #${1:-XXX}
 ritajava="../rita"
+dest="./artifacts"
 zipfile="rita-$version-plib.zip"
 plibs="$HOME/Documents/Processing/libraries/"
 tmp="/tmp/rita"
 lib="$tmp/library"
-dest="./artifacts"
 openproc=false
 
 echo "... creating library for processing"
@@ -41,8 +41,8 @@ cp -r pub/reference $tmp
 cp -r $ritajava/examples/processing $tmp/examples
 
 echo "... copying source, javadocs"
-cp -r $dest/rita-$version-sources.jar  $tmp/source.jar
-cp -r $dest/rita-$version-javadoc.jar  $tmp/javadoc.jar
+cp -r $dest/rita-$version-sources.jar  $tmp/source.jar || check_err $? "cp sources failed"
+cp -r $dest/rita-$version-javadoc.jar  $tmp/javadoc.jar || check_err $? "cp javadocs failed"
 
 echo "... compiling rita.jar with deps"
 (cd $ritajava && mvn -q compile assembly:single) || check_err $? "maven compile failed"

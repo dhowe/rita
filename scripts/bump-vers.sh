@@ -56,6 +56,6 @@ else
 fi
 popd >/dev/null
 
-./check-env.sh
+./scripts/check-env.sh
 
 
