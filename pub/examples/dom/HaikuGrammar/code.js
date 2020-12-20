@@ -1,11 +1,11 @@
 let grammar, lines;
 
-$(document).ready(function () {
+$(function () {
 
   $.getJSON('../../data/haiku.json', json => {
-    
-    grammar = new RiTa.Grammar(json);
-    
+
+    grammar = RiTa.grammar(json);
+
     lines = $('.lines');
     $(lines[0]).text("click to");
     $(lines[1]).text("generate");
@@ -16,6 +16,7 @@ $(document).ready(function () {
 });
 
 function haiku() {
+
   let expanded = grammar.expand();
   let haiku = expanded.split("%");
   for (let i = 0; i < haiku.length; i++) {

@@ -3,7 +3,7 @@ let word, content, keywords = [
   "clerk", "room", "violin", "window"
 ];
 
-$(document).ready(function () {
+$(function () {
 
   doSetup();
 

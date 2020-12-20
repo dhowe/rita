@@ -1,6 +1,5 @@
 #!/bin/sh
 
-### NEXT: remove -v option (make it verbose)
 ### Fix JS library example links
 ### port Java examples
 
@@ -10,19 +9,22 @@ start=`date +%s`
 
 # paths
 tmp="/tmp"
+pub="./pub"
 rita_java="../RiTa2"
 rita_js="../rita2js"
 pom="$rita_java/pom.xml"
 pkg="$rita_js/package.json"
 artifacts="./artifacts"
-download="./pub/download"
+download="$pub/download"
+jsdist="$rita_js/dist"
+pubdist="$pub/dist"
 
 # options
 nojs=false
 nojava=false
 noproc=false
-nopub=false
 nowww=false
+nopub=true
 
 check_err() {
     local exit_code=$1
@@ -33,15 +35,13 @@ check_err() {
     }
 }
 
-[ "$nojs" = true ] && [ "$nojava" = true ] && check_err 1 "nothing to do"
-
 while getopts "v:s" option; do
     case ${option} in
         v) version=$OPTARG
             echo "\n... using version: $version"
         ;;
-        s) nopub=true
-            echo "... skipping publish step"
+        p) nopub=false
+            echo "... skipping publish ***"
         ;;
     esac
 done
@@ -60,6 +60,8 @@ fi
 if [ "$nowww" = false ] ; then         # build website
   ./build-site.sh || check_err $? "build-site.sh failed"
 fi
+
+[ "$nojs" = true ] && [ "$nojava" = true ] && check_err 1 "nothing to do"
 
 if [ "$nojs" = false ] ; then         # build.test JavaScript
     
@@ -80,7 +82,8 @@ echo "... cleaning $artifacts"
 [[ -d $artifacts ]] || mkdir $artifacts
 rm -f $artifacts/*.* >/dev/null 
 
-if [ "$nojs" = false ] ; then
+
+if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
     
     if [ "$nopub" = false ] ; then
         echo
@@ -99,13 +102,20 @@ if [ "$nojs" = false ] ; then
         fi
     fi
     
-    compgen -G $artifacts/*.js >/dev/null && mv $artifacts/*.js $tmp  # clean previous versions
+    # clean previous versions
+    compgen -G $artifacts/*.js >/dev/null && mv $artifacts/*.js $tmp  
     compgen -G $artifacts/*.tgz >/dev/null && mv $artifacts/*.tgz $tmp
-    compgen -G $rita_js/dist/*.js >/dev/null && cp $rita_js/dist/*.js $artifacts
+
+    # copy new versions to artifacts
+    compgen -G $jsdist/*.js >/dev/null && cp $jsdist/*.js $artifacts
     compgen -G $rita_js/*.tgz >/dev/null && mv $rita_js/*.tgz $artifacts
+
+    # copy new web js to pub/examples/lib
+    compgen -G $jsdist/rita-web*.js >/dev/null && \
+    cp $jsdist/rita-web*.js $pubdist
 fi
 
-if [ "$nojava" = false ] ; then
+if [ "$nojava" = false ] ; then       # publish java to github packages
     if [ "$nopub" = false ] ; then
         echo
         read -p "publish java v$version to github? " -n 1 -r
@@ -131,17 +141,20 @@ if [ "$nojava" = false ] ; then
     $rita_java/target/rita-$version* $artifacts
 fi
 
+# create processing library
 if [ "$noproc" = false ] ; then
   ./build-plib.sh $version || check_err $? "build-plib.sh failed"
   cp "$artifacts/rita-$version-plib.zip" $download
 fi
 
-echo "... creating zip"
-zipfile=rita-$version-all.zip
-rm -f rita-$version-all.zip 2>/dev/null 
-pushd $artifacts >/dev/null
-zip ../$zipfile ./* >/dev/null
-popd >/dev/null
+if [ "$zipart" = true ] ; then  # skip artifact zip
+    echo "... zipping artifacts"
+    zipfile=rita-$version-all.zip
+    rm -f rita-$version-all.zip 2>/dev/null 
+    pushd $artifacts >/dev/null
+    zip ../$zipfile ./* >/dev/null
+    popd >/dev/null
+fi
 
 
 echo "... cleaning up"
