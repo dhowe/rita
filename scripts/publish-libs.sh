@@ -163,7 +163,11 @@ fi
 echo "... tagging ritaweb"
 git add .
 git tag -a v$version -m "Release v$version"
+git commit -q -m "Release v$version"
 git push -q
+
+echo "... updating public site"
+ssh $RED "cd bin && ./update-rita-web.sh"
 
 echo "... cleaning up"
 #rm -rf $ritajs/*.tgz
