@@ -129,7 +129,19 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
             git tag -a v$version -m "Release $version"
             git push -q origin --tags
             echo "... deploying to github packages"
-            mvn -q -T1C clean deploy || check_err $? "maven publish failed"
+            mvn -q -T1C clean deploy || check_err $? "maven publish failed [github]"
+            popd >/dev/null
+        fi
+        echo
+        read -p "publish java $version to maven central? " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]] ; then
+            pushd $ritajava >/dev/null
+            echo "... git-tag java $version"
+            git tag -a v$version -m "Release $version"
+            git push -q origin --tags
+            echo "... deploying to maven central"
+            mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
             popd >/dev/null
         fi
     else
@@ -166,12 +178,11 @@ git tag -a v$version -m "Release $version"
 git commit -q -m "Release $version"
 git push -q
 
-echo "... updating public site"
-ssh $RED "cd bin && ./update-rita-web.sh"
+echo "... updating https://rednoise.org/rita "
+ssh $RED "cd bin && ./update-rita-web.sh" >/dev/null
 
 echo "... cleaning up"
 #rm -rf $ritajs/*.tgz
-
 
 runtime=$((`date +%s`-start))
 
