@@ -90,12 +90,12 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
     
     if [ "$nopub" = false ] ; then
         echo
-        read -p "publish v$version to npm? " -n 1 -r
+        read -p "publish $version to npm? " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]] ; then
-            echo "... git-tag js v$version"
+            echo "... git-tag js $version"
             pushd $ritajs >/dev/null
-            git tag -a v$version -m "Release v$version"
+            git tag -a v$version -m "Release $version"
             git push -q origin --tags
             NPM_TAR=rita-$version.tgz
             echo "... deploying to npm"
@@ -121,12 +121,12 @@ fi
 if [ "$nojava" = false ] ; then       # publish java to github packages
     if [ "$nopub" = false ] ; then
         echo
-        read -p "publish java v$version to github? " -n 1 -r
+        read -p "publish java $version to github? " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]] ; then
             pushd $ritajava >/dev/null
-            echo "... git-tag java v$version"
-            git tag -a v$version -m "Release v$version"
+            echo "... git-tag java $version"
+            git tag -a v$version -m "Release $version"
             git push -q origin --tags
             echo "... deploying to github packages"
             mvn -q -T1C clean deploy || check_err $? "maven publish failed"
@@ -162,8 +162,8 @@ fi
 
 echo "... tagging ritaweb"
 git add .
-git tag -a v$version -m "Release v$version"
-git commit -q -m "Release v$version"
+git tag -a v$version -m "Release $version"
+git commit -q -m "Release $version"
 git push -q
 
 echo "... updating public site"
