@@ -60,7 +60,7 @@ mv $tmp $plibs
 if [ "$openproc" = true ] ; then
   echo "... (re)starting Processing"
   killall Processing 2>/dev/null
-  sleep 2
+  sleep 3
   open $ritajava/examples/processing/RandomRhymes/RandomRhymes.pde
 fi
 
