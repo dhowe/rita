@@ -40,7 +40,6 @@ while getopts "v:p" option; do
             echo "\n... using version: $version"
         ;;
         p) nopub=false
-            echo "... publish enabled *"
         ;;
     esac
 done
@@ -137,9 +136,6 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
         echo
         if [[ $REPLY =~ ^[Yy]$ ]] ; then
             pushd $ritajava >/dev/null
-            echo "... git-tag java $version"
-            git tag -a v$version -m "Release $version"
-            git push -q origin --tags
             echo "... deploying to maven central"
             mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
             popd >/dev/null

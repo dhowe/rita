@@ -17,6 +17,8 @@ if [ -z "$1" ] || [ "$1" = "help" ]; then
    help; exit 1
 fi
 
+openproc=true
+
 version=$1  #${1:-XXX}
 ritajava="../rita"
 dest="./artifacts"
@@ -24,7 +26,6 @@ zipfile="rita-$version-plib.zip"
 plibs="$HOME/Documents/Processing/libraries/"
 tmp="/tmp/rita"
 lib="$tmp/library"
-openproc=false
 
 echo "... creating library for processing"
 rm -rf $tmp 2>/dev/null
@@ -56,13 +57,11 @@ echo "... moving to libraries"
 rm -rf $plibs/rita 2>/dev/null
 mv $tmp $plibs
 
-#temp stuff
-#open $plibs/rita
-#echo && ls -l $tmp $lib
 if [ "$openproc" = true ] ; then
-  killall Processing
-  sleep 1
-  open $ritajava/examples/
+  echo "... (re)starting Processing"
+  killall Processing 2>/dev/null
+  sleep 2
+  open $ritajava/examples/processing/RandomRhymes/RandomRhymes.pde
 fi
 
 exit 0;

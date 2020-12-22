@@ -169,6 +169,7 @@ a:focus {
 
 #whats-new-wrapper a {
   text-decoration: none;
+  font-weight:bold;
   color: #FEC0CB;
 }
 

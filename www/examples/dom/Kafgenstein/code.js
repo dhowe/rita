@@ -2,7 +2,7 @@ let markov;
 
 $(function () {
 
-  markov = new RiTa.Markov(4);
+  markov = RiTa.markov(4);
 
   // a nicer way to do this?
   $.get('../../data/kafka.txt', function(data1) {

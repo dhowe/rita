@@ -15,7 +15,7 @@ function setup() {
   lines = ["click to (re)generate"];
 
   // create a markov model w' n=4
-  markov = new RiTa.Markov(4);
+  markov = RiTa.markov(4);
 
   // load text into the model
   markov.addText(data1.join(' '));

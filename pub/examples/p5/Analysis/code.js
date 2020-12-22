@@ -19,19 +19,15 @@ function draw() {
 
   background(255);
 
-  // word
   fill(56, 66, 90);
-
   textSize(36);
   textAlign(LEFT);
   textStyle(NORMAL);
   text(word, 80, 50);
 
-  // phones
   textSize(18);
   text(ipaPhones(word), 80, 80);
 
-  // part-of-speech
   textSize(14);
   textStyle(ITALIC);
   text(tags[features.pos], 80, 105);
@@ -69,7 +65,7 @@ function ipaPhones(aWord) {
 
 class Bubble {
 
-  constructor(){
+  constructor() {
     this.gspd = 0; // grow speed
     this.rad = 40; // radius
     this.t = 0; // timer
@@ -78,14 +74,14 @@ class Bubble {
     this.speed = 0;
   }
 
-  reset () {
+  reset() {
     this.ph = '';
     this.t = 0;
     this.gspd = 0;
     this.speed = 0;
   }
 
-  update (phones, i) {
+  update(phones, i) {
     this.c = phoneColor(phones[i]);
     this.ph = phones[i];
     this.ypos = 150;
@@ -93,16 +89,16 @@ class Bubble {
     this.rad = 40;
   }
 
-  adjustDistance (dis) {
+  adjustDistance(dis) {
     this.xpos += dis;
   }
 
-  grow () {
+  grow() {
     this.rad = 41;
     this.gspd = 0.5;
   }
 
-  draw (i) {
+  draw(i) {
 
     if (this.ph.length < 1) return;
 
@@ -123,37 +119,45 @@ class Bubble {
   }
 }
 
-//combine addStress and addSyllables for better distance adjustment
-function addStressesAndSyllables(){
+function addStressesAndSyllables() {
 
   // Split stresses & syllables
-  let stressArray = features.stresses.split('/'),
-    syllableArray = features.syllables.split('/');
-    //The two array should have the same length
+  let stresses = features.stresses.split('/'),
+    syllables = features.syllables.split('/');
 
-  //initialize vars for distance adjustment
+  if (stresses.length !== syllables.length) {
+    console.error("invalid state");
+  }
+
+  // Initialize vars for distance adjustment
   let totalMergeWidth = 0;
 
-  //Record the previous phoneme count
-  for (let i = 0,past = 0; i < syllableArray.length; i++){
-    let phs = syllableArray[i].split('-');
+  // Record the previous phoneme count
+  for (let i = 0, past = 0; i < syllables.length; i++) {
+    let phs = syllables[i].split('-');
     let adjustUnit = 10, gapWidth = 8;
-    //add stress(es) first
-    if (stressArray[i] === '1'){
+
+    // Add stress(es) first
+    if (stresses[i] === '1') {
       for (let j = 0; j < phs.length; j++) {
-        bubbles[past + j].grow();
+        let b = bubbles[past + j];
+        if (!b) console.error("null bubble(1): " + (past + j), word, features);
+        b && b.grow();
       }
       adjustUnit *= 0.7;
       gapWidth += 5;
     }
-    if (i+1 < syllableArray.length && stressArray[i+1] === '1'){
+    if (i + 1 < syllables.length && stresses[i + 1] === '1') {
       gapWidth += 5;
     }
-    //now adjust the distance
+    // Now adjust the distance
     for (let j = 0; j < phs.length; j++) {
-      bubbles[past + j].adjustDistance(-(adjustUnit * j+totalMergeWidth));
+      let b = bubbles[past + j];
+      if (!b) console.error("null bubble(2): " + (past + j), word, features);
+      b && b.adjustDistance(-(adjustUnit * j + totalMergeWidth));
     }
-    totalMergeWidth += adjustUnit * (phs.length-1) - gapWidth;
+
+    totalMergeWidth += adjustUnit * (phs.length - 1) - gapWidth;
     past += phs.length;
   }
 }
@@ -161,66 +165,33 @@ function addStressesAndSyllables(){
 function addSyllables() {
 
   // Split each syllable
-  const syllable = features.syllables.split('/');
+  let syllable = features.syllables.split('/');
 
   // Record the past phonemes number
   for (let i = 0, past = 0; i < syllable.length; i++) {
-    const phs = syllable[i].split('-');
+    let phs = syllable[i].split('-');
 
-    for (let j = 1; j < phs.length; j++)
-      bubbles[past + j].adjustDistance(-10 * j);
-
-    past += phs.length;
-  }
-}
-
-function addSyllablesX() {
-
-  // split each syllable
-  let sylls = features.syllables.split('/');
-
-  // record the past phonemes number
-  for (let i = 0, past = 0; i < sylls.length; i++) {
-    let phs = sylls[i].split('-');
     for (let j = 1; j < phs.length; j++) {
-      bubbles[past + j].adjustDistance(-20 * j);
+      bubbles[past + j].adjustDistance(-10 * j);
     }
+
     past += phs.length;
   }
 }
+
 
 function addStresses() {
 
   // Split stresses & syllables
   const stress = features.stresses.split('/'),
-    syllable = features.syllables.split('/');
+    syllables = features.syllables.split('/');
 
   // Record the previous phoneme count
   for (let i = 0, past = 0; i < stress.length; i++) {
-
-    const phs = syllable[i].split('-');
+    let phs = syllables[i].split('-');
 
     // if the syllable is stressed, grow its bubbles
-    if (parseInt(stress[i]) == 1) {
-      for (let j = 0; j < phs.length; j++)
-        bubbles[past + j].grow();
-    }
-
-    past += phs.length;
-  }
-}
-
-function addStressesX() {
-
-  // Split stresses & syllables
-  let stress = features.stresses.split('/'), sylls = features.syllables.split('/');
-
-  // Record the previous phoneme count
-  for (let i = 0, past = 0; i < stress.length; i++) {
-
-    let phs = sylls[i].split('-');
-    // if the syllable is stressed, grow its bubbles
-    if (stress[i] === '1') {
+    if (stress[i] == RiTa.STRESS) {
       for (let j = 0; j < phs.length; j++) {
         bubbles[past + j].grow();
       }
@@ -230,7 +201,6 @@ function addStressesX() {
 }
 
 function phoneColor(phoneme) {
-
   let idx = RiTa.PHONES.indexOf(phoneme);
   return idx > -1 ? hues[idx] : 0;
 }

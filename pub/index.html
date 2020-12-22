@@ -70,8 +70,9 @@
         <li class="hidden-sm"><a class="" data-toggle="collapse" href="#download-section" role="button"
             aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a></li>
         <li class="hidden-sm"><a href="#learning-wrapper">Learning</a></li>
-        <li class="hidden-sm"><a target="blank" href="#reference">Reference</a></li>
+        <li class="hidden-sm"><a target="blank" href="#examples-wrapper">Examples</a></li>
         <li class="hidden-sm"><a target="blank" href="#gallery-wrapper">Gallery</a></li>
+        <li class="hidden-sm"><a target="blank" href="#reference">Reference</a></li>
         <li> <a href="https://rednoise.org/rita" target="blank" class="icon m-l-30"> <svg
               class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
               role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
@@ -175,7 +176,8 @@
                     <a target="_blank" href="https://github.com/dhowe/rita/packages/"><span></span></a>Via GitHub
                     Packages
                   </div>
-                  <div class="downloadbox"><a target="_blank" href="https://search.maven.org/artifact/org.rednoise/rita">
+                  <div class="downloadbox"><a target="_blank"
+                      href="https://search.maven.org/artifact/org.rednoise/rita">
                       <span></span></a>Via Maven Central
                   </div>
 
@@ -261,19 +263,21 @@
         <div class="col-md-8 wow fadeIn">
           <h4>RiTa Version 2</h4>
 
-          <br><strong>Version 2</strong> of RiTa is a complete rewrite of the library that is smaller, faster, more
-          user-friendly and more easily maintained. But is not backwards-compatible with programs
-          written with <a href="https://rednoise.org/rita1" target="blank">version 1.x</a>. Nearly all of the
-          functionality of v1 is still available (plus lots of new
+          <br><strong>Version 2</strong> of RiTa is a complete rewrite of the library that is simpler, faster, more
+          consistent, and more easily maintained. But is NOT backwards-compatible with programs
+          written with <a href="https://rednoise.org/rita1" target="_blank">version 1.x</a>. Nearly all of the
+          functionality of v1 is still available (plus lots of cool new
           features), but much of the organization and many of the function names have changed. Migrating an older work
           to v2 is generally quite straightforward (and I'm happy to help if you
           run into problems)...<br>
           <br><strong>Key Features</strong>
           <ul style="padding-inline-start: 35px !important;">
-            <li>Simplified API</li>
-            <li>Support for ES6</li>
-            <li>Support for <a target="blank" href="reference/RiScript.html" style="color:white;">RiScript</a></li>
-            <li>Performance improvements</li>
+            <li>Integration of the new writer-oriented <a target="_blank" href="reference/RiScript.html">RiScript</a>
+              scripting language</li>
+            <li>Letter-to-sound engine for feature analysis of arbitrary words (with or without lexicon)</li>
+            <li>Sophisticated lexicon search (for rhyme, alliteration, pos, syllable, & stress patterns) </li>
+            <li>Fast, heuristic algorithms for pluralization, conjugation, stemming, tokenization, and more</li>
+            <li>Powerful new options for generation via grammars and Markov models (n-grams)</li>
           </ul>
           <br><strong>Important Changes</strong><br>
           <ul style="padding-inline-start: 35px !important;">
@@ -287,11 +291,18 @@
               simple generative primitives (choices, sequences, transforms, etc.). RiScript is designed specifically for
               writers (for example, no quotes are required for strings) and can be run via RiTa.evaluate() or simply
               included in any RiTa grammar.</li>
-            <li>RiTa v2 is available for Java (via Maven and github-packages) and JavaScript (via npm and unpkg). It is
-              also available, of course, as a library for Processing and p5.js.</li>
+            <li>RiTa v2 is available for Java (via <a target="_blank"
+                href="https://search.maven.org/artifact/org.rednoise/rita">Maven</a> and
+              <a target="_blank" href="https://github.com/dhowe/rita/packages/">Github Packages)</a> and JavaScript
+              (via <a target="_blank" href="https://www.npmjs.com/package/rita">NPM</a> and <a target="_blank"
+                href="https://unpkg.com/rita">UNPKG</a>).
+              It is also available, of course, as a library for <a target="_blank"
+                href="https://rednoise.org/rita/rita.zip">Processing</a>
+              and <a target="_blank" href="https://unpkg.com/rita">p5.js</a>.
+            </li>
           </ul>
           <br /><strong>Note: you can still find an archive of version 1.x <a href="https://rednoise.org/rita1"
-              target="blank">here...</a></strong>
+              target="_blank">here...</a></strong>
         </div>
         <div class="col-md-2">
         </div>
