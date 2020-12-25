@@ -37,8 +37,9 @@ function nextWord() {
     let pos = RiTa.tagger.allTags(word.toLowerCase())[0];
 
     if (pos != null) {
-
+word = "abated";
       console.log("rhymes: " + word + ",",{pos});
+
       let rhymes = RiTa.rhymes(word, { pos });
 
       // only words with >1 rhymes
