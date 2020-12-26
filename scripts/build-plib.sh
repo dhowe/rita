@@ -13,14 +13,20 @@ function check_err {
     }
 }
 
-if [ -z "$1" ] || [ "$1" = "help" ]; then
-   help; exit 1
-fi
-
-openproc=true
+[ "$1" = "help" ] && help && exit 1
 
 version=$1  #${1:-XXX}
 ritajava="../rita"
+pom="pom.xml"
+
+if [ -z "$version" ]; then
+   pushd $ritajava >/dev/null
+   version=`grep version $pom | grep -v -e '<?xml|~'| head -n 1 | sed 's/[[:space:]]//g' | sed -E 's/<.{0,1}version>//g' | awk '{print $1}'`
+   popd >/dev/null
+   echo ... found version $version
+fi
+
+openproc=true
 dest="./artifacts"
 zipfile="rita-$version-plib.zip"
 plibs="$HOME/Documents/Processing/libraries/"
