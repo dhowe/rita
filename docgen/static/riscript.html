@@ -24,6 +24,9 @@
   <link rel="stylesheet" href="../css/animate.css">
   <link rel="stylesheet" href="../css/mainStyle.css">
   <link rel="stylesheet" href="../css/main.css">
+  <!-- js for menu -->
+  <script src="../js/main.js"></script>
+  <script src="../js/wow.min.js"></script>
   <link rel="shortcut icon" type="image/x-icon" href="https://rednoise.org/rita.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
@@ -32,17 +35,17 @@
   <!-- Nav Bar -->
   <div class="navbar-sticky visible">
 
-    <div class="container" style="box-shadow:none;margin-bottom:inherit;background-color:inherit">
+    <div class="container" style="box-shadow:none;margin-bottom:inherit;background-color:inherit;width: auto;">
       <div class="logo-wrapper d-inline-block"> <a href="../index.html"> <img src="../img/RiTaLogo.png"
             alt="RiTa - a software toolkit for computational literature"> </a> </div>
-      <div class="menu-icon-mobile"><a href="#"> <img src="./css/menu-icon.svg" /> </a></div>
+      <div class="menu-icon-mobile"><a href="#"> <img src="../css/menu-icon.svg" /> </a></div>
       <ul class="nav-wrapper d-inline-block">
-        <li class="hidden-sm" ><a class="" data-toggle="collapse" target="blank" href="../#download-section" role="button"
+        <li class="hidden-sm" style="display: inline-block !important;"><a class="" data-toggle="collapse" target="blank" href="../#download-section" role="button"
             aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#learning-wrapper">Learning</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#examples-wrapper">Examples</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#gallery-wrapper">Gallery</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#reference">Reference</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#learning-wrapper">Learning</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#examples-wrapper">Examples</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#gallery-wrapper">Gallery</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#reference">Reference</a></li>
         <li> <a href="https://rednoise.org/rita" target="blank" class="icon m-l-30"> <svg
               class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
               role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
@@ -71,45 +74,41 @@
       <div class="row" style="margin-left:auto;margin-right: auto;display: flex;justify-content: center;">
         <div class="col10">
           <h3>RiScript</h3>
-          <div class="page row" style="padding-right: 2em;">
-
-            <div class="refbar span3">
-              <div id="index">
-                <ul class="classList">
-                  <!--li style="margin-left: 5px !important;"><a href="../../../index.html#reference">back to index</a><br /></li-->
-                  <li style="margin-left: 5px !important;"><a href="https://rednoise.org/rita/index.html#reference">RiTa index</a><br /></li>
-                </ul>
-              </div>
-            </div>
+          <div class="page row" style="padding-right: 2em;display: flex;justify-content: center;">
             
-              <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
+              <table cellpadding="0" cellspacing="0" border="0" class="ref-item" style="font-weight: 300;font-size: 16px;line-height: 1.4;">
+                <tr>
+                  <td>
+                    <a href="https://rednoise.org/rita/index.html#reference">RiTa index</a><br />
+                  </td>
+                </tr>
                 <tr class="">
                   <!-- DESCRIPTION  -->
                   <td><b>RiTaScript</b> is a writer-oriented scripting language integrated into RiTa. It can be used as part of any grammar or run directly using <a href="../ref/RiTa/evaluate/index.html">RiTa.evaluate()</a><br><br>
                       <b>Choice</b><br>
                       Select a random choice from a group of options:<br>
-                      <pre class="margin">The weather was (sad | gloomy | depressed).  ->  "The weather was gloomy."<br><br>I'm (very | super | really) glad to ((meet | know) you | learn about you).  ->  "I'm very glad to know you."</be></pre>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">The weather was (sad | gloomy | depressed).  ->  "The weather was gloomy."<br><br>I'm (very | super | really) glad to ((meet | know) you | learn about you).  ->  "I'm very glad to know you."</be></pre>
                       Use the seq() transform to output the Choice options in a linear sequence:<br>
-                      <pre class="margin">The weather was (sad | gloomy | depressed).seq()  -><br>0) "The weather was sad" <br>1) "The weather was gloomy" <br>2) "The weather was depressed" <br>3) "The weather was sad" <br>...</pre>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">The weather was (sad | gloomy | depressed).seq()  -><br>0) "The weather was sad" <br>1) "The weather was gloomy" <br>2) "The weather was depressed" <br>3) "The weather was sad" <br>...</pre>
                       Use the rseq() transform to output the Choice options in a randomized, non-repeating sequence:<br>
-                      <pre class="margin">The weather was (sad | gloomy | depressed).rseq()  -><br>0) "The weather was depressed"<br>1) "The weather was gloomy"<br>2) "The weather was depressed" <br>3) "The weather was sad" <br>4) "The weather was gloomy" <br>...</pre>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">The weather was (sad | gloomy | depressed).rseq()  -><br>0) "The weather was depressed"<br>1) "The weather was gloomy"<br>2) "The weather was depressed" <br>3) "The weather was sad" <br>4) "The weather was gloomy" <br>...</pre>
                       Use the norep() transform to ensure outputs never repeats:<br>
-                      <pre class="margin">The weather was (sad | gloomy | depressed).norep()  -><br>0) "The weather was depressed" <br>1) "The weather was gloomy" <br>2) "The weather was depressed" <br>3) "The weather was sad" <br>4) "The weather was gloomy" <br>...</pre><br>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">The weather was (sad | gloomy | depressed).norep()  -><br>0) "The weather was depressed" <br>1) "The weather was gloomy" <br>2) "The weather was depressed" <br>3) "The weather was sad" <br>4) "The weather was gloomy" <br>...</pre><br>
                       <b>Weighted Choice</b><br>
                       Assign probabilities to choice selection<br>
-                      <pre class="margin">The weather was (sad | gloomy [2] | depressed[4]).  ->  "The weather was depressed." </pre><br>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">The weather was (sad | gloomy [2] | depressed[4]).  ->  "The weather was depressed." </pre><br>
                       <b>Assignment</b><br>
                       Basic assignments do not have output, they simply create or update a variable to be used elsewhere (variables in JavaScript may also be used when passed in via the scripts 'context')<br>
-                      <pre class="margin">$desc=wet and cold<br>The weather was $desc  ->  "The weather was wet and cold" </pre><br>
-                      <b>Inline Assignment</b>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">$desc=wet and cold<br>The weather was $desc  ->  "The weather was wet and cold" </pre><br>
+                      <b>Inline Assignment</b><br>
                       Inline assignments allow one to easily set a variable, output it, and refer to it later:<br>
-                      <pre class="margin">Jane was from [$place=(New York | Berlin | Shanghai)].<br>$place is cold and wet.<br>     ->  "Jane was from Berlin. Berlin is cold and wet."<br><br>$place=(New York | Berlin | Shanghai)<br>$place is cold and wet in winter.<br>     ->  "Berlin is cold and wet in the winter."<br><br>In [$place=(New York | Berlin | Shanghai)] it is cold and wet in winter.<br>     ->  "In Berlin it is cold and wet in the winter."</pre><br>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">Jane was from [$place=(New York | Berlin | Shanghai)].<br>$place is cold and wet.<br>     ->  "Jane was from Berlin. Berlin is cold and wet."<br><br>$place=(New York | Berlin | Shanghai)<br>$place is cold and wet in winter.<br>     ->  "Berlin is cold and wet in the winter."<br><br>In [$place=(New York | Berlin | Shanghai)] it is cold and wet in winter.<br>     ->  "In Berlin it is cold and wet in the winter."</pre><br>
                       <b>Transforms</b><br>
                       Allow for modification of variables, choices, and raw text. RiScript comes with a number of useful transforms enabled (including pluralize(), capitalize(), and articlize()), which can be nested to create complex expressions. User-defined transforms can be added using RiTa.addTransform() or by passing a transform function as part of the script's 'context'.<br>
-                      <pre class="margin">How many (tooth | menu | child).pluralize() do you have?<br>How many (tooth | menu | child).pluralize().toUpper() do you have?<br>He grew up to be $animal.articlize().<br>He grew up to be (anteater).articlize().<br>He grew up to be (anteater).articlize().myCustomTransform().</pre><br>
-                      <b>Conditionals</b>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">How many (tooth | menu | child).pluralize() do you have?<br>How many (tooth | menu | child).pluralize().toUpper() do you have?<br>He grew up to be $animal.articlize().<br>He grew up to be (anteater).articlize().<br>He grew up to be (anteater).articlize().myCustomTransform().</pre><br>
+                      <b>Conditionals</b><br>
                       Allow for conditional execution, based on the values of one or more variables<br>
-                      <pre class="margin">// 'desc' can be defined in JS or RS */<br>{desc='party'} The party was happening<br>{desc='party', user=$john} The party was happening and John was wearing $John.color.</pre>
+                      <pre class="margin" style="font-size: 16px;line-height: 1.4;">// 'desc' can be defined in JS or RS */<br>{desc='party'} The party was happening<br>{desc='party', user=$john} The party was happening and John was wearing $John.color.</pre>
                   </td>
                 </tr>
 
@@ -169,9 +168,8 @@
 
 
                 <tr class="">
-                  <th scope="row">Platform</th>
+                  <td><b>Platform</b><br>Java / Javascript</span></td>
                   <!-- PLATFORM  -->
-                  <td>Java / JavaScript</td>
                 </tr>
 
                 <tr class="">

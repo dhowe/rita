@@ -24,6 +24,9 @@
   <link rel="stylesheet" href="../css/animate.css">
   <link rel="stylesheet" href="../css/mainStyle.css">
   <link rel="stylesheet" href="../css/main.css">
+  <!-- js for menu -->
+  <script src="../js/main.js"></script>
+  <script src="../js/wow.min.js"></script>
   <link rel="shortcut icon" type="image/x-icon" href="https://rednoise.org/rita.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
@@ -32,17 +35,17 @@
   <!-- Nav Bar -->
   <div class="navbar-sticky visible">
 
-    <div class="container" style="box-shadow:none;margin-bottom:inherit;background-color:inherit">
+    <div class="container" style="box-shadow:none;margin-bottom:inherit;background-color:inherit;width: auto;">
       <div class="logo-wrapper d-inline-block"> <a href="../index.html"> <img src="../img/RiTaLogo.png"
             alt="RiTa - a software toolkit for computational literature"> </a> </div>
-      <div class="menu-icon-mobile"><a href="#"> <img src="./css/menu-icon.svg" /> </a></div>
+      <div class="menu-icon-mobile"><a href="#"> <img src="../css/menu-icon.svg" /> </a></div>
       <ul class="nav-wrapper d-inline-block">
-        <li class="hidden-sm" ><a class="" data-toggle="collapse" target="blank" href="../#download-section" role="button"
+        <li class="hidden-sm" style="display: inline-block !important;"><a class="" data-toggle="collapse" target="blank" href="../#download-section" role="button"
             aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#learning-wrapper">Learning</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#examples-wrapper">Examples</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#gallery-wrapper">Gallery</a></li>
-        <li class="hidden-sm" ><a target="blank" href="../index.html#reference">Reference</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#learning-wrapper">Learning</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#examples-wrapper">Examples</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#gallery-wrapper">Gallery</a></li>
+        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="../index.html#reference">Reference</a></li>
         <li> <a href="https://rednoise.org/rita" target="blank" class="icon m-l-30"> <svg
               class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
               role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
@@ -72,16 +75,7 @@
       <div class="row" style="margin-left:auto;margin-right: auto;display: flex;justify-content: center;">
         <div class="col10">
           <h3>Tokenization</h3>
-          <div class="page row" style="padding-right: 2em;">
-
-            <div class="refbar span3">
-              <div id="index">
-                <ul class="classList">
-                  <!--li style="margin-left: 5px !important;"><a href="../../../index.html#reference">back to index</a><br /></li-->
-                  <li style="margin-left: 5px !important;"><a href="https://rednoise.org/rita/index.html#reference">RiTa index</a><br /></li>
-                </ul>
-              </div>
-            </div>
+          <div class="page row" style="padding-right: 2em;display: flex;justify-content: center;">
 
             <div class="span11">
               <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
@@ -105,21 +99,27 @@
                   </td>
                 </tr>
 
-                <tr class="">
+                <tr>
+                  <td style="font-weight: 300;font-size: 16px;line-height: 1.4;">
+                    <a href="https://rednoise.org/rita/index.html#reference">RiTa index</a><br />
+                  </td>
+                </tr>
+
+                <tr class="" style="font-weight: 300;font-size: 16px;line-height: 1.4;">
                   <!--th width="25%" scope="row">The table</th-->
 
                   <!-- DESCRIPTION  -->
                   <td>
-                    Our tokenization is fairly simple (based on the Penn Treebank standard):
+                    Our tokenization is fairly simple (based on the Penn Treebank standard):<br><br>
 
                     <ul>
-                      <li>most punctuation is split from adjoining words
+                      <li>most punctuation is split from adjoining words<br><br>
                       <li>double quotes (<code>"</code>) are changed to doubled single
                         forward- and backward- quotes (<code>``</code> and
-                        <code>''</code>)
+                        <code>''</code>)<br><br>
                       <li>verb contractions and the Anglo-Saxon genitive of nouns
                         are split into their component morphemes, and each morpheme is tagged
-                        separately.
+                        separately.<br>
                         <ul>
                           <li>Examples
                             <samp>
@@ -135,7 +135,7 @@
                         <br>
                         This tokenization allows us to analyze each component
                         separately, so (for example) "I" can be in the subject Noun
-                        Phrase while "'m" is the head of the main verb phrase.
+                        Phrase while "'m" is the head of the main verb phrase.<br><br>
                       <li>There are some subtleties for hyphens vs. dashes, elipsis dots (...) and
                         so on, but these often depend on the particular corpus or application
                         of the tagged data.
