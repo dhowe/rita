@@ -9,12 +9,6 @@ function setup() {
   loadFont('Chaparral.otf', nextWord);
 }
 
-function draw() {
-  background(20, 30, 55);
-  fill(250, 240, 230);
-  text(txt, 50, 30, 500, height);
-}
-
 // replace one random word in the text
 function nextWord() {
 
@@ -50,12 +44,18 @@ function nextWord() {
     if (/[A-Z]/.test(words[idx][0])) {
       next = RiTa.capitalize(next); // keep capitals
     }
-    //console.log("replace(" + idx + "): " + word + " -> " + next);
+
+    console.log("replace(" + idx + "): " + word + " -> " + next);
+
     words[idx] = next;             // do replacement
     break;
   }
 
-  txt = RiTa.untokenize(words); // recombine into string
+  // recombine into string and display
+  txt = RiTa.untokenize(words); 
+  background(20, 30, 55);
+  fill(250, 240, 230);
+  text(txt, 50, 30, 500, height);
 
   setTimeout(nextWord, 2000);
 }

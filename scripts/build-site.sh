@@ -10,7 +10,7 @@ ritajs="../ritajs"
 
 # copy ws
 echo ... making website 
-cp -rf www/* $dest
+cp -r www/* $dest
 
 # if we have built js move it into website (for examples)
 compgen -G $ritajs/dist/rita-web*.js >/dev/null && cp $ritajs/dist/rita-web*.js $dest/dist/

@@ -9,7 +9,8 @@ function preload() {
 function setup() {
 
   createCanvas(500, 500);
-  textFont('times', 16);
+  textFont('helvetica', 16);
+  textLeading(21);
   textAlign(LEFT);
 
   lines = ["click to (re)generate"];
@@ -25,14 +26,13 @@ function setup() {
 }
 
 function drawText() {
-
-  background(250);
-  text(lines.join(' '), x, y, 400, 400);
+  background(50, 30, 40);
+  fill(220);
+  text(lines.join(' '), x, y, 420, 420);
 }
 
 function mouseClicked() {
-  
   lines = markov.generate(10);
-  x = y = 50;
+  x = y = 40;
   drawText();
 }
