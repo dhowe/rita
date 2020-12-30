@@ -23,7 +23,7 @@
     {
       "name": "grammar",
       "example": "rg = RiTa.grammar();<br>rg.addRule(\"start\", \"( cat | dog | fish )\");<br>let result = rg.expand();",
-      "description": "Creates a new RiTa.Grammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"./RiScript/RiScript/\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><pre class=\"margin\">rg = new Grammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"http://json.org\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='http://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a Grammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"./RiScript/RiScript/\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
+      "description": "Creates a new RiTa.Grammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"../../riscript.html\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><pre class=\"margin\">rg = new Grammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"http://json.org\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='http://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a Grammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"./RiScript/RiScript/\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
       "syntax": "// Initialize an empty Grammar object<br><br>rg = RiTa.grammar();<br><br><br>// Or specify a grammar in a JSON string (or JS object)<br><br>rg = RiTa.grammar(myJson);<br><br><br>// Or supply a context<br><br>rg = RiTa.grammar(myJson, context);",
       "parameters": [
         {
@@ -197,7 +197,7 @@
     {
       "name": "sentences",
       "example": "RiTa.sentences(\"\"The boy went fishing.\", he said. Then he went away.\");",
-      "description": "Splits 'text' into sentences (according to PENN Treebank conventions)",
+      "description": "Splits 'text' into sentences (according to Penn Treebank conventions)",
       "syntax": "RiTa.sentences(text);<br/>RiTa.sentences(text, regex);<br>RiTa.sentences(text, option);//only in Java",
       "parameters": [
         {
@@ -226,7 +226,7 @@
     {
       "name": "addTransform",
       "example": "RiTa.addTransform(\"uc\", (s) => s.toUpperCase());<br/>RiTa.evaluate(\"This.uc() is an acronym.\");",
-      "description": "Registers a new RiScript transform function that may then be used in all RiScript evaluations (including within Grammars)",
+      "description": "Registers a new <a href=\"../../riscript.html\">RiScript</a> transform function that may then be used in all RiScript evaluations (including within Grammars)",
       "syntax": "RiTa.addTransform(name, function);",
       "parameters": [
         {
@@ -239,13 +239,13 @@
         }
       ],
       "returns": [],
-      "related": "See RiScript documentation",
+      "related": "See RiScript <a href=\"../../riscript.html\">documentation</a> ",
       "platform": "Java / JavaScript"
     },
     {
       "name": "evaluate",
       "example": "RiTa.evaluate(\"He was (happy | sad | indifferent)\");<br/>RiTa.evaluate(\"He was (happy | sad | \\$emo)\", context);",
-      "description": "Parses and executes a RiScript string",
+      "description": "Parses and executes a <a href=\"../../riscript.html\">RiScript</a> string",
       "syntax": "RiTa.evaluate(string);<br/>RiTa.evaluate(string, context);",
       "parameters": [
         {
@@ -263,13 +263,13 @@
           "desc": "the result of the evaluation"
         }
       ],
-      "related": "See RiScript documentation",
+      "related": "See RiScript <a href=\"../../riscript.html\">documentation</a>",
       "platform": "Java / JavaScript"
     },
     {
       "name": "tokenize",
-      "example": "<br/>sentence = \"The doctors treated dogs\";<br/>wordArray = RiTa.tokenize(sentence);<br/>wordArray = RiTa.tokenize(sentence, \"\\\\\\\\s\");<br/><br/>",
-      "description": "Tokenizes a string (into words) according to <a href='../../tokenization.html' target='_new'>Penn Treebank conventions.</a><br/>",
+      "example": "<br/>sentence = \"The doctors treated dogs.\";<br/>words = RiTa.tokenize(sentence);<br/>arrayOfWords = RiTa.tokenize(sentence, \"\\\\\\\\s\");<br/><br/>",
+      "description": "Tokenizes a string (into words) according to the Penn Treebank conventions.<br/>",
       "syntax": "RiTa.tokenize(text);<br/>RiTa.tokenize(text, regex);",
       "parameters": [
         {
@@ -292,23 +292,23 @@
     },
     {
       "name": "untokenize",
-      "example": "",
-      "description": "Joins an array (of words and punctuation) into a string, according to <a href='../../tokenization.html'  target='_new'>Penn Treebank conventions</a><br/>",
-      "syntax": "RiTa.untokenize(wordArray);//RiTa.untokenize(wordArray, delim);",
+      "example": "<br/>  words = [ \"The\", \"doctors\", \"treated\", \"dogs\", \".\" ];<br/>  sentence = RiTa.untokenize(words);<br/><br/>",
+      "description": "Joins an array (of words and punctuation) into a sentence, according to the Penn Treebank conventions. The inverse of RiTa.tokenize().<br/>",
+      "syntax": "  RiTa.untokenize(arrayOfWords);<br/>  RiTa.untokenize(arrayOfWords, delimiter);",
       "parameters": [
         {
           "type": "String[]",
-          "desc": "the input"
+          "desc": "the input, an array of words (tokens) and punctuation"
         },
         {
           "type": "String",
-          "desc": "delim to use (optional, default=\" \"(space))"
+          "desc": "delimiter to use (optional, default=\" \" [a space])"
         }
       ],
       "returns": [
         {
           "type": "String",
-          "desc": "in which the elements have been joined into a single string"
+          "desc": "containing all elements as a sentence"
         }
       ],
       "related": "<a href='../tokenize'>RiTa.tokenize()</a>",
@@ -338,7 +338,7 @@
     {
       "name": "pos",
       "example": "<br/>RiTa.pos(\"I am a cat.\"); <br/>// returns -> [ \"prp\", \"vbp\", \"dt\", \"nn\", \".\" ]<br/><br/>",
-      "description": "Uses the default PosTagger to tag the input with tags from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]",
+      "description": "Uses the default PosTagger to tag the input with tags from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]",
       "syntax": "RiTa.pos(word);<br/>RiTa.pos(word, boolean);<br>RiTa.pos(word, options);",
       "parameters": [
         {
@@ -367,7 +367,7 @@
     {
       "name": "posInline",
       "example": "<br/>sentence = \"The doctors treated dogs\";<br/>pos = RiTa.posInline(sentence);<br/><br/>tokenArray = RiTa.tokenize(sentence);<br/>pos = RiTa.posInline(tokenArray);<br/><br/>",
-      "description": "Takes an string returns a combined string of the form:<p><pre>'The/dt doctor/nn treated/vbd dogs/nns'</pre> using lowercased tags from the <a href='../../postags.html'>PENN tag set</a>",
+      "description": "Takes an string returns a combined string of the form:<p><pre>'The/dt doctor/nn treated/vbd dogs/nns'</pre> using lowercased tags from the <a href='../../postags.html'>Penn tag set</a>",
       "syntax": "RiTa.posInline(word);<br>RiTa.posInline(word, simpleTags);<br>RiTa.posInline(word, option);",
       "parameters": [
         {
@@ -658,7 +658,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -678,7 +678,7 @@
       "parameters": [
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -702,7 +702,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -726,7 +726,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for stresses match<br>use \"phones\" to indicate that the regex is for phonemes match<br><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for stresses match<br>use \"phones\" to indicate that the regex is for phonemes match<br><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -741,7 +741,7 @@
     {
       "name": "isAdverb",
       "example": "RiTa.isAdverb(\"sleepily\");",
-      "description": "Returns true if the word has an adverb form. That is, if any of its possible parts of speech are any variant of an adverb in the <a href='../../postags.html'>PENN tag set</a> (e.g. rb, rbr, rbs)",
+      "description": "Returns true if the word has an adverb form. That is, if any of its possible parts of speech are any variant of an adverb in the <a href='../../postags.html'>Penn tag set</a> (e.g. rb, rbr, rbs)",
       "syntax": "RiTa.isAdverb(word);",
       "parameters": [
         {
@@ -760,7 +760,7 @@
     {
       "name": "isNoun",
       "example": "RiTa.isNoun(\"cat\");",
-      "description": "Returns true if the word has a noun form. That is, if any of its possible parts of speech are any variant of a noun in the <a href='../../postags.html'>PENN tag set</a>(e.g. nn, nns, nnp, nnps)",
+      "description": "Returns true if the word has a noun form. That is, if any of its possible parts of speech are any variant of a noun in the <a href='../../postags.html'>Penn tag set</a>(e.g. nn, nns, nnp, nnps)",
       "syntax": "RiTa.isNoun(word);",
       "parameters": [
         {
@@ -779,7 +779,7 @@
     {
       "name": "isVerb",
       "example": "RiTa.isVerb(\"run\");",
-      "description": "Returns true for if word has a verb form. That is, if any of its possible parts of speech are any variant of a verb in the <a href='../../postags.html'>PENN tag set</a> (e.g. vb, vbg, vbd, vbp, vbz)",
+      "description": "Returns true for if word has a verb form. That is, if any of its possible parts of speech are any variant of a verb in the <a href='../../postags.html'>Penn tag set</a> (e.g. vb, vbg, vbd, vbp, vbz)",
       "syntax": "RiTa.isVerb(word);",
       "parameters": [
         {
@@ -817,7 +817,7 @@
     {
       "name": "isAdjective",
       "example": "RiTa.isAdjective(\"cold\");",
-      "description": "Returns true if word has an adjective form. That is, if any of its possible parts of speech are any variant of an adjective in the <a href='../../postags.html'>PENN tag set</a> (e.g. jj, jjr, jjs)",
+      "description": "Returns true if word has an adjective form. That is, if any of its possible parts of speech are any variant of an adjective in the <a href='../../postags.html'>Penn tag set</a> (e.g. jj, jjr, jjs)",
       "syntax": "RiTa.isAdjective(word);",
       "parameters": [
         {
@@ -899,7 +899,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
@@ -923,7 +923,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "Obejct<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>PENN tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "Obejct<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [

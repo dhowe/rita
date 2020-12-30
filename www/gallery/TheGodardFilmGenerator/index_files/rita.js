@@ -47432,9 +47432,9 @@ _RiTa_LTS=[
 		},   
 
 		/**
-		 * Returns true if 'tag' is a valid PENN part-of-speech tag (e.g. cd, fw, jj, ls, nn, sym, vbg, wp)
-		 * @param {string} tag the PENN part-of-speech tag
-		 * @returns {boolean} true if the tag a valid PENN part-of-speech tag
+		 * Returns true if 'tag' is a valid Penn part-of-speech tag (e.g. cd, fw, jj, ls, nn, sym, vbg, wp)
+		 * @param {string} tag the Penn part-of-speech tag
+		 * @returns {boolean} true if the tag a valid Penn part-of-speech tag
 		 */
 		_isPosTag : function(tag) {
 			return PosTagger.isTag(tag);
@@ -47469,7 +47469,7 @@ _RiTa_LTS=[
 
 		//TODO: example
 		/**
-		 * Uses the default PosTagger to tag the input with a tag from the PENN tag set
+		 * Uses the default PosTagger to tag the input with a tag from the Penn tag set
 		 * @param {string | array} words the text to be tagged
 		 * @returns {array}
 		 * 
@@ -47513,7 +47513,7 @@ _RiTa_LTS=[
 		// TODO: example
 		
 		/**
-		 * Converts a PENN part-of-speech tag to the simplified WordNet scheme 
+		 * Converts a Penn part-of-speech tag to the simplified WordNet scheme 
 		 * (e.g. nn -> n, nns -> n, vbz -> v, rb -> r)
 		 * { "n" (noun), "v"(verb), "a"(adj), "r"(adverb), "-"(other) }
 		 * as a String.
@@ -47705,7 +47705,7 @@ _RiTa_LTS=[
 		
 		// TODO: test and (probably) re-implement from RiTa (RiSplitter.java)
 		/**
-		 *  Splits the 'text' into sentences (according to PENN Treebank conventions)
+		 *  Splits the 'text' into sentences (according to Penn Treebank conventions)
 		 *  
 		 *  @param {string} text the text to be split
 		 *  @param {string | regex} regex (optional) the pattern to be used for tozenization
@@ -49554,8 +49554,8 @@ _RiTa_LTS=[
 		
 		/**  
 		 * Returns true for 'word' if it has a verb form. That is, if any of its possible parts of speech 
-		 *  are any variant of a verb in the PENN part-of-speech tag set (e.g. vb, vbg, vbd, vbp, vbz));
-		 * @param {string} word the PENN part-of-speech tag
+		 *  are any variant of a verb in the Penn part-of-speech tag set (e.g. vb, vbg, vbd, vbp, vbz));
+		 * @param {string} word the Penn part-of-speech tag
 		 * @returns {boolean} true if the word can be used as a verb 
 		 */
 		isVerb: function(word) {
@@ -49566,8 +49566,8 @@ _RiTa_LTS=[
 		
 		/**
 		 * Returns true for 'word' if it has a noun form. That is, if any of its possible parts of speech 
-		 *  are any variant of a noun in the PENN part-of-speech tag set(e.g. nn, nns, nnp, nnps)
-		 * @param {string} word the PENN part-of-speech tag
+		 *  are any variant of a noun in the Penn part-of-speech tag set(e.g. nn, nns, nnp, nnps)
+		 * @param {string} word the Penn part-of-speech tag
 		 * @returns {boolean} true if the word can be used as a noun
 		 */
 		isNoun : function(word) {
@@ -49577,8 +49577,8 @@ _RiTa_LTS=[
 		
 		/**
 		 * Returns true for 'word' if it has an adverb form. That is, if any of its possible parts of speech 
-		 *  are any variant of an adverb in the PENN part-of-speech tag set (e.g. rb, rbr, rbs)
-		 * @param {string} word the PENN part-of-speech tag
+		 *  are any variant of an adverb in the Penn part-of-speech tag set (e.g. rb, rbr, rbs)
+		 * @param {string} word the Penn part-of-speech tag
 		 * @returns boolean} true if the word can be used as an adverb 
 		 */
 		isAdverb : function(word) {
@@ -49588,8 +49588,8 @@ _RiTa_LTS=[
 		
 		/**
 		 * Returns true for 'word' if it has an adjective form. That is, if any of its possible parts of speech 
-		 *  are any variant of an adjective in the PENN part-of-speech tag set (e.g. jj, jjr, jjs)
-		 * @param {string} word the PENN part-of-speech tag
+		 *  are any variant of an adjective in the Penn part-of-speech tag set (e.g. jj, jjr, jjs)
+		 * @param {string} word the Penn part-of-speech tag
 		 * @returns {boolean} true if the word can be used as an adjective 
 		 */
 		isAdjective : function(word) {
