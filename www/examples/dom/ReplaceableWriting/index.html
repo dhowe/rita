@@ -1,15 +1,40 @@
 <html>
 
 <head>
-  <title>Replaceable Writing (p5js)</title>
+  <title>Replaceable Writing (dom)</title>
   <meta charset="utf-8">
   <!--script src="../../../dist/rita-web.js"></script-->
   <script src="/ritajs/dist/rita-web.js"></script>
-  <script src="code.js"></script>
   <script src="../../lib/jquery-1.12.4.js"></script>
   <script src="../../lib/prism.js"></script>
   <script src="../../lib/sourcecode.js"></script>
+  <script src="code.js"></script>
   <link rel='stylesheet' href='../../lib/prism.css' />
+  <style>
+    body {
+      font-family: Georgia, serif;
+    }
+
+    .canvas {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      overflow: hidden;
+      background-color: rgb(20, 30, 55);
+    }
+
+    #words {
+      position: absolute;
+      top: 30px;
+      left: 50px;
+      font-size: 17.5px;
+      width: 505px;
+      color: rgb(250, 240, 230);
+      text-align: left;
+      line-height: 22.5px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -21,9 +46,12 @@
     </pre>
   </div>
   <br>
-  <div id="cdiv"></div>
+  <div class="canvas">
+    <div id="words">testing</div>
+  </div>
   <div id="idiv" style="width:550px; text-align:center; font-size: 12px;
-    font-family: sans-serif; margin: 10px">Replace one word in the paragraph with a similar word every two seconds</div>
+    font-family: sans-serif; margin: 10px">Replace one word in the paragraph with a similar word every two seconds
+  </div>
 </body>
 
 </html>
