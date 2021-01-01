@@ -1,4 +1,4 @@
-## RiTa 2.x Website
+## RiTa 2.x website/reference
 
 #### Building
 
