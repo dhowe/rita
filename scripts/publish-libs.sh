@@ -43,7 +43,7 @@ while getopts "v:p" option; do
 done
 
 if [ "$nopub" = true ] ; then         # build website
-    echo "... publish disabled (use -p)"    
+    echo "... publish disabled (use -p)"
 fi
 
 if [ -z $version ] ; then
@@ -82,14 +82,16 @@ echo "... cleaning $artifacts"
 [[ -d $artifacts ]] || mkdir $artifacts
 rm -f $artifacts/*.* >/dev/null
 
-
+publive=false
 if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
     
     if [ "$nopub" = false ] ; then
         echo
-        read -p "publish $version to npm? " -n 1 -r
+        read -p "publish $version to npm/github/maven? " -n 1 -r
         echo
+        
         if [[ $REPLY =~ ^[Yy]$ ]] ; then
+            publive=true
             echo "... git-tag js $version"
             pushd $ritajs >/dev/null
             git tag -a v$version -m "Release $version"
@@ -99,6 +101,9 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
             npm publish $NPM_TAR --quiet || check_err $? "npm publish failed"
             popd >/dev/null
             mv $ritajs/*.tgz  $artifacts
+        else
+            echo Exiting 1
+            exit 1;
         fi
     fi
     
@@ -117,10 +122,11 @@ fi
 
 if [ "$nojava" = false ] ; then       # publish java to github packages
     if [ "$nopub" = false ] ; then
-        echo
-        read -p "publish java $version to github? " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        #echo
+        #read -p "publish java $version to github? " -n 1 -r
+        #echo
+        #if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        if [ "$publive" = true ] ; then
             pushd $ritajava >/dev/null
             echo "... git-tag java $version"
             git tag -a v$version -m "Release $version"
@@ -129,10 +135,11 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
             mvn -q -T1C clean deploy || check_err $? "maven publish failed [github]"
             popd >/dev/null
         fi
-        echo
-        read -p "publish java $version to maven central? " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        #echo
+        #read -p "publish java $version to maven central? " -n 1 -r
+        #echo
+        #if [[ $REPLY =~ ^[Yy]$ ]] ; then
+        if [ "$publive" = true ] ; then
             pushd $ritajava >/dev/null
             echo "... deploying to maven central"
             mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
@@ -166,14 +173,17 @@ if [ "$zipart" = true ] ; then  # skip artifact zip
     popd >/dev/null
 fi
 
-echo "... tagging ritaweb"
-git add .
-git tag -a v$version -m "Release $version"
-git commit -q -m "Release $version"
-git push -q
+if [ "$nopub" = false ] ; then
+    echo "... tagging ritaweb"
+    git add .
+    git tag -a v$version -m "Release $version"
+    git commit -q -m "Release $version"
+    git push -q
+    
+    echo "... updating https://rednoise.org/rita "
+    ssh $RED "cd bin && ./update-rita-web.sh" >/dev/null
+fi
 
-echo "... updating https://rednoise.org/rita "
-ssh $RED "cd bin && ./update-rita-web.sh" >/dev/null
 
 echo "... cleaning up"
 #rm -rf $ritajs/*.tgz

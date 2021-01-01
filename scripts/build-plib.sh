@@ -15,6 +15,7 @@ function check_err {
 
 [ "$1" = "help" ] && help && exit 1
 
+openproc=false
 version=$1  #${1:-XXX}
 ritajava="../rita"
 pom="pom.xml"
@@ -26,7 +27,6 @@ if [ -z "$version" ]; then
    echo ... found version $version
 fi
 
-openproc=true
 dest="./artifacts"
 zipfile="rita-$version-plib.zip"
 plibs="$HOME/Documents/Processing/libraries/"
