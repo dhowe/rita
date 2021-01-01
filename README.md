@@ -1,8 +1,8 @@
-## RiTa 2.x Website
+## RiTa 2.x website/reference
 
 #### Building
 
 ```
 # To create the full website in 'pub' do
-$ ./build-site.sh
+$ ./scripts/build-site.sh
 ```
