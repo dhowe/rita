@@ -1,7 +1,5 @@
 #!/bin/sh
 
-### NEXT: port tutorials, port Java examples, observable, 
-
 set -e
 
 start=`date +%s`
