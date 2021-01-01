@@ -14,22 +14,21 @@ import processing.data.JSONObject;
 
 public class MakeDocs extends PApplet {
 
+	static boolean SILENT = false, DBUG = false, OUTPUT_MARKUP = false;
+	
 	static String DATA_DIR = "data";
 	static String TMPL_DIR = "tmpl";
 	static String STATIC_DIR = "static";
 	static String WWW_OUTPUT = "../pub/";
 	static String REF_OUTPUT = "reference/";
 	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
-
+	static String[] TYPES = { "functions", "statics", "fields" };
+	
 	static String FUNCTION_TEMPLATE = "function.tmpl";
 	static String REFINDEX_TEMPLATE = "ref-index.tmpl";
 	static String WWWINDEX_TEMPLATE = "www-index.tmpl";
 
-	static boolean DBUG = false, OUTPUT_MARKUP = false;
 	static final String OUTPUT_TYPE = "html";
-	static boolean SILENT = false;
-
-	static String[] types = new String[] { "functions", "statics", "fields" };
 
 	static String[] lines, methodName, example, description, syntax, thePlatform;
 	static String[] returnType, returnDesc, returns, related, note, parameter;
@@ -69,18 +68,17 @@ public class MakeDocs extends PApplet {
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
 				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls + "</b><span><br><br>\n"; // no link
-				for (int j = 0; j < types.length; j++) {
-					ArrayList<String> entries = API.get(cls + "." + types[j]);
+				for (int j = 0; j < TYPES.length; j++) {
+					ArrayList<String> entries = API.get(cls + "." + TYPES[j]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
 						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
 						String dsp = entries.get(k);
 						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
 							String href = (f == 0 ? "./" : REF_OUTPUT) + cls + "/" + dsp + "/index." + OUTPUT_TYPE;
-							System.out.println(f + ") " + href);
-							if (types[j] == "functions" || types[j] == "statics") {
+							if (TYPES[j] == "functions" || TYPES[j] == "statics") {
 								dsp += "()";
 							}
-							if (types[j] != "functions") {
+							if (TYPES[j] != "functions") {
 								dsp = cls + "." + dsp;
 							}
 							//pln("LINK: " + href); 
@@ -118,8 +116,8 @@ public class MakeDocs extends PApplet {
 				String className = c.getString("class");
 				pln("  " + className);
 
-				for (int i = 0; i < types.length; i++) {
-					JSONArray fields = c.getJSONArray(types[i]);
+				for (int i = 0; i < TYPES.length; i++) {
+					JSONArray fields = c.getJSONArray(TYPES[i]);
 					// pln("CHECK: " + className + "." + types[i]);
 					if (fields != null) {
 						ArrayList<String> tmp = new ArrayList<String>();
@@ -128,7 +126,7 @@ public class MakeDocs extends PApplet {
 							tmp.add(name);
 							pln("    " + name);
 						}
-						API.put(className + "." + types[i], tmp);
+						API.put(className + "." + TYPES[i], tmp);
 					}
 				}
 			}
@@ -150,8 +148,8 @@ public class MakeDocs extends PApplet {
 		String className = json.getString("class");
 		pln("  Class : " + className);
 
-		for (int i = 0; i < types.length; i++) {
-			processEntry(types[i], shortName, json);
+		for (int i = 0; i < TYPES.length; i++) {
+			processEntry(TYPES[i], shortName, json);
 		}
 
 	}
@@ -311,7 +309,8 @@ public class MakeDocs extends PApplet {
 
 		String folderMethodName = methodName[idx].replaceAll("\\(\\)", "_");
 
-		String fname = WWW_OUTPUT + REF_OUTPUT + "/" + shortName + "/" + folderMethodName + "/index." + OUTPUT_TYPE;
+		String fname = WWW_OUTPUT + REF_OUTPUT + "/" + shortName
+				+ "/" + folderMethodName + "/index." + OUTPUT_TYPE;
 
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);
@@ -321,9 +320,9 @@ public class MakeDocs extends PApplet {
 			lines = replaceArr(lines, "tmp_methodName", methodName[idx]);
 		}
 
-		if (shortName.equals("RiTa")) {
-			lines = replaceArr(lines, "<a href=\"../../RiTa/RiTa/index.html\">RiTa</a>", "RiTa");
-		}
+		//		if (shortName.equals("RiTa")) {
+		//			lines = replaceArr(lines, "<a href=\"../../RiTa/RiTa/index.html\">RiTa</a>", "RiTa");
+		//		}
 
 		optionalTag("example", example[idx]);
 		optionalTag("syntax", syntax[idx]);
@@ -498,18 +497,15 @@ public class MakeDocs extends PApplet {
 
 		try {
 			pln("\nCWD: " + System.getProperty("user.dir"));
-			pln("DATA: " + DATA_DIR);
-			pln("TEMPLATES: " + TMPL_DIR);
+			pln("DATA_DIR: " + DATA_DIR);
+			pln("TMPL_DIR: " + TMPL_DIR);
 			pln("OUTPUT: " + WWW_OUTPUT + REF_OUTPUT);
-
-			//errors += "invalid blah";
-
-			outputTemplate = TMPL_DIR + "/" + FUNCTION_TEMPLATE;
-			pln("Files to generate: " + CLASS_NAMES.length);
+			pln("CLASSES: " + Arrays.asList(CLASS_NAMES));
 
 			parseAPI();
 			writeIndex();
-			// if (1 == 1) return;
+
+			outputTemplate = TMPL_DIR + "/" + FUNCTION_TEMPLATE;
 			for (int i = 0; i < CLASS_NAMES.length; i++) {
 				pln("\n******     " + CLASS_NAMES[i] + "     ******\n");
 				pln("  Template : " + outputTemplate);
@@ -538,7 +534,7 @@ public class MakeDocs extends PApplet {
 			System.exit(0);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 
 		go(args);
