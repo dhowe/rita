@@ -18,10 +18,7 @@
           "type": "Markov",
           "desc": "a newly created Markov object"
         }
-      ],
-      "related": "",
-      "platform": "JavaScript",
-      "note": "This API not available in Java yet"
+      ]
     }
   ],
   "functions": [
@@ -45,10 +42,7 @@
           "type": "Markov",
           "desc": "this Markov"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "completions",
@@ -70,10 +64,7 @@
           "type": "String[]",
           "desc": "an unordered list of possible next tokens"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "generate",
@@ -95,10 +86,7 @@
           "type": "String[]",
           "desc": "the result"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "probability",
@@ -116,10 +104,7 @@
           "type": "float(when parameter is an array)<br>double(when parameter is a String object)",
           "desc": "probability from 0-1"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "probabilities",
@@ -141,10 +126,7 @@
           "type": "Object<br>(or Map in Java)",
           "desc": "An object (JS) or HashMap (Java) mapping words to probabilities"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "size",
@@ -157,10 +139,7 @@
           "type": "int",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "toString",
@@ -171,17 +150,14 @@
       "returns": [
         {
           "type": "String",
-          "desc": "this object as a String"
+          "desc": "the object as a String"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "toJSON",
       "example": "rm = new Markov(3);<br/>rm.addText(sentences);<br/>json = rm.toJSON();",
-      "description": "Persists the model in JSON format",
+      "description": "Converts the model to a JSON-formatted string",
       "syntax": "toJSON();",
       "parameters": [],
       "returns": [
@@ -189,10 +165,7 @@
           "type": "String",
           "desc": "JSON representation"
         }
-      ],
-      "related": "",
-      "platform": "JavaScript",
-      "note": "This API not available in Java yet"
+      ]
     }
   ]
 }

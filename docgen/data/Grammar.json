@@ -22,10 +22,7 @@
           "type": "Grammar",
           "desc": "this Grammar object"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     }
   ],
   "functions": [
@@ -49,10 +46,7 @@
           "type": "Grammar",
           "desc": "this Grammar"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "expand",
@@ -74,10 +68,7 @@
           "type": "String",
           "desc": "the result of the expansion (or an error if the rule is not found)"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "removeRule",
@@ -95,10 +86,7 @@
           "type": "Grammar",
           "desc": "this Grammar"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "addRules",
@@ -116,31 +104,20 @@
           "type": "Grammar",
           "desc": "this Grammar"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "toString",
-      "example": "rm = new Grammar(rules);<br/>s = rm.toString();//return default formatted string<br>s = rm.toString('/'); //return a string with '/' marking the end of each rule",
+      "example": "rm = new Grammar(rules);<br/>s = rm.toString();",
       "description": "Returns a formatted version of this grammar",
       "syntax": "rg.toString();",
-      "parameters": [
-        {
-          "type": "String",
-          "desc": "a String or a char to mark the end of each rule"
-        }
-      ],
+      "parameters": [],
       "returns": [
         {
           "type": "String",
-          "desc": "this object as a String"
+          "desc": "the object as a String"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "toJSON",
@@ -158,10 +135,7 @@
           "type": "String",
           "desc": "the grammar as a json string"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     }
   ]
 }

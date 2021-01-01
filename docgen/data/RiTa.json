@@ -13,10 +13,7 @@
           "type": "String",
           "desc": ""
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     }
   ],
   "statics": [
@@ -40,8 +37,7 @@
           "type": "Grammar",
           "desc": "a Grammar object"
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "markov",
@@ -63,8 +59,7 @@
           "type": "Markov",
           "desc": "a RiTa.Markov object"
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "isAbbreviation",
@@ -86,10 +81,7 @@
           "type": "boolean",
           "desc": "true if 'input' is an abbreviation"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "isQuestion",
@@ -107,10 +99,7 @@
           "type": "boolean",
           "desc": "true if 'sentence' starts with a question word"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "isPunctuation",
@@ -128,10 +117,7 @@
           "type": "boolean",
           "desc": "true or false"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "analyze",
@@ -155,7 +141,6 @@
         }
       ],
       "related": "<a href=\"../phones/\">RiTa.phones()</a>, <a href=\"../pos/\">RiTa.pos()</a>",
-      "platform": "Java / JavaScript",
       "note": ""
     },
     {
@@ -170,58 +155,47 @@
         }
       ],
       "returns": [],
-      "related": "<a href='../randomWord'>RiTa.randomWord()</a>, <a href='../randomOrdering'>RiTa.randomOrdering()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../randomWord'>RiTa.randomWord()</a>, <a href='../randomOrdering'>RiTa.randomOrdering()</a>"
     },
     {
       "name": "randomOrdering",
       "example": "array = RiTa.randomOrdering(5);",
-      "description": "Returns a randomly ordered array of unique integers from 0 to numElements. <br/>The size of the array will be numElements.",
-      "syntax": "RiTa.randomOrdering(numElements);<br>RiTa.randomOrdering(array);//not available in Java yet",
+      "description": "Returns a randomly ordered array of unique integers from 0 to the argument supplied.<br>The JavaScript version also accepts an array to be re-ordered as the sole parameter",
+      "syntax": "RiTa.randomOrdering(numElements);<br>RiTa.randomOrdering(array); // JS only",
       "parameters": [
         {
-          "type": "int<br>(or an array, this option not available in Java yet)",
-          "desc": "numElements<br>(or an array to randomly re-order, this option not available in Java yet)"
+          "type": "int",
+          "desc": "numElements"
         }
       ],
       "returns": [
         {
-          "type": "int[]<br>(or another array if an array is used as the parameter)",
-          "desc": "unique integers from 0 to numElements-1 <br>(or the re-ordered array if an array is used as parameter)"
+          "type": "int[]",
+          "desc": "unique integers from 0 to numElements-1 <br>(or the reordered array when supplied as a parameter)"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "sentences",
-      "example": "RiTa.sentences(\"\"The boy went fishing.\", he said. Then he went away.\");",
+      "example": "RiTa.sentences(\"The boy went fishing.\", he said. Then he went away.\");",
       "description": "Splits 'text' into sentences (according to Penn Treebank conventions)",
-      "syntax": "RiTa.sentences(text);<br/>RiTa.sentences(text, regex);<br>RiTa.sentences(text, option);//only in Java",
+      "syntax": "RiTa.sentences(text);<br/>RiTa.sentences(text, regex);",
       "parameters": [
         {
           "type": "String",
           "desc": "the text to be split"
         },
         {
-          "type": "String OR Regex (in JS)",
+          "type": "String or Regex (JS), String or java.util.regex.Pattern (Java)",
           "desc": "regex (optional) the pattern to be used for word tokenization"
-        },
-        {
-          "type": "Map (only in Java)",
-          "desc": "optional way to set the regex<br><br>{String} option.pattern:<br>the regex to use"
         }
       ],
       "returns": [
         {
           "type": "String[]",
-          "desc": "array of sentences"
+          "desc": "an array of sentences"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "addTransform",
@@ -239,8 +213,7 @@
         }
       ],
       "returns": [],
-      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a> ",
-      "platform": "Java / JavaScript"
+      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a> "
     },
     {
       "name": "evaluate",
@@ -263,8 +236,7 @@
           "desc": "the result of the evaluation"
         }
       ],
-      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a>",
-      "platform": "Java / JavaScript"
+      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a>"
     },
     {
       "name": "tokenize",
@@ -287,8 +259,7 @@
           "desc": "in which each element is a single token (or word)"
         }
       ],
-      "related": "<a href='../untokenize'>RiTa.untokenize()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../untokenize'>RiTa.untokenize()</a>"
     },
     {
       "name": "untokenize",
@@ -311,8 +282,7 @@
           "desc": "containing all elements as a sentence"
         }
       ],
-      "related": "<a href='../tokenize'>RiTa.tokenize()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../tokenize'>RiTa.tokenize()</a>"
     },
     {
       "name": "phones",
@@ -332,7 +302,6 @@
         }
       ],
       "related": "<a href=\"../analyze/\">RiTa.analyze()</a>",
-      "platform": "Java / JavaScript",
       "note": ""
     },
     {
@@ -361,7 +330,6 @@
         }
       ],
       "related": "<a href=\"../analyze/\">RiTa.analyze()</a>",
-      "platform": "Java / JavaScript",
       "note": ""
     },
     {
@@ -388,10 +356,7 @@
           "type": "String",
           "desc": "a combined string of words and pos tags"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "stresses",
@@ -409,10 +374,7 @@
           "type": "String",
           "desc": "e.g., '1/0/1', with 1's meaning 'stressed', and 0's meaning 'unstressed', "
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "syllables",
@@ -432,7 +394,6 @@
         }
       ],
       "related": "<a href=\"../analyze/\">RiTa.analyze()</a>",
-      "platform": "Java / JavaScript",
       "note": ""
     },
     {
@@ -456,8 +417,7 @@
           "desc": "the concordance"
         }
       ],
-      "note": "See <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a>",
-      "platform": "Java / JavaScript"
+      "note": "See <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a>"
     },
     {
       "name": "kwic",
@@ -484,8 +444,7 @@
           "desc": "all the occurrences of the keyword in the model, each with no more than 'numWords' words of context on either side"
         }
       ],
-      "note": "See <a href=\"https://en.wikipedia.org/wiki/Key_Word_in_Context\">KeyWordInContext</a> and <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">Concordance</a> on Wikipedia",
-      "platform": "Java / JavaScript"
+      "note": "See <a href=\"https://en.wikipedia.org/wiki/Key_Word_in_Context\">KeyWordInContext</a> and <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">Concordance</a> on Wikipedia"
     },
     {
       "name": "conjugate",
@@ -507,10 +466,7 @@
           "type": "String",
           "desc": "the conjugated verb"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "pastParticiple",
@@ -528,10 +484,7 @@
           "type": "String",
           "desc": "the past participle form of the verb"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "presentParticiple",
@@ -549,10 +502,7 @@
           "type": "String",
           "desc": "the present participle form of the verb"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "stem",
@@ -570,10 +520,7 @@
           "type": "String",
           "desc": "the stemmed form of the word"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "pluralize",
@@ -595,10 +542,7 @@
           "type": "String",
           "desc": "the (regular or irregular) plural form of the noun"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "singularize",
@@ -620,10 +564,7 @@
           "type": "String",
           "desc": "the singular form of the noun"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "hasWord",
@@ -641,10 +582,7 @@
           "type": "boolean",
           "desc": "true if the current lexicon includes the word, else false"
         }
-      ],
-      "related": "",
-      "platform": "Java / JavaScript",
-      "note": ""
+      ]
     },
     {
       "name": "alliterations",
@@ -667,8 +605,7 @@
           "desc": "array of alliterations"
         }
       ],
-      "related": "<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "randomWord",
@@ -687,8 +624,7 @@
           "desc": "the random word"
         }
       ],
-      "related": "<a href='../randomSeed'>RiTa.randomSeed()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../randomSeed'>RiTa.randomSeed()</a>"
     },
     {
       "name": "rhymes",
@@ -711,8 +647,7 @@
           "desc": "rhymes for the word, or an empty array if none are found"
         }
       ],
-      "related": "<a href='../spellsLike'>RiTa.alliterations()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../spellsLike'>RiTa.alliterations()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "search",
@@ -735,8 +670,7 @@
           "desc": "array of words matching the search criteria in the lexicon (or all words if no criteria is provided)"
         }
       ],
-      "related": "<a href='../spellsLike'>RiTa.alliterations()</a>,<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../spellsLike'>RiTa.alliterations()</a>,<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "isAdverb",
@@ -754,8 +688,7 @@
           "type": "boolean",
           "desc": "true if the word can be used as an adverb "
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "isNoun",
@@ -773,8 +706,7 @@
           "type": "boolean",
           "desc": "true if the word can be used as a noun"
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "isVerb",
@@ -792,8 +724,7 @@
           "type": "boolean",
           "desc": "true if the word can be used as a verb"
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "isStopWord",
@@ -830,8 +761,7 @@
           "type": "boolean",
           "desc": "true if the word can be used as an adjective"
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "isAlliteration",
@@ -857,8 +787,7 @@
           "type": "boolean",
           "desc": "true if the first stressed consonant of the two words match"
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "isRhyme",
@@ -884,8 +813,7 @@
           "type": "boolean",
           "desc": "true if the two words rhyme, else false."
         }
-      ],
-      "platform": "Java / JavaScript"
+      ]
     },
     {
       "name": "soundsLike",
@@ -908,8 +836,7 @@
           "desc": "the matching words"
         }
       ],
-      "related": "<a href='../spellsLike'>RiTa.spellsLike()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "spellsLike",
@@ -932,8 +859,7 @@
           "desc": "the matching words"
         }
       ],
-      "related": "<a href='../soundsLike'>RiTa.soundsLike()</a>",
-      "platform": "Java / JavaScript"
+      "related": "<a href='../soundsLike'>RiTa.soundsLike()</a>"
     }
   ]
 }

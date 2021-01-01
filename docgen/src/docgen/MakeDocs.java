@@ -21,14 +21,16 @@ public class MakeDocs extends PApplet {
 	static String STATIC_DIR = "static";
 	static String WWW_OUTPUT = "../pub/";
 	static String REF_OUTPUT = "reference/";
+	
 	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
 	static String[] TYPES = { "functions", "statics", "fields" };
 	
-	static String FUNCTION_TEMPLATE = "function.tmpl";
-	static String REFINDEX_TEMPLATE = "ref-index.tmpl";
-	static String WWWINDEX_TEMPLATE = "www-index.tmpl";
-
+	static String WWWINDEX_TEMPLATE = "index.html";
+	static String FUNCTION_TEMPLATE = "function.html";
+	static String REFINDEX_TEMPLATE = "reference.html";
+	
 	static final String OUTPUT_TYPE = "html";
+	static final String HEADER = "<!-- DOCGEN: THIS CLASS IS AUTO_GENERATED - DO NOT EDIT BY HAND! -->";
 
 	static String[] lines, methodName, example, description, syntax, thePlatform;
 	static String[] returnType, returnDesc, returns, related, note, parameter;
@@ -342,8 +344,22 @@ public class MakeDocs extends PApplet {
 		writeFile(fname, lines);
 	}
 
+	private static String[] arrayShift(String ele, String[] input) {
+		List<String> tmp = new LinkedList<String>(Arrays.asList(input));
+		tmp.add(0, ele);
+		return tmp.toArray(new String[tmp.size()]);
+	}
+	
+	private static String[] addHeader(String[] input) {
+		List<String> tmp = new LinkedList<String>(Arrays.asList(input));
+		tmp.add(3, "");
+		tmp.add(3, HEADER);
+		return tmp.toArray(new String[tmp.size()]);
+	}
+	
 	private static void writeFile(String fname, String[] theLines) {
 		// pln("Writing " + fname);
+		theLines = addHeader(theLines);
 		PrintWriter output = createWriter(new File(fname));
 		for (int i = 0; i < theLines.length; i++) {
 			output.println(theLines[i]);

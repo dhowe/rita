@@ -5,20 +5,6 @@ $(function () {
   $('#words').html(txt);
   setTimeout(nextWord, 1000);
 
-  /*  function setup() {
- 
-     createCanvas(600, 400).parent('#cdiv');
-     noStroke();
-     textSize(17.5);
- 
-   }
- 
-   function draw() {
-     background(20, 30, 55);
-     fill(250, 240, 230);
-     text(txt, 50, 30, 500, height);
-   } */
-
   // replace one random word in the text
   function nextWord() {
 
