@@ -4,5 +4,5 @@
 
 ```
 # To create the full website in 'pub' do
-$ ./build-site.sh
+$ ./scripts/build-site.sh
 ```
