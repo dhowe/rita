@@ -239,7 +239,7 @@
         }
       ],
       "returns": [],
-      "related": "See RiScript <a href=\"../../riscript.html\">documentation</a> ",
+      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a> ",
       "platform": "Java / JavaScript"
     },
     {
@@ -263,7 +263,7 @@
           "desc": "the result of the evaluation"
         }
       ],
-      "related": "See RiScript <a href=\"../../riscript.html\">documentation</a>",
+      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a>",
       "platform": "Java / JavaScript"
     },
     {

@@ -113,7 +113,8 @@ function menuBar() {
 
 
   window.addEventListener("load", function() {
-    var t = document.querySelector(".page-header").clientHeight,
+    var ph = document.querySelector(".page-header");
+    var t = ph ? ph.clientHeight : 0,
       r = document.querySelector(".navbar-sticky"),
       n = 300;
 
