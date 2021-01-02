@@ -24,13 +24,12 @@
       <div class="row">
         <div class="col1"></div>
         <div class="col10">
-          <h3>Reference</h3>
+          <h3 style="margin: -50px 0px 0px 0px !important;">Reference</h3>
           <div class="page row">
 
             <div class="refbar span3">
               <div id="index">
                 <ul class="classList">
-                  <!--li style="margin-left: 5px !important;"><a href="../../../index.html#reference">back to index</a><br /></li-->
                   <li style="margin-left: 5px !important;"><a href="../../../index.html#reference">RiTa index</a><br /></li>
                 </ul>
               </div>
@@ -44,7 +43,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      <!--a href="../../RiTa/RiTa/index.html"-->RiTa<!--/a-->
+                      RiTa
                     </h3>
                   </td>
                 </tr>
@@ -69,7 +68,6 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
                       <pre class="margin"><br/>// Java<br/><br/>opts = new HashMap();<br/>opts.put("ignoreCase", false);<br/>opts.put("ignoreStopWords", true);<br/><br/>result = RiTa.concordance(text, opts);<br/><br/><br/>// JavaScript<br/><br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>result = RiTa.concordance(text, opts);<br/><br/></pre>
                     </div>
                   </td>
@@ -78,7 +76,6 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-
                     <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the text</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br/>(or Map<String, Integer) in Java)</th><td width='75%'>options (optional) the relevant options for the KWIK model:<br/><br/>{int} options.wordCount: <br/># of words of context on either side of input word<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br></td></tr></table>
                   </td>
                 </tr>
@@ -88,7 +85,6 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-
                     <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Object<br/>(or Map in Java)</th><td width='75%'>the concordance</td></tr></table>
                   </td>
                 </tr>
@@ -102,6 +98,7 @@
 
                 <tr class='Note'>
                   <th scope="row">Note</th>
+
                   <!-- NOTE  -->
                   <td>See <a href="https://en.wikipedia.org/wiki/Concordance_%28publishing%29">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a></td>
                 </tr>

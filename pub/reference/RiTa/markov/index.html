@@ -24,13 +24,12 @@
       <div class="row">
         <div class="col1"></div>
         <div class="col10">
-          <h3>Reference</h3>
+          <h3 style="margin: -50px 0px 0px 0px !important;">Reference</h3>
           <div class="page row">
 
             <div class="refbar span3">
               <div id="index">
                 <ul class="classList">
-                  <!--li style="margin-left: 5px !important;"><a href="../../../index.html#reference">back to index</a><br /></li-->
                   <li style="margin-left: 5px !important;"><a href="../../../index.html#reference">RiTa index</a><br /></li>
                 </ul>
               </div>
@@ -44,7 +43,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      <!--a href="../../RiTa/RiTa/index.html"-->RiTa<!--/a-->
+                      RiTa
                     </h3>
                   </td>
                 </tr>
@@ -69,7 +68,6 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
                       <pre class="margin">txt = "This is a two sentence example. This is the second one. "<br><br>rm = RiTa.markov(3);<br>rm.addText(txt);<br>sentences = rm.generate(2);<br><br>for (i = 0; i < sentences.length; i ++ ){<br>  println(sentences[i]);<br>}</pre>
                     </div>
                   </td>
@@ -78,7 +76,6 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-
                     <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>int</th><td width='75%'>n-factor - the length of each n-gram stored in the model</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br>(or Map in Java)</th><td width='75%'>options for creating the model (optional)<br><br>{int} options.maxAttempts:<br>max attempts before throwing an error in generation, default=99<br><br>{boolean} options.disableInputChecks:<br>if true, allow result to be present in the input, default=false<br><br>{int} options.maxLengthMatch:<br># of words allowed in result to match a sequence in the input, default=0<br><br>{boolean} options.trace:<br>if true, output debug log to console<br><br>{Function} options.tokenize[JS only]:<br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} options.untokenize[JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br></td></tr></table>
                   </td>
                 </tr>
@@ -88,7 +85,6 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-
                     <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Markov</th><td width='75%'>a RiTa.Markov object</td></tr></table>
                   </td>
                 </tr>
@@ -102,6 +98,7 @@
 
                 <tr class='Note' style='display:none'>
                   <th scope="row">Note</th>
+
                   <!-- NOTE  -->
                   <td>tmp_note</td>
                 </tr>

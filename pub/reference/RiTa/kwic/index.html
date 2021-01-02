@@ -24,13 +24,12 @@
       <div class="row">
         <div class="col1"></div>
         <div class="col10">
-          <h3>Reference</h3>
+          <h3 style="margin: -50px 0px 0px 0px !important;">Reference</h3>
           <div class="page row">
 
             <div class="refbar span3">
               <div id="index">
                 <ul class="classList">
-                  <!--li style="margin-left: 5px !important;"><a href="../../../index.html#reference">back to index</a><br /></li-->
                   <li style="margin-left: 5px !important;"><a href="../../../index.html#reference">RiTa index</a><br /></li>
                 </ul>
               </div>
@@ -44,7 +43,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      <!--a href="../../RiTa/RiTa/index.html"-->RiTa<!--/a-->
+                      RiTa
                     </h3>
                   </td>
                 </tr>
@@ -69,7 +68,6 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <!--img src="../../../img/RiTa-logo4.png" alt="example pic" /-->
                       <pre class="margin"><br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, opts);<br>lines = RiTa.kwic(word, numWords);<br/><br/></pre>
                     </div>
                   </td>
@@ -78,7 +76,6 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-
                     <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the keyword of interest</td></tr><tr class=''><th width='25%' scope='row' class=nobold>int</th><td width='75%'>upper limit of words before/after the keyword (optional, default=6)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>options that can be set in Java<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set other concordance options for the model, please see <a href="../concordance/">RiTa.concordance()</a> for detail</td></tr></table>
                   </td>
                 </tr>
@@ -88,7 +85,6 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-
                     <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>all the occurrences of the keyword in the model, each with no more than 'numWords' words of context on either side</td></tr></table>
                   </td>
                 </tr>
@@ -102,6 +98,7 @@
 
                 <tr class='Note'>
                   <th scope="row">Note</th>
+
                   <!-- NOTE  -->
                   <td>See <a href="https://en.wikipedia.org/wiki/Key_Word_in_Context">KeyWordInContext</a> and <a href="https://en.wikipedia.org/wiki/Concordance_%28publishing%29">Concordance</a> on Wikipedia</td>
                 </tr>
