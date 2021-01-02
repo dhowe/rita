@@ -15,20 +15,20 @@ import processing.data.JSONObject;
 public class MakeDocs extends PApplet {
 
 	static boolean SILENT = false, DBUG = false, OUTPUT_MARKUP = false;
-	
+
 	static String DATA_DIR = "data";
 	static String TMPL_DIR = "tmpl";
 	static String STATIC_DIR = "static";
 	static String WWW_OUTPUT = "../pub/";
 	static String REF_OUTPUT = "reference/";
-	
+
 	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
 	static String[] TYPES = { "functions", "statics", "fields" };
-	
+
 	static String WWWINDEX_TEMPLATE = "index.html";
 	static String FUNCTION_TEMPLATE = "function.html";
 	static String REFINDEX_TEMPLATE = "reference.html";
-	
+
 	static final String OUTPUT_TYPE = "html";
 	static final String HEADER = "<!-- DOCGEN: THIS CLASS IS AUTO_GENERATED - DO NOT EDIT BY HAND! -->";
 
@@ -66,10 +66,11 @@ public class MakeDocs extends PApplet {
 			String contents = "";
 			for (int i = 0; i < CLASS_NAMES.length; i++) {
 				String cls = CLASS_NAMES[i];
-				String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
+				//String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-				contents += "    <span style=\"color: #006B8F !important;\"><b>" + dls + "</b><span><br><br>\n"; // no link
+				contents += "    <span style=\"color: #006B8F !important;\"><b>" + cls
+						+ "</b><span><br><br>\n"; // no link
 				for (int j = 0; j < TYPES.length; j++) {
 					ArrayList<String> entries = API.get(cls + "." + TYPES[j]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
@@ -349,14 +350,14 @@ public class MakeDocs extends PApplet {
 		tmp.add(0, ele);
 		return tmp.toArray(new String[tmp.size()]);
 	}
-	
+
 	private static String[] addHeader(String[] input) {
 		List<String> tmp = new LinkedList<String>(Arrays.asList(input));
 		tmp.add(3, "");
 		tmp.add(3, HEADER);
 		return tmp.toArray(new String[tmp.size()]);
 	}
-	
+
 	private static void writeFile(String fname, String[] theLines) {
 		// pln("Writing " + fname);
 		theLines = addHeader(theLines);
