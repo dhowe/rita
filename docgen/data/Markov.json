@@ -5,7 +5,7 @@
     {
       "name": "fromJSON",
       "example": "rm = Markov.fromJSON(jsonData);",
-      "description": "Loads a model previously saved as JSON",
+      "description": "Creates a new model from one previously saved as JSON",
       "syntax": "Markov.fromJSON(jsonData);",
       "parameters": [
         {

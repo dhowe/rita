@@ -5,12 +5,12 @@
     {
       "name": "fromJSON",
       "example": "rg = Grammar.fromJSON(grammarRules);",
-      "description": "Loads a grammar from a JSON object or string",
+      "description": "Creates a new grammar object from a JSON string",
       "syntax": "Grammar.fromJSON(grammarRules);<br>Grammar.fromJSON(grammarRules, context);",
       "parameters": [
         {
-          "type": "String or Object",
-          "desc": "a String or JSON object representation of the grammar"
+          "type": "String",
+          "desc": "a JSON representation of the grammar"
         },
         {
           "type": "Object<br>(or Map in Java)",
