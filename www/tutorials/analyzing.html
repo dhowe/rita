@@ -70,11 +70,11 @@
             <ul class="sublist">
               <li><a href="#Phonemes">Phonemes</a></li>
               <li><a href="#Stresses">Stresses</a></li>
-              <!-- <li><a href="#Tokens">Tokens</a></li> -->
               <li><a href="#POS">POS (part-of-speech)</a></li>
-            </ul>
+            </ul><br>
 
             <div id="Phonemes" class="pad-small">
+
               <h5 class="sub">Phonemes</h5>
               <p>A phoneme is a single "unit" of sound that has meaning in any language. Each phoneme
                 represents a different sound a person can make. Since there are only 26 letters in the
@@ -150,13 +150,14 @@
                  analyze the part-of-speech (or POS) for you.
               </p>
                <pre><code class="language-javascript">RiTa.pos("I am hungry");</code></pre>
-               <p>The outcome would be: ["prp", "vbp", "jj"]</p>
+               <p>The outcome would be: <pre>[ "prp", "vbp", "jj" ]</pre></p>
               <p>
               Here you can find the <a href="../reference/postags.html">Penn part-of-speech tags</a> used by the tagger in RiTa.
               </p>
 
-              <p>By default RiTa uses the <b>Penn </b>tag set and it is very detailed. If you only need the very basic POS categories, you can switch to <b>WordNet-style</b> tags,
-                 which covers just the following basic categories:
+              <p>By default RiTa uses the <b>Penn </b>tag set and it is very detailed. If you only need the very basic POS categories, you can switch to using simple tags
+               <pre><code class="language-javascript">RiTa.pos("I am hungry", { simple: true });</code></pre>
+              which covers only the following basic categories:
               </p>
               <div style="line-height:1.618em!important;">
                 <p>
