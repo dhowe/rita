@@ -12,7 +12,6 @@ ritajs="../ritajs"
 pom="$ritajava/pom.xml"
 pkg="$ritajs/package.json"
 artifacts="./artifacts"
-download="$pub/download"
 jsdist="$ritajs/dist"
 pubdist="$pub/dist"
 
