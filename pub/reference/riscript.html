@@ -118,8 +118,11 @@
               <tr>
                 <td>
                   <span style="color:rgb(36, 62, 114); font-weight: 600;">RiScript</span> is a writer-oriented
-                  scripting language integrated into RiTa. Statements can be used within any <a href="./RiTa/grammar/index.html">grammar</a>, or run explicitly via
-                  <a href="./RiTa/evaluate/index.html">RiTa.evaluate()</a>
+                  plain-text scripting language integrated in RiTa. RiScript statements, the basics of which are
+                  described below, can be included in any <a href="./RiTa/grammar/index.html">grammar</a>, or executed
+                  directly by calling <a href="./RiTa/evaluate/index.html">RiTa.evaluate()</a>. Fragments of writing
+                  can be abitrarily transformed, at runtime, by using the provided <a href="#transforms">transforms</a>,
+                  or by specifying your own bespoke ones.
 
 
                   <h4>Choice</h4>
@@ -145,10 +148,11 @@
 
 
                   <h4>Transforms</h4>
-                  Allow for modification of variables, choices, and raw text. RiScript comes with a number of useful
-                  transforms enabled (including pluralize(), capitalize(), and articlize()), which can be nested to
-                  create complex expressions. User-defined transforms can be added using RiTa.addTransform() or by
-                  passing a transform function as part of the script's 'context'.<br>
+                  <a name="transforms"></a>
+                  Transforms allow for the transformation of variables, choices and raw text at runtime.
+                  RiScript provides a number of useful transforms, including pluralize(), capitalize() and articlize(),
+                  which can be nested to create complex expressions. User-defined transforms can be easily added using RiTa.addTransform() or by
+                  simply passing a transform function as part of a script's 'context'.<br>
 
                   <pre>How many (tooth | menu | child).pluralize() do you have?<br>How many (tooth | menu | child).pluralize().toUpper() do you have?<br><br>He grew up to be $animal.articlize().<br>He grew up to be (anteater).articlize().<br>He grew up to be (anteater).articlize().myCustomTransform().</pre>
 
@@ -171,12 +175,9 @@
                   <pre
                     class="output">0) "The weather was depressed" <br>1) "The weather was gloomy" <br>2) "The weather was depressed" <br>3) "The weather was sad" <br>4) "The weather was gloomy" <br>   ...</pre>
 
-
-
-
-                  <h4>Conditionals</h4>
+                  <!--h4>Conditionals</h4>
                   Allow for conditional execution, based on the values of one or more variables<br>
-                  <pre>// 'desc' can be defined in JS or RS */<br>{desc='party'} The party was happening<br>{desc='party', user=$john} The party was happening and John was wearing $John.color.</pre>
+                  <pre>// 'desc' can be defined in JS or RS */<br>{desc='party'} The party was happening<br>{desc='party', user=$john} The party was happening and John was wearing $John.color.</pre-->
                 </td>
               </tr>
 
