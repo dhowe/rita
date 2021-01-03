@@ -5,7 +5,7 @@
     {
       "name": "fromJSON",
       "example": "rm = Markov.fromJSON(jsonData);",
-      "description": "Creates a new model from one previously saved as JSON",
+      "description": "Creates a new model from one previously saved as JSON (JavaScript only)",
       "syntax": "Markov.fromJSON(jsonData);",
       "parameters": [
         {
@@ -13,6 +13,7 @@
           "desc": "a JSON string containing the model"
         }
       ],
+      "platform": "JavaScript",
       "returns": [
         {
           "type": "Markov",
@@ -157,9 +158,10 @@
     {
       "name": "toJSON",
       "example": "rm = new Markov(3);<br/>rm.addText(sentences);<br/>json = rm.toJSON();",
-      "description": "Converts the model to a JSON-formatted string",
+      "description": "Converts the model to a JSON-formatted string  (JavaScript only)",
       "syntax": "toJSON();",
       "parameters": [],
+      "platform": "JavaScript",
       "returns": [
         {
           "type": "String",
