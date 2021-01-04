@@ -109,7 +109,7 @@ function menuBar() {
     e.preventDefault();
     $(".nav-wrapper").toggleClass("mobile-menu-active");
     $(".navbar-sticky").toggleClass("mobile-menu-active");
-    $(".navbar-sticky > .container").css("width","100%");
+    $(".navbar-sticky > .container").toggleClass("mobileNavCon");
     //to fix menu bar on mobile device (esp. phones)
   });
 
