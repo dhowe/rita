@@ -670,7 +670,7 @@
           "desc": "array of words matching the search criteria in the lexicon (or all words if no criteria is provided)"
         }
       ],
-      "related": "<a href='../spellsLike'>RiTa.alliterations()</a>,<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
+      "related": "<a href='../alliterations'>RiTa.alliterations()</a>,<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "isAdverb",
