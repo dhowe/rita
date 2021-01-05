@@ -647,7 +647,7 @@
           "desc": "rhymes for the word, or an empty array if none are found"
         }
       ],
-      "related": "<a href='../spellsLike'>RiTa.alliterations()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
+      "related": "<a href='../alliterations'>RiTa.alliterations()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "search",
@@ -670,7 +670,7 @@
           "desc": "array of words matching the search criteria in the lexicon (or all words if no criteria is provided)"
         }
       ],
-      "related": "<a href='../spellsLike'>RiTa.alliterations()</a>,<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
+      "related": "<a href='../alliterations'>RiTa.alliterations()</a>,<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "isAdverb",
@@ -850,7 +850,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "Obejct<br/>(or Map in Java)</th><td width='75%'>options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.targetPos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
