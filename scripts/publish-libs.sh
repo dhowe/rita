@@ -7,9 +7,9 @@ start=`date +%s`
 # paths
 tmp="/tmp"
 pub="./pub"
-ritajava="../rita"
+rita4j="../rita4j"
 ritajs="../ritajs"
-pom="$ritajava/pom.xml"
+pom="$rita4j/pom.xml"
 pkg="$ritajs/package.json"
 artifacts="./artifacts"
 jsdist="$ritajs/dist"
@@ -126,7 +126,7 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
         #echo
         #if [[ $REPLY =~ ^[Yy]$ ]] ; then
         if [ "$publive" = true ] ; then
-            pushd $ritajava >/dev/null
+            pushd $rita4j >/dev/null
             echo "... git-tag java $version"
             git tag -a v$version -m "Release $version"
             git push -q origin --tags
@@ -139,21 +139,21 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
         #echo
         #if [[ $REPLY =~ ^[Yy]$ ]] ; then
         if [ "$publive" = true ] ; then
-            pushd $ritajava >/dev/null
+            pushd $rita4j >/dev/null
             echo "... deploying to maven central"
             mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
             popd >/dev/null
         fi
     else
-        pushd $ritajava >/dev/null
+        pushd $rita4j >/dev/null
         echo "... creating maven packages"
         mvn -q -T1C clean package || check_err $? "maven build failed"
         popd >/dev/null
     fi
     # remove previous versions
     rm -rf $artifacts/rita-*.jar $artifacts/rita-*.pom $artifacts/rita-*.asc 2>/dev/null
-    compgen -G $ritajava/target/rita-$version* >/dev/null && cp \
-    $ritajava/target/rita-$version* $artifacts
+    compgen -G $rita4j/target/rita-$version* >/dev/null && cp \
+    $rita4j/target/rita-$version* $artifacts
 fi
 
 # create processing library

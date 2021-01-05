@@ -8,7 +8,7 @@ if [ -z "$1" ] || [ "$1" = "help" ]; then
     help; exit 1
 fi
 
-ritajava=../rita
+rita4j=../rita4j
 ritajs=../ritajs
 version=$1
 
@@ -43,7 +43,7 @@ fi
 popd >/dev/null
 
 ############################# JAVA ################################
-pushd $ritajava >/dev/null
+pushd $rita4j >/dev/null
 changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
     echo "... bump pom.xml version"

@@ -17,11 +17,11 @@ function check_err {
 
 openproc=false
 version=$1  #${1:-XXX}
-ritajava="../rita"
+rita4j="../rita4j"
 pom="pom.xml"
 
 if [ -z "$version" ]; then
-   pushd $ritajava >/dev/null
+   pushd $rita4j >/dev/null
    version=`grep version $pom | grep -v -e '<?xml|~'| head -n 1 | sed 's/[[:space:]]//g' | sed -E 's/<.{0,1}version>//g' | awk '{print $1}'`
    popd >/dev/null
    echo ... found version $version
@@ -45,15 +45,15 @@ cp -r $tmp/library.properties $dest/rita.txt
 
 echo "... copying reference, examples"
 cp -r pub/reference $tmp 
-cp -r $ritajava/examples/processing $tmp/examples
+cp -r $rita4j/examples/processing $tmp/examples
 
 echo "... copying source, javadocs"
 cp -r $dest/rita-$version-sources.jar  $tmp/source.jar || check_err $? "cp sources failed"
 cp -r $dest/rita-$version-javadoc.jar  $tmp/javadoc.jar || check_err $? "cp javadocs failed"
 
 echo "... compiling rita.jar with deps"
-(cd $ritajava && mvn -q compile assembly:single) || check_err $? "maven compile failed"
-cp -r $ritajava/target/rita-$version-jar-with-dependencies.jar  $lib/rita.jar
+(cd $rita4j && mvn -q compile assembly:single) || check_err $? "maven compile failed"
+cp -r $rita4j/target/rita-$version-jar-with-dependencies.jar  $lib/rita.jar
 
 echo "... zipping processing library"
 rm -f $dest/$zipfile 2>/dev/null 
@@ -67,7 +67,7 @@ if [ "$openproc" = true ] ; then
   echo "... (re)starting Processing"
   killall Processing 2>/dev/null
   sleep 3
-  open $ritajava/examples/processing/RandomRhymes/RandomRhymes.pde
+  open $rita4j/examples/processing/RandomRhymes/RandomRhymes.pde
 fi
 
 exit 0;
