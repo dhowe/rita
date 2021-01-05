@@ -42,7 +42,7 @@ while getopts "v:p" option; do
 done
 
 if [ "$nopub" = true ] ; then         # build website
-    echo "... publish disabled (use -p)"
+    echo "\n... publish disabled (use -p)"
 fi
 
 if [ -z $version ] ; then
@@ -77,7 +77,7 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
     popd >/dev/null
 fi
 
-echo "... cleaning $artifacts"
+#echo "... cleaning $artifacts"
 [[ -d $artifacts ]] || mkdir $artifacts
 rm -f $artifacts/*.* >/dev/null
 
@@ -99,7 +99,7 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
             echo "... deploying to npm"
             npm publish $NPM_TAR --quiet || check_err $? "npm publish failed"
             popd >/dev/null
-            mv $ritajs/*.tgz  $artifacts
+            mv $ritajs/*.tgz $artifacts
         else
             echo Exiting 1
             exit 1;
