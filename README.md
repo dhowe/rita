@@ -6,7 +6,7 @@ RiTa is a toolkit for generative writing and natural language. It is implemented
 
 ###
 
-* For JavaScript, see this [repo](https://github.com/dhowe/ritajs) or use it with [npm](https://www.npmjs.com/package/rita) or [unpkg](https://unpkg.com/browse/rita/dist/) !
+* For JavaScript, see this [repo](https://github.com/dhowe/ritajs) or use it with [npm](https://www.npmjs.com/package/rita) or [unpkg](https://unpkg.com/browse/rita/dist/)
 * For Java, see this [repo](https://github.com/dhowe/ritajs) or use it with [maven](https://search.maven.org/artifact/org.rednoise/rita) 
 
 ```xml
