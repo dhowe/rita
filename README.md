@@ -52,7 +52,7 @@ RiTa is a toolkit for generative writing and natural language. It is implemented
       <a href="./RiTa/kwic/index.html">RiTa.kwic()</a><br/>
       <a href="./RiTa/markov/index.html">RiTa.markov()</a><br/>
     </td>
-    <td style="vertical-align: top; padding-top: 15px">
+    <td style="vertical-align: top; padding-top: 15px"><br/>
       <a href="./RiTa/pastParticiple/index.html">RiTa.pastParticiple()</a><br/>
       <a href="./RiTa/phones/index.html">RiTa.phones()</a><br/>
       <a href="./RiTa/pos/index.html">RiTa.pos()</a><br/>
@@ -100,7 +100,7 @@ RiTa is a toolkit for generative writing and natural language. It is implemented
 
 ## RiScript
 
-RiScript is a writer-focused scripting language integrated with RiTa. It enables simple generative primitives within plain text for dynamic transformation of text fragments at runtime. RiScript primitives can be used as part of any [RiTa grammar](https://rednoise.org/rita/reference/RiTa/grammar/) or executed directly using [RiTa.evaluate()](https://rednoise.org/rita/reference/RiTa/evaluate/). For full documentation, see [this page](https://rednoise.org/rita/reference/riscript.html).
+RiScript is a writer-focused scripting language integrated with RiTa. It enables simple generative primitives within plain text for dynamic expansion at runtime. RiScript primitives can be used as part of any [RiTa grammar](https://rednoise.org/rita/reference/RiTa/grammar/) or executed directly using [RiTa.evaluate()](https://rednoise.org/rita/reference/RiTa/evaluate/). For full documentation, see [this page](https://rednoise.org/rita/reference/riscript.html).
 
 <br>
 
