@@ -161,23 +161,23 @@ a:focus {
   vertical-align: middle
 }
 
-#whats-new-wrapper {
+#whats-new {
   padding: 100px 0;
   background-color: #3557a6;
   color: #fff;
 }
 
-#whats-new-wrapper a {
+#whats-new a {
   text-decoration: none;
   font-weight:bold;
   color: #FEC0CB;
 }
 
-#whats-new-wrapper a:hover {
+#whats-new a:hover {
     text-decoration: underline;
 }
 
-#whats-new-wrapper h4 {
+#whats-new h4 {
   text-align: center;
   font-size: 36px;
   margin: 0;
@@ -185,12 +185,12 @@ a:focus {
   color: #fff;
 }
 
-#whats-new-wrapper ul {
+#whats-new ul {
   padding-top: 20px;
   list-style-type: circle;
 }
 
-#whats-new-wrapper li {
+#whats-new li {
   padding: 5px 0;
 }
 
@@ -471,7 +471,7 @@ Desc section
     padding-top: 20px;
   }
 
-  #gallery-wrapper .gallery_home_item {
+  #gallery .gallery_home_item {
     height: 200px;
   }
 }
@@ -592,21 +592,21 @@ Desc section
   visibility: hidden
 }
 
-#learning-wrapper {
+#learning {
   background: #253C73;
   text-align: center;
   color: #fff;
   padding: 100px 0;
 }
 
-#learning-wrapper h4 {
+#learning h4 {
   font-size: 36px;
   margin: 0;
   line-height: 120px;
   color: #fff;
 }
 
-#learning-wrapper p {
+#learning p {
   max-width: 700px;
   margin: 15px auto 15px;
   font-size: 16px;
@@ -634,7 +634,7 @@ Desc section
   color: #96b2f2;
 }
 
-#examples-wrapper {
+#examples {
   background: #FFF;
   text-align: center;
   color: #333;
@@ -642,34 +642,34 @@ Desc section
 
 }
 
-#examples-wrapper h4 {
+#examples h4 {
   font-size: 36px;
   margin: 0;
   line-height: 60px;
 }
 
-#examples-wrapper p {
+#examples p {
   max-width: 700px;
   margin: 15px auto 15px;
   font-size: 16px;
   line-height: 30px
 }
 
-#gallery-wrapper {
+#gallery {
   background: #333;
   text-align: center;
   padding: 100px 0;
   text-align: center;
 }
 
-#gallery-wrapper h4 {
+#gallery h4 {
   font-size: 36px;
   margin: 0;
   line-height: 120px;
   color: #FFF;
 }
 
-#gallery-wrapper p {
+#gallery p {
   max-width: 700px;
   margin: 15px auto 100px;
   font-size: 16px;
@@ -677,15 +677,15 @@ Desc section
   color: #FFF;
 }
 
-#gallery-wrapper div {
+#gallery div {
   margin: 0 auto;
 }
 
-#gallery-wrapper .slick-slider {
+#gallery .slick-slider {
   margin: 0 auto;
 }
 
-#gallery-wrapper img {
+#gallery img {
   width: 180px;
   height: 50px;
   border-style: solid;
@@ -696,13 +696,13 @@ Desc section
   margin: 20px 0;
 }
 
-#gallery-wrapper p {}
+#gallery p {}
 
-#gallery-wrapper a {
+#gallery a {
   color: #96b2f2;
 }
 
-#gallery-wrapper a:hover {
+#gallery a:hover {
   text-decoration: underline;
 }
 
