@@ -55,7 +55,14 @@
       background-color: rgb(255, 245, 232, 0.7);
     }
 
-    
+    strong {
+      color: rgb(36, 62, 114);
+      font-weight: 600;
+      font-size: 18px;
+      margin-top: 28px;
+      margin-bottom: 5px;
+    }
+
     .mobileNavCon {
       width: 100%;
     }
@@ -156,25 +163,26 @@
                   <a name="transforms"></a>
                   Transforms allow for the transformation of variables, choices and raw text at runtime.
                   RiScript provides a number of useful transforms, including pluralize(), capitalize() and articlize(),
-                  which can be nested to create complex expressions. User-defined transforms can be easily added using RiTa.addTransform() or by
+                  which can be nested to create complex expressions. User-defined transforms can be easily added using
+                  RiTa.addTransform() or by
                   simply passing a transform function as part of a script's 'context'.<br>
 
                   <pre>How many (tooth | menu | child).pluralize() do you have?<br>How many (tooth | menu | child).pluralize().toUpper() do you have?<br><br>He grew up to be $animal.articlize().<br>He grew up to be (anteater).articlize().<br>He grew up to be (anteater).articlize().myCustomTransform().</pre>
 
                   <h4>Sequence Transforms</h4>
 
-                  Use the seq() transform to output the Choice options in a linear sequence:<br>
+                  Use the <strong>seq()</strong> transform to output the Choice options in a linear sequence:<br>
                   <pre>The weather was (sad | gloomy | depressed).seq()<br></pre>
                   <pre
                     class="output">0) "The weather was sad" <br>1) "The weather was gloomy" <br>2) "The weather was depressed" <br>3) "The weather was sad" <br>   ...</pre>
 
-                  Use the rseq() transform for a randomized, non-repeating sequence:<br>
+                  Use the <strong>rseq()</strong> transform for a randomized, non-repeating sequence:<br>
 
                   <pre>The weather was (sad | gloomy | depressed).rseq()<br></pre>
                   <pre
                     class="output">0) "The weather was depressed"<br>1) "The weather was gloomy"<br>2) "The weather was depressed" <br>3) "The weather was sad" <br>4) "The weather was gloomy" <br>   ...</pre>
 
-                  Use the norep() transform to ensure outputs never repeat:</h5>
+                  Use the <strong>norep()</strong> transform to ensure outputs never repeat:</h5>
 
                   <pre>The weather was (sad | gloomy | depressed).norep()<br></pre>
                   <pre
