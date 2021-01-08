@@ -170,19 +170,21 @@
                   <pre>How many (tooth | menu | child).pluralize() do you have?<br>How many (tooth | menu | child).pluralize().toUpper() do you have?<br><br>He grew up to be $animal.articlize().<br>He grew up to be (anteater).articlize().<br>He grew up to be (anteater).articlize().myCustomTransform().</pre>
 
                   <h4>Sequence Transforms</h4>
+                  <a name="sequences"></a>
+                  Sequences allow one to control how Choice options are selected over multiple uses in the same script or multiple iterations of a script.<br><br>
 
                   Use the <strong>seq()</strong> transform to output the Choice options in a linear sequence:<br>
                   <pre>The weather was (sad | gloomy | depressed).seq()<br></pre>
                   <pre
                     class="output">0) "The weather was sad" <br>1) "The weather was gloomy" <br>2) "The weather was depressed" <br>3) "The weather was sad" <br>   ...</pre>
 
-                  Use the <strong>rseq()</strong> transform for a randomized, non-repeating sequence:<br>
+                  Use the <strong>rseq()</strong> transform for a randomized, non-repeating sequence (each choice will be selected before any repeat):<br>
 
                   <pre>The weather was (sad | gloomy | depressed).rseq()<br></pre>
                   <pre
                     class="output">0) "The weather was depressed"<br>1) "The weather was gloomy"<br>2) "The weather was depressed" <br>3) "The weather was sad" <br>4) "The weather was gloomy" <br>   ...</pre>
 
-                  Use the <strong>norep()</strong> transform to ensure outputs never repeat:</h5>
+                  Use the <strong>norep()</strong> transform if you want to ensure that outputs do not repeat:</h5>
 
                   <pre>The weather was (sad | gloomy | depressed).norep()<br></pre>
                   <pre
