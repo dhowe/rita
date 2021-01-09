@@ -13,7 +13,7 @@ echo ... making website
 cp -r www/* $dest
 
 # if we have built js move it into website (for examples)
-compgen -G $ritajs/dist/rita-web*.js >/dev/null && cp $ritajs/dist/rita-web*.js $dest/dist/
+compgen -G $ritajs/dist/rita*.js >/dev/null && cp $ritajs/dist/rita*.js $dest/dist/
 
 # do docs
 echo ... generating docs 

@@ -115,8 +115,7 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
     compgen -G $ritajs/*.tgz >/dev/null && mv $ritajs/*.tgz $artifacts
     
     # copy new web js to pub/examples/lib
-    compgen -G $jsdist/rita-web*.js >/dev/null && \
-    cp $jsdist/rita-web*.js $pubdist
+    compgen -G $jsdist/rita*.js >/dev/null && cp $jsdist/rita*.js $pubdist
 fi
 
 if [ "$nojava" = false ] ; then       # publish java to github packages
