@@ -157,7 +157,7 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
 fi
 
 # create processing library
-if [ "$noproc" = false ] ; then
+if [ "$noproc" = false ] && [ "$nojava" = false ] ; then
     ./scripts/build-plib.sh $version || check_err $? "build-plib.sh failed"
     cp "$artifacts/rita-$version-plib.zip" "$pub/rita.zip"
     cp "$artifacts/rita.txt" "$pub/rita.txt"
