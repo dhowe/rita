@@ -782,8 +782,8 @@ Desc section
   min-height: 100%;
 }
 
-/* download-section */
-#download-section {
+/* download */
+#download {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
   color: #000;
@@ -793,14 +793,14 @@ Desc section
   margin-bottom: 40px;
 }
 
-#download-section h3 {
+#download h3 {
   font-size: 40px;
 }
-#download-section h4 {
+#download h4 {
   font-family: "Helvetica Neue" !important;
   font-weight: 500;
 }
-#download-section .row {
+#download .row {
   margin-bottom: 1em;
 }
 .downloadbox {
