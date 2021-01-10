@@ -104,7 +104,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      Grammar
+                      RiMarkov
                     </h3>
                   </td>
                 </tr>
@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Returns a formatted version of this grammar</td>
+                  <td>Returns a formatted version of this model</td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">rm = new RiGrammar(rules);<br/>s = rm.toString();</pre>
+                      <pre class="margin">rm = new RiMarkov(3);<br/>rm.addText(sentences);<br/>s = rm.toString();</pre>
                     </div>
                   </td>
                 </tr>
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>rg.toString();</pre>
+                    <pre>rm.toString();</pre>
                   </td>
                 </tr>
 

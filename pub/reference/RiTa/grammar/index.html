@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Creates a new RiTa.Grammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href="../../riscript.html">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><pre class="margin">rg = new Grammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href="https://json.org/" target="new">JSON</a> formatted strings (or JS objects or Java Maps), as follows<pre class="margin">{<br>  "start": ( $rule1 | $rule2 | $rule3 ),<br><br>  "rule2": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target="new" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a Grammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href="../../riscript.html">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class="margin">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br></td>
+                  <td>Creates a new RiGrammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href="../../riscript.html">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><pre class="margin">rg = new RiGrammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href="https://json.org/" target="new">JSON</a> formatted strings (or JS objects or Java Maps), as follows<pre class="margin">{<br>  "start": ( $rule1 | $rule2 | $rule3 ),<br><br>  "rule2": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target="new" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href="../../riscript.html">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class="margin">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br></td>
                 </tr>
 
                 <tr class='Example'>
@@ -146,7 +146,7 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Grammar</th><td width='75%'>a Grammar object</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>RiGrammar</th><td width='75%'>a RiGrammar object</td></tr></table>
                   </td>
                 </tr>
 
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>// Initialize an empty Grammar object<br><br>rg = RiTa.grammar();<br><br><br>// Or specify a grammar in a JSON string (or JS object)<br><br>rg = RiTa.grammar(myJson);<br><br><br>// Or supply a context<br><br>rg = RiTa.grammar(myJson, context);</pre>
+                    <pre>// Initialize an empty RiGrammar object<br><br>rg = RiTa.grammar();<br><br><br>// Or specify a grammar in a JSON string (or JS object)<br><br>rg = RiTa.grammar(myJson);<br><br><br>// Or supply a context<br><br>rg = RiTa.grammar(myJson, context);</pre>
                   </td>
                 </tr>
 

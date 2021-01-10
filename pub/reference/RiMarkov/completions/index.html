@@ -104,7 +104,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      Grammar
+                      RiMarkov
                     </h3>
                   </td>
                 </tr>
@@ -113,14 +113,14 @@
                   <th scope="row">Name</th>
                   <!-- METHOD NAME -->
                   <td>
-                    <h4>toString</h4>
+                    <h4>completions</h4>
                   </td>
                 </tr>
 
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Returns a formatted version of this grammar</td>
+                  <td>If only one array parameter is provided, this function returns all possible next words, ordered by probability, for the given array.<br/>&nbsp;<br/>If two arrays are provided, it returns an unordered list of possible words <i>w</i> that complete the n-gram consisting of: pre[0]...pre[k], <i>w</i>, post[k+1]...post[n].<br/><br/><pre>result = rm.completions([ &#34;the&#34; ], [ &#34;red&#34;, &#34;ball&#34; ]);</pre>will return all the single words that occur between 'the' and 'red ball' in the current model (assuming n > 3),e.g., [ 'round', 'big', 'bouncy']).<br/><br/>Note: For this operation to be valid, (pre.length + post.length) must be less than the model's n-factor, otherwise an error will be thrown.</td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,15 +129,15 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">rm = new RiGrammar(rules);<br/>s = rm.toString();</pre>
+                      <pre class="margin">result = rm.completions([ &#34;the&#34;,&#34;red&#34;]);<br/>&nbsp;<br/>result = rm.completions([ &#34;the&#34; ], [ &#34;red&#34;, &#34;ball&#34; ]);</pre>
                     </div>
                   </td>
                 </tr>
-                <tr class='Parameters' style='display:none'>
+                <tr class='Parameters'>
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table">tmp_parameters</table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>pre</td></tr><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>post (optional)</td></tr></table>
                   </td>
                 </tr>
 
@@ -146,7 +146,7 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the object as a String</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>an unordered list of possible next tokens</td></tr></table>
                   </td>
                 </tr>
 
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>rg.toString();</pre>
+                    <pre>completions(preArray);<br/>completions(preArray, postArray);</pre>
                   </td>
                 </tr>
 

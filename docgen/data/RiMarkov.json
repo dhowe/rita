@@ -1,5 +1,5 @@
 {
-  "class": "rita.RiMarkov",
+  "class": "RiMarkov",
   "fields": [],
   "statics": [
     {

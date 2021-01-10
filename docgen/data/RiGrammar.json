@@ -1,5 +1,5 @@
 {
-  "class": "rita.RiGrammar",
+  "class": "RiGrammar",
   "fields": [],
   "statics": [
     {

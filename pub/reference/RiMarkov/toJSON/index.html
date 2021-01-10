@@ -104,7 +104,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      Grammar
+                      RiMarkov
                     </h3>
                   </td>
                 </tr>
@@ -113,14 +113,14 @@
                   <th scope="row">Name</th>
                   <!-- METHOD NAME -->
                   <td>
-                    <h4>toString</h4>
+                    <h4>toJSON</h4>
                   </td>
                 </tr>
 
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Returns a formatted version of this grammar</td>
+                  <td>Converts the model to a JSON-formatted string  (JavaScript only)</td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">rm = new RiGrammar(rules);<br/>s = rm.toString();</pre>
+                      <pre class="margin">rm = new RiMarkov(3);<br/>rm.addText(sentences);<br/>json = rm.toJSON();</pre>
                     </div>
                   </td>
                 </tr>
@@ -146,7 +146,7 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the object as a String</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>JSON representation</td></tr></table>
                   </td>
                 </tr>
 
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>rg.toString();</pre>
+                    <pre>toJSON();</pre>
                   </td>
                 </tr>
 
@@ -177,7 +177,7 @@
                 <tr class="">
                   <th scope="row">Platform</th>
                   <!-- PLATFORM  -->
-                  <td>Java / JavaScript</td>
+                  <td>JavaScript</td>
                 </tr>
 
                 <tr class="">

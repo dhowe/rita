@@ -22,7 +22,7 @@ public class MakeDocs extends PApplet {
 	static String WWW_OUTPUT = "../pub/";
 	static String REF_OUTPUT = "reference/";
 
-	static String[] CLASS_NAMES = { "RiTa", "Grammar", "Markov" };
+	static String[] CLASS_NAMES = { "RiTa", "RiGrammar", "RiMarkov" };
 	static String[] TYPES = { "functions", "statics", "fields" };
 
 	static String WWWINDEX_TEMPLATE = "index.html";

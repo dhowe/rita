@@ -104,7 +104,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      Grammar
+                      RiMarkov
                     </h3>
                   </td>
                 </tr>
@@ -113,14 +113,14 @@
                   <th scope="row">Name</th>
                   <!-- METHOD NAME -->
                   <td>
-                    <h4>toString</h4>
+                    <h4>probabilities</h4>
                   </td>
                 </tr>
 
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Returns a formatted version of this grammar</td>
+                  <td>Returns the full set of possible next tokens as a map, given an array of tokens representing the path down the tree (with length less than n).<br/>&nbsp;<br/>Note: seed arrays of any size (>0) may be input, but only the last n-1 elements will be considered.   </td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,15 +129,15 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">rm = new RiGrammar(rules);<br/>s = rm.toString();</pre>
+                      <pre class="margin">rm = new RiMarkov(3); <br/>rm.loadText(theText);<br/>rm.probabilities(["be", "thought"]);</pre>
                     </div>
                   </td>
                 </tr>
-                <tr class='Parameters' style='display:none'>
+                <tr class='Parameters'>
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table">tmp_parameters</table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String OR String[]</th><td width='75%'>a single token or array of tokens (strings)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>double</th><td width='75%'>temperature (optional)</td></tr></table>
                   </td>
                 </tr>
 
@@ -146,7 +146,7 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the object as a String</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Object<br>(or Map in Java)</th><td width='75%'>An object (JS) or HashMap (Java) mapping words to probabilities</td></tr></table>
                   </td>
                 </tr>
 
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>rg.toString();</pre>
+                    <pre>probabilities(pathString);<br/>probabilities(pathArray);<br>probabilities(pathString, temperature);<br>probabilities(pathArray, temperature);</pre>
                   </td>
                 </tr>
 
