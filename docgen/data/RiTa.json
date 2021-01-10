@@ -20,8 +20,8 @@
     {
       "name": "grammar",
       "example": "rg = RiTa.grammar();<br>rg.addRule(\"start\", \"( cat | dog | fish )\");<br>let result = rg.expand();",
-      "description": "Creates a new RiTa.Grammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"../../riscript.html\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><pre class=\"margin\">rg = new Grammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a Grammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"../../riscript.html\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
-      "syntax": "// Initialize an empty Grammar object<br><br>rg = RiTa.grammar();<br><br><br>// Or specify a grammar in a JSON string (or JS object)<br><br>rg = RiTa.grammar(myJson);<br><br><br>// Or supply a context<br><br>rg = RiTa.grammar(myJson, context);",
+      "description": "Creates a new RiGrammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"../../riscript.html\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><pre class=\"margin\">rg = new RiGrammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"../../riscript.html\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
+      "syntax": "// Initialize an empty RiGrammar object<br><br>rg = RiTa.grammar();<br><br><br>// Or specify a grammar in a JSON string (or JS object)<br><br>rg = RiTa.grammar(myJson);<br><br><br>// Or supply a context<br><br>rg = RiTa.grammar(myJson, context);",
       "parameters": [
         {
           "type": "Object",
@@ -34,16 +34,16 @@
       ],
       "returns": [
         {
-          "type": "Grammar",
-          "desc": "a Grammar object"
+          "type": "RiGrammar",
+          "desc": "a RiGrammar object"
         }
       ]
     },
     {
       "name": "markov",
       "example": "txt = \"This is a two sentence example. This is the second one. \"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt);<br>sentences = rm.generate(2);<br><br>for (i = 0; i < sentences.length; i ++ ){<br>  println(sentences[i]);<br>}",
-      "description": "Creates a new RiTa.Markov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses Markov chains (aka n-grams) with options to process single characters, words, sentences, or arbitrary regular expressions.<br><br>",
-      "syntax": "// Constructs a Markov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify options<br><br>RiTa.markov(nFactor, options);<br><br>",
+      "description": "Creates a new RiMarkov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses RiMarkov chains (aka n-grams) with options to process single characters, words, sentences, or arbitrary regular expressions.<br><br>",
+      "syntax": "// Constructs a RiMarkov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify options<br><br>RiTa.markov(nFactor, options);<br><br>",
       "parameters": [
         {
           "type": "int",
@@ -56,8 +56,8 @@
       ],
       "returns": [
         {
-          "type": "Markov",
-          "desc": "a RiTa.Markov object"
+          "type": "RiMarkov",
+          "desc": "a RiMarkov object"
         }
       ]
     },

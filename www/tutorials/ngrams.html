@@ -62,10 +62,10 @@
   <div class="col2"></div>
   <div class="col8">
 
-     <h4><a href="../index.html#learning-wrapper"><span>Tutorial ></span></a>Generating with Markov chains</h4>
- <h5 class="sub"><br/>&nbsp;<br/>Markov Chains</h5>
+     <h4><a href="../index.html#learning-wrapper"><span>Tutorial ></span></a>Generating with RiMarkov chains</h4>
+ <h5 class="sub"><br/>&nbsp;<br/>RiMarkov Chains</h5>
 
-<p>Markov chains (also called “n-gram” models) are systems of states and transitions. An analogy might be a set of cities connected by highways, where each city is a “state”, and each highway is a “transition”, a way of getting from one city to another.
+<p>RiMarkov chains (also called “n-gram” models) are systems of states and transitions. An analogy might be a set of cities connected by highways, where each city is a “state”, and each highway is a “transition”, a way of getting from one city to another.
 </p>
 <img style="width:60%;height:auto;" src="../img/tutorial/citiesandhighways.png" alt="" />
 </p>
@@ -73,7 +73,7 @@
 </p>
 <img src="../img/tutorial/markov1.png" alt="" />
 </p>
-<p>In the image above we see a simple Markov chain for the sentence: “The girl created a game after school.” We can start at the first word, “The”, and follow the arrows to get to the final word, “.” In this very simple chain, each word leads to exactly one subsequent word, so there are no choices we need to make.</p><p>But consider the following example (with 2 sentences):
+<p>In the image above we see a simple RiMarkov chain for the sentence: “The girl created a game after school.” We can start at the first word, “The”, and follow the arrows to get to the final word, “.” In this very simple chain, each word leads to exactly one subsequent word, so there are no choices we need to make.</p><p>But consider the following example (with 2 sentences):
 </p>
 <img src="../img/tutorial/markov2.png" alt="" />
 </p>
@@ -101,7 +101,7 @@ Now let’s change the sentences to make things slightly more interesting:</p>
       teacher  &rarr;    went
       with     &rarr;    a</pre>
 
-<p>This way of looking at contiguous sequences of text, with a specific size (in our case, two words at a time), is known as an <b>n-gram</b> or <b>Markov chain</b>. And this idea can be extended to create models from sequences of arbitrary length, whether syllables, letters, words or sentences.<br></p>
+<p>This way of looking at contiguous sequences of text, with a specific size (in our case, two words at a time), is known as an <b>n-gram</b> or <b>RiMarkov chain</b>. And this idea can be extended to create models from sequences of arbitrary length, whether syllables, letters, words or sentences.<br></p>
 
 <h5><br><b>Generating with n-grams</b></h5>
 
@@ -112,15 +112,15 @@ Now let’s change the sentences to make things slightly more interesting:</p>
 With a longer text sample we could experiment with different <em>n</em>-values, looking at, say... 3 or 4 words at a time. The higher the <em>n</em>-value, the more similar the output will be to the input text (and the more processing/memory required). Often the easiest way to find the best value for <em>n</em> is just to experiment...
 </p>
 
-<p><br>Here is a very simple example of <a href="../examples/p5/Kafgenstein/index.html">Markov-based generation with the RiTa library</a>.
+<p><br>Here is a very simple example of <a href="../examples/p5/Kafgenstein/index.html">RiMarkov-based generation with the RiTa library</a>.
 </p>
 
 <p><br><em>Aside: for the computer-science-oriented, we can think of these models as Finite State Machines, or more generally as (labelled) Directed Graphs. A common way of implementing them is as a tree, where each node contains a word, its count, and a list of children, one for each word that follows it.</em></p>
 
 
 <br />
-<h5>RiTa Markov</h5>
-<p>To generate text with a Markov chain in RiTa requires three steps:
+<h5>RiTa RiMarkov</h5>
+<p>To generate text with a RiMarkov chain in RiTa requires three steps:
 </p>
 <p>First, we construct a model and set its n-factor (the # of elements to consider). Let’s start with n=3...
 </p>
@@ -133,7 +133,7 @@ With a longer text sample we could experiment with different <em>n</em>-values, 
     to dinner with a girl.");
 </code></pre>
 <p>
-<br>Third, generate an outcome according to the Markov model. You can use <em>generate()</em> to achieve different types of results. Here are all three steps together:
+<br>Third, generate an outcome according to the RiMarkov model. You can use <em>generate()</em> to achieve different types of results. Here are all three steps together:
 </p>
 <pre><code class="language-javascript">  rm = RiTa.markov(3);
   rm.addText("The girl went to a game after dinner. The teacher went \

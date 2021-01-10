@@ -1,12 +1,12 @@
 {
-  "class": "rita.Grammar",
+  "class": "rita.RiGrammar",
   "fields": [],
   "statics": [
     {
       "name": "fromJSON",
-      "example": "rg = Grammar.fromJSON(grammarRules);",
+      "example": "rg = RiGrammar.fromJSON(grammarRules);",
       "description": "Creates a new grammar object from a JSON string",
-      "syntax": "Grammar.fromJSON(grammarRules);<br>Grammar.fromJSON(grammarRules, context);",
+      "syntax": "RiGrammar.fromJSON(grammarRules);<br>RiGrammar.fromJSON(grammarRules, context);",
       "parameters": [
         {
           "type": "String",
@@ -19,8 +19,8 @@
       ],
       "returns": [
         {
-          "type": "Grammar",
-          "desc": "this Grammar object"
+          "type": "RiGrammar",
+          "desc": "this RiGrammar object"
         }
       ]
     }
@@ -28,7 +28,7 @@
   "functions": [
     {
       "name": "addRule",
-      "example": "rg = new Grammar();<br/>rg.addRule(\"start\", \"\\$animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");",
+      "example": "rg = new RiGrammar();<br/>rg.addRule(\"start\", \"\\$animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");",
       "description": "Adds a rule to the existing grammar, replacing any existing rule with the same name",
       "syntax": "addRule(name, definition);",
       "parameters": [
@@ -43,14 +43,14 @@
       ],
       "returns": [
         {
-          "type": "Grammar",
-          "desc": "this Grammar"
+          "type": "RiGrammar",
+          "desc": "this RiGrammar"
         }
       ]
     },
     {
       "name": "expand",
-      "example": "rg = new Grammar(rules); <br/>result = rg.expand(ruleName);",
+      "example": "rg = new RiGrammar(rules); <br/>result = rg.expand(ruleName);",
       "description": "Expands a grammar from the supplied rule. If no rule is provided the \\$start and #60;start&#62;' symbols will be checked respectively.",
       "syntax": "expand();<br/>expand(context);",
       "parameters": [
@@ -72,7 +72,7 @@
     },
     {
       "name": "removeRule",
-      "example": "rg = new Grammar(); <br>rg.addRule(\"pet\", \"dog | hawk | crow\", 1); <br>rg.removeRule(\"pet\");",
+      "example": "rg = new RiGrammar(); <br>rg.addRule(\"pet\", \"dog | hawk | crow\", 1); <br>rg.removeRule(\"pet\");",
       "description": "Deletes the named rule from the grammar",
       "syntax": "removeRule(name);",
       "parameters": [
@@ -83,14 +83,14 @@
       ],
       "returns": [
         {
-          "type": "Grammar",
-          "desc": "this Grammar"
+          "type": "RiGrammar",
+          "desc": "this RiGrammar"
         }
       ]
     },
     {
       "name": "addRules",
-      "example": "rg = new Grammar(); <br>rg.addRules(rules);",
+      "example": "rg = new RiGrammar(); <br>rg.addRules(rules);",
       "description": "Loads a grammar from an object (or Map in Java).",
       "syntax": "rg.addRules(grammarRules);",
       "parameters": [
@@ -101,14 +101,14 @@
       ],
       "returns": [
         {
-          "type": "Grammar",
-          "desc": "this Grammar"
+          "type": "RiGrammar",
+          "desc": "this RiGrammar"
         }
       ]
     },
     {
       "name": "toString",
-      "example": "rm = new Grammar(rules);<br/>s = rm.toString();",
+      "example": "rm = new RiGrammar(rules);<br/>s = rm.toString();",
       "description": "Returns a formatted version of this grammar",
       "syntax": "rg.toString();",
       "parameters": [],
@@ -121,7 +121,7 @@
     },
     {
       "name": "toJSON",
-      "example": "rg = new Grammar(rules);<br/>json = rg.toJSON();",
+      "example": "rg = new RiGrammar(rules);<br/>json = rg.toJSON();",
       "description": "Return a formatted version of this grammar.",
       "syntax": "rg.toJSON();",
       "parameters": [

@@ -17,8 +17,8 @@ RiTa is a toolkit for generative writing and natural language. It is implemented
    <tr>
     <th colspan=2 style="text-align: left; padding-left: 12px">RiTa
     </th>
-    <th colspan=1 style="text-align: left; padding-left: 12px">Markov</th>
-    <th colspan=1 style="text-align: left; padding-left: 12px">Grammar</th>
+    <th colspan=1 style="text-align: left; padding-left: 12px">RiMarkov</th>
+    <th colspan=1 style="text-align: left; padding-left: 12px">RiGrammar</th>
    </tr>
    <tr>
     <td style="vertical-align: top; padding-top: 15px">
@@ -67,24 +67,24 @@ RiTa is a toolkit for generative writing and natural language. It is implemented
       <!--a href="./RiTa/VERSION/index.html">RiTa.VERSION</a><br/-->
     </td>
     <td style="vertical-align: top; padding-top: 15px; min-width: 125px">
-      <a href="https://rednoise.org/rita/reference/Markov/addText/index.html">addText()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/completions/index.html">completions()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/generate/index.html">generate()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/probability/index.html">probability()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/probabilities/index.html">probabilities()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/size/index.html">size()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/toString/index.html">toString()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/toJSON/index.html">toJSON()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/fromJSON/index.html">fromJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/addText/index.html">addText()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/completions/index.html">completions()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/generate/index.html">generate()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/probability/index.html">probability()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/probabilities/index.html">probabilities()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/size/index.html">size()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/toString/index.html">toString()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/toJSON/index.html">toJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/fromJSON/index.html">fromJSON()</a><br/>
     </td>
     <td style="vertical-align: top; padding-top: 15px; min-width: 125px">
-      <a href="https://rednoise.org/rita/reference/Grammar/addRule/index.html">addRule()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/addRules/index.html">addRules()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/expand/index.html">expand()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/removeRule/index.html">removeRule()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/toJSON/index.html">toJSON()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/toString/index.html">toString()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/fromJSON/index.html">fromJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/addRule/index.html">addRule()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/addRules/index.html">addRules()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/expand/index.html">expand()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/removeRule/index.html">removeRule()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/toJSON/index.html">toJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/toString/index.html">toString()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/fromJSON/index.html">fromJSON()</a><br/>
     </td>
  </tr>
 </table>
