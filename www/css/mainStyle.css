@@ -36,6 +36,7 @@ a:focus {
 
 .nav-wrapper a:hover {
   color: #fec0cb;
+  text-decoration: none;
 }
 
 .nav-wrapper li {
@@ -316,7 +317,8 @@ a:focus {
 }
 
 .navbar-sticky .nav-wrapper a:hover {
-  color: #fec0cb
+  color: #fec0cb;
+  text-decoration: none;
 }
 
 .navbar-sticky .nav-wrapper .icon {
