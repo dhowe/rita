@@ -70,11 +70,11 @@ function createWords(words, txt, tx, ty, tw, lead) {
   let spcw = textWidth(' ');
   for (let i = 1; i < strs.length; i++) {
     let x = words[i - 1].x + textWidth(strs[i - 1]);
-    if (!RiTa.isPunctuation(strs[i])) x += spcw;
+    if (!RiTa.isPunct(strs[i])) x += spcw;
     let y = words[i - 1].y;
     if (i < strs.length - 1) {
       let nw = textWidth(strs[i]);
-      if (RiTa.isPunctuation(strs[i + 1])) nw += textWidth(strs[i + 1]);
+      if (RiTa.isPunct(strs[i + 1])) nw += textWidth(strs[i + 1]);
       if (x > (tx + tw) - nw) {
         y += lead;
         x = tx;

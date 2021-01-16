@@ -82,10 +82,10 @@ function layout(str, tx, ty, tw, lead) {
   words = RiTa.tokenize(str);
   for (let i = 1; i < words.length; i++) {
     let x = wx[i - 1] + textWidth(words[i - 1]), y = wy[i - 1];
-    if (!RiTa.isPunctuation(words[i])) x += spc;
+    if (!RiTa.isPunct(words[i])) x += spc;
     if (i < words.length - 1) {
       let nw = textWidth(words[i]);
-      if (RiTa.isPunctuation(words[i + 1])) {
+      if (RiTa.isPunct(words[i + 1])) {
         nw += textWidth(words[i + 1]);
       }
       if (x > (tx + tw) - nw) {

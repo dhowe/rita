@@ -33,7 +33,7 @@ function drawKWIC() {
       let rightX = wordX + textWidth(word);
 
       // remove space if not punctuation
-      if (RiTa.isPunctuation(right[0])) rightX -= 5;
+      if (RiTa.isPunct(right[0])) rightX -= 5;
 
       text(word, wordX, y, '#D00');
       text(left, leftX, y);

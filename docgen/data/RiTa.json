@@ -62,10 +62,10 @@
       ]
     },
     {
-      "name": "isAbbreviation",
-      "example": "RiTa.isAbbreviation(\"Prof.\"); // returns -> true",
+      "name": "isAbbrev",
+      "example": "RiTa.isAbbrev(\"Prof.\"); // returns -> true",
       "description": "Returns true if 'input' is an abbreviation",
-      "syntax": "RiTa.isAbbreviation(input);<br/>RiTa.isAbbreviation(input, option);",
+      "syntax": "RiTa.isAbbrev(input);<br/>RiTa.isAbbrev(input, option);",
       "parameters": [
         {
           "type": "String",
@@ -102,10 +102,10 @@
       ]
     },
     {
-      "name": "isPunctuation",
-      "example": "isPunctuation(\"?\"); // returns -> true",
+      "name": "isPunct",
+      "example": "isPunct(\"?\"); // returns -> true",
       "description": "Returns true if every character of 'text' is a punctuation character",
-      "syntax": "RiTa.isPunctuation(text);",
+      "syntax": "RiTa.isPunct(text);",
       "parameters": [
         {
           "type": "String",
@@ -469,10 +469,10 @@
       ]
     },
     {
-      "name": "pastParticiple",
-      "example": "RiTa.pastParticiple(\"write\"); // returns -> written",
+      "name": "pastPart",
+      "example": "RiTa.pastPart(\"write\"); // returns -> written",
       "description": "Returns the past participle form of the verb",
-      "syntax": "RiTa.pastParticiple(verb);",
+      "syntax": "RiTa.pastPart(verb);",
       "parameters": [
         {
           "type": "String",
@@ -487,10 +487,10 @@
       ]
     },
     {
-      "name": "presentParticiple",
-      "example": "RiTa.presentParticiple(\"sit\"); // returns -> sitting",
+      "name": "presentPart",
+      "example": "RiTa.presentPart(\"sit\"); // returns -> sitting",
       "description": "Returns the present participle form of the verb",
-      "syntax": "RiTa.presentParticiple(verb);",
+      "syntax": "RiTa.presentPart(verb);",
       "parameters": [
         {
           "type": "String",
