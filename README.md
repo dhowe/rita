@@ -19,8 +19,8 @@ This repo contains the website, documentation, and examples for RiTa. For the co
    <tr>
     <th colspan=2 style="text-align: left; padding-left: 12px">RiTa
     </th>
-    <th colspan=1 style="text-align: left; padding-left: 12px">RiMarkov</th>
-    <th colspan=1 style="text-align: left; padding-left: 12px">RiGrammar</th>
+    <th colspan=1 style="text-align: left;">RiMarkov</th>
+    <th colspan=1 style="text-align: left;">RiGrammar</th>
    </tr>
    <tr>
     <td style="vertical-align: top; padding-top: 15px">
