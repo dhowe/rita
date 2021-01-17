@@ -1,0 +1,30 @@
+{
+  "class": "RiScript",
+  "fields": [],
+  "statics": [],
+  "functions": [
+     {
+      "name": "evaluate",
+      "example": "<br/>rs = RiTa.interpreter();<br>rs.evaluate(\"He was (happy | sad | indifferent)\");<br/>RiTa.evaluate(\"He was (happy | sad | \\$emo)\", context);<p>",
+      "description": "Parses and executes a <a href=\"../../riscript.html\">RiScript</a> string",
+      "syntax": "rs.evaluate(string);<br/>rs.evaluate(string, context);",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "the input"
+        },
+        {
+          "type": "Object<br>(or Map in Java)",
+          "desc": "the context for any referenced variables or functions (optional)"
+        }
+      ],
+      "returns": [
+        {
+          "type": "String",
+          "desc": "the result of the evaluation"
+        }
+      ],
+      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a>"
+    }
+  ]
+}

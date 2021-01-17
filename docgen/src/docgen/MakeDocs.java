@@ -62,32 +62,43 @@ public class MakeDocs extends PApplet {
 
 		for (int f = 0; f < templates.length; f++) {
 
-			String[] tmpl = stringsFrom(templates[f]);
-			String contents = "";
+			String contents = "", tmpl[] = stringsFrom(templates[f]);
+
 			for (int i = 0; i < CLASS_NAMES.length; i++) {
+
 				String cls = CLASS_NAMES[i];
 				//String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
-				contents += "    <span style=\"color: #006B8F !important;\"><b>" + cls
-						+ "</b><span><br><br>\n"; // no link
+				contents += "    <span style=\"color: #006B8F !important;\"><b>";
+				contents += cls + "</b><span><br><br>\n"; // no link
+
 				for (int j = 0; j < TYPES.length; j++) {
+
 					ArrayList<String> entries = API.get(cls + "." + TYPES[j]);
 					for (int k = 0; entries != null && k < entries.size(); k++) {
-						//String dsp = types[j] == "functions" ? ent : cls + "." + ent;
-						String dsp = entries.get(k);
-						if (!dsp.toUpperCase().equals(cls.toUpperCase())) {
-							String href = (f == 0 ? "./" : REF_OUTPUT) + cls + "/" + dsp + "/index." + OUTPUT_TYPE;
-							if (TYPES[j] == "functions" || TYPES[j] == "statics") {
-								dsp += "()";
+
+						String display = entries.get(k);
+
+						if (!display.equals("toString") && !display.toUpperCase().equals(cls.toUpperCase())) { // skip constructors
+
+							// f==0 means REFINDEX
+							String href = (f == 0 ? "./" : REF_OUTPUT) + cls + "/" + display + "/index." + OUTPUT_TYPE;
+
+							if (TYPES[j].equals("functions") || TYPES[j].equals("statics")) {
+								display += "()";  // function or static
+							} 
+							
+							if (TYPES[j].equals("fields") || TYPES[j].equals("statics")) {
+								if (cls.equals("RiTa")) {
+									display = cls + "." + display;  // field or static (not RiTa)
+									//pln("LINK: " + display);
+								}
 							}
-							if (TYPES[j] != "functions") {
-								dsp = cls + "." + dsp;
-							}
-							//pln("LINK: " + href); 
-							contents += "    <a href=\"" + href + "\">" + dsp + "</a><br/>\n";
-							//if (k == 0 && types[j] == "static") contents += "  <br/>\n";
-							if (k == 19) {  // longest column
+
+							contents += "    <a href=\"" + href + "\">" + display + "</a><br/>\n";
+
+							if (k == 20) {  // longest column
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
 								contents += "<div class=\"section\">\n";
