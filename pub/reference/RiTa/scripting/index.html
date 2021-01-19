@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Returns a <a href="../../riscript.html">RiScript</a> interpreter. This is a singleton instance useful for maintaining state between repeated calls to evaluate(), (which is not maintained when using RiTa.evaluate() directly). The only reason to use this function is for sequences that you need to continue across evaluate() calls.</td>
+                  <td>Returns a <a href="../../riscript.html">RiScript</a> interpreter. This is useful for maintaining state between repeated calls to evaluate(), (which is not maintained when using RiTa.evaluate() directly). The only real reason to use this function is for sequences that you need to continue across evaluate() calls.</td>
                 </tr>
 
                 <tr class='Example'>
@@ -146,7 +146,7 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>RiScript</th><td width='75%'>an instance of the interpreter</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>RiScript</th><td width='75%'>a new interpreter instance</td></tr></table>
                   </td>
                 </tr>
 
