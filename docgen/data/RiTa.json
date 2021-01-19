@@ -547,14 +547,14 @@
   {
       "name": "scripting",
       "example": "<br/>interpreter = RiTa.scripting();<br/>result = interpreter.evaluate(\"(a | b | c | d | e).seq()\");<p>",
-      "description": "Returns a <a href=\"../../riscript.html\">RiScript</a> interpreter. This is a singleton instance useful for maintaining state between repeated calls to evaluate(), (which is not maintained when using RiTa.evaluate() directly). The only reason to use this function is for sequences that you need to continue across evaluate() calls.",
+      "description": "Returns a <a href=\"../../riscript.html\">RiScript</a> interpreter. This is useful for maintaining state between repeated calls to evaluate(), (which is not maintained when using RiTa.evaluate() directly). The only real reason to use this function is for sequences that you need to continue across evaluate() calls.",
       "syntax": "rs = RiTa.scripting();",
       "parameters": [
       ],
       "returns": [
         {
           "type": "RiScript",
-          "desc": "an instance of the interpreter"
+          "desc": "a new interpreter instance"
         }
       ],
       "related": "<a href='../evaluate'>RiTa.evaluate()</a>"
