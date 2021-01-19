@@ -135,7 +135,7 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
       git tag -a v$version -m "Release $version"
       git push -q origin --tags
       echo "... deploying to github packages"
-      mvn -q -T1C clean deploy || check_err $? "maven publish failed [github]"
+      mvn -q -T1C clean deploy & #|| check_err $? "maven publish failed [github]"
       popd >/dev/null
     fi
     #echo
