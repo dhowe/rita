@@ -36,6 +36,14 @@
       line-height: 1.4em !important;
     }
 
+    .tfs {
+      border: 0 !important;
+      font-size: .8em !important;
+      font-family: monaco;
+      font-size: .8em;
+      width: 100%
+    }
+
     h4 {
       color: rgb(36, 62, 114);
       font-weight: 600;
@@ -111,6 +119,7 @@
       </ul>
     </div>
   </div>
+
   <!-- End of Nav Bar -->
   <div class="gd-section pad-large">
     <div class="gd-center pad-large">
@@ -134,8 +143,10 @@
                   described below, can be included in any <a href="./RiTa/grammar/index.html">grammar</a>, or executed
                   directly by calling <a href="./RiTa/evaluate/index.html">RiTa.evaluate()</a>. Fragments of writing
                   can be abitrarily transformed, at runtime, by using the provided <a href="#transforms">transforms</a>,
-                  or by specifying your own bespoke ones. <br><br>RiScript is a simplified version of the Dial scripting language,
-                  originally created for <a href="https://rednoise.org/daniel/res/pdfs/dialogic_a_toolkit_for_generative_interactive_game_dialog-HOWE-2020.pdf"
+                  or by specifying your own bespoke ones. <br><br>RiScript is a simplified version of the Dial scripting
+                  language,
+                  originally created for <a
+                    href="https://rednoise.org/daniel/res/pdfs/dialogic_a_toolkit_for_generative_interactive_game_dialog-HOWE-2020.pdf"
                     target="_blank">Dialogic</a>.
 
                   <h4>Choice</h4>
@@ -144,31 +155,87 @@
 
 
                   <h4>Weighted Choice</h4>
-                  Assign probabilities to choice selection:<br>
+                  Assign weights to the options in a choice. In the example below 'depressed' will be selected four
+                  times as often as 'sad' and twice as often as 'gloomy'<br>
                   <pre>The weather was (sad | gloomy [2] | depressed[4]).  ->  "The weather was depressed." </pre>
 
 
                   <h4>Assignment</h4>
-                  Basic assignments do not have output, they simply create or update a variable to be used elsewhere
-                  (variables in JavaScript may also be used when passed in via the script's 'context')<br>
+                  Basic assignments, which start a line, do not have output. They simply create or update a variable to
+                  be used elsewhere
+                  (variables in JavaScript can also be used when passed in via the script's <em>context</em>)<br>
                   <pre>$desc=wet and cold<br>The weather was $desc  ->  "The weather was wet and cold" </pre>
 
 
-                  <!--h4>Inline Assignment</h4>
-                  Inline assignments allow one to easily set a variable, output it, and refer to it later:<br>
+                  <h4>Inline Assignment</h4>
+                  Inline assignments (within parentheses) allow one to easily set a variable, output it, and refer to it
+                  later:<br>
 
-                  <pre>Jane was from [$place=(New York | Berlin | Shanghai)].<br>$place is cold and wet.<br>     ->  "Jane was from Berlin. Berlin is cold and wet."<br><br>$place=(New York | Berlin | Shanghai)<br>$place is cold and wet in winter.<br>     ->  "Berlin is cold and wet in the winter."<br><br>In [$place=(New York | Berlin | Shanghai)] it is cold and wet in winter.<br>     ->  "In Berlin it is cold and wet in the winter."</pre-->
+                  <pre>Jane was from ($place=(New York | Berlin | Shanghai)).<br>$place is cold and wet.<br>     ->  "Jane was from Berlin. Berlin is cold and wet."<br><br>$place=(New York | Berlin | Shanghai)<br>$place is cold and wet in winter.<br>     ->  "Berlin is cold and wet in the winter."<br><br>In ($place=(New York | Berlin | Shanghai)) it is cold and wet in winter.<br>     ->  "In Berlin it is cold and wet in the winter."</pre>
 
 
                   <h4>Transforms</h4>
                   <a name="transforms"></a>
-                  Transforms allow for the transformation of variables, choices and raw text at runtime.
-                  RiScript provides a number of useful transforms, including pluralize(), capitalize() and articlize(),
+                  Transforms allow for the evaluation of variables, choices and raw text at runtime.
+                  RiScript provides a number of built-in transforms, including pluralize(), capitalize() and
+                  articlize(),
                   which can be nested to create complex expressions. User-defined transforms can be easily added using
                   RiTa.addTransform() or by
                   simply passing a transform function as part of a script's 'context'.<br>
 
                   <pre>How many (tooth | menu | child).pluralize() do you have?<br>How many (tooth | menu | child).pluralize().toUpper() do you have?<br><br>He grew up to be $animal.articlize().<br>He grew up to be (anteater).articlize().<br>He grew up to be (anteater).articlize().myCustomTransform().</pre>
+                  <br>
+
+                  <div style="margin-bottom:10px;">Built-in transforms, with their shortcuts, are listed below</div>
+
+                  <div class="tfs">
+                    <table style="font-family: monaco; font-size: 1em; width:90%">
+                      <tbody>
+                        <tr>
+                          <th style="width:15%; height:3em;">transform </th>
+                          <th style="text-align:center; padding-right: 80px">description</th>
+                          <th style="text-align:center;">alias</th>
+                        </tr>
+                        <tr>
+                          <td style="font-size: 1em !important">articlize()</td>
+                          <td style="text-align:center; padding-left: 10px;font-size: 1em !important">adds the correct
+                            article according to the <a target="_blank"
+                              href="https://rednoise.org/rita/reference/phones.html">phonemes</a></td>
+                          <td style="text-align:center;font-size: 1em !important">art()</td>
+                        </tr>
+                        <tr>
+                          <td style="font-size: 1em !important">pluralize()</td>
+                          <td
+                            style="font-size: 1em !important;text-align:center; padding-left: 10px;font-size: 1em !important">
+                            pluralizes the phrase via the RiTa inflector
+                          </td>
+                          <td style="font-size: 1em !important;text-align:center;font-size: 1em !important">s()</td>
+                        </tr>
+                        <tr>
+                          <td style="font-size: 1em !important">capitalize()</td>
+                          <td style="font-size: 1em !important;text-align:center; padding-left: 10px">capitalizes the
+                            first letter of the phrase
+                          </td>
+                          <td style="font-size: 1em !important;text-align:center;">ucf()</td>
+                        </tr>
+                        <tr>
+                          <td style="font-size: 1em !important">uppercase()</td>
+                          <td style="font-size: 1em !important;text-align:center; padding-left: 10px">capitalizes all
+                            letters of the phrase</td>
+                          <td style="font-size: 1em !important;text-align:center;">uc()</td>
+                        </tr>
+                        <tr>
+                          <td style="font-size: 1em !important">quotify()</td>
+                          <td style="font-size: 1em !important; text-align:center; padding-left: 10px">adds (smart)
+                            quotes around the phrase</td>
+                          <td style="font-size: 1em !important;text-align:center;">qq()</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <span>
+                    <p><br>But you can also create your own custom transforms, as described below.</p>
+                  </span>
 
                   <h4>Sequence Transforms</h4>
                   <a name="sequences"></a>
