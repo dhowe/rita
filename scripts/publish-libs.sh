@@ -18,7 +18,7 @@ pubdist="$pub/dist"
 # options
 nojs=false
 nojava=false
-nocentral=false
+nocentral=true
 noproc=false
 nowww=false
 nopub=true
@@ -145,10 +145,9 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
     if [ "$publive" = true ] ; then
       pushd $rita4j >/dev/null
       echo "... deploying to maven central"
-      mvn -q clean
       [[ -d target ]] || mkdir target
       [[ -d target/classes ]] || mkdir target/classes
-      mvn -q -T1C -Pcentral deploy || check_err $? "maven publish failed [central]"
+      mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
       popd >/dev/null
     fi
   else
