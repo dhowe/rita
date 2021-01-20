@@ -87,7 +87,7 @@ fi
 rm -f $artifacts/*.* >/dev/null
 
 publive=false
-if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
+if [ "$nojs" = false ] ; then  
 
   if [ "$nopub" = false ] ; then
     echo
@@ -96,6 +96,8 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
 
     if [[ $REPLY =~ ^[Yy]$ ]] ; then
       publive=true
+
+      # publish js to npm/unpkg
       echo "... git-tag js $version"
       pushd $ritajs >/dev/null
       git tag -a v$version -m "Release $version"
@@ -124,11 +126,7 @@ if [ "$nojs" = false ] ; then  # publish js to npm/unpkg
 fi
 
 if [ "$nojava" = false ] ; then       # publish java to github packages
-  if [ "$nopub" = false ] && [ "$nocentral" = false ] ; then
-    #echo
-    #read -p "publish java $version to github? " -n 1 -r
-    #echo
-    #if [[ $REPLY =~ ^[Yy]$ ]] ; then
+  if [ "$nopub" = false ] ; then
     if [ "$publive" = true ] ; then
       pushd $rita4j >/dev/null
       echo "... git-tag java $version"
@@ -136,18 +134,6 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
       git push -q origin --tags
       echo "... deploying to github packages"
       mvn -q -T1C clean deploy & #|| check_err $? "maven publish failed [github]"
-      popd >/dev/null
-    fi
-    #echo
-    #read -p "publish java $version to maven central? " -n 1 -r
-    #echo
-    #if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    if [ "$publive" = true ] ; then
-      pushd $rita4j >/dev/null
-      echo "... deploying to maven central"
-      [[ -d target ]] || mkdir target
-      [[ -d target/classes ]] || mkdir target/classes
-      mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
       popd >/dev/null
     fi
   else
@@ -189,6 +175,16 @@ if [ "$nopub" = false ] ; then
   git push -q
 fi
 
+if [ "$nopub" = false ] && [ "$nocentral" = false ] ; then
+  if [ "$publive" = true ] ; then
+    pushd $rita4j >/dev/null
+    echo "... deploying to maven central"
+    [[ -d target ]] || mkdir target
+    [[ -d target/classes ]] || mkdir target/classes
+    mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
+    popd >/dev/null
+  fi
+fi
 
 echo "... cleaning up"
 #rm -rf $ritajs/*.tgz
