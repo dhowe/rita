@@ -80,7 +80,8 @@ public class MakeDocs extends PApplet {
 
 						String display = entries.get(k);
 
-						if (!display.equals("toString") && !display.toUpperCase().equals(cls.toUpperCase())) { // skip constructors
+						if (!display.equals("toString") && !display.equals("VERSION") // skip stuff 
+								&& !display.toUpperCase().equals(cls.toUpperCase())) { // skip constructors
 
 							// f==0 means REFINDEX
 							String href = (f == 0 ? "./" : REF_OUTPUT) + cls + "/" + display + "/index." + OUTPUT_TYPE;
@@ -98,7 +99,7 @@ public class MakeDocs extends PApplet {
 
 							contents += "    <a href=\"" + href + "\">" + display + "</a><br/>\n";
 
-							if (k == 20) {  // longest column
+							if (k == 19) {  // longest column
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
 								contents += "<div class=\"section\">\n";
