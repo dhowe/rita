@@ -17,8 +17,8 @@ pubdist="$pub/dist"
 
 # options
 nojs=false
-nojava=false
-nocentral=true
+nojava=true
+nocentral=false
 noproc=false
 nowww=false
 nopub=true
@@ -175,7 +175,7 @@ if [ "$nopub" = false ] ; then
   git push -q
 fi
 
-if [ "$nopub" = false ] && [ "$nocentral" = false ] ; then
+if [ "$nopub" = false ] && [ "$nocentral" = false ] && [ "$nojava" = false ] ; then
   if [ "$publive" = true ] ; then
     pushd $rita4j >/dev/null
     echo "... deploying to maven central"
