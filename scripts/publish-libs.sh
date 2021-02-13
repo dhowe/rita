@@ -17,7 +17,7 @@ pubdist="$pub/dist"
 
 # options
 nojs=false
-nojava=true
+nojava=false
 nocentral=false
 noproc=false
 nowww=false
@@ -150,6 +150,13 @@ fi
 
 # create processing library
 if [ "$noproc" = false ] && [ "$nojava" = false ] ; then
+  if [ "$publive" = true ] ; then
+    pushd $rita4j >/dev/null
+    echo "... re-building maven for processing"
+    rm -f $artifacts/*.* >/dev/null
+    mvn -q -T1C clean package || check_err $? "maven build failed"
+    popd >/dev/null
+  fi
   ./scripts/build-plib.sh $version || check_err $? "build-plib.sh failed"
   cp "$artifacts/rita-$version-plib.zip" "$pub/rita.zip"
   cp "$artifacts/rita.txt" "$pub/rita.txt"
