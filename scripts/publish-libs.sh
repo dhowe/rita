@@ -17,7 +17,7 @@ pubdist="$pub/dist"
 
 # options
 nojs=false
-nojava=false
+nojava=true
 nocentral=true
 noproc=false
 nowww=false
