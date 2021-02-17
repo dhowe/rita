@@ -18,7 +18,7 @@ pubdist="$pub/dist"
 # options
 nojs=false
 nojava=false
-nocentral=false
+nocentral=true
 noproc=false
 nowww=false
 nopub=true
@@ -73,20 +73,26 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
   yarn --cwd  $ritajs build >/dev/null || check_err $? "yarn build failed"
 
   echo "... testing with yarn"
-  cp $ritajs/test/before.js $tmp/ || check_err $? "before.js cp1 failed"
+  # hack1: here we change the test path to use dist instead of source
+  cp $ritajs/test/before.js $tmp/ || check_err $? "before.js cp1 failed" 
   sed 's%\.\./src/rita%../dist/rita%g' $tmp/before.js > $ritajs/test/before.js
-  echo "test.prod:" && head -n1 $ritajs/test/before.js
+  #echo "test.prod:" && head -n1 $ritajs/test/before.js
   yarn --cwd  $ritajs test.prod >/dev/null || check_err $? "yarn tests failed"
   cp $tmp/before.js $ritajs/test/ || check_err $? "before.js cp2 failed"
-  echo "restored:" && head -n1 $ritajs/test/before.js
+  #echo "restored:" && head -n1 $ritajs/test/before.js
 
-  # TODO: need to remove antlr dependency before packaging
-  exit
+  # clean old npm packages
+  rm -rf $ritajs/rita-*.tgz
 
   echo "... packaging with npm"
-  rm -rf $ritajs/rita-*.tgz
   pushd $ritajs >/dev/null
+  # hack2: here we minimize the package.json to be included in npm tgz
+  cp package.json $tmp/ || check_err $? "package.json cp1 failed"
+  jq 'del(.dependencies,.devDependencies,.scripts,.watch,.nyc)' $tmp/package.json > package.json
+  #echo "npm.package.json:" && cat package.json
   npm pack --quiet >/dev/null || check_err $? "npm pack failed"
+  cp $tmp/package.json package.json || check_err $? "package.json cp2 failed"
+  #echo "restored.package.json:" && cat package.json
   popd >/dev/null
 fi
 
@@ -141,7 +147,7 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
       git tag -a v$version -m "Release $version"
       git push -q origin --tags
       echo "... deploying to github packages"
-      mvn -q -T1C clean deploy & #|| check_err $? "maven publish failed [github]"
+      mvn -q -T1C clean deploy || check_err $? "maven publish failed [github]"
       popd >/dev/null
     fi
   else
