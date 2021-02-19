@@ -77,7 +77,7 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
   cp $ritajs/test/before.js $tmp/ || check_err $? "before.js cp1 failed" 
   sed 's%\.\./src/rita%../dist/rita%g' $tmp/before.js > $ritajs/test/before.js
   #echo "test.prod:" && head -n1 $ritajs/test/before.js
-  yarn --cwd  $ritajs test.prod >/dev/null || check_err $? "yarn tests failed"
+  yarn --cwd  $ritajs test.prod # >/dev/null || check_err $? "yarn tests failed"
   cp $tmp/before.js $ritajs/test/ || check_err $? "before.js cp2 failed"
   #echo "restored:" && head -n1 $ritajs/test/before.js
 
