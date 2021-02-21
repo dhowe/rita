@@ -74,11 +74,11 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
 
   echo "... testing with yarn"
   # hack1: here we change the test path to use dist instead of source
-  cp $ritajs/test/before.js $tmp/ || check_err $? "before.js cp1 failed" 
-  sed 's%\.\./src/rita%../dist/rita%g' $tmp/before.js > $ritajs/test/before.js
+  # cp $ritajs/test/before.js $tmp/ || check_err $? "before.js cp1 failed" 
+  # sed 's%\.\./src/rita%../dist/rita%g' $tmp/before.js > $ritajs/test/before.js
   #echo "test.prod:" && head -n1 $ritajs/test/before.js
-  yarn --cwd  $ritajs test.prod # >/dev/null || check_err $? "yarn tests failed"
-  cp $tmp/before.js $ritajs/test/ || check_err $? "before.js cp2 failed"
+  yarn --cwd  $ritajs test # >/dev/null || check_err $? "yarn tests failed"
+  # cp $tmp/before.js $ritajs/test/ || check_err $? "before.js cp2 failed"
   #echo "restored:" && head -n1 $ritajs/test/before.js
 
   # clean old npm packages
@@ -189,7 +189,7 @@ if [ "$nopub" = false ] ; then
   echo "... updating https://rednoise.org/rita "
   ssh $RED "cd bin && ./update-rita-web.sh" >/dev/null
 
-  echo "... tagging ritaweb"
+  echo "... tagging rita"
   git add .
   git tag -a v$version -m "Release $version"
   git commit -q -m "Release $version"
