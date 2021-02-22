@@ -87,11 +87,11 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
   echo "... packaging with npm"
   pushd $ritajs >/dev/null
   # hack2: here we minimize the package.json to be included in npm tgz
-  cp package.json $tmp/ || check_err $? "package.json cp1 failed"
-  jq 'del(.dependencies,.devDependencies,.scripts,.watch,.nyc)' $tmp/package.json > package.json
+  #cp package.json $tmp/ || check_err $? "package.json cp1 failed"
+  #jq 'del(.dependencies,.devDependencies,.scripts,.watch,.nyc)' $tmp/package.json > package.json
   #echo "npm.package.json:" && cat package.json
   npm pack --quiet >/dev/null || check_err $? "npm pack failed"
-  cp $tmp/package.json package.json || check_err $? "package.json cp2 failed"
+  #cp $tmp/package.json package.json || check_err $? "package.json cp2 failed"
   #echo "restored.package.json:" && cat package.json
   popd >/dev/null
 fi
