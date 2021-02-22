@@ -69,15 +69,16 @@ fi
 
 if [ "$nojs" = false ] ; then         # build.test JavaScript
 
-  echo "... building with yarn"
-  yarn --cwd  $ritajs build >/dev/null || check_err $? "yarn build failed"
+  echo "... building with npm"
+  pushd $ritajs >/dev/null
+  npm run build >/dev/null || check_err $? "npm build failed"
 
-  echo "... testing with yarn"
+  echo "... testing with npm"
   # hack1: here we change the test path to use dist instead of source
   # cp $ritajs/test/before.js $tmp/ || check_err $? "before.js cp1 failed" 
   # sed 's%\.\./src/rita%../dist/rita%g' $tmp/before.js > $ritajs/test/before.js
   #echo "test.prod:" && head -n1 $ritajs/test/before.js
-  yarn --cwd  $ritajs test # >/dev/null || check_err $? "yarn tests failed"
+  npm run test  >/dev/null || check_err $? "npm tests failed"
   # cp $tmp/before.js $ritajs/test/ || check_err $? "before.js cp2 failed"
   #echo "restored:" && head -n1 $ritajs/test/before.js
 
@@ -85,7 +86,7 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
   rm -rf $ritajs/rita-*.tgz
 
   echo "... packaging with npm"
-  pushd $ritajs >/dev/null
+  #pushd $ritajs >/dev/null
   # hack2: here we minimize the package.json to be included in npm tgz
   #cp package.json $tmp/ || check_err $? "package.json cp1 failed"
   #jq 'del(.dependencies,.devDependencies,.scripts,.watch,.nyc)' $tmp/package.json > package.json
