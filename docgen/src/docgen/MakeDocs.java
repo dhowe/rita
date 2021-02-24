@@ -22,7 +22,7 @@ public class MakeDocs extends PApplet {
 	static String WWW_OUTPUT = "../pub/";
 	static String REF_OUTPUT = "reference/";
 
-	static String[] CLASS_NAMES = { "RiTa", "RiGrammar", "RiMarkov" };
+	static String[] CLASS_NAMES = { "RiTa", "RiGrammar", "RiMarkov", "RiScript" };
 	static String[] TYPES = { "functions", "statics", "fields" };
 
 	static String WWWINDEX_TEMPLATE = "index.html";
@@ -60,6 +60,8 @@ public class MakeDocs extends PApplet {
 				WWW_OUTPUT + "index." + OUTPUT_TYPE   // homepage index
 		};
 
+		String rslink = "https://observablehq.com/@dhowe/riscript";
+
 		for (int f = 0; f < templates.length; f++) {
 
 			String contents = "", tmpl[] = stringsFrom(templates[f]);
@@ -67,11 +69,12 @@ public class MakeDocs extends PApplet {
 			for (int i = 0; i < CLASS_NAMES.length; i++) {
 
 				String cls = CLASS_NAMES[i];
-				//String dls = CLASS_NAMES[i] == "RiTa" ? cls : "RiTa." + cls;
 				contents += "<div class=\"section\">\n";
 				contents += "  <div class=\"category\">\n";
 				contents += "    <span style=\"color: #006B8F !important;\"><b>";
-				contents += cls + "</b><span><br><br>\n"; // no link
+				contents += (cls.equals("RiScript") // special link for RiScript 
+						? "<a href='" + rslink + "' target='_new'>[ " + cls + " ]</a></b><span>"
+						: cls + "</b><span>") + "<br><br>\n";  // otherwise no link
 
 				for (int j = 0; j < TYPES.length; j++) {
 
@@ -88,8 +91,8 @@ public class MakeDocs extends PApplet {
 
 							if (TYPES[j].equals("functions") || TYPES[j].equals("statics")) {
 								display += "()";  // function or static
-							} 
-							
+							}
+
 							if (TYPES[j].equals("fields") || TYPES[j].equals("statics")) {
 								if (cls.equals("RiTa")) {
 									display = cls + "." + display;  // field or static (not RiTa)
