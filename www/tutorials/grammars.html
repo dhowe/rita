@@ -101,11 +101,9 @@
           <p>The grammars on this page are written as JSON, but we can also use JavaScript objects for grammars, which are a bit simpler to define. Note that the $ (dollar sign) char is only required
           for the right side of rules, and should be omitted from the left.
 
-          <p class="aside">Aside: it is important to note that using rules related to English grammar (subject, verb, etc. as in our example above) is just one one of <em>many</em> ways to use grammars. One can construct rules based on any textual features (syllable-count, as in the <a href="../examples/p5/HaikuGrammar/">linked example</a>, or phonemes as we might in a rhyming grammar), or even use grammars to generate image or
-            sound. </p>
+          <p class="aside">Aside: it is important to note that using rules related to English grammar (subject, verb, etc. as in our example above) is just one one of <em>many</em> ways to use grammars. One can construct rules based on any textual features (syllable-count, as in the <a href="../examples/p5/HaikuGrammar/">linked example</a>, or phonemes as we might in a rhyming grammar), or even use grammars to generate images or sounds. </p>
 
-
-          <p>To run the grammar, you can use RiGrammar's <a href="../reference/RiGrammar/expand/index.html">expand()</a> function. By default, it will run the grammar from the <code>start</code> symbol, or you can also specify your own starting point:
+          <p>To run the grammar, you can use RiGrammar's <a href="../reference/RiGrammar/expand/index.html">expand()</a> function. By default, it will run the grammar from the <code>start</code> symbol, or you can specify your own starting point:
           <pre>
   grammar.expand(ruleName);
 </pre>
