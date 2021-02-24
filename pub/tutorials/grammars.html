@@ -23,7 +23,8 @@
   <style>
     .aside {
       font-size: .7em;
-      padding-left: 50px;
+      padding-left: 0px;
+      padding-bottom: 20px;
     }
   </style>
 </head>
@@ -76,20 +77,17 @@
             </a>
             Generating with Grammars
           </h4><br />
-          <p>RiTa's <b>RiGrammar</b> object is a probabilistic context-free grammar with extensions for text-generation.
-            This is a rather formal definition, but for this tutorial, it just means that we can use it to generate
-            texts according to simple rules that we define.
+          <p>RiTa's <b>RiGrammar</b> object is a probabilistic context-free grammar with extensions for text-generation. This is a rather formal definition, but for this tutorial, it just means that we can use a grammar to generate texts according to simple rules that we define.
           </p>
-          <p>For example, if we want to generate simple sentences following a Subject-Verb-Object pattern, the grammar
-            might look like this:
+          <p>For example, if we want to generate simple sentences following a Subject-Verb-Object pattern, the grammar might look like this:
           </p>
 
           <pre><code class="language-json">
 {
-  "$start":    "$subject $verb $object",
-  "$subject":  "I | You | They",
-  "$object":   "coffee | bread | milk",
-  "$verb":     "want | hate | like | love"
+  "start":    "$subject $verb $object",
+  "subject":  "I | You | They",
+  "object":   "coffee | bread | milk",
+  "verb":     "want | hate | like | love"
 }
 </code></pre>
 
@@ -97,31 +95,21 @@
           </p>
 
           <p>The first line above defines the whole structure of your grammar.
-            In this case, it will generate a <code>$subject</code>, followed by a <code>$verb</code> and then an
-            <code>$object</code>.
-            For each part, RiTa looks into the grammar for the corresponding rule and then chooses one string from the
-            options listed.
+            In this case, it will generate a <code>subject</code>, followed by a <code>verb</code> and then an <code>object</code>. For each part, RiTa looks into the grammar for the corresponding rule and then randomly chooses a string from the options listed.
           </p>
 
-          <p>The grammar above is written as JSON.
+          <p>The grammars on this page are written as JSON, but we can also use JavaScript objects for grammars, which are a bit simpler to define. Note that the $ (dollar sign) char is only required
+          for the right side of rules, and should be omitted from the left.
 
-          <p class="aside">Aside: it is important to note that using rules related to English grammar (subject, verb,
-            etc.
-            as in our example above) is just one one of <em>many</em> ways to use grammars. One can construct rules
-            based on any textual features (syllable-count, as in the <a href="../examples/p5/HaikuGrammar/">linked
-              example</a>, or phonemes as we might in a rhyming grammar), or even use grammars to generate image or
+          <p class="aside">Aside: it is important to note that using rules related to English grammar (subject, verb, etc. as in our example above) is just one one of <em>many</em> ways to use grammars. One can construct rules based on any textual features (syllable-count, as in the <a href="../examples/p5/HaikuGrammar/">linked example</a>, or phonemes as we might in a rhyming grammar), or even use grammars to generate image or
             sound. </p>
 
 
-          <p>To run the grammar, you can use the <a href="../reference/RiGrammar/expand/index.html">expand()</a> function.
-            By default,
-            it will run the grammar from the <code>$start</code> symbol, or you can also specify your own starting
-            point:
+          <p>To run the grammar, you can use RiGrammar's <a href="../reference/RiGrammar/expand/index.html">expand()</a> function. By default, it will run the grammar from the <code>start</code> symbol, or you can also specify your own starting point:
           <pre>
   grammar.expand(ruleName);
 </pre>
           </p>
-
 
           <p>By default, RiTa will assign equal weights to all choices in a rule.
             However, one can adjust the weights by adding 'multipliers' with square brackets, as follows:
@@ -135,16 +123,16 @@
           <p>This says that the word “coffee” should be chosen, on average, twice as often as either “bread” or “milk”.
           </p>
 
-          <p>We can also make the grammar more complex by adding rules within rules:</p>
+          <p>We can also make the grammar more complex by adding rules within rules (or even recursive rules):</p>
 
           <pre><code class="language-json">
   {
-    "$start":    "$subject $verb $object",
-    "$subject":  "I | You | They",
-    "$object":   $food | $animals",
-    "$verb":     "want | hate | like | love",
-    "$food":     "coffee | bread | milk",
-    "$animals":  "cats | dogs | fish"
+    "start":    "$subject $verb $object",
+    "subject":  "I | You | They",
+    "object":   $food | $animals",
+    "verb":     "want | hate | like | love",
+    "food":     "coffee | bread | milk",
+    "animals":  "cats | dogs | fish"
   }
 </code></pre>
 
@@ -154,10 +142,7 @@
               href="../examples/p5/HaikuGrammar/">this example
               sketch</a> using RiTa grammars...</p>
 
-
-          <p> &#128161; You can include valid <a href="../reference/riscript.html" target="_blank">RiScript</a>
-            statements (assignments, transforms, sequences) within your RiTa grammar and they will be executed
-            automatically when you expand your grammar.</p>
+          <p>&#128161; You can also include valid <a href="../reference/riscript.html" target="_blank">RiScript</a> statements (assignments, transforms, sequences) within your RiTa grammar and they will be executed automatically when you expand your grammar.</p>
 
           <hr />
 
