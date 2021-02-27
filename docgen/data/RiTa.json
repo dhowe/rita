@@ -37,7 +37,8 @@
           "type": "RiGrammar",
           "desc": "a RiGrammar object"
         }
-      ]
+      ],
+      "related": "see the tutorial <a href=\"../../../tutorials/grammars.html\">Generating with Grammars</a>"
     },
     {
       "name": "markov",
@@ -59,7 +60,8 @@
           "type": "RiMarkov",
           "desc": "a RiMarkov object"
         }
-      ]
+      ],
+      "related": "see the tutorial <a href=\"../../../tutorials/ngrams.html\">Generating with Markov chains</a>"
     },
     {
       "name": "isAbbrev",
