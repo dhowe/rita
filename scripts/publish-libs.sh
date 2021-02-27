@@ -187,14 +187,14 @@ if [ "$zipart" = true ] ; then  # skip artifact zip
 fi
 
 if [ "$nopub" = false ] ; then
-  echo "... updating https://rednoise.org/rita "
-  ssh $RED "cd bin && ./update-rita-web.sh" >/dev/null
-
   echo "... tagging rita"
   git add .
   git tag -a v$version -m "Release $version"
   git commit -q -m "Release $version"
   git push -q
+
+  echo "... updating https://rednoise.org/rita "
+  ssh $RED "cd bin && ./update-rita-web.sh" >/dev/null
 fi
 
 if [ "$nopub" = false ] && [ "$nocentral" = false ] && [ "$nojava" = false ] ; then
