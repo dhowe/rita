@@ -67,6 +67,9 @@ fi
 
 [ "$nojs" = true ] && [ "$nojava" = true ] && check_err 1 "nothing to do"
 
+echo "... pulling local"
+git pull
+
 if [ "$nojs" = false ] ; then         # build.test JavaScript
 
   echo "... building with npm"
@@ -74,26 +77,13 @@ if [ "$nojs" = false ] ; then         # build.test JavaScript
   npm run build >/dev/null || check_err $? "npm build failed"
 
   echo "... testing with npm"
-  # hack1: here we change the test path to use dist instead of source
-  # cp $ritajs/test/before.js $tmp/ || check_err $? "before.js cp1 failed" 
-  # sed 's%\.\./src/rita%../dist/rita%g' $tmp/before.js > $ritajs/test/before.js
-  #echo "test.prod:" && head -n1 $ritajs/test/before.js
   npm run test  >/dev/null || check_err $? "npm tests failed"
-  # cp $tmp/before.js $ritajs/test/ || check_err $? "before.js cp2 failed"
-  #echo "restored:" && head -n1 $ritajs/test/before.js
-
+  
   # clean old npm packages
   rm -rf $ritajs/rita-*.tgz
 
   echo "... packaging with npm"
-  #pushd $ritajs >/dev/null
-  # hack2: here we minimize the package.json to be included in npm tgz
-  #cp package.json $tmp/ || check_err $? "package.json cp1 failed"
-  #jq 'del(.dependencies,.devDependencies,.scripts,.watch,.nyc)' $tmp/package.json > package.json
-  #echo "npm.package.json:" && cat package.json
   npm pack --quiet >/dev/null || check_err $? "npm pack failed"
-  #cp $tmp/package.json package.json || check_err $? "package.json cp2 failed"
-  #echo "restored.package.json:" && cat package.json
   popd >/dev/null
 fi
 
@@ -148,13 +138,13 @@ if [ "$nojava" = false ] ; then       # publish java to github packages
       git tag -a v$version -m "Release $version"
       git push -q origin --tags
       echo "... deploying to github packages"
-      mvn -q -T1C clean deploy || check_err $? "maven publish failed [github]"
+      mvn -q clean deploy || check_err $? "maven publish failed [github]"
       popd >/dev/null
     fi
   else
     pushd $rita4j >/dev/null
     echo "... creating maven packages"
-    mvn -q -T1C clean package || check_err $? "maven build failed"
+    mvn -q clean package || check_err $? "maven build failed"
     popd >/dev/null
   fi
   # remove previous versions
@@ -169,7 +159,7 @@ if [ "$noproc" = false ] && [ "$nojava" = false ] ; then
     pushd $rita4j >/dev/null
     echo "... re-building maven for processing"
     rm -f $artifacts/*.* >/dev/null
-    mvn -q -T1C clean package || check_err $? "maven build failed"
+    mvn -q clean package || check_err $? "maven build failed"
     popd >/dev/null
   fi
   ./scripts/build-plib.sh $version || check_err $? "build-plib.sh failed"
@@ -203,7 +193,7 @@ if [ "$nopub" = false ] && [ "$nocentral" = false ] && [ "$nojava" = false ] ; t
     echo "... deploying to maven central"
     [[ -d target ]] || mkdir target
     [[ -d target/classes ]] || mkdir target/classes
-    mvn -q -T1C -Pcentral clean deploy || check_err $? "maven publish failed [central]"
+    mvn -q -Pcentral clean deploy || check_err $? "maven publish failed [central]"
     popd >/dev/null
   fi
 fi
@@ -212,6 +202,11 @@ echo "... cleaning up"
 #rm -rf $ritajs/*.tgz
 
 runtime=$((`date +%s`-start))
+
+if [ "$nocentral" = true ] ; then
+  echo "maven central: $ mvn -Pcentral clean deploy"
+fi
+
 
 echo "... done in ${runtime}s\n"
 
