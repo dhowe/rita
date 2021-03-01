@@ -52,7 +52,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options for creating the model (optional)<br><br>{int} options.maxAttempts:<br>max attempts before throwing an error in generation, default=999<br><br>{boolean} options.disableInputChecks:<br>if true, allow result to be present in the input, default=false<br><br>{boolean} options.logDuplicates<br><br>{int} options.maxLengthMatch:<br># of words allowed in result to match a sequence in the input, default=0<br><br>{boolean} options.trace:<br>if true, output debug log to console<br><br>{Function} options.tokenize [JS only]:<br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} options.untokenize [JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br>"
+          "desc": "options for creating the model (optional)<br><br>{int} options.maxAttempts:<br>max attempts before throwing an error in generation, default=999<br><br>{boolean} options.disableInputChecks:<br>if true, allow result to be present in the input, default=false<br><br>{int} options.maxLengthMatch:<br># of words allowed in result to match a sequence in the input, default=infinity<br><br>{boolean} options.trace:<br>if true, output debug log to console<br><br>{Function} options.tokenize [JS only]:<br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} options.untokenize [JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br>"
         }
       ],
       "returns": [
