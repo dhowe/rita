@@ -47,6 +47,50 @@ public class MakeDocs extends PApplet {
 
 	// ////////////////////////////////////////////////////////////////
 
+	//generate gallery
+	static String generateGallery() {
+		String jsonFile = DATA_DIR + "/gallery.json";
+		String jsonStr = stringFrom(jsonFile);
+		JSONArray raw = JSONArray.parse(jsonStr);
+		ArrayList<JSONObject> listOfItem = new ArrayList<JSONObject>();
+		for (int i = 0; i < raw.size(); i++) {
+			listOfItem.add(raw.getJSONObject(i));
+		}
+
+		String content = "";
+		String row = "";
+		String col = "";
+		int a = 3, b = 3, l = 0;
+
+		for (int k = 0; k < listOfItem.size(); k += a * b) {
+			content += "<div id=\"container" + k / a * b + "\" class=\"container\">\n"; 
+			for (int i = 0; i < a; i++) {
+				content += "	<div id=\"con" + k / a * b + "row" + i + "\" class=\"row\">\n";
+				for (int j = 0; j < b; j++) {
+					col = "		<div id=\"con" + k / a * b + "row" + i + "col" + j + "\" class=\"column\">\n";
+					String subcontent = "";
+					if (l < listOfItem.size()) {
+						subcontent = "		<div class='col-md-4 gallery_home_item wow fadeInDown'>\n";
+						subcontent += "				<a href='" + listOfItem.get(l).getString("link") + "' target='new'>\n";
+            			subcontent += "				<img src='" + listOfItem.get(l).getString("thumb") + "'/></a><br>\n";
+            			subcontent += "				<a href='" + listOfItem.get(l).getString("link") + "' target='new'>" + listOfItem.get(l).getString("title")+ "</a>\n";
+            			subcontent += "				<p><span>by " + listOfItem.get(l).getString("artist") + "</span></p>\n";
+						subcontent += "			</div>\n";
+					} else {
+						break;
+					}
+					l++;
+					col += subcontent;
+					col += "		</div>\n";
+					content += col;
+				}
+				content += "	</div>\n";
+			}
+			content += "</div>\n";
+		}
+		return content;
+	}
+
 	static void writeIndex() {
 
 		//if (1==1) throw new RuntimeException("Invalid foo");
@@ -115,6 +159,7 @@ public class MakeDocs extends PApplet {
 				contents += "</div>\n\n";
 			}
 			tmpl = replaceArr(tmpl, "tmp_contents", contents);
+			tmpl = replaceArr(tmpl, "gallery_contents", generateGallery());
 			writeFile(outputs[f], tmpl);
 
 		}
