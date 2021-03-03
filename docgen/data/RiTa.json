@@ -42,9 +42,9 @@
     },
     {
       "name": "markov",
-      "example": "txt = \"This is a two sentence example. This is the second one. \"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt);<br>sentences = rm.generate(2);<br><br>for (i = 0; i < sentences.length; i ++ ){<br>  println(sentences[i]);<br>}",
-      "description": "Creates a new RiMarkov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses Markov chains (aka n-grams) with options to process single characters, words, sentences, or arbitrary regular expressions.<br><br>",
-      "syntax": "// Constructs a RiMarkov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify options<br><br>RiTa.markov(nFactor, options);<br><br>",
+      "example": "txt = \"This is a two sentence example. This is the second one.\"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt1);<br>rm.addText(txt2);<br>sentences = rm.generate(2);<br><br>",
+      "description": "Creates a new RiMarkov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses Markov chains (aka n-grams) with options to process words or arbitrary regular expressions.<br><br>",
+      "syntax": "// Constructs a RiMarkov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify one or more options<br><br>RiTa.markov(nFactor, options);<br><br>",
       "parameters": [
         {
           "type": "int",
@@ -52,7 +52,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options for creating the model (optional)<br><br>{int} options.maxAttempts:<br>max attempts before throwing an error in generation, default=999<br><br>{boolean} options.disableInputChecks:<br>if true, allow result to be present in the input, default=false<br><br>{int} options.maxLengthMatch:<br># of words allowed in result to match a sequence in the input, default=infinity<br><br>{boolean} options.trace:<br>if true, output debug log to console<br><br>{Function} options.tokenize [JS only]:<br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} options.untokenize [JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br>"
+          "desc": "options for creating the model (optional)<br><br>{int} <b>options.maxLengthMatch:</b><br># of words allowed in result to match a sequence in the input, default=N+1<br><br>{boolean} <b>options.disableInputChecks:</b><br>if true, allow result to be present in the input, default=false<br><br>{Function} <b>options.tokenize</b> [JS only]:<br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} <b>options.untokenize</b> [JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br>{boolean} <b>options.trace:</b><br>if true, output debug log to console, default=false<br><br>{int} <b>options.maxAttempts:</b><br>max attempts before throwing an error in generation, default=999<br><br>"
         }
       ],
       "returns": [

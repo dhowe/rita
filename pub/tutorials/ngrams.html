@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>Tutorial-Analyzing Text</title>
+  <title>Tutorial: Markov Chains</title>
   <meta name="generator" content="JsDoc" />
   <!-- bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -128,8 +128,7 @@ With a longer text sample we could experiment with different <em>n</em>-values, 
 <p>
 <br>Second, we provide some text for RiTa to analyze. There are two functions to achieve this: <em>fromJSON()</em> and  <em>addText()</em>. Let's start with <em>addText()</em>, which simply loads a string of text into the model.
 </p>
-<pre><code class="language-javascript">
-  rm.addText("The girl went to a game after dinner. The teacher went \
+<pre><code class="language-javascript">rm.addText("The girl went to a game after dinner. The teacher went \
     to dinner with a girl.");
 </code></pre>
 <p>
@@ -152,9 +151,48 @@ With a longer text sample we could experiment with different <em>n</em>-values, 
 
 <hr/>
 
-<h5><br><b>Advanced Techniques</b></h5>
+<h5><br><b>Advanced Options</b></h5>
 
-<em>...coming soon...</em>
+<p>The RiMarkov object includes some advanced options to give you more control over the generation process:</p>
+
+<em>disableInputChecks</em><br>
+
+<p>One problems with Markov-chains is that they may often include potentially long sequences of an input text in the output.
+Since we are trying to generate <em>new</em> text, this can be a problem. So, by default (unlike other Markov libraries), RiMarkov will NOT generate any complete sentences which are found in the input. This mean that, at least on the sentence level, all the output from your model will be novel. If you wish to disable this constraint, simply set <code>{ disableInputChecks: true }</code> when creating your RiMarkov object.</p>
+
+<hr>
+<em>maxLengthMatch</em><br>
+
+<p>This constructor option gives you further control over the degree to which input tokens are allowed to appears in the output. By definition, sequences of N tokens that the model generates exist in the input text(s). However the model <em></em>may</em> generate longer sequences which are also from the input; for example, five sequential words from the input when N=3. To control this, you can set the <em>maxLengthMatch</em> option, which specifies the maximum # of sequential tokens allowed from an input text. If, in the previous example, you set <code>{ maxLengthMatch: 4 }</code>, then the model will reject any path of five or more tokens in the input. You can think of this option as a way to minimize <em>overfitting</em>  of the model to the input data.</p>
+
+<hr>
+<em>temperature</em>
+
+<p>The <code>temperature</code> option for the <em>RiMarkov.generate()</em> function acts as a knob to adjust the probability that input elements are chosen for the output. If no value is provided for temperature, then tokens are chosen in proportion to their relative frequency in the input (this is the standard way that Markov chains work). At higher temperature values, however, tokens that are <em>infrequent</em> in the input are more likely to be chosen, which increase the density of unusual (or at least less commonly-used) tokens in your output. Conversely, with lower temperature values the most frequent inputs are increasingly likely to be selected for the output. </p>
+
+<ul>
+<li>Range: between 0 and positive infinity (excluding both)
+<li>Default: exactly mapped to frequencies in the input
+<li>Lower values move the highest-weighted output toward a probability of 1.0.
+<li>Higher values tend to even out all probabilities (toward random selection).
+</ul>
+
+<p>The temperature parameter function similarly to its use with softmax in neural networks. See <a href="http://www.kasimte.com/2020/02/14/how-does-temperature-affect-softmax-in-machine-learning.html" target="_new">this page</a> for a more in-depth explanation.</p>
+
+<hr>
+<em>startTokens</em>
+<p>If you would like the output to begin with a certain word of phrase, you can set the <code>startTokens</code> option which will then start each result with that text when calling <em>RiMarkov.generate().</em></p>
+
+
+<!--hr>
+<em>allowDuplicates</em>
+<p>By default, duplicate sentences are not allowed in RiMarkov's output. To relax this constraint you can pass <code>{ allowDuplicates: true }</code> as an option when calling <em>RiMarkov.generate()</em></p-->
+
+<br>
+You can check the rest of the options for creating and generating with the RiMarkov object here: <a href="https://rednoise.org/rita/reference/RiTa/markov/index.html" target="_new">RiTa.markov()</a> and here: <a href="https://rednoise.org/rita/reference/RiMarkov/generate/index.html" target="_new">RiMarkov.generate()</a>.
+
+<hr>
+
 
 <div id="Next" class="pad-small">
 <p>NEXT > see <a href="concordance.html"><b>Concordance and Key-Word-In-Context</b></a></p>
