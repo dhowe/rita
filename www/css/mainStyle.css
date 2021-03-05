@@ -476,6 +476,7 @@ Desc section
   #gallery .gallery_home_item {
     height: 200px;
     width: 30%;
+    min-width: 200px;
   }
 }
 
