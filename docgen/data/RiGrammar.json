@@ -28,8 +28,8 @@
   "functions": [
     {
       "name": "addRule",
-      "example": "rg = new RiGrammar();<br/>rg.addRule(\"start\", \"\\$animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");",
-      "description": "Adds a rule to the existing grammar, replacing any existing rule with the same name",
+      "example": "rg = new RiGrammar();<br/>rg.addRule(\"start\", \"$animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");<br><br><br>// To add weights, specify them inline with brackets<br><br>rg.addRule(\"animal\", \"cat [4] | dog | chicken\");",
+      "description": "Adds a rule to the existing grammar, replacing any existing rule with the same name.",
       "syntax": "addRule(name, definition);",
       "parameters": [
         {
@@ -43,8 +43,8 @@
       ],
       "returns": [
         {
-          "type": "RiGrammar",
-          "desc": "this RiGrammar"
+          "type": "Object",
+          "desc": "this RiGrammar object"
         }
       ]
     },
@@ -83,8 +83,8 @@
       ],
       "returns": [
         {
-          "type": "RiGrammar",
-          "desc": "this RiGrammar"
+          "type": "Object",
+          "desc": "this RiGrammar object"
         }
       ]
     },
@@ -95,14 +95,14 @@
       "syntax": "rg.addRules(grammarRules);",
       "parameters": [
         {
-          "type": "Object<br>(or Map in Java)",
-          "desc": "an object representation of the grammar"
+          "type": "Object or JSON string<br>(optional)",
+          "desc": "a representation of the grammar"
         }
       ],
       "returns": [
         {
-          "type": "RiGrammar",
-          "desc": "this RiGrammar"
+          "type": "Object",
+          "desc": "this RiGrammar object"
         }
       ]
     },

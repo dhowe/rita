@@ -1,4 +1,4 @@
-    {
+    [{
       "name": "scripting",
       "example": "<br/>interpreter = RiTa.scripting();<br/>result = interpreter.evaluate(\"(a | b | c | d | e).seq()\");<p>",
       "description": "Returns a <a href=\"../../riscript.html\">RiScript</a> interpreter. This is useful for maintaining state between repeated calls to evaluate(), (which is not maintained when using RiTa.evaluate() directly). The only real reason to use this function is for sequences that you need to continue across evaluate() calls.",
@@ -11,4 +11,22 @@
         }
       ],
       "related": "<a href='../evaluate'>RiTa.evaluate()</a>"
-    }
+    },
+    {
+      "name": "rules",
+      "example": "rg = new RiGrammar(); <br>rg.rules(grammarRules);",
+      "description": "If an argument is provided, it is used to load a grammar from a JSON string or object. Without an argument it simply returns the current set of rules.",
+      "syntax": "rg.rules(grammarRules);<br>&nbsp; &nbsp; &nbsp;OR<br>theRules = rg.rules();",
+      "parameters": [
+        {
+          "type": "Object or JSON string<br>(optional)",
+          "desc": "a representation of the grammar"
+        }
+      ],
+      "returns": [
+        {
+          "type": "Object (or Map in Java)",
+          "desc": "the current set of rules"
+        }
+      ]
+    }]

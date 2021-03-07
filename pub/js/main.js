@@ -49,7 +49,7 @@ $(document).ready(function() {
   menuBar();
 
   //Gallery and Learning - slick-slider
-  $('.slick-slider-gallery').slick({
+  $('.slick-slider-gallery').not('.slick-initialized').slick({
     dots: true,
   });
 
