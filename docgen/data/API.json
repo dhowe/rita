@@ -41,6 +41,7 @@
         "stem",
         "stresses",
         "syllables",
+        "tokens",
         "tokenize",
         "untokenize"
       ],

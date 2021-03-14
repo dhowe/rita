@@ -241,6 +241,28 @@
       "related": "See <a href=\"../../riscript.html\">RiScript documentation</a>"
     },
     {
+      "name": "tokens",
+      "example": "<br/>sentence = \"The doctors treated dogs.\";<br/>words = RiTa.tokens(sentence);<br/>unique Words = RiTa.tokens(sentence, \"\\\\\\\\s\");<br/><br/>",
+      "description": "Return a sorted array array containing all unique alphabetical words in text.<br/>",
+      "syntax": "RiTa.tokens(text);<br/>RiTa.tokens(text, regex);",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "the input"
+        },
+        {
+          "type": "String OR Regex <br/>(in JS)",
+          "desc": "regex (optional) the pattern to be used for tokenization"
+        }
+      ],
+      "returns": [
+        {
+          "type": "String[]",
+          "desc": "the set of unique alphabetical words in the text"
+        }
+      ]
+    },
+    {
       "name": "tokenize",
       "example": "<br/>sentence = \"The doctors treated dogs.\";<br/>words = RiTa.tokenize(sentence);<br/>arrayOfWords = RiTa.tokenize(sentence, \"\\\\\\\\s\");<br/><br/>",
       "description": "Tokenizes a string (into words) according to the Penn Treebank conventions.<br/>",
