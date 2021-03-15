@@ -96,11 +96,11 @@ public class MakeDocs extends PApplet {
 		//if (1==1) throw new RuntimeException("Invalid foo");
 
 		String[] templates = {
-				TMPL_DIR + "/" + REFINDEX_TEMPLATE,  // reference index
+				TMPL_DIR + "/" + REFINDEX_TEMPLATE,  // reference index -> now should redirect to the homepage#reference
 				TMPL_DIR + "/" + WWWINDEX_TEMPLATE // homepage index
 		};
 		String[] outputs = {
-				WWW_OUTPUT + REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index
+				WWW_OUTPUT + REF_OUTPUT + "index." + OUTPUT_TYPE,  // reference index now should redirect to the homepage#reference
 				WWW_OUTPUT + "index." + OUTPUT_TYPE   // homepage index
 		};
 
