@@ -204,7 +204,7 @@ echo "... cleaning up"
 runtime=$((`date +%s`-start))
 
 if [ "$nocentral" = true ] ; then
-  echo "maven central: $ mvn -Pcentral clean deploy"
+  echo "to central: $ cd ../rita4j && mvn -Pcentral clean deploy"
 fi
 
 
