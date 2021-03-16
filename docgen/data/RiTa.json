@@ -38,7 +38,7 @@
           "desc": "a RiGrammar object"
         }
       ],
-      "related": "see the tutorial <a href=\"../../../tutorials/grammars.html\">Generating with Grammars</a>"
+      "related": "see the tutorial <a href=\"https://observablehq.com/@dhowe/tut-rita-grammars\">Generating with Grammars</a>"
     },
     {
       "name": "markov",
@@ -61,7 +61,7 @@
           "desc": "a RiMarkov object"
         }
       ],
-      "related": "see the tutorial <a href=\"../../../tutorials/ngrams.html\">Generating with Markov chains</a>"
+      "related": "see the tutorial <a href=\"https://observablehq.com/@dhowe/tut-rita-ngrams\">Generating with Markov chains</a>"
     },
     {
       "name": "isAbbrev",
