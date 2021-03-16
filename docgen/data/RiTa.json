@@ -20,7 +20,7 @@
     {
       "name": "grammar",
       "example": "rg = RiTa.grammar();<br>rg.addRule(\"start\", \"( cat | dog | fish )\");<br>let result = rg.expand();",
-      "description": "Creates a new RiGrammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"../../riscript.html\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><br><pre class=\"margin\">rg = new RiGrammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<br><br><pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"../../riscript.html\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
+      "description": "Creates a new RiGrammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><br><pre class=\"margin\">rg = new RiGrammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<br><br><pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
       "syntax": "// Initialize an empty RiGrammar object<br><br>rg = RiTa.grammar();<br><br><br>// Or specify a grammar in a JSON string (or JS object)<br><br>rg = RiTa.grammar(myJson);<br><br><br>// Or supply a context<br><br>rg = RiTa.grammar(myJson, context);",
       "parameters": [
         {
@@ -38,7 +38,7 @@
           "desc": "a RiGrammar object"
         }
       ],
-      "related": "see the tutorial <a href=\"../../../tutorials/grammars.html\">Generating with Grammars</a>"
+      "related": "see the tutorial <a href=\"https://observablehq.com/@dhowe/tut-rita-grammars\">Generating with Grammars</a>"
     },
     {
       "name": "markov",
@@ -61,7 +61,7 @@
           "desc": "a RiMarkov object"
         }
       ],
-      "related": "see the tutorial <a href=\"../../../tutorials/ngrams.html\">Generating with Markov chains</a>"
+      "related": "see the tutorial <a href=\"https://observablehq.com/@dhowe/tut-rita-ngrams\">Generating with Markov chains</a>"
     },
     {
       "name": "isAbbrev",
@@ -202,7 +202,7 @@
     {
       "name": "addTransform",
       "example": "RiTa.addTransform(\"uc\", (s) => s.toUpperCase());<br/>RiTa.evaluate(\"This.uc() is an acronym.\");",
-      "description": "Registers a new <a href=\"../../riscript.html\">RiScript</a> transform function that may then be used in all RiScript evaluations (including within Grammars)",
+      "description": "Registers a new <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> transform function that may then be used in all RiScript evaluations (including within Grammars)",
       "syntax": "RiTa.addTransform(name, function);",
       "parameters": [
         {
@@ -215,12 +215,12 @@
         }
       ],
       "returns": [],
-      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a> "
+      "related": "See <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript documentation</a> "
     },
     {
       "name": "evaluate",
       "example": "RiTa.evaluate(\"He was (happy | sad | indifferent)\");<br/>RiTa.evaluate(\"He was (happy | sad | \\$emo)\", context);",
-      "description": "Parses and executes a <a href=\"../../riscript.html\">RiScript</a> string",
+      "description": "Parses and executes a <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> string",
       "syntax": "RiTa.evaluate(string);<br/>RiTa.evaluate(string, context);",
       "parameters": [
         {
@@ -238,7 +238,7 @@
           "desc": "the result of the evaluation"
         }
       ],
-      "related": "See <a href=\"../../riscript.html\">RiScript documentation</a>"
+      "related": "See <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript documentation</a>"
     },
     {
       "name": "tokens",
