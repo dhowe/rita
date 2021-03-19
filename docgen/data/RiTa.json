@@ -75,7 +75,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "the relevant option (optional)<br><br>{boolean} ignoreCase"
+          "desc": "the relevant option (optional)<br><br>{boolean} caseSensitive"
         }
       ],
       "returns": [
