@@ -802,7 +802,7 @@
         },
         {
           "type": "boolean",
-          "desc": "(optional, only in Java) noLTS: if it is set to true, that the process will not use LST (letter to sound), default=false"
+          "desc": "(optional, only in Java) noLTS: if set to true the process will not use LTS (letter-to-sound rules), default=false"
         }
       ],
       "returns": [
