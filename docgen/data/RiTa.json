@@ -790,7 +790,7 @@
       "name": "isAlliteration",
       "example": "RiTa.isAlliteration(\"cat\",\"kitchen\");",
       "description": "Returns true if the two words are alliterations (if the first stressed consonant of the two match). Note: returns true if wordA.equals(wordB) and false if either (or both) are null.",
-      "syntax": "RiTa.isAlliteration(word1, word2);<br>RiTa.isAlliteration(word1, word2, useLTS);",
+      "syntax": "RiTa.isAlliteration(word1, word2);<br>RiTa.isAlliteration(word1, word2, noLTS);",
       "parameters": [
         {
           "type": "String",
@@ -802,7 +802,7 @@
         },
         {
           "type": "boolean",
-          "desc": "(optional) use LTS (letter to sound), default=false"
+          "desc": "(optional, only in Java) noLTS: if it is set to true, that the process will not use LST (letter to sound), default=false"
         }
       ],
       "returns": [
