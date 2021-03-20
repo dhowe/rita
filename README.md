@@ -1,4 +1,4 @@
-<a href="https://www.npmjs.com/package/rita"><img src="https://img.shields.io/npm/v/rita.svg" alt="npm version"></a> ![Maven Central](https://img.shields.io/maven-central/v/org.rednoise/rita) <a href="http://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/license-GPL-orange.svg" alt="npm version"></a> <a href="https://spectrum.chat/rita"><img src="https://img.shields.io/badge/spectrum-chat-%23b14344"/></a>
+<a href="https://www.npmjs.com/package/rita"><img src="https://img.shields.io/npm/v/rita.svg" alt="npm version"></a> ![Maven Central](https://img.shields.io/maven-central/v/org.rednoise/rita) <a href="http://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/license-GPL-orange.svg" alt="npm version"></a>
 
 ## RiTa: a toolkit for generative writing and natural language
 
@@ -15,12 +15,12 @@ This repo contains the website, documentation, and examples for RiTa. For the co
 
 ## API
 
-  <table cellspacing="0" cellpadding="0" style="vertical-align: top;">
+   <table cellspacing="0" cellpadding="0" style="vertical-align: top;">
    <tr>
-    <th colspan=2 style="text-align: left; padding-left: 12px">RiTa
+    <th colspan=2 style="vertical-align: top;text-align: left; padding-left: 12px">RiTa
     </th>
-    <th colspan=1 style="text-align: left;">RiMarkov</th>
-    <th colspan=1 style="text-align: left;">RiGrammar</th>
+    <th colspan=1 style="vertical-align: top;text-align: left;">RiMarkov</th>
+    <th colspan=1 style="vertical-align: top;text-align: left;">RiGrammar</th>
    </tr>
    <tr>
     <td style="vertical-align: top; padding-top: 15px">
@@ -65,30 +65,29 @@ This repo contains the website, documentation, and examples for RiTa. For the co
       <a href="https://rednoise.org/rita/reference/RiTa/stem/index.html">RiTa.stem()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/stresses/index.html">RiTa.stresses()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/syllables/index.html">RiTa.syllables()</a><br/>
-      <a href="https://rednoise.org/rita/reference/RiTa/tokens/index.html">RiTa.tokens()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/tokenize/index.html">RiTa.tokenize()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/untokenize/index.html">RiTa.untokenize()</a><br/>
       <!--a href="./RiTa/VERSION/index.html">RiTa.VERSION</a><br/-->
     </td>
-    <td style="vertical-align: top; padding-top: 15px; min-width: 125px">
-      <a href="https://rednoise.org/rita/reference/Markov/addText/index.html">addText()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/completions/index.html">completions()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/generate/index.html">generate()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/probability/index.html">probability()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/probabilities/index.html">probabilities()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/size/index.html">size()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/toString/index.html">toString()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/toJSON/index.html">toJSON()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Markov/fromJSON/index.html">fromJSON()</a><br/>
+    <td style="vertical-align: top !important; padding-top: 15px; min-width: 125px">
+      <a href="https://rednoise.org/rita/reference/RiMarkov/addText/index.html">addText()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/completions/index.html">completions()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/generate/index.html">generate()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/probability/index.html">probability()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/probabilities/index.html">probabilities()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/size/index.html">size()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/toString/index.html">toString()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/toJSON/index.html">toJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/fromJSON/index.html">fromJSON()</a><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </td>
-    <td style="vertical-align: top; padding-top: 15px; min-width: 125px">
-      <a href="https://rednoise.org/rita/reference/Grammar/addRule/index.html">addRule()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/addRules/index.html">addRules()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/expand/index.html">expand()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/removeRule/index.html">removeRule()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/toJSON/index.html">toJSON()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/toString/index.html">toString()</a><br/>
-      <a href="https://rednoise.org/rita/reference/Grammar/fromJSON/index.html">fromJSON()</a><br/>
+    <td style="vertical-align: top !important; padding-top: 15px; min-width: 125px">
+      <a href="https://rednoise.org/rita/reference/RiGrammar/addRule/index.html">addRule()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/addRules/index.html">addRules()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/expand/index.html">expand()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/removeRule/index.html">removeRule()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/toJSON/index.html">toJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/toString/index.html">toString()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/fromJSON/index.html">fromJSON()</a><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </td>
  </tr>
 </table>
