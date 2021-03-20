@@ -65,6 +65,7 @@ This repo contains the website, documentation, and examples for RiTa. For the co
       <a href="https://rednoise.org/rita/reference/RiTa/stem/index.html">RiTa.stem()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/stresses/index.html">RiTa.stresses()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/syllables/index.html">RiTa.syllables()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiTa/tokens/index.html">RiTa.tokens()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/tokenize/index.html">RiTa.tokenize()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/untokenize/index.html">RiTa.untokenize()</a><br/>
       <!--a href="./RiTa/VERSION/index.html">RiTa.VERSION</a><br/-->
