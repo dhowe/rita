@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Return a sorted array array containing all unique alphabetical words in text.<br/></td>
+                  <td>Return an array containing all unique alphabetical words (tokens) in the text.<br/></td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin"><br/>sentence = "The doctors treated dogs.";<br/>words = RiTa.tokens(sentence);<br/>unique Words = RiTa.tokens(sentence, "\\s");<br/><br/></pre>
+                      <pre class="margin"><br/>sentence = "One dog is like the other dog.";<br/>tokens = RiTa.tokens(sentence);<br/><br/>sentence = "'One dog is like the other dog', she'd thought.";<br/>tokens = RiTa.tokens(sentence, { splitContractions: true });<br/><br/></pre>
                     </div>
                   </td>
                 </tr>
@@ -137,7 +137,7 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>String OR Regex <br/>(in JS)</th><td width='75%'>regex (optional) the pattern to be used for tokenization</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br/>(or Map<String, Object) in Java)</th><td width='75%'>options (optional), the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., "I'd" or "she'll") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br></td></tr></table>
                   </td>
                 </tr>
 
@@ -146,15 +146,15 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>the set of unique alphabetical words in the text</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>the set of unique alphabetical tokens in the text</td></tr></table>
                   </td>
                 </tr>
 
-                <tr class='Related' style='display:none'>
+                <tr class='Related'>
                   <th scope="row">Related</th>
 
                   <!-- RELATED  -->
-                  <td>tmp_related</td>
+                  <td><a href='../tokenize'>RiTa.tokenize()</a></td>
                 </tr>
 
                 <tr class='Note' style='display:none'>
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>RiTa.tokens(text);<br/>RiTa.tokens(text, regex);</pre>
+                    <pre>RiTa.tokens(text);<br/>RiTa.tokens(text, options);</pre>
                   </td>
                 </tr>
 

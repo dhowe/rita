@@ -242,48 +242,49 @@
     },
     {
       "name": "tokens",
-      "example": "<br/>sentence = \"The doctors treated dogs.\";<br/>words = RiTa.tokens(sentence);<br/>unique Words = RiTa.tokens(sentence, \"\\\\\\\\s\");<br/><br/>",
-      "description": "Return a sorted array array containing all unique alphabetical words in text.<br/>",
-      "syntax": "RiTa.tokens(text);<br/>RiTa.tokens(text, regex);",
+      "example": "<br/>sentence = \"One dog is like the other dog.\";<br/>tokens = RiTa.tokens(sentence);<br/><br/>sentence = \"'One dog is like the other dog', she'd thought.\";<br/>tokens = RiTa.tokens(sentence, { splitContractions: true });<br/><br/>",
+      "description": "Return an array containing all unique alphabetical words (tokens) in the text.<br/>",
+      "syntax": "RiTa.tokens(text);<br/>RiTa.tokens(text, options);",
       "parameters": [
         {
           "type": "String",
           "desc": "the input"
         },
         {
-          "type": "String OR Regex <br/>(in JS)",
-          "desc": "regex (optional) the pattern to be used for tokenization"
+          "type": "Object<br/>(or Map<String, Object) in Java)",
+          "desc": "options (optional), the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
         }
       ],
       "returns": [
         {
           "type": "String[]",
-          "desc": "the set of unique alphabetical words in the text"
+          "desc": "the set of unique alphabetical tokens in the text"
         }
-      ]
+      ],
+      "related": "<a href='../tokenize'>RiTa.tokenize()</a>"
     },
     {
       "name": "tokenize",
-      "example": "<br/>sentence = \"The doctors treated dogs.\";<br/>words = RiTa.tokenize(sentence);<br/>arrayOfWords = RiTa.tokenize(sentence, \"\\\\\\\\s\");<br/><br/>",
+      "example": "<br/>sentence = \"The doctors treated dogs.\";<br/>words = RiTa.tokenize(sentence);<br/>words = RiTa.tokenize(sentence, { regex: \"\\\\\\\\s\" });<br/><br/>",
       "description": "Tokenizes a string (into words) according to the Penn Treebank conventions.<br/>",
-      "syntax": "RiTa.tokenize(text);<br/>RiTa.tokenize(text, regex);",
+      "syntax": "RiTa.tokenize(text);<br/>RiTa.tokenize(text, options);",
       "parameters": [
         {
           "type": "String",
           "desc": "the input"
         },
         {
-          "type": "String OR Regex <br/>(in JS)",
-          "desc": "regex (optional) the pattern to be used for tokenization"
+          "type": "Object<br/>(or Map<String, Object) in Java)",
+          "desc": "options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{string or regex} options.regex: <br/>Regular expression to use for splitting the input<br/><br/>"
         }
       ],
       "returns": [
         {
           "type": "String[]",
-          "desc": "in which each element is a single token (or word)"
+          "desc": "Array in which each element is a single token (generally a word or single punctuation character)"
         }
       ],
-      "related": "<a href='../untokenize'>RiTa.untokenize()</a>"
+      "related": "<a href='../tokens'>RiTa.tokens()</a><br><a href='../untokenize'>RiTa.untokenize()</a>"
     },
     {
       "name": "untokenize",
@@ -303,7 +304,7 @@
       "returns": [
         {
           "type": "String",
-          "desc": "containing all elements as a sentence"
+          "desc": "String containing all elements as a sentence"
         }
       ],
       "related": "<a href='../tokenize'>RiTa.tokenize()</a>"
@@ -431,7 +432,7 @@
           "desc": "the text"
         },
         {
-          "type": "Object<br/>(or Map<String, Integer) in Java)",
+          "type": "Object<br/>(or Map<String, Object) in Java)",
           "desc": "options (optional) the relevant options for the KWIC model:<br/><br/>{int} options.wordCount: <br/># of words of context on either side of input word<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br>"
         }
       ],
