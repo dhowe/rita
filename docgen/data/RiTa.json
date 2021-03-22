@@ -817,7 +817,7 @@
       "name": "isRhyme",
       "example": "RiTa.isRhyme(\"cat\",\"mat\");",
       "description": "Returns true if the two words rhyme, that is, if their final stressed vowel phoneme and all following phonemes are identical, else false.<br/><br/>Note: returns false if word1.equals(word2) or if either (or both) are null;<br/><br/>",
-      "syntax": "RiTa.isRhyme(word1, word2)<br/>RiTa.isRhyme(word1, word2, useLTS);",
+      "syntax": "RiTa.isRhyme(word1, word2)<br/>RiTa.isRhyme(word1, word2, noLTS);",
       "parameters": [
         {
           "type": "String",
@@ -829,7 +829,7 @@
         },
         {
           "type": "boolean",
-          "desc": "use letter-to-sound rules if not found in lexicon (optional, default=false)"
+          "desc": "(optional, only in Java) noLTS: if set to true the process will not use LTS (letter-to-sound rules), default=false"
         }
       ],
       "returns": [
