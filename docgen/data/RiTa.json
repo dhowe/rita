@@ -251,7 +251,7 @@
           "desc": "the input"
         },
         {
-          "type": "Object<br/>(or Map<String, Object) in Java)",
+          "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
           "desc": "options (optional), the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
         }
       ],
@@ -274,7 +274,7 @@
           "desc": "the input"
         },
         {
-          "type": "Object<br/>(or Map<String, Object) in Java)",
+          "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
           "desc": "options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{string or regex} options.regex: <br/>Regular expression to use for splitting the input<br/><br/>"
         }
       ],
@@ -432,7 +432,7 @@
           "desc": "the text"
         },
         {
-          "type": "Object<br/>(or Map<String, Object) in Java)",
+          "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
           "desc": "options (optional) the relevant options for the KWIC model:<br/><br/>{int} options.wordCount: <br/># of words of context on either side of input word<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br>"
         }
       ],
