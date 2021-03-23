@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Returns true if the two words are alliterations (iff the first stressed consonant of the two match). Note: returns true if wordA.equals(wordB) and false if either (or both) are null.</td>
+                  <td>Returns true if the two words are alliterations (if their first stressed consonants match). Note: returns true if wordA.equals(wordB) and false if either (or both) are null.</td>
                 </tr>
 
                 <tr class='Example'>
@@ -137,7 +137,7 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the first word</td></tr><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the second word</td></tr><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>(optional) use LTS (letter to sound), default=false</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the first word</td></tr><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the second word</td></tr><tr class=''><th width='25%' scope='row' class=nobold>boolean</th><td width='75%'>(optional, only in Java) noLTS: if set to true the process will not use LTS (letter-to-sound rules), default=false</td></tr></table>
                   </td>
                 </tr>
 
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>RiTa.isAlliteration(word1, word2);<br>RiTa.isAlliteration(word1, word2, useLTS);</pre>
+                    <pre>RiTa.isAlliteration(word1, word2);<br>RiTa.isAlliteration(word1, word2, noLTS);</pre>
                   </td>
                 </tr>
 
