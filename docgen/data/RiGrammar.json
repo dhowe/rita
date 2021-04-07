@@ -52,7 +52,7 @@
       "name": "expand",
       "example": "rg = new RiGrammar(rules); <br/>result = rg.expand(ruleName);",
       "description": "Expands a grammar from the supplied rule. If no rule is provided the \\$start and #60;start&#62;' symbols will be checked respectively.",
-      "syntax": "expand();<br/>expand(context);",
+      "syntax": "expand();<br/>expand(ruleName);<br/>expand(ruleName, context);",
       "parameters": [
         {
           "type": "String",
