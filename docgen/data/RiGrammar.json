@@ -95,7 +95,7 @@
       "syntax": "rg.addRules(grammarRules);",
       "parameters": [
         {
-          "type": "Object or JSON string<br>(optional)",
+          "type": "Object or JSON string",
           "desc": "a representation of the grammar"
         }
       ],
@@ -128,6 +128,10 @@
         {
           "type": "String",
           "desc": "beautify or not (optional, default=false)"
+        },
+        {
+          "type": "boolean",
+          "desc": "[Only in Java]: (optional) prettify the output or not, default=false"
         }
       ],
       "returns": [
