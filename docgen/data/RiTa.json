@@ -25,11 +25,11 @@
       "parameters": [
         {
           "type": "Object",
-          "desc": "A JSON string, a JS object, or a Java Map"
+          "desc": "A JSON string, a JS object, or a Java Map representing the grammar rules (optional)"
         },
         {
           "type": "Object",
-          "desc": "A context object (or Map in Java)"
+          "desc": "A context object (or Map in Java), optional"
         }
       ],
       "returns": [
@@ -52,7 +52,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options for creating the model (optional)<br><br>{int} <b>options.maxLengthMatch:</b><br># of words allowed in result to match a sequence in the input, default=N+1<br><br>{boolean} <b>options.disableInputChecks:</b><br>if true, allow result to be present in the input, default=false<br><br>{Function} <b>options.tokenize</b> [JS only]:<br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} <b>options.untokenize</b> [JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br>{boolean} <b>options.trace:</b><br>if true, output debug log to console, default=false<br><br>{int} <b>options.maxAttempts:</b><br>max attempts before throwing an error in generation, default=999<br><br>"
+          "desc": "options for creating the model (optional)<br><br>{int} <b>options.maxLengthMatch:</b><br># of words allowed in result to match a sequence in the input, default=N+1<br><br>{boolean} <b>options.disableInputChecks:</b><br>if true, allow result to be present in the input, default=false<br><br>{Function} <b>options.tokenize:</b><br>a custom tokenize function to use, default=RiTa.tokenize <br><br>{Function} <b>options.untokenize</b> [JS only]:<br>a custom tokenize function to use, default=RiTa.untokenize<br><br>{boolean} <b>options.trace:</b><br>if true, output debug log to console, default=false<br><br>{int} <b>options.maxAttempts:</b><br>max attempts before throwing an error in generation, default=999<br><br>"
         }
       ],
       "returns": [
@@ -110,7 +110,7 @@
       "syntax": "RiTa.isPunct(text);",
       "parameters": [
         {
-          "type": "String",
+          "type": "String or char",
           "desc": "text input"
         }
       ],
@@ -133,7 +133,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options (optional)<br><br>{boolean} options.simple:<br> use simple tags or not, default=false<br><br>{boolean} options.silent:<br> silent LTS or not (only in JavaScript, default=false)<br><br>{boolean} options.inline:<br> inline tags or not (only in JavaScript, default=false)"
+          "desc": "options (optional)<br><br>{boolean} options.simple:<br> use simple tags or not, default=false<br><br>{boolean} options.silent:<br> if true, will not output logs to console when running (default=false)<br><br>{boolean} options.inline:<br> inline tags or not (only in JavaScript, default=false)"
         }
       ],
       "returns": [
@@ -211,7 +211,7 @@
         },
         {
           "type": "Function",
-          "desc": "the function to call, which should accept and return a string"
+          "desc": "(optional, if not provided, the transform under the given name will be removed) <br>the function to call, which should accept and return a string"
         }
       ],
       "returns": [],
@@ -230,6 +230,10 @@
         {
           "type": "Object<br>(or Map in Java)",
           "desc": "the context for any referenced variables or functions (optional)"
+        },
+        {
+          "type": "Object<br>(or Map in Java)",
+          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output logs of process to console (default=false)<br><br>{boolean} options.silent:<br>if true, will not output warnings to console (default=false)<br><br>{boolean} options.onepass:<br>if true, will just try for one pass (default=false)"
         }
       ],
       "returns": [
@@ -252,7 +256,7 @@
         },
         {
           "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
-          "desc": "options (optional), the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
+          "desc": "options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, this option can be set as an independent parameter in Java<br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
         }
       ],
       "returns": [
@@ -275,7 +279,7 @@
         },
         {
           "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
-          "desc": "options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{string or regex} options.regex: <br/>Regular expression to use for splitting the input<br/><br/>"
+          "desc": "options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{String or Regex} options.regex: <br/>Regular expression to use for splitting the input, this option can be set as an independent parameter in Java<br/><br/>"
         }
       ],
       "returns": [
@@ -318,6 +322,10 @@
         {
           "type": "String",
           "desc": "text to analyze"
+        },
+        {
+          "type": "Object<br/>(or Map in Java)",
+          "desc": "options (optional), please see <a href=\"../analyze\">analyze()</a> for more details."
         }
       ],
       "returns": [
@@ -336,7 +344,7 @@
       "syntax": "RiTa.pos(word);<br/>RiTa.pos(word, boolean);<br>RiTa.pos(word, options);",
       "parameters": [
         {
-          "type": "String",
+          "type": "String or String[]",
           "desc": "the text to be tagged"
         },
         {
@@ -345,7 +353,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "optional way to set the option<br><br>{boolean} option.simple:<br>use simple tags or not"
+          "desc": "optional way to set the options<br><br>{boolean} options.simple:<br>use simple tags or not<br><br>{boolean} options.inline [Only in JS]:<br>if true, output the result in a string, see <a href=\"../posInline\">posInline()</a>"
         }
       ],
       "returns": [
@@ -369,7 +377,7 @@
         },
         {
           "type": "boolean",
-          "desc": "use tags or not (optional, default=false)"
+          "desc": "use simple tags or not (optional, default=false)"
         },
         {
           "type": "Object<br>(or Map in Java)",
@@ -392,6 +400,10 @@
         {
           "type": "String",
           "desc": "text to analyze"
+        },
+        {
+          "type": "Object<br/>(or Map in Java)",
+          "desc": "(optional) options, please see <a href=\"../analyze\">analyze()</a> for details"
         }
       ],
       "returns": [
@@ -410,6 +422,10 @@
         {
           "type": "String",
           "desc": "text to analyze"
+        },
+        {
+          "type": "Object<br/>(or Map in Java)",
+          "desc": "(optional) options, please see <a href=\"../analyze\">analyze()</a> for details"
         }
       ],
       "returns": [
@@ -433,7 +449,7 @@
         },
         {
           "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
-          "desc": "options (optional) the relevant options for the KWIC model:<br/><br/>{int} options.wordCount: <br/># of words of context on either side of input word<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br>"
+          "desc": "options (optional) the relevant options for the KWIC model:<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br>"
         }
       ],
       "returns": [
@@ -459,8 +475,8 @@
           "desc": "upper limit of words before/after the keyword (optional, default=6)"
         },
         {
-          "type": "String[]",
-          "desc": "options that can be set in Java<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set other concordance options for the model, please see <a href=\"../concordance/\">RiTa.concordance()</a> for detail"
+          "type": "Object<br>(or Map in Java)",
+          "desc": "options for the model and the output (optional)<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set other concordance options for the model, please see <a href=\"../concordance/\">RiTa.concordance()</a> for detail"
         }
       ],
       "returns": [
@@ -559,7 +575,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "option for pluralization (optional)<br><br>{boolean} option.dbug: if true, output debug log to console"
+          "desc": "option for pluralization (optional)<br><br>{boolean} option.dbug: if true, output debug logs to console"
         }
       ],
       "returns": [
@@ -621,7 +637,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{boolean} options.silent:<br>if true, do not output logs and warnings to console while running"
         }
       ],
       "returns": [
@@ -640,7 +656,7 @@
       "parameters": [
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word, this option can be independently set as an int parameter in Java<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n], this option can be independently set as a String parameter in Java<br/><br/>"
         }
       ],
       "returns": [
@@ -663,7 +679,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -686,7 +702,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for matching stress patterns<br>use \"phones\" to indicate that the regex is for matching phonemes<br><br/>{String} options.pos: <br/> the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for matching stress patterns<br>use \"phones\" to indicate that the regex is for matching phonemes<br><br/>{String} options.pos: <br/> the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -851,7 +867,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>the target part-of-speech for word in the result<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for word in the result<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
@@ -874,7 +890,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
         }
       ],
       "returns": [
