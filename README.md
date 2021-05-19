@@ -1,6 +1,6 @@
 <a href="https://www.npmjs.com/package/rita"><img src="https://img.shields.io/npm/v/rita.svg" alt="npm version"></a> ![Maven Central](https://img.shields.io/maven-central/v/org.rednoise/rita) <a href="http://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/license-GPL-orange.svg" alt="npm version"></a>
 
-## RiTa: a toolkit for generative writing and natural language
+## RiTa: tools for generative writing and natural language
 
 RiTa is a toolkit for generative writing and natural language. It is implemented in Java and JavaScript, with a common API for both, and it is free/libre/open-source via the GPL license.
 
