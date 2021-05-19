@@ -19,7 +19,7 @@ This repo contains the website, documentation, and examples for RiTa. For the co
 * the [JavaScript](https://github.com/dhowe/ritajs) repo, or use it with [npm](https://www.npmjs.com/package/rita) or [unpkg](https://unpkg.com/browse/rita/dist/)
 * the [Java](https://github.com/dhowe/rita4j) repo, or add it to your project via [maven](https://search.maven.org/artifact/org.rednoise/rita) 
 
-Note: Version 2.0 contains breaking changes! Please check the [release notes](https://rednoise.org/rita/#whats-new-wrapper)
+Note: Version 2.0 contains breaking changes! Please check the [release notes](https://rednoise.org/rita/#whats-new-wrapper)...
 
 ## API
 
