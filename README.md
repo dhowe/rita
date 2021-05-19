@@ -2,7 +2,7 @@
 
 ## RiTa: tools for generative natural language
 
-The RiTa tools are implemented in Java and JavaScript, with a common API for both, and are free/libre/open-source via the GPL license.
+RiTa is implemented in Java and JavaScript, with a common API for both, and is free/libre/open-source via the GPL license.
 
 ###
 
