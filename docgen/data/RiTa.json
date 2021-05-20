@@ -652,7 +652,7 @@
       "name": "randomWord",
       "example": "// a random word from the lexicon<br/>RiTa.randomWord();<br/><br/>// a random plural noun from the lexicon<br/>RiTa.randomWord({ pos: \"nns\"});<br/><br/>// a random word with 3 syllables and length 3 or 4<br/>RiTa.randomWord({ numSyllables: 3, maxLength: 4});",
       "description": "Returns a random word from the lexicon according to specified options",
-      "syntax": "RiTa.randomWord()<br/>RiTa.randomWord(opts);<br><br>// in Java you can also do as below<br>// to set options without a Map<br>RiTa.randomWord(syllables);<br>RiTa.randomWord(pos);<br>RiTa.randomWord(pos, syllables);",
+      "syntax": "RiTa.randomWord()<br/>RiTa.randomWord(opts);<br><br>",
       "parameters": [
         {
           "type": "Object<br/>(or Map in Java)",
