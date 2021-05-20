@@ -148,7 +148,7 @@
     {
       "name": "randomSeed",
       "example": "seed = 345345;<br/>RiTa.randomSeed(seed);",
-      "description": "Sets the seed for RiTa's random number generator",
+      "description": "Sets the seed for RiTa's random number generator in order to control the sequences of random generations (useful for testing code containing random elements)",
       "syntax": "RiTa.randomSeed(num);",
       "parameters": [
         {
