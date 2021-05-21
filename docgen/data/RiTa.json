@@ -233,7 +233,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output logs of process to console (default=false)<br><br>{boolean} options.silent:<br>if true, will not output warnings to console (default=false)<br><br>{boolean} options.singlePass:<br>if true, will just try for one pass (default=false)<br><br>{boolean} options.nopre: <br>if true, skip preparse (default=false)<br><br>{boolean} options.traceLex: <br>if true, output lexer logs to console (default=false)<br><br>"
+          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output parser log to console (default=false)<br><br>{boolean} options.silent:<br>if true, supress warnings in console (default=false)<br><br>{boolean} options.traceLex: <br>if true, output lexer log to console (default=false)<br><br>"
         }
       ],
       "returns": [
