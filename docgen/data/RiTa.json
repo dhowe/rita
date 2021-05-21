@@ -256,7 +256,7 @@
         },
         {
           "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
-          "desc": "options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, this option can be set as an independent parameter in Java<br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
+          "desc": "options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, <br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
         }
       ],
       "returns": [
@@ -656,7 +656,7 @@
       "parameters": [
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word, this option can be independently set as an int parameter in Java<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n], this option can be independently set as a String parameter in Java<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for matching stress patterns<br>use \"phones\" to indicate that the regex is for matching phonemes<br><br/>{String} options.pos: <br/> the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -692,7 +692,7 @@
     },
     {
       "name": "search",
-      "example": "RiTa.search();<br/>RiTa.search(\"tting\")",
+      "example": "RiTa.search();<br/>RiTa.search(\"tting\")<br/>RiTa.search('f-ah-n-t', { type: 'phones', pos: 'n', numSyllables: 2 })",
       "description": "Searches for words in the lexicon that match the given criteria, either by length, syllable-count, phoneme, stress, part-of-speech, etc. If no regex or options are supplied, the full set of words is returned.",
       "syntax": "RiTa.search()<br/>RiTa.search(regex);<br/>RiTa.search(regex, opts);",
       "parameters": [
