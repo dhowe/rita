@@ -17,7 +17,7 @@ $(function () {
 function drawKWIC() {
 
   $("#content").empty().css
-    ('background-color', 'rgb(245, 245, 245)');
+    ('background-color', 'rgb(250, 250, 250)');
 
   let kwic = RiTa.kwic(word, 6);
   let tw = textWidth(word) / 2;
@@ -44,7 +44,7 @@ function drawKWIC() {
 
 function doSetup() {
 
-  let selected = RiTa.randInt(0, keywords.length);
+  let selected = RiTa.randi(0, keywords.length);
 
   let btns = $(".button");
   $(btns[selected]).css("color", "rgb(200,0,0)");

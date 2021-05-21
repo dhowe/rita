@@ -628,7 +628,7 @@
     {
       "name": "alliterations",
       "example": "RiTa.alliterations(\"cat\"); <br/>RiTa.alliterations(\"cat\", {limit: 10});<br/>RiTa.alliterations(\"cat\", { maxLength: 4, numSyllables: 1 });",
-      "description": "Finds alliterations by comparing the phonemes of the input string to those of each word in the lexicon",
+      "description": "Finds alliterations by comparing the phonemes of the input string to those of each word in the lexicon via a minimum-edit-distance metric",
       "syntax": "RiTa.alliterations(word);<br/>RiTa.alliterations(word, opts);",
       "parameters": [
         {
@@ -651,7 +651,7 @@
     {
       "name": "randomWord",
       "example": "// a random word from the lexicon<br/>RiTa.randomWord();<br/><br/>// a random plural noun from the lexicon<br/>RiTa.randomWord({ pos: \"nns\"});<br/><br/>// a random word with 3 syllables and length 3 or 4<br/>RiTa.randomWord({ numSyllables: 3, maxLength: 4});",
-      "description": "Returns a random word from the lexicon according to specified options",
+      "description": "Returns a random word from the lexicon that matches the specified criteria (length, syllable-count, phoneme pattern, stress pattern, part-of-speech, etc.)",
       "syntax": "RiTa.randomWord()<br/>RiTa.randomWord(opts);<br><br>",
       "parameters": [
         {
@@ -693,7 +693,7 @@
     {
       "name": "search",
       "example": "RiTa.search();<br/>RiTa.search(\"tting\")",
-      "description": "Searches for words in the lexicon that match the given criteria, either by phoneme, stress, or letters. If no regex or options are supplied, the full set of words is returned.",
+      "description": "Searches for words in the lexicon that match the given criteria, either by length, syllable-count, phoneme, stress, part-of-speech, etc. If no regex or options are supplied, the full set of words is returned.",
       "syntax": "RiTa.search()<br/>RiTa.search(regex);<br/>RiTa.search(regex, opts);",
       "parameters": [
         {
