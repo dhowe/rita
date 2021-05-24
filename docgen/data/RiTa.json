@@ -20,7 +20,7 @@
     {
       "name": "grammar",
       "example": "rg = RiTa.grammar();<br>rg.addRule(\"start\", \"( cat | dog | fish )\");<br>let result = rg.expand();",
-      "description": "Creates a new RiGrammar object -- a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><br><pre class=\"margin\">rg = new RiGrammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<br><br><pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
+      "description": "Creates a new RiGrammar object: a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> features in a RiTa grammar, including transforms, sequences, and assignments.<br><br><pre class=\"margin\">rg = new RiGrammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<br><br><pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can alternatively just pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
       "syntax": "// Initialize an empty RiGrammar object<br><br>rg = RiTa.grammar();<br><br><br>// Or specify a grammar in a JSON string (or JS object)<br><br>rg = RiTa.grammar(myJson);<br><br><br>// Or supply a context<br><br>rg = RiTa.grammar(myJson, context);",
       "parameters": [
         {
@@ -233,7 +233,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output logs of process to console (default=false)<br><br>{boolean} options.silent:<br>if true, will not output warnings to console (default=false)<br><br>{boolean} options.onepass:<br>if true, will just try for one pass (default=false)"
+          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output parser log to console (default=false)<br><br>{boolean} options.silent:<br>if true, supress warnings in console (default=false)<br><br>{boolean} options.traceLex: <br>if true, output lexer log to console (default=false)<br><br>"
         }
       ],
       "returns": [
@@ -256,7 +256,7 @@
         },
         {
           "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
-          "desc": "options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, this option can be set as an independent parameter in Java<br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
+          "desc": "options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, <br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
         }
       ],
       "returns": [
@@ -656,7 +656,7 @@
       "parameters": [
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word, this option can be independently set as an int parameter in Java<br/><br/>{String} options.pos: <br/>target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n], this option can be independently set as a String parameter in Java<br/><br/>{String or RegExp object} opts.regex: <br>[Only in JS] String or regex for stresses/phones matching<br><br>{String} options.type: <br>[Only in JS] <br>use \"stresses\" to indicate that the regex is for matching stress patterns<br>use \"phones\" to indicate that the regex is for matching phonemes.<br><br>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=4)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for matching stress patterns<br>use \"phones\" to indicate that the regex is for matching phonemes<br><br/>{String} options.pos: <br/> the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
         }
       ],
       "returns": [
@@ -692,7 +692,7 @@
     },
     {
       "name": "search",
-      "example": "RiTa.search();<br/>RiTa.search(\"tting\")",
+      "example": "RiTa.search();<br/>RiTa.search(\"tting\")<br/>RiTa.search('f-ah-n-t', { type: 'phones', pos: 'n', numSyllables: 2 })",
       "description": "Searches for words in the lexicon that match the given criteria, either by length, syllable-count, phoneme, stress, part-of-speech, etc. If no regex or options are supplied, the full set of words is returned.",
       "syntax": "RiTa.search()<br/>RiTa.search(regex);<br/>RiTa.search(regex, opts);",
       "parameters": [
