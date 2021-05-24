@@ -288,7 +288,8 @@
           "desc": "Array in which each element is a single token (generally a word or single punctuation character)"
         }
       ],
-      "related": "<a href='../tokens'>RiTa.tokens()</a><br><a href='../untokenize'>RiTa.untokenize()</a>"
+      "related": "<a href='../tokens'>RiTa.tokens()</a><br><a href='../untokenize'>RiTa.untokenize()</a>",
+      "relatedConstant": "{boolean} RiTa.SPLIT_CONTRACTIONS: the global value for the contractions spliting, default=false. If false, can be overwrite with options.splitContractions, if true, will overwrite options.splitContractions."
     },
     {
       "name": "untokenize",
@@ -363,7 +364,8 @@
         }
       ],
       "related": "<a href=\"../analyze/\">RiTa.analyze()</a>",
-      "note": ""
+      "note": "",
+      "relatedConstant": "{Array} RiTa.PHONES: Array of all phonemes used by RiTa."
     },
     {
       "name": "posInline",
@@ -507,7 +509,8 @@
           "type": "String",
           "desc": "the conjugated verb"
         }
-      ]
+      ],
+      "relatedConstant": "{int} RiTa.FIRST: value=1 <br>{int} RiTa.SECOND: value=2 <br>{int} RiTa.THIRD: value=3 <br>{int} RiTa.PAST: value=4 <br>{int} RiTa.PRESENT: value=5 <br>{int} RiTa.FUTURE: value=6 <br>{int} RiTa.SINGULAR: value=7 <br>{int} RiTa.PLURAL: value=8 <br>{int} RiTa.NORMAL: value=9 <br>{int} RiTa.INFINITIVE: value=1 <br>{int} RiTa.GERUND: value=2 <br>"
     },
     {
       "name": "pastPart",
