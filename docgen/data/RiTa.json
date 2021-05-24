@@ -289,7 +289,7 @@
         }
       ],
       "related": "<a href='../tokens'>RiTa.tokens()</a><br><a href='../untokenize'>RiTa.untokenize()</a>",
-      "relatedConstant": "{boolean} RiTa.SPLIT_CONTRACTIONS: the global value for the contractions spliting, default=false. If false, can be overwrite with options.splitContractions, if true, will overwrite options.splitContractions."
+      "relatedConstant": "{boolean} RiTa.SPLIT_CONTRACTIONS: the global value for the contractions spliting, default=false. If false, can be overwritten with options.splitContractions, if true, will overwrite options.splitContractions."
     },
     {
       "name": "untokenize",
