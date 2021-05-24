@@ -701,7 +701,7 @@
       "syntax": "RiTa.search()<br/>RiTa.search(regex);<br/>RiTa.search(regex, opts);",
       "parameters": [
         {
-          "type": "String",
+          "type": "String or Regex (JS), String or java.util.regex.Pattern (Java)",
           "desc": "regex pattern to match (optional)"
         },
         {
