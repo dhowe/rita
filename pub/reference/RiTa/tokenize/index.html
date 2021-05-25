@@ -137,7 +137,7 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br/>(or Map&lt;String, Object&gt; in Java)</th><td width='75%'>options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., "I'd" or "she'll") into multiple individual tokens<br/><br/>{String or Regex} options.regex: <br/>Regular expression to use for splitting the input, this option can be set as an independent parameter in Java<br/><br/></td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br/>(or Map in Java)</th><td width='75%'>options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., "I'd" or "she'll") into multiple individual tokens<br/><br/>{String or Regex} options.regex: <br>Customized regex for the tokenization<br/><br/></td></tr></table>
                   </td>
                 </tr>
 
@@ -170,6 +170,15 @@
                   <!-- SYNTAX  -->
                   <td>
                     <pre>RiTa.tokenize(text);<br/>RiTa.tokenize(text, options);</pre>
+                  </td>
+                </tr>
+
+                <tr class='RelatedConstants' style='display:none'>
+                  <th scope="row">Constants</th>
+
+                  <!-- RelatedConstants  -->
+                  <td>
+                    <a href='../tokens'>RiTa.tokens()</a><br><a href='../untokenize'>RiTa.untokenize()</a>Constants
                   </td>
                 </tr>
 

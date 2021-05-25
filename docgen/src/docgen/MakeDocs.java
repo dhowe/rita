@@ -33,7 +33,7 @@ public class MakeDocs extends PApplet {
 	static final String HEADER = "<!-- DOCGEN: THIS CLASS IS AUTO_GENERATED - DO NOT EDIT BY HAND! -->";
 
 	static String[] lines, methodName, example, description, syntax, thePlatform;
-	static String[] returnType, returnDesc, returns, related, note, parameter, relatedConstant;
+	static String[] returnType, returnDesc, returns, related, note, parameter, relatedConstants;
 	static String[] parameterType, parameterDesc, parameters, theReturn;
 	static int numOfMethods, numOfparameters, numOfReturns;
 
@@ -295,7 +295,7 @@ public class MakeDocs extends PApplet {
 					thePlatform[j] = "Java / JavaScript";
 				}
 				note[j] = entry.getString("note");
-				relatedConstant[j] = entry.getString("relatedConstant");
+				relatedConstants[j] = entry.getString("relatedConstants");
 
 				lines = stringsFrom(outputTemplate);
 
@@ -347,7 +347,7 @@ public class MakeDocs extends PApplet {
 		parameters = new String[numOfMethods];
 		returns = new String[numOfMethods];
 		related = new String[numOfMethods];
-		relatedConstant = new String[numOfMethods];
+		relatedConstants = new String[numOfMethods];
 		thePlatform = new String[numOfMethods];
 		note = new String[numOfMethods];
 		hidden = new boolean[numOfMethods];
@@ -391,7 +391,7 @@ public class MakeDocs extends PApplet {
 
 		optionalTag("example", example[idx]);
 		optionalTag("syntax", syntax[idx]);
-		optionalTag("relatedConstant", relatedConstant[idx]);
+		optionalTag("relatedConstants", relatedConstants[idx]);
 		optionalTag("related", related[idx]);
 		optionalTag("note", note[idx]);
 		if (methodName[idx].toUpperCase().equals(shortName.toUpperCase())) {
