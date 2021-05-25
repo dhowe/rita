@@ -256,7 +256,7 @@
         },
         {
           "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
-          "desc": "options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, <br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased Strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the result array in sorted order<br><br>"
+          "desc": "options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, <br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the results in sorted order<br><br>"
         }
       ],
       "returns": [
@@ -265,7 +265,7 @@
           "desc": "the set of unique alphabetical tokens in the text"
         }
       ],
-      "related": "<a href='../tokenize'>RiTa.tokenize()</a>"
+      "related": "<a href='../tokenize'>RiTa.tokenize()</a><br>RiTa.SPLIT_CONTRACTIONS: boolean to globally control the splitting of contractions (e.g. splitting \"I'd\" or \"she'll\") into multiple individual tokens) default=false."
     },
     {
       "name": "tokenize",
@@ -279,7 +279,7 @@
         },
         {
           "type": "Object<br/>(or Map&lt;String, Object&gt; in Java)",
-          "desc": "options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{String or Regex} options.regex: <br/>Regular expression to use for splitting the input, this option can be set as an independent parameter in Java<br/><br/>"
+          "desc": "options (optional) the relevant options for the function:<br/><br/>{boolean} options.splitContractions: <br/>Convert contractions (e.g., \"I'd\" or \"she'll\") into multiple individual tokens<br/><br/>{String or Regex} options.regex: <br>Customized regex for the tokenization<br/><br/>"
         }
       ],
       "returns": [
@@ -288,7 +288,8 @@
           "desc": "Array in which each element is a single token (generally a word or single punctuation character)"
         }
       ],
-      "related": "<a href='../tokens'>RiTa.tokens()</a><br><a href='../untokenize'>RiTa.untokenize()</a>"
+      "related": "<a href='../tokens'>RiTa.tokens()</a><br><a href='../untokenize'>RiTa.untokenize()</a>",
+      "relatedConstant": "RiTa.SPLIT_CONTRACTIONS: boolean to globally control the splitting of contractions (e.g. splitting \"I'd\" or \"she'll\") into multiple individual tokens) default=false"
     },
     {
       "name": "untokenize",
@@ -362,7 +363,7 @@
           "desc": "Array of part-of-speech tags"
         }
       ],
-      "related": "<a href=\"../analyze/\">RiTa.analyze()</a>",
+      "related": "<a href=\"../analyze/\">RiTa.analyze()</a><br>RiTa.PHONES: Array of all phonemes used",
       "note": ""
     },
     {
