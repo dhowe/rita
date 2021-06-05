@@ -639,7 +639,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{boolean} options.silent:<br>if true, do not output logs and warnings to console while running"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{boolean} options.silent:<br>if true, do not output logs and warnings to console while running<br><br>{boolean} options.shuffle:<br>if true, randomize list order.<br><br>"
         }
       ],
       "returns": [
@@ -685,7 +685,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{boolean} options.shuffle:<br>if true, randomize list order.<br><br>"
         }
       ],
       "returns": [
@@ -708,7 +708,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for matching stress patterns<br>use \"phones\" to indicate that the regex is for matching phonemes<br><br/>{String} options.pos: <br/> the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br>{String} options.type:<br>use \"stresses\" to indicate that the regex is for matching stress patterns<br>use \"phones\" to indicate that the regex is for matching phonemes<br><br/>{String} options.pos: <br/> the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{boolean} options.shuffle:<br>if true, randomize list order.<br><br>"
         }
       ],
       "returns": [
@@ -873,7 +873,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for word in the result<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "options (optional)<br/><br/>{bool} options.matchSpelling: <br/>if true will also attempt to match spelling<br/>by returning an intersection with <a href='../spellsLike'>RiTa.spellsLike</a> (default=false)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for word in the result<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>{boolean} options.shuffle:<br>if true, randomize list order.<br><br>"
         }
       ],
       "returns": [
@@ -896,7 +896,7 @@
         },
         {
           "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>"
+          "desc": "options (optional)<br/><br/>{int} options.minLength: <br/>minimum number of characters in target word (default=3)<br/><br/>{int} options.maxLength: <br/>maximum number of characters in target word<br/><br/>{int} options.numSyllables: <br/>target # of syllables in the word<br/><br/>{int} options.limit: <br/>maximum # of results to return (default=10)<br/><br/>{String} options.pos: <br/>the target part-of-speech for the word<br/>either from the <a href='../../postags.html'>Penn tag set</a> or the simplified tag set [a, r, v, n]<br/><br/>{int} options.minDistance: <br/>the minimum distance of words from the target word<br/>(increase to get more results)<br/><br/>{boolean} options.shuffle:<br>if true, randomize list order.<br><br>"
         }
       ],
       "returns": [
