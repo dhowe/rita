@@ -514,7 +514,7 @@
     {
       "name": "pastPart",
       "example": "RiTa.pastPart(\"write\"); // returns -> written",
-      "description": "Returns the past participle form of the verb",
+      "description": "Returns the past participle form of the verb or the original input if it is already a past participle.",
       "syntax": "RiTa.pastPart(verb);",
       "parameters": [
         {
@@ -525,7 +525,7 @@
       "returns": [
         {
           "type": "String",
-          "desc": "the past participle form of the verb"
+          "desc": "the past participle form of the verb or the original input"
         }
       ]
     },
@@ -568,7 +568,7 @@
     {
       "name": "pluralize",
       "example": "<br/>pluralized = RiTa.pluralize(\"dog\"); // returns \"dogs\"<br/><br/>pluralized = RiTa.pluralize(\"mouse\"); // returns \"mice\"<br/><br/>",
-      "description": "Pluralizes a noun according to pluralization rules",
+      "description": "Pluralizes a noun according to pluralization rules. Returns the original input if it is already in the plural form.",
       "syntax": "RiTa.pluralize(word);",
       "parameters": [
         {
@@ -583,7 +583,7 @@
       "returns": [
         {
           "type": "String",
-          "desc": "the (regular or irregular) plural form of the noun"
+          "desc": "the (regular or irregular) plural form of the noun or the original input"
         }
       ]
     },
@@ -612,7 +612,7 @@
     {
       "name": "hasWord",
       "example": "RiTa.hasWord(\"apple\");",
-      "description": "Returns true if the word exists in the lexicon (case-insensitive)",
+      "description": "Returns true if the word is in the lexicon (case-insensitive). If the word is not in lexicon and yet its original form is, it gives the same output.",
       "syntax": "RiTa.hasWord(word);",
       "parameters": [
         {
@@ -623,7 +623,7 @@
       "returns": [
         {
           "type": "boolean",
-          "desc": "true if the current lexicon includes the word, else false"
+          "desc": "true if the current lexicon includes the word (conjugation/plural form allowed), else false"
         }
       ]
     },
