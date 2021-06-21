@@ -383,7 +383,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "optional way to set the option<br><br>{boolean} option.simple:<br>use simple tags or not, default=false"
+          "desc": "optional way to set the option<br><br>{boolean} options.simple:<br>use simple tags or not, default=false"
         }
       ],
       "returns": [
@@ -514,18 +514,18 @@
     {
       "name": "pastPart",
       "example": "RiTa.pastPart(\"write\"); // returns -> written",
-      "description": "Returns the past participle form of the verb or the original input if it is already a past participle.",
+      "description": "Returns the past participle form of the verb.",
       "syntax": "RiTa.pastPart(verb);",
       "parameters": [
         {
           "type": "String",
-          "desc": "the verb"
+          "desc": "the root form of the verb"
         }
       ],
       "returns": [
         {
           "type": "String",
-          "desc": "the past participle form of the verb or the original input"
+          "desc": "the past participle form of the verb"
         }
       ]
     },
@@ -537,7 +537,7 @@
       "parameters": [
         {
           "type": "String",
-          "desc": "the verb"
+          "desc": "the root form of the verb"
         }
       ],
       "returns": [
@@ -568,7 +568,7 @@
     {
       "name": "pluralize",
       "example": "<br/>pluralized = RiTa.pluralize(\"dog\"); // returns \"dogs\"<br/><br/>pluralized = RiTa.pluralize(\"mouse\"); // returns \"mice\"<br/><br/>",
-      "description": "Pluralizes a noun according to pluralization rules. Returns the original input if it is already in the plural form.",
+      "description": "Pluralizes a noun according to pluralization rules. Returns the input if it is already plural.",
       "syntax": "RiTa.pluralize(word);",
       "parameters": [
         {
@@ -577,13 +577,13 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "option for pluralization (optional)<br><br>{boolean} option.dbug: if true, output debug logs to console"
+          "desc": "{boolean} options.dbug: if true, output debug logs to console (optional)"
         }
       ],
       "returns": [
         {
           "type": "String",
-          "desc": "the (regular or irregular) plural form of the noun or the original input"
+          "desc": "the (regular or irregular) plural form of the noun"
         }
       ]
     },
@@ -599,7 +599,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "option for singularization (optional)<br><br>{boolean} option.dbug: if true, output debug log to console"
+          "desc": "{boolean} options.dbug: if true, output debug log to console (optional)"
         }
       ],
       "returns": [
@@ -612,7 +612,7 @@
     {
       "name": "hasWord",
       "example": "RiTa.hasWord(\"apple\");",
-      "description": "Returns true if the word is in the lexicon (case-insensitive). If the word is not in lexicon and yet its original form is, it gives the same output.",
+      "description": "Returns true if the word (or its root form) is in the lexicon (case-insensitive).",
       "syntax": "RiTa.hasWord(word);",
       "parameters": [
         {
@@ -623,7 +623,7 @@
       "returns": [
         {
           "type": "boolean",
-          "desc": "true if the current lexicon includes the word (conjugation/plural form allowed), else false"
+          "desc": "true if the current lexicon includes the word, else false"
         }
       ]
     },
