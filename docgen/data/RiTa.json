@@ -14,6 +14,48 @@
           "desc": ""
         }
       ]
+    },
+    {
+      "name": "SILENT",
+      "example": "RiTa.SILENT = false;",
+      "variable": true,
+      "description": "If true, silence all info/warnings from RiTa",
+      "syntax": "RiTa.SILENT",
+      "parameters": [],
+      "returns":[
+        {
+          "type": "String",
+          "desc": "the current silent setting"
+        }
+      ]
+    },
+    {
+      "name": "SILENT_LTS",
+      "example": "RiTa.SILENT_LTS = false;",
+      "variable": true,
+      "description": "If true, silence warnings for words not in lexicon",
+      "syntax": "RiTa.SILENT_LTS",
+      "parameters": [],
+      "returns":[
+        {
+          "type": "String",
+          "desc": "the current lexicon silent setting"
+        }
+      ]
+    },
+    {
+      "name": "CACHING",
+      "example": "RiTa.CACHING = true;",
+      "variable": true,
+      "description": "If false, cache will be disable. That will reduce memory usage but make RiTa slower",
+      "syntax": "RiTa.CACHING",
+      "parameters": [],
+      "returns":[
+        {
+          "type": "String",
+          "desc": "the current cache setting"
+        }
+      ]
     }
   ],
   "statics": [
