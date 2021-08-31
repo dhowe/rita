@@ -48,7 +48,7 @@
       "fields": [
         "VERSION",
         "SILENT",
-        "SILENT_LTS",
+        "SILENCE_LTS",
         "CACHING"
       ]
     },
