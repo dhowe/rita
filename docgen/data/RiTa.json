@@ -30,11 +30,11 @@
       ]
     },
     {
-      "name": "SILENT_LTS",
-      "example": "RiTa.SILENT_LTS = false;",
+      "name": "SILENCE_LTS",
+      "example": "RiTa.SILENCE_LTS = false;",
       "variable": true,
       "description": "If true, silence warnings for words not in lexicon",
-      "syntax": "RiTa.SILENT_LTS",
+      "syntax": "RiTa.SILENCE_LTS",
       "parameters": [],
       "returns":[
         {
