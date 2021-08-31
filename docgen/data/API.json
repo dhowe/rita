@@ -46,7 +46,10 @@
         "untokenize"
       ],
       "fields": [
-        "VERSION"
+        "VERSION",
+        "SILENT",
+        "SILENCE_LTS",
+        "CACHING"
       ]
     },
     {
