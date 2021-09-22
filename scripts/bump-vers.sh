@@ -14,12 +14,12 @@ ritajs=../ritajs
 version=$1
 
 # need to update java version via mvn
-#pushd $rita4j >/dev/null
-#sed -e "s/__VERSION__/$version/" "./src/main/java/rita/RiTa.java" > /tmp/RiTa.java
-#mv -- /tmp/RiTa.java ./src/main/java/rita/RiTa.java
-#grep VERSION /tmp/RiTa.java
-#popd >/dev/null
-#exit
+# pushd $rita4j >/dev/null
+# sed -e "s/__VERSION__/$version/" "./src/main/java/rita/RiTa.java" > /tmp/RiTa.java
+# mv -- /tmp/RiTa.java ./src/main/java/rita/RiTa.java
+# grep VERSION /tmp/RiTa.java
+# popd >/dev/null
+# exit
 
 ############################# ERRORS ################################
 check_err() {
@@ -54,8 +54,8 @@ popd >/dev/null
 pushd $rita4j >/dev/null
 changes=$(git status --porcelain)
 if [ -z "${changes}" ]; then
-    echo "... bump source version"
-    sed -i "s/__VERSION__/$version/" "./src/main/java/rita/RiTa.java"
+    #echo "... bump source version"
+    #sed -i "s/__VERSION__/$version/" "./src/main/java/rita/RiTa.java"
     echo "... bump pom.xml version"
     mvn versions:set -DnewVersion=$version  >/dev/null || check_err $? "git commit failed [2]"
     git add pom.xml &> /dev/null || check_err $? "git add failed[2]"
