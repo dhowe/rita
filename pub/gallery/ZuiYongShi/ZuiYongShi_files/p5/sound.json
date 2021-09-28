@@ -1,0 +1,18 @@
+{
+  "<note>":"<line1> <line2> <line3> <line4>",
+  "<line1>":"do re mi so re|mi so la do2 so|mi re do re mi|re mi re mi so|la do2 la so mi",
+  "<line2>":"mi so mi do re|la do2 la so mi|la do2 re2 mi2 so|la do2 la so mi",
+  "<line3>":"re so do re mi|la so mi so re|re2 do2 mi so la|re2 mi2 la mi2 re2",
+  "<line4>":"mi so mi re do| so do2 mi so la|la so mi so do| re2 do2 la so la",
+
+  "<flow>":"<a> <b> <c> <d>",
+  "<a>":"2 2 2 2 8|3 1 2 2 8|3 1 4 4 4|4 4 3 1 4|4 4 2 2 4|4 2 2 7 1|4 3 1 7 1",
+  "<b>":"2 2 2 2 8|3 1 2 2 8|3 1 3 1 8|2 2 3 1 8",
+  "<c>":"2 2 2 2 8|4 4 2 2 4|3 1 4 4 4|4 4 3 1 4|4 2 2 7 1|4 3 1 7 1",
+  "<d>":"2 2 2 2 8|3 1 2 2 8|3 1 3 1 8|2 2 3 1 8"
+  
+  
+  
+  
+  
+}

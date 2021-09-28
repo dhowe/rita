@@ -1,4 +1,5 @@
-[{
+[
+  {
     "title": "The Hands of Gutenberg",
     "artist": "Philippe De Bree",
     "thumb": "img/gallery/hand.png",
@@ -15,6 +16,12 @@
     "artist": "J. Zhou, R. Agarwal...",
     "thumb": "img/gallery/poetryInMotion.png",
     "link": "gallery/PoetryInMotion"
+  },
+  {
+    "title": "Zui Yong Shi",
+    "artist": "Yang Jen",
+    "thumb": "img/gallery/zuiyongshi.jpg",
+    "link": "gallery/ZuiYongShi"
   },
   {
     "title": "DAEDALUS",
@@ -88,7 +95,6 @@
     "thumb": "img/gallery/gamedefs.png",
     "link": "gallery/GameDefinitions"
   },
-
   {
     "title": "Cornell's Yoke Machine",
     "artist": "Janalyn Guo",
@@ -131,7 +137,6 @@
     "thumb": "img/gallery/sortingBot.png",
     "link": "gallery/SortingBot"
   },
-
   {
     "title": "Automatype",
     "artist": "Daniel C. Howe",
