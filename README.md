@@ -120,7 +120,9 @@ $ sh ./scripts/watch-site.sh
 * then make your changes in /rita/www 
 * then refresh and check /rita/pub/index.html in the browser
 
-When ready, create a PR, but do NOT include code files in `dist`
+When ready, create a PR with only the files you have changed (in `www` and `pub`).
+
+Please do not commit any files in `dist` without a specific reason...
 
 <br>
 
