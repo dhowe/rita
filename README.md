@@ -109,9 +109,9 @@ For documentation, see [this interactive notebook](https://observablehq.com/@dho
 
 
 ## Developers
-Most website pages are generated via scripts, which make the process a bit complex.
+Website pages in this repo are generated via the `./scripts/make-site.sh` script.
 
-To make updates to static pages, do the following:
+The best way to make updates to static pages is to do the following:
 ```
 $ git clone git@github.com:dhowe/rita.git
 $ cd rita
@@ -123,6 +123,9 @@ $ sh ./scripts/watch-site.sh
 When ready, create a PR with only the files you have changed (in `www` and `pub`).
 
 Please do not commit any files in `dist` unless there is a specific reason to do so
+
+To make updates to code documentation, update the JSON files in `/rita/docgen/data`,
+then re-generate the site with either `make-site.sh` or `watch-site.sh`
 
 <br>
 
