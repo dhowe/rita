@@ -109,15 +109,18 @@ For documentation, see [this interactive notebook](https://observablehq.com/@dho
 
 
 ## Developers
-Most website pages are generated via scripts.
+Most website pages are generated via scripts, which make the process a bit complex.
+
 To make updates to static pages, do the following:
 ```
 $ git clone git@github.com:dhowe/rita.git
 $ cd rita
 $ sh ./scripts/watch-site.sh
 ```
-then make your changes in /rita/www 
-then refresh and check /rita/pub/index.html in the browser
+* then make your changes in /rita/www 
+* then refresh and check /rita/pub/index.html in the browser
+
+When ready, create a PR, but do NOT include code files in `dist`
 
 <br>
 
