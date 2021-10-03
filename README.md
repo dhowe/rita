@@ -123,7 +123,6 @@ $ sh ./scripts/watch-site.sh
 
 When ready, create a PR with only the files you have changed (in `www` and `pub`).
 
-Please do not commit any files in `dist` unless there is a specific reason to do so
 
 ### Reference pages
 To make updates to the reference pages, follow the instructions above,<br> but instead make updates to the JSON files in `/rita/docgen/data`.
