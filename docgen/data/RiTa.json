@@ -84,7 +84,7 @@
     },
     {
       "name": "markov",
-      "example": "txt = \"This is a two sentence example. This is the second one.\"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt1);<br>rm.addText(txt2);<br>sentences = rm.generate(2);<br><br>",
+      "example": "txt = \"This is a two sentence example. This is the second one.\"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt);<br>sentences = rm.generate(2);<br><br>",
       "description": "Creates a new RiMarkov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses Markov chains (aka n-grams) with options to process words or arbitrary regular expressions.<br><br>",
       "syntax": "// Constructs a RiMarkov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify one or more options<br><br>RiTa.markov(nFactor, options);<br><br>",
       "parameters": [
