@@ -1,5 +1,29 @@
 [
   {
+    "title": "Here We Enter the Underworld",
+    "artist": "Florence Wallis",
+    "thumb": "img/gallery/HereWeEnterTheUnderworld.jpg",
+    "link": "gallery/HereWeEnterTheUnderworld"
+  },
+  {
+    "title": "Forager2",
+    "artist": "Florence Wallis",
+    "thumb": "img/gallery/Forager2.jpg",
+    "link": "gallery/Forager2"
+  },
+  {
+    "title": "Forager",
+    "artist": "Florence Wallis",
+    "thumb": "img/gallery/Forager.jpg",
+    "link": "gallery/Forager"
+  },
+  {
+    "title": "Along",
+    "artist": "Florence Wallis",
+    "thumb": "img/gallery/Along.jpg",
+    "link": "gallery/Along"
+  },
+  {
     "title": "The Hands of Gutenberg",
     "artist": "Philippe De Bree",
     "thumb": "img/gallery/hand.png",

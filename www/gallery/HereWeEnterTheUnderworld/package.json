@@ -1,0 +1,14 @@
+{
+  "name": "@florencewallis/here-we-enter-the-underworld",
+  "main": "3b3d7a5f635e6f17@243.js",
+  "version": "243.0.0",
+  "homepage": "https://observablehq.com/@florencewallis/here-we-enter-the-underworld",
+  "author": {
+    "name": "Florence Wallis",
+    "url": "https://observablehq.com/@florencewallis"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4"
+  }
+}
