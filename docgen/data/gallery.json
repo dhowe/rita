@@ -1,23 +1,5 @@
 [
   {
-    "title": "Here We Enter the Underworld",
-    "artist": "Florence Wallis",
-    "thumb": "img/gallery/HereWeEnterTheUnderworld.jpg",
-    "link": "gallery/HereWeEnterTheUnderworld"
-  },
-  {
-    "title": "Forager2",
-    "artist": "Florence Wallis",
-    "thumb": "img/gallery/Forager2.jpg",
-    "link": "gallery/Forager2"
-  },
-  {
-    "title": "Forager",
-    "artist": "Florence Wallis",
-    "thumb": "img/gallery/Forager.jpg",
-    "link": "gallery/Forager"
-  },
-  {
     "title": "Along",
     "artist": "Florence Wallis",
     "thumb": "img/gallery/Along.jpg",
@@ -42,6 +24,12 @@
     "link": "gallery/PoetryInMotion"
   },
   {
+    "title": "Here We Enter the Underworld",
+    "artist": "Florence Wallis",
+    "thumb": "img/gallery/HereWeEnterTheUnderworld.jpg",
+    "link": "gallery/HereWeEnterTheUnderworld"
+  },
+  {
     "title": "Zui Yong Shi",
     "artist": "Yang Jen",
     "thumb": "img/gallery/zuiyongshi.jpg",
@@ -64,6 +52,12 @@
     "artist": "Darius Kazemi",
     "thumb": "img/gallery/bracket.png",
     "link": "gallery/BracketMemeBot"
+  },
+  {
+    "title": "Forager2",
+    "artist": "Florence Wallis",
+    "thumb": "img/gallery/Forager2.jpg",
+    "link": "gallery/Forager2"
   },
   {
     "title": "Poetry.dna",
@@ -106,6 +100,12 @@
     "artist": "A. Braxton Soderman",
     "thumb": "img/gallery/memory.gif",
     "link": "gallery/MemoireInvolontaireNo1"
+  },
+  {
+    "title": "Forager",
+    "artist": "Florence Wallis",
+    "thumb": "img/gallery/Forager.jpg",
+    "link": "gallery/Forager"
   },
   {
     "title": "Visual Grammars",
