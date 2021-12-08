@@ -36,12 +36,14 @@ check_err() {
     }
 }
 
-while getopts "v:p" option; do
+while getopts "v:pJ" option; do
   case ${option} in
     v) version=$OPTARG
       echo "\n... using version: $version"
       ;;
     p) nopub=false
+      ;;
+    J) nojava=true
       ;;
   esac
 done
@@ -49,13 +51,17 @@ done
 if [ "$nopub" = true ] ; then  
   echo "\n... publish disabled (use -p)"
 else 
-  if [ "$nocentral" = true ] ; then
+  if  [ "$nojava" = false ] && [ "$nocentral" = true ] ; then
     echo "... maven-central disabled *"
   fi 
 fi
 
 if [ -z $version ] ; then
-  ./scripts/check-env.sh || check_err $? "env check failed"
+  if [ "$nojava" = false ] ; then # skip if no java
+    ./scripts/check-env.sh || check_err $? "env check failed"
+  else
+    echo "... java disabled *"
+  fi
   pushd $ritajs >/dev/null
   version=`npx npe version`
   popd >/dev/null
@@ -207,7 +213,7 @@ echo "... cleaning up"
 
 runtime=$((`date +%s`-start))
 
-if [ "$nocentral" = true ] ; then
+if [ "$nojava" = false ] && [ "$nocentral" = true ] ; then
   echo "to central: $ cd ../rita4j && mvn -Pcentral clean deploy"
 fi
 
