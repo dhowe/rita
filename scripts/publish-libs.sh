@@ -40,11 +40,12 @@ check_err() {
 while getopts "v:pJ" option; do
   case ${option} in
     v) version=$OPTARG
-      echo "\n... using version: $version"
+      echo "... using version: $version"
       ;;
     p) nopub=false
       ;;
     J) nojava=true
+      echo "... java disabled * (-J)"
       ;;
   esac
 done
@@ -60,8 +61,6 @@ fi
 if [ -z $version ] ; then
   if [ "$nojava" = false ] ; then # skip if no java
     ./scripts/check-env.sh || check_err $? "env check failed"
-  else
-    echo "... java disabled *"
   fi
   pushd $ritajs >/dev/null
   version=`npx npe version`
