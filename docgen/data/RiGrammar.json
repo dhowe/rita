@@ -28,7 +28,7 @@
   "functions": [
     {
       "name": "addRule",
-      "example": "rg = new RiGrammar();<br/>rg.addRule(\"start\", \"$animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");<br><br><br>// To add weights, specify them inline with brackets<br><br>rg.addRule(\"animal\", \"cat [4] | dog | chicken\");",
+      "example": "rg = new RiGrammar();<br/>rg.addRule(\"start\", \"animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");<br><br><br>// To add weights, specify them inline with brackets<br><br>rg.addRule(\"animal\", \"cat [4] | dog | chicken\");",
       "description": "Adds a rule to the existing grammar, replacing any existing rule with the same name.",
       "syntax": "addRule(name, definition);",
       "parameters": [

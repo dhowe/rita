@@ -261,7 +261,7 @@
     },
     {
       "name": "evaluate",
-      "example": "RiTa.evaluate(\"He was (happy | sad | indifferent)\");<br/>RiTa.evaluate(\"He was (happy | sad | \\$emo)\", context);",
+      "example": "RiTa.evaluate(\"He was (happy | sad | indifferent)\");<br/>RiTa.evaluate(\"He was (happy | sad | &#36;emo)\", context);",
       "description": "Parses and executes a <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> string",
       "syntax": "RiTa.evaluate(string);<br/>RiTa.evaluate(string, context);",
       "parameters": [
