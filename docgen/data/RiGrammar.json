@@ -50,17 +50,13 @@
     },
     {
       "name": "expand",
-      "example": "rg = new RiGrammar(rules); <br/>result = rg.expand(ruleName);",
-      "description": "Expands a grammar from the supplied rule. If no rule is provided the \\$start and #60;start&#62;' symbols will be checked respectively.",
-      "syntax": "expand();<br/>expand(ruleName);<br/>expand(ruleName, context);",
+      "example": "rg = RiTa.grammar(rules); <br/>result = rg.expand();<br><br>rg = RiTa.grammar(rules); <br/>result = rg.expand(ruleName);<br><br>rg = RiTa.grammar(rules, context); <br/>result = rg.expand(ruleName);",
+      "description": "Expands a grammar from the supplied rule. If no rule is provided the &#36;start and &#60;start&#62; symbols will be checked respectively. <br/><br/>If a context is needed, it should be passed in when the grammar is created (see 3rd example below).",
+      "syntax": "expand();<br/>expand(ruleName);",
       "parameters": [
         {
           "type": "String",
           "desc": "the rule name to be expanded (optional)"
-        },
-        {
-          "type": "Object<br>(or Map in Java)",
-          "desc": "the context for any referenced variables or functions (optional)"
         }
       ],
       "returns": [

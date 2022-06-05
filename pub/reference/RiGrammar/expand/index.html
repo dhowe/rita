@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Expands a grammar from the supplied rule. If no rule is provided the \$start and #60;start&#62;' symbols will be checked respectively.</td>
+                  <td>Expands a grammar from the supplied rule. If no rule is provided the &#36;start and &#60;start&#62; symbols will be checked respectively. <br/><br/>If a context is needed, it should be passed in when the grammar is created (see 3rd example below).</td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">rg = new RiGrammar(rules); <br/>result = rg.expand(ruleName);</pre>
+                      <pre class="margin">rg = RiTa.grammar(rules); <br/>result = rg.expand();<br><br>rg = RiTa.grammar(rules); <br/>result = rg.expand(ruleName);<br><br>rg = RiTa.grammar(rules, context); <br/>result = rg.expand(ruleName);</pre>
                     </div>
                   </td>
                 </tr>
@@ -137,7 +137,7 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the rule name to be expanded (optional)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br>(or Map in Java)</th><td width='75%'>the context for any referenced variables or functions (optional)</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the rule name to be expanded (optional)</td></tr></table>
                   </td>
                 </tr>
 
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>expand();<br/>expand(ruleName);<br/>expand(ruleName, context);</pre>
+                    <pre>expand();<br/>expand(ruleName);</pre>
                   </td>
                 </tr>
 
