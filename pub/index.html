@@ -58,8 +58,8 @@
       <div class="menu-icon-mobile"><a href="#"> <img src="./css/menu-icon.svg" /> </a></div>
       <ul class="nav-wrapper d-inline-block">
         <li class="hidden-sm" style="display: inline-block !important;"><a class="" data-toggle="collapse"
-            href="#download" role="button" aria-expanded="false" aria-controls="collapseExample"
-            id="dlbtn">Download</a></li>
+            href="#download" role="button" aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a>
+        </li>
         <li class="hidden-sm" style="display: inline-block !important;"><a href="#learning">Learning</a></li>
         <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="#examples">Examples</a>
         </li>
@@ -104,13 +104,12 @@
         <div id="main-wrapper">
 
           <h1 class="wow fadeIn">RiTa <span class="new-ver-bubble"><a target="blank" href="#whats-new">New
-                version&nbsp;2.6&nbsp;!</a></span> </h1>
+                version&nbsp;2.8&nbsp;!</a></span> </h1>
 
           <h4 class="wow fadeIn">tools for natural language and generative writing</h4>
 
-          <div class="buttons-wrapper"><a class="btn btn-primary d-inline-block" data-toggle="collapse"
-              href="#download" role="button" aria-expanded="false" aria-controls="collapseExample"
-              id="dlbtn">Download</a>
+          <div class="buttons-wrapper"><a class="btn btn-primary d-inline-block" data-toggle="collapse" href="#download"
+              role="button" aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a>
             <a href="https://github.com/dhowe/rita/" class="btn btn-secondary d-inline-block"> <svg
                 class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
@@ -192,16 +191,17 @@
         <div class="col-md-2">
         </div>
         <div class="col-md-8 wow fadeIn">
-          <p>RiTa<sup>†</sup> is a free/open-source library for writing in programmable media. It provides functions for simple language processing and generation without the overhead of a full NLP or machine-learning stack. Designed to be small and easy-to-use, it runs in a variety of environments including the browser, <a href="http://p5js.org/" target="_blank">p5.js</a>, <a href="https://processing.org/" target="_blank">Processing</a>, <a href="https://nodejs.org/" target="_blank">Node</a> and Android. Features include an integrated scripting language (<a href="https://observablehq.com/@dhowe/riscript" target="_blank">RiScript</a>), a letter-to-sound engine, grammar and Markov-based text generation, tools for inflection, conjugation, stemming and tokenization, and analysis of English features such as part-of-speech, phonemes, syllables, and stresses. RiTa's customizable lexicon can be searched via partial matches on combinations of any of the features listed above.
-
-<!--        Designed to support the creation of new works of computational writing, the free and open-source
-            RiTa<sup>†</sup> library provides tools for artists and writers working with natural language in
-            programmable media. The library is designed to be simple while still enabling a range of powerful
-            features, from the included <a href="https://observablehq.com/@dhowe/riscript" target="_blank">RiScript</a> scripting
-            language, to grammar and Markov-based text generation,
-            to inflection, conjugation, stemming, tokenization and feature-analysis (for pos, phonemes, syllables,
-            stresses, etc). RiTa is implemented in both Java and JavaScript and runs in a number of popular
-            programming environments including -->
+          <p>RiTa<sup>†</sup> is a free/open-source library for writing in programmable media. It provides functions for
+            simple language processing and generation tasks without the overhead or complexity of a full NLP stack.
+            Designed to be small and easy-to-use, it runs in a variety of environments including the browser, <a
+              href="http://p5js.org/" target="_blank">p5.js</a>, <a href="https://processing.org/"
+              target="_blank">Processing</a>, <a href="https://nodejs.org/" target="_blank">Node</a> and Android.
+            Features include grammar and Markov-based text generation, tools for inflection, conjugation, stemming and
+            tokenization, as well as analysis of English features such as part-of-speech, phonemes, syllables, and
+            stresses. RiTa's customizable lexicon can be searched via partial matches on combinations of any of the
+            features listed above. It also includes a letter-to-sound engine for analysis of unknown words, and a small
+            scripting language designed for writers (<a href="https://observablehq.com/@dhowe/riscript"
+              target="_blank">RiScript</a>)
           </p>
           <div class="row">
 
@@ -263,29 +263,35 @@
         <div class="col-md-8 wow fadeIn">
           <h4>RiTa Version 2</h4>
 
-          <br><strong>Version 2</strong>is a full rewrite of the library that is simpler, faster, more
-          consistent, and more easily maintained. But it is NOT backwards-compatible with programs
+          <br><strong>Version 2</strong> is a full rewrite of the library that is simpler, faster, more
+          consistent, and more easily maintained. But it is NOT backwards-compatible with all programs
           written with <a href="https://rednoise.org/rita1/" target="_blank">version 1.x</a>. Nearly all of the
-          functionality of v1 is still available (plus many new
-          features), but much of the organization has changed. Migrating an older work
+          functionality of v1 is still available (plus many new features),
+          but much of the organization has changed. Migrating an older work
           to v2 is generally quite straightforward (and I'm happy to <a href="mail.html"
-              onmouseover="this.href='mai' + 'lto:' + 'daniel' + '@' + 'rednoise.org?subject=RiTa Help'">help</a> if you run into problems)...<br>
+            onmouseover="this.href='mai' + 'lto:' + 'daniel' + '@' + 'rednoise.org?subject=RiTa Help'">help</a> if you
+          run into problems)...<br>
           <br><strong>Key Features</strong>
           <ul style="padding-inline-start: 35px !important;">
             <li>Integration of the <a target="_blank" href="https://observablehq.com/@dhowe/riscript">RiScript</a>
-              scripting language, designed specifically for writers</li>
+              scripting language, designed for writers</li>
             <li>Letter-to-sound engine for feature analysis of arbitrary words (with or without a lexicon)</li>
             <li>Smart lexicon search for words matching part-of-speech, syllable, stress and rhyme patterns </li>
-            <li>Fast, heuristic algorithms for inflection, conjugation, stemming, tokenization, and more</li>
+            <li>Heuristic algorithms for inflection, conjugation, stemming, tokenization, and more</li>
             <li>Powerful new options for generation via grammars and Markov chains</li>
           </ul>
           <br><strong>Important Changes</strong><br>
           <ul style="padding-inline-start: 35px !important;">
-            <li>Nearly all features of the library are now static functions on the RiTa object. So you can access them as RiTa.XXX(), e.g., RiTa.phones(), RiTa.tokenize(), RiTa.conjugate(), and so on. This means that there is only one object to import into your programs.</li>
+            <li>Nearly all features of the library are now static functions on the RiTa object. So you can access them
+              as RiTa.XXX(), e.g., RiTa.phones(), RiTa.tokenize(), RiTa.conjugate(), and so on. This means that there is
+              only one object to import into your programs.</li>
             <li>The RiMarkov and RiGrammar objects are significantly improved, and are now accessed via the
-              RiTa.markov() and RiTa.grammar() static functions. RiTa grammars are still compatible with JSON, but can now include all the features of RiScript.</li>
+              RiTa.markov() and RiTa.grammar() static functions. RiTa grammars are still compatible with JSON, but can
+              now include all the features of RiScript.</li>
             <li>RiScript is a new scripting language that allows authors to integrate static text with
-              simple generative primitives (choices, sequences, transforms, etc.). RiScript is designed specifically for writers (for example, no quotes are required for strings) and can be run via RiTa.evaluate() or included in any RiTa grammar.</li>
+              simple generative primitives (choices, sequences, transforms, etc.). RiScript is designed specifically for
+              writers (for example, no quotes are required for strings) and can be run via RiTa.evaluate() or included
+              in any RiTa grammar.</li>
             <li>RiTa v2 is available for Java (via <a target="_blank"
                 href="https://search.maven.org/artifact/org.rednoise/rita">Maven</a> and
               <a target="_blank" href="https://github.com/dhowe/rita/packages/">Github Packages</a>) and JavaScript
@@ -622,7 +628,8 @@
             </div>
           </div>
           <div class="row" style="margin-top: 20px !important;">
-            <p>View the above examples <a href="https://editor.p5js.org/rita-examples/collections/ltF2vMtaL" target="_blank">in the p5.js online editor</a></p>
+            <p>View the above examples <a href="https://editor.p5js.org/rita-examples/collections/ltF2vMtaL"
+                target="_blank">in the p5.js online editor</a></p>
           </div>
 
         </div>
