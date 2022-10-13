@@ -2,8 +2,8 @@
 
 # usage:
 #   ./scripts/publish-lib.sh 
-#   ./scripts/publish-lib.sh -pv 2.4.87
-#   ./scripts/publish-lib.sh -pvJ 2.4.87 (no java)
+#   ./scripts/publish-lib.sh -v 2.4.87 -p
+#   ./scripts/publish-lib.sh -v 2.4.87 -pJ (no java)
 
 set -e
 
