@@ -22,7 +22,7 @@
       "description": "If true, silence all info/warnings from RiTa",
       "syntax": "RiTa.SILENT",
       "parameters": [],
-      "returns":[
+      "returns": [
         {
           "type": "String",
           "desc": "the current silent setting"
@@ -36,24 +36,10 @@
       "description": "If true, silence warnings for words not in lexicon",
       "syntax": "RiTa.SILENCE_LTS",
       "parameters": [],
-      "returns":[
+      "returns": [
         {
           "type": "String",
           "desc": "the current lexicon silent setting"
-        }
-      ]
-    },
-    {
-      "name": "CACHING",
-      "example": "RiTa.CACHING = true;",
-      "variable": true,
-      "description": "If false, cache will be disable. That will reduce memory usage but make RiTa slower",
-      "syntax": "RiTa.CACHING",
-      "parameters": [],
-      "returns":[
-        {
-          "type": "String",
-          "desc": "the current cache setting"
         }
       ]
     }
@@ -61,8 +47,8 @@
   "statics": [
     {
       "name": "grammar",
-      "example": "rg = RiTa.grammar(rulesObject);<br>result = rg.expand();<br><br>rg = RiTa.grammar();<br>rg.addRule(\"start\", \"( cat | dog | fish )\");<br>let result = rg.expand();<br><br>rg = RiTa.grammar({\"start\", \"( cat | dog | fish )\");<br>let result = rg.expand();",
-      "description": "Creates a new RiGrammar object: a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> features in a grammar, including transforms, sequences, and assignments.<br><br><pre class=\"margin\">rg = RiTa.grammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings (or JS objects or Java Maps), as follows<br><br><pre class=\"margin\">{<br>  \"start\": ( $rule1 | $rule2 | $rule3 ),<br><br>  \"rule2\": ( terminal1 | terminal2 | $rule1 ),<br><br>   ...<br>}</pre><br> If you're working in JavaScript, you can simply pass a JavaScript object instead. If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: ( terminal1 [2] | terminal2 | $rule1 )</pre><br>",
+      "example": "rg = RiTa.grammar(rulesObject);<br>result = rg.expand();<br><br>rg = RiTa.grammar();<br>rg.addRule(\"start\", \"[ cat | dog | fish ]\");<br>let result = rg.expand();",
+      "description": "Creates a new RiGrammar object: a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> features in a grammar, including transforms, sequences, and assignments.<br><br><pre class=\"margin\">rg = RiTa.grammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are JS objects (or valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings, or Java Maps), as follows<br><br><pre class=\"margin\">{<br>  start: [ $rule1 | $rule2 | $rule3 ],<br><br>  rule2: [ terminal1 | terminal2 | $rule1 ],<br><br>   ...<br>}</pre><br> If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: [ terminal1 (2) | terminal2 | $rule1 ]</pre><br>",
       "syntax": "// Initialize an empty RiGrammar object<br>rg = RiTa.grammar();<br><br>// Or specify a grammar in a JS object (or JSON string)<br>rg = RiTa.grammar(rules);<br><br>// Or optionally supply a context<br>rg = RiTa.grammar(rules, context);",
       "parameters": [
         {
@@ -72,6 +58,10 @@
         {
           "type": "Object",
           "desc": "A context object (or Map in Java), optional"
+        },
+        {
+          "type": "Object<br>(or Map in Java)",
+          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} options.onepass:<br>if true, run only one pass through the parser (default=false)<br><br>{boolean} options.v2Compatible: <br>if true, use RiScript v2-compatible syntax (default=false)"
         }
       ],
       "returns": [
@@ -243,7 +233,7 @@
     },
     {
       "name": "addTransform",
-      "example": "RiTa.addTransform(\"uc\", (s) => s.toUpperCase());<br/>RiTa.evaluate(\"This.uc() is an acronym.\");",
+      "example": "RiTa.addTransform(\"uc\", (s) => s.toUpperCase());<br/>RiTa.evaluate(\"[This].uc() is an acronym.\");",
       "description": "Registers a new <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> transform function that may then be used in all RiScript evaluations (including within Grammars)",
       "syntax": "RiTa.addTransform(name, function);",
       "parameters": [
@@ -253,7 +243,7 @@
         },
         {
           "type": "Function",
-          "desc": "(optional, if not provided, the transform under the given name will be removed) <br>the function to call, which should accept and return a string"
+          "desc": "the function to call, which should accept and return a string"
         }
       ],
       "returns": [],
@@ -261,7 +251,7 @@
     },
     {
       "name": "evaluate",
-      "example": "RiTa.evaluate(\"He was (happy | sad | indifferent)\");<br/>RiTa.evaluate(\"He was (happy | sad | &#36;emo)\", context);",
+      "example": "RiTa.evaluate(\"He was [happy | sad | indifferent]\");<br/>RiTa.evaluate(\"He was [happy | sad | &#36;emo]\", context);",
       "description": "Parses and executes a <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> string",
       "syntax": "RiTa.evaluate(string);<br/>RiTa.evaluate(string, context);",
       "parameters": [
@@ -275,7 +265,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output parser log to console (default=false)<br><br>{boolean} options.silent:<br>if true, supress warnings in console (default=false)<br><br>{boolean} options.traceLex: <br>if true, output lexer log to console (default=false)<br><br>"
+          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} options.onepass:<br>if true, run only one pass through engine(default=false)<br><br>{boolean} options.v2Compatible: <br>if true, use RiScript v2-compatible syntax  (default=false)"
         }
       ],
       "returns": [
@@ -307,7 +297,8 @@
           "desc": "the set of unique alphabetical tokens in the text"
         }
       ],
-      "related": "<a href='../tokenize'>RiTa.tokenize()</a><br>RiTa.SPLIT_CONTRACTIONS<br>boolean to globally control the splitting of contractions (e.g. splitting \"I'd\" or \"she'll\") into multiple individual tokens), default=false."    },
+      "related": "<a href='../tokenize'>RiTa.tokenize()</a><br>RiTa.SPLIT_CONTRACTIONS<br>boolean to globally control the splitting of contractions (e.g. splitting \"I'd\" or \"she'll\") into multiple individual tokens), default=false."
+    },
     {
       "name": "tokenize",
       "example": "<br/>sentence = \"The doctors treated dogs.\";<br/>words = RiTa.tokenize(sentence);<br/>words = RiTa.tokenize(sentence, { regex: \"\\\\\\\\s\" });<br/><br/>",
@@ -552,6 +543,25 @@
       "related": "RiTa.FIRST: int, value=1<br>RiTa.SECOND: int, value=2<br>RiTa.THIRD: int, value=3<br>RiTa.PAST: int, value=4<br>RiTa.PRESENT: int, value=5<br>RiTa.FUTURE: int, value=6<br>RiTa.SINGULAR: int, value=7<br>RiTa.PLURAL: int, value=8<br>RiTa.NORMAL: int, value=9<br>RiTa.INFINITIVE: int, value=1<br>RiTa.GERUND: int, value=2"
     },
     {
+      "name": "articlize",
+      "example": "RiTa.articlize(\"kitten\"); // returns -> 'a kitten'<br/><br/>RiTa.articlize(\"honor\"); // returns -> 'an honor'",
+      "description": "Prepends the correct article (\"a\" or \"an\") for a word, based on its <a href='../phonemes'>phonemes</a>",
+      "syntax": "RiTa.articlize(verb);",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "the word"
+        }
+      ],
+      "returns": [
+        {
+          "type": "String",
+          "desc": "the word prepended with the appropriate article (\"a\" or \"an\")"
+        }
+      ],
+      "related": "<a href='../phones'>RiTa.phones()</a>"
+    },
+    {
       "name": "pastPart",
       "example": "RiTa.pastPart(\"write\"); // returns -> written",
       "description": "Returns the past participle form of the verb.",
@@ -608,7 +618,7 @@
     {
       "name": "pluralize",
       "example": "<br/>pluralized = RiTa.pluralize(\"dog\"); // returns \"dogs\"<br/><br/>pluralized = RiTa.pluralize(\"mouse\"); // returns \"mice\"<br/><br/>",
-      "description": "Pluralizes a noun according to pluralization rules. Returns the input if it is already plural.",
+      "description": "Pluralizes a noun according to pluralization rules. Returns the input if already plural.",
       "syntax": "RiTa.pluralize(word);",
       "parameters": [
         {
@@ -669,6 +679,7 @@
     },
     {
       "name": "alliterations",
+      "async": true,
       "example": "RiTa.alliterations(\"cat\"); <br/>RiTa.alliterations(\"cat\", {limit: 10});<br/>RiTa.alliterations(\"cat\", { maxLength: 4, numSyllables: 1 });",
       "description": "Finds alliterations by comparing the phonemes of the input string to those of each word in the lexicon via a minimum-edit-distance metric",
       "syntax": "RiTa.alliterations(word);<br/>RiTa.alliterations(word, opts);",
@@ -692,6 +703,7 @@
     },
     {
       "name": "randomWord",
+      "async": true,
       "example": "// a random word from the lexicon<br/>RiTa.randomWord();<br/><br/>// a random plural noun from the lexicon<br/>RiTa.randomWord({ pos: \"nns\"});<br/><br/>// a random word with 3 syllables and length 3 or 4<br/>RiTa.randomWord({ numSyllables: 3, maxLength: 4});",
       "description": "Returns a random word from the lexicon that matches the specified criteria (length, syllable-count, phoneme pattern, stress pattern, part-of-speech, etc.)",
       "syntax": "RiTa.randomWord()<br/>RiTa.randomWord(opts);<br><br>",
@@ -715,6 +727,7 @@
     },
     {
       "name": "rhymes",
+      "async": true,
       "example": "RiTa.rhymes(\"cat\"); <br/>RiTa.rhymes(\"cat\", {limit: 10});<br/>RiTa.rhymes(\"cat\", { maxLength: 4, numSyllables: 1 });",
       "description": "Two words are considered as rhyming if their final stressed vowel and all following phonemes are identical",
       "syntax": "RiTa.rhymes(word);<br>RiTa.rhymes(word, options);",
@@ -738,6 +751,7 @@
     },
     {
       "name": "search",
+      "async": true,
       "example": "RiTa.search();<br/>RiTa.search(\"tting\")<br/>RiTa.search('f-ah-n-t', { type: 'phones', pos: 'n', numSyllables: 2 })",
       "description": "Searches for words in the lexicon that match the given criteria, either by length, syllable-count, phoneme, stress, part-of-speech, etc. If no regex or options are supplied, the full set of words is returned.",
       "syntax": "RiTa.search()<br/>RiTa.search(regex);<br/>RiTa.search(regex, opts);",
@@ -903,6 +917,7 @@
     },
     {
       "name": "soundsLike",
+      "async": true,
       "example": "RiTa.soundsLike(\"happy\");<br/>RiTa.soundsLike(\"happy\", { matchSpelling: true });<br/>RiTa.soundsLike(\"happy\", { limit: 10, minDistance: 2 });<br/>RiTa.soundsLike(\"happy\", { numSyllables: 2, minDistance: 2 });<br/>RiTa.soundsLike(\"happy\", { minWordLength:10, numSyllables:2 });",
       "description": "Compares the phonemes of the input word (using a version of the Levenstein min-edit distance algorithm) to each word in the lexicon, returning the set of closest matches.",
       "syntax": "RiTa.soundsLike(word);<br/>RiTa.soundsLike(word, opts);",
@@ -926,6 +941,7 @@
     },
     {
       "name": "spellsLike",
+      "async": true,
       "example": "RiTa.spellsLike(\"happy\");<br/>RiTa.spellsLike(\"happy\", { limit: 10 });<br/>RiTa.spellsLike(\"happy\", { limit: 10, minDistance: 2 });<br/>RiTa.spellsLike(\"happy\", { numSyllables: 2, minDistance: 2 });<br/>RiTa.spellsLike(\"happy\", { minWordLength:10, numSyllables:2 });",
       "description": "Compares the letters of the input word (using a version of the Levenstein min-edit distance algorithm) to each word in the lexicon, returning the set of closest matches.",
       "syntax": "RiTa.spellsLike(word)<br/>RiTa.spellsLike(word, opts)",

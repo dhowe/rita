@@ -13,7 +13,7 @@
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
   <meta name="description" content="RiTa - tools for generative language">
   <meta name="robots" content="noodp">
-  <link rel="canonical" href="https://github.com/dhowe/rita/">
+  <link rel="canonical" href="https://github.com/dhowe/ritajs/">
   <meta property="og:url" content="http://www.rednoise.org">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
@@ -67,7 +67,7 @@
         </li>
         <li class="hidden-sm" style="display: inline-block !important;"><a target="blank"
             href="#reference">Reference</a></li>
-        <li> <a href="https://github.com/dhowe/rita" target="blank" class="icon m-l-30"> <svg
+        <li> <a href="https://github.com/dhowe/ritajs" target="blank" class="icon m-l-30"> <svg
               class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
               role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
               <path fill="currentColor"
@@ -104,13 +104,13 @@
         <div id="main-wrapper">
 
           <h1 class="wow fadeIn">RiTa <span class="new-ver-bubble"><a target="blank" href="#whats-new">New
-                version&nbsp;2.8&nbsp;!</a></span> </h1>
+                version&nbsp;3.0&nbsp;!</a></span> </h1>
 
           <h4 class="wow fadeIn">tools for natural language and generative writing</h4>
 
           <div class="buttons-wrapper"><a class="btn btn-primary d-inline-block" data-toggle="collapse" href="#download"
               role="button" aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a>
-            <a href="https://github.com/dhowe/rita/" class="btn btn-secondary d-inline-block"> <svg
+            <a href="https://github.com/dhowe/ritajs/" class="btn btn-secondary d-inline-block"> <svg
                 class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
                 role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
                 <path fill="currentColor"
@@ -191,7 +191,7 @@
         <div class="col-md-2">
         </div>
         <div class="col-md-8 wow fadeIn">
-          <p>RiTa<sup>†</sup> is a free/open-source library for writing in programmable media. It provides functions for
+          <p>RiTa<sup>†</sup> is an open-source library for writing in computational environments. It provides functions for
             simple language processing and generation tasks without the overhead or complexity of a full NLP stack.
             Designed to be small and easy-to-use, it runs in a variety of environments including the browser, <a
               href="http://p5js.org/" target="_blank">p5.js</a>, <a href="https://processing.org/"
@@ -201,7 +201,7 @@
             stresses. RiTa's customizable lexicon can be searched via partial matches on combinations of any of the
             features listed above. It also includes a letter-to-sound engine for analysis of unknown words, and a small
             scripting language designed for writers (<a href="https://observablehq.com/@dhowe/riscript"
-              target="_blank">RiScript</a>)
+              target="_blank">RiScript</a>).
           </p>
           <div class="row">
 
@@ -261,14 +261,14 @@
         <div class="col-md-2">
         </div>
         <div class="col-md-8 wow fadeIn">
-          <h4>RiTa Version 2</h4>
+          <h4>RiTa Version 3</h4>
 
-          <br><strong>Version 2</strong> is a full rewrite of the library that is simpler, faster, more
-          consistent, and more easily maintained. But it is NOT backwards-compatible with all programs
-          written with <a href="https://rednoise.org/rita1/" target="_blank">version 1.x</a>. Nearly all of the
-          functionality of v1 is still available (plus many new features),
+          <br><strong>Version 3</strong> is a rewrite of the library that is simpler, faster and more
+          consistent. But it is NOT backwards-compatible with all programs
+          written in previous versions. Nearly all of the
+          previous functionality is  still available (plus many new features),
           but much of the organization has changed. Migrating an older work
-          to v2 is generally quite straightforward (and I'm happy to <a href="mail.html"
+          to v3 is generally quite straightforward (and I'm happy to <a href="mail.html"
             onmouseover="this.href='mai' + 'lto:' + 'daniel' + '@' + 'rednoise.org?subject=RiTa Help'">help</a> if you
           run into problems)...<br>
           <br><strong>Key Features</strong>
@@ -283,16 +283,16 @@
           <br><strong>Important Changes</strong><br>
           <ul style="padding-inline-start: 35px !important;">
             <li>Nearly all features of the library are now static functions on the RiTa object. So you can access them
-              as RiTa.XXX(), e.g., RiTa.phones(), RiTa.tokenize(), RiTa.conjugate(), and so on. This means that there is
+              as RiTa.XXX(), e.g., RiTa.phones(), RiTa.tokenize(), RiTa.conjugate() and so on. This means that there is
               only one object to import into your programs.</li>
             <li>The RiMarkov and RiGrammar objects are significantly improved, and are now accessed via the
               RiTa.markov() and RiTa.grammar() static functions. RiTa grammars are still compatible with JSON, but can
               now include all the features of RiScript.</li>
-            <li>RiScript is a new scripting language that allows authors to integrate static text with
+            <li>RiScript is a  scripting language that allows authors to integrate static text with
               simple generative primitives (choices, sequences, transforms, etc.). RiScript is designed specifically for
               writers (for example, no quotes are required for strings) and can be run via RiTa.evaluate() or included
               in any RiTa grammar.</li>
-            <li>RiTa v2 is available for Java (via <a target="_blank"
+            <!--li>RiTa v3 is available for Java (via <a target="_blank"
                 href="https://search.maven.org/artifact/org.rednoise/rita">Maven</a> and
               <a target="_blank" href="https://github.com/dhowe/rita/packages/">Github Packages</a>) and JavaScript
               (via <a target="_blank" href="https://www.npmjs.com/package/rita">NPM</a> and <a target="_blank"
@@ -300,10 +300,11 @@
               It is also available, of course, as a library for <a target="_blank"
                 href="https://rednoise.org/rita/rita.zip">Processing</a>
               and <a target="_blank" href="https://unpkg.com/rita">p5.js</a>.
-            </li>
+            </li-->
           </ul>
-          <br /><strong>Note: you can find an archive of version 1.x <a href="https://rednoise.org/rita1"
-              target="_blank">here...</a></strong>
+          <br /><strong>Note: you can find archives of versions <a href="https://rednoise.org/rita1"
+              target="_blank">1.x</a> and <a href="https://rednoise.org/rita2"
+              target="_blank">2.x</a> here.</strong>
         </div>
         <div class="col-md-2">
         </div>
@@ -1020,6 +1021,7 @@
     <a href="reference/RiTa/addTransform/index.html">RiTa.addTransform()</a><br/>
     <a href="reference/RiTa/alliterations/index.html">RiTa.alliterations()</a><br/>
     <a href="reference/RiTa/analyze/index.html">RiTa.analyze()</a><br/>
+    <a href="reference/RiTa/articlize/index.html">RiTa.articlize()</a><br/>
     <a href="reference/RiTa/concordance/index.html">RiTa.concordance()</a><br/>
     <a href="reference/RiTa/conjugate/index.html">RiTa.conjugate()</a><br/>
     <a href="reference/RiTa/evaluate/index.html">RiTa.evaluate()</a><br/>
@@ -1038,13 +1040,13 @@
     <a href="reference/RiTa/kwic/index.html">RiTa.kwic()</a><br/>
     <a href="reference/RiTa/markov/index.html">RiTa.markov()</a><br/>
     <a href="reference/RiTa/pastPart/index.html">RiTa.pastPart()</a><br/>
-    <a href="reference/RiTa/phones/index.html">RiTa.phones()</a><br/>
   </div>
 </div>
 
 <div class="section">
   <div class="category">
 <br><br>
+    <a href="reference/RiTa/phones/index.html">RiTa.phones()</a><br/>
     <a href="reference/RiTa/pos/index.html">RiTa.pos()</a><br/>
     <a href="reference/RiTa/posInline/index.html">RiTa.posInline()</a><br/>
     <a href="reference/RiTa/presentPart/index.html">RiTa.presentPart()</a><br/>
@@ -1067,7 +1069,6 @@
     <a href="reference/RiTa/VERSION/index.html">RiTa.VERSION</a><br/>
     <a href="reference/RiTa/SILENT/index.html">RiTa.SILENT</a><br/>
     <a href="reference/RiTa/SILENCE_LTS/index.html">RiTa.SILENCE_LTS</a><br/>
-    <a href="reference/RiTa/CACHING/index.html">RiTa.CACHING</a><br/>
     <br/><br/>
 </div>
 </div>
@@ -1076,7 +1077,7 @@
   <div class="category">
     <span style="color: #006B8F !important;"><b>RiGrammar</b><span><br><br>
     <a href="reference/RiGrammar/addRule/index.html">addRule()</a><br/>
-    <a href="reference/RiGrammar/addRules/index.html">addRules()</a><br/>
+    <a href="reference/RiGrammar/setRules/index.html">setRules()</a><br/>
     <a href="reference/RiGrammar/expand/index.html">expand()</a><br/>
     <a href="reference/RiGrammar/removeRule/index.html">removeRule()</a><br/>
     <a href="reference/RiGrammar/toJSON/index.html">toJSON()</a><br/>
@@ -1115,7 +1116,7 @@
 
   <footer class="page-footer">
     <div class="container wow fadeIn">
-      <div id="social-wrapper"> <a href="https://github.com/dhowe/rita" target="blank" class="icon"> <svg
+      <div id="social-wrapper"> <a href="https://github.com/dhowe/ritajs" target="blank" class="icon"> <svg
             class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github" role="img"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
             <path fill="currentColor"

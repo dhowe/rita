@@ -6,6 +6,7 @@
         "addTransform",
         "alliterations",
         "analyze",
+        "articlize",
         "concordance",
         "conjugate",
         "evaluate",
@@ -48,15 +49,14 @@
       "fields": [
         "VERSION",
         "SILENT",
-        "SILENCE_LTS",
-        "CACHING"
+        "SILENCE_LTS"
       ]
     },
     {
       "class": "RiGrammar",
       "functions": [
         "addRule",
-        "addRules",
+        "setRules",
         "expand",
         "removeRule",
         "toJSON",

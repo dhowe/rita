@@ -37,7 +37,7 @@ public class MakeDocs extends PApplet {
 	static String[] parameterType, parameterDesc, parameters, theReturn;
 	static int numOfMethods, numOfparameters, numOfReturns;
 
-	static boolean[] hidden, isVariable;
+	static boolean[] hidden, isVariable, async;
 	static Map<String, ArrayList<String>> API;
 	static String outputTemplate, warnings = "", errors = "";
 
@@ -233,8 +233,13 @@ public class MakeDocs extends PApplet {
 
 				JSONObject entry = items.getJSONObject(j);
 
+        async[j] = false;
+				if (!entry.isNull("async")) {
+					async[j] = entry.getBoolean("async");
+				}
+
 				methodName[j] = entry.getString("name");
-				pln("    " + methodName[j]);
+				pln("    " + methodName[j] + ( async[j] ? " (async)" : "" ));
 
 				if (check != null && check.contains(methodName[j])) {
 					check.remove(methodName[j]);
@@ -351,6 +356,7 @@ public class MakeDocs extends PApplet {
 		thePlatform = new String[numOfMethods];
 		note = new String[numOfMethods];
 		hidden = new boolean[numOfMethods];
+		async = new boolean[numOfMethods];
 		isVariable = new boolean[numOfMethods];
 	}
 
@@ -368,7 +374,6 @@ public class MakeDocs extends PApplet {
 		}
 	}
 
-	// static void template(int idx, String shortName, String[] lines) {
 	static void template(int idx, String shortName) {
 		if (hidden[idx]) return;
 
@@ -377,17 +382,17 @@ public class MakeDocs extends PApplet {
 		String fname = WWW_OUTPUT + REF_OUTPUT + "/" + shortName
 				+ "/" + folderMethodName + "/index." + OUTPUT_TYPE;
 
+    String desc = description[idx] + (async[idx] 
+      ? ". Note: async in JavaScript - use `await` or `.then()`": "");// as described <a href=\"\">here</a> "
+
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);
-		lines = replaceArr(lines, "tmp_description", description[idx]);
+		lines = replaceArr(lines, "tmp_description", desc);
 		lines = replaceArr(lines, "tmp_platform", thePlatform[idx]);
 		if (!methodName[idx].toUpperCase().equals(shortName.toUpperCase())) {
 			lines = replaceArr(lines, "tmp_methodName", methodName[idx]);
 		}
-
-		//		if (shortName.equals("RiTa")) {
-		//			lines = replaceArr(lines, "<a href=\"../../RiTa/RiTa/index.html\">RiTa</a>", "RiTa");
-		//		}
+    lines = replaceArr(lines, "tmp_asyncTag", async[idx] ? "[async]" : "");
 
 		optionalTag("example", example[idx]);
 		optionalTag("syntax", syntax[idx]);

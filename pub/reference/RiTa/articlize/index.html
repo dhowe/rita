@@ -56,7 +56,7 @@
             href="../../../index.html#gallery">Gallery</a></li>
         <li class="hidden-sm" style="display: inline-block !important;"><a target="blank"
             href="../../../index.html#reference">Reference</a></li>
-        <li> <a href="https://github.com/dhowe/rita" target="blank" class="icon m-l-30"> <svg
+        <li> <a href="https://github.com/dhowe/ritajs" target="blank" class="icon m-l-30"> <svg
               class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
               role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
               <path fill="currentColor"
@@ -113,14 +113,14 @@
                   <th scope="row">Name</th>
                   <!-- METHOD NAME -->
                   <td>
-                    <h4>CACHING</h4>
+                    <h4>articlize </h4>
                   </td>
                 </tr>
 
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>If false, cache will be disable. That will reduce memory usage but make RiTa slower</td>
+                  <td>Prepends the correct article ("a" or "an") for a word, based on its <a href='../phonemes'>phonemes</a></td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,32 +129,32 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">RiTa.CACHING = true;</pre>
+                      <pre class="margin">RiTa.articlize("kitten"); // returns -> 'a kitten'<br/><br/>RiTa.articlize("honor"); // returns -> 'an honor'</pre>
                     </div>
                   </td>
                 </tr>
-                <tr class='Parameters' style='display:none'>
+                <tr class='Parameters'>
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table">tmp_parameters</table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the word</td></tr></table>
                   </td>
                 </tr>
 
 
                 <tr class='Returns'>
-                  <th scope="row">Type</th>
+                  <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the current cache setting</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the word prepended with the appropriate article ("a" or "an")</td></tr></table>
                   </td>
                 </tr>
 
-                <tr class='Related' style='display:none'>
+                <tr class='Related'>
                   <th scope="row">Related</th>
 
                   <!-- RELATED  -->
-                  <td>tmp_related</td>
+                  <td><a href='../phones'>RiTa.phones()</a></td>
                 </tr>
 
                 <tr class='Note' style='display:none'>
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>RiTa.CACHING</pre>
+                    <pre>RiTa.articlize(verb);</pre>
                   </td>
                 </tr>
 
@@ -178,7 +178,7 @@
 
                   <!-- RelatedConstants  -->
                   <td>
-                    tmp_relatedConstants
+                    <a href='../phones'>RiTa.phones()</a>Constants
                   </td>
                 </tr>
 

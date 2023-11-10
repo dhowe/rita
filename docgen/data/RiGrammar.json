@@ -57,6 +57,10 @@
         {
           "type": "String",
           "desc": "the rule name to be expanded (optional)"
+        },
+        {
+          "type": "Object<br>(or Map in Java)",
+          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} options.onepass:<br>if true, run only one pass through the parser (default=false)<br><br>{boolean} options.v2Compatible: <br>if true, use RiScript v2-compatible syntax (default=false)"
         }
       ],
       "returns": [
@@ -85,10 +89,10 @@
       ]
     },
     {
-      "name": "addRules",
-      "example": "rg = new RiGrammar(); <br>rg.addRules(rules);",
+      "name": "setRules",
+      "example": "rg = new RiGrammar(); <br>rg.setRules(rules);",
       "description": "Loads a grammar from an object (or Map in Java).",
-      "syntax": "rg.addRules(grammarRules);",
+      "syntax": "rg.setRules(grammarRules);",
       "parameters": [
         {
           "type": "Object or JSON string",
