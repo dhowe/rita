@@ -94,7 +94,7 @@ $(function () {
   }
 
   function ipaPhones(aWord) {
-    let raw = RiTa.lexicon().rawPhones(aWord);
+    let raw = RiTa.lexicon.rawPhones(aWord);
     // console.log(raw,arpaToIPA(raw) );
     return "/" + arpaToIPA(raw) + "/";
   }

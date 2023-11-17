@@ -10,7 +10,7 @@ function setup() {
 }
 
 // replace one random word in the text
-function nextWord() {
+async function nextWord() {
 
   let words = RiTa.tokenize(txt); // split into words
 
@@ -24,9 +24,9 @@ function nextWord() {
 
     // find related words
     let pos = RiTa.tagger.allTags(word)[0];
-    let rhymes = RiTa.rhymes(word, { pos });
-    let sounds = RiTa.soundsLike(word, { pos });
-    let spells = RiTa.spellsLike(word, { pos });
+    let rhymes = await RiTa.rhymes(word, { pos });
+    let sounds = await RiTa.soundsLike(word, { pos });
+    let spells = await RiTa.spellsLike(word, { pos });
     let similars = [...rhymes, ...sounds, ...spells];
 
     // only words with 2 or more similars
@@ -41,6 +41,7 @@ function nextWord() {
     if (next.includes(word) || word.includes(next)) {
       continue;                     // skip substrings
     }
+    
     if (/[A-Z]/.test(words[idx][0])) {
       next = RiTa.capitalize(next); // keep capitals
     }

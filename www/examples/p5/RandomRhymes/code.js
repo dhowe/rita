@@ -26,7 +26,7 @@ function findRhymes() {
   let tmp;
   do {
     word = RiTa.randomWord();
-    tmp = RiTa.rhymes(word, { limit: 13 });
+    tmp = RiTa.rhymesSync(word, { limit: 13 });
   }
   while (tmp.length < 3)
 

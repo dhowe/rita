@@ -51,15 +51,12 @@ function updateBubbles() {
     if (i < phones.length) b.update(phones, i);
   });
 
-  // addStresses();
-  // addSyllables();
   addStressesAndSyllables();
-
   setTimeout(selectWord, 4000);
 }
 
 function ipaPhones(aWord) {
-  let raw = RiTa.lexicon().rawPhones(aWord);
+  let raw = RiTa.lexicon.rawPhones(aWord);
   return "/" + arpaToIPA(raw) + "/";
 }
 
