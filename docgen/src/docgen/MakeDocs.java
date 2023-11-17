@@ -12,6 +12,10 @@ import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 
+/*
+ * To debug compilation, do $ cd docgen && ant build
+ */
+
 public class MakeDocs extends PApplet {
 
 	static boolean SILENT = false, DBUG = false, OUTPUT_MARKUP = false;
@@ -382,8 +386,12 @@ public class MakeDocs extends PApplet {
 		String fname = WWW_OUTPUT + REF_OUTPUT + "/" + shortName
 				+ "/" + folderMethodName + "/index." + OUTPUT_TYPE;
 
-    String desc = description[idx] + (async[idx] 
-      ? ". Note: async in JavaScript - use `await` or `.then()`": "");// as described <a href=\"\">here</a> "
+    String desc = description[idx];
+    if (!desc.endsWith(".")) desc += ".";
+    if (async[idx]) {
+      desc += "<br/><br/>Note: <b>async</b> in JavaScript, use <b>await</b> or <b>.then()</b>.";
+      desc += " For a synchronous version, use <b>RiTa."+methodName[idx]+"Sync()</b>.";
+    }
 
 		lines = replaceArr(lines, "tmp_ext", OUTPUT_TYPE);
 		lines = replaceArr(lines, "tmp_className", shortName);

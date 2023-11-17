@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.<br><br>Note: RiTa.concordance() must called before calling kwic().<br><br></td>
+                  <td>Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.<br><br>Note:  <a href="../concordance/">RiTa.concordance()</a> must called before calling RiTa.kwic().</td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin"><br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, opts);<br>lines = RiTa.kwic(word, numWords);<br/><br/></pre>
+                      <pre class="margin"><br/>options = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, options);<br/><br/>lines = RiTa.kwic(word, numWords);<br/><br/></pre>
                     </div>
                   </td>
                 </tr>
@@ -137,7 +137,7 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the keyword of interest</td></tr><tr class=''><th width='25%' scope='row' class=nobold>int</th><td width='75%'>upper limit of words before/after the keyword (optional, default=6)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br>(or Map in Java)</th><td width='75%'>options for the model and the output (optional)<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set other concordance options for the model, please see <a href="../concordance/">RiTa.concordance()</a> for detail</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the keyword of interest</td></tr><tr class=''><th width='25%' scope='row' class=nobold>int</th><td width='75%'>upper limit of words before/after the keyword (optional, default=6)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br>(or Map in Java)</th><td width='75%'>options for the model and the output (optional)<br><br>{String} <b>options.text</b>:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} <b>options.words</b>:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} <b>options.numWords</b>:<br>another way to set the numWords<br><br>{other} <br>if <b>options.text</b> or <b>options.words</b> is set, you can also set other concordance options for the model, please see <a href="../concordance/">RiTa.concordance()</a> for detail</td></tr></table>
                   </td>
                 </tr>
 

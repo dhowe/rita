@@ -61,7 +61,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} options.onepass:<br>if true, run only one pass through the parser (default=false)<br><br>{boolean} options.v2Compatible: <br>if true, use RiScript v2-compatible syntax (default=false)"
+          "desc": "(optional) options <br><br>{boolean} <b>options.trace</b>:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} <b>options.onepass</b>:<br>if true, run only one pass through the parser (default=false)<br><br>{boolean} <b>options.v2Compatible</b>: <br>if true, use RiScript v2-compatible syntax (default=false)"
         }
       ],
       "returns": [
@@ -75,8 +75,8 @@
     {
       "name": "markov",
       "example": "txt = \"This is a two sentence example. This is the second one.\"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt);<br>sentences = rm.generate(2);<br><br>",
-      "description": "Creates a new RiMarkov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses Markov chains (aka n-grams) with options to process words or arbitrary regular expressions.<br><br>",
-      "syntax": "// Constructs a RiMarkov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify one or more options<br><br>RiTa.markov(nFactor, options);<br><br>",
+      "description": "Creates a new RiMarkov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses Markov chains (aka n-grams) with options to process words or arbitrary regular expressions",
+      "syntax": "// Constructs a RiMarkov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify one or more options<br><br>RiTa.markov(nFactor, optionsObject);<br><br>",
       "parameters": [
         {
           "type": "int",
@@ -107,7 +107,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "the relevant option (optional)<br><br>{boolean} caseSensitive"
+          "desc": "the relevant option (optional)<br><br>{boolean} <b>options.caseSensitive</b>"
         }
       ],
       "returns": [
@@ -165,7 +165,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options (optional)<br><br>{boolean} options.simple:<br> use simple tags or not, default=false<br><br>{boolean} options.silent:<br> if true, will not output logs to console when running (default=false)<br><br>{boolean} options.inline:<br> inline tags or not (only in JavaScript, default=false)"
+          "desc": "options (optional)<br><br>{boolean} <b>options.simple:</b><br> use simple tags or not, default=false<br><br>{boolean} <b>options.silent</b>:<br> if true, will not output logs to console when running (default=false)<br><br>{boolean} <b>options.inline</b>:<br> inline tags or not (only in JavaScript, default=false)"
         }
       ],
       "returns": [
@@ -265,7 +265,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "(optional) options <br><br>{boolean} options.trace:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} options.onepass:<br>if true, run only one pass through engine(default=false)<br><br>{boolean} options.v2Compatible: <br>if true, use RiScript v2-compatible syntax  (default=false)"
+          "desc": "(optional) options <br><br>{boolean} <b>options.trace</b>:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} <b>options.onepass</b>:<br>if true, run only one pass through engine(default=false)<br><br>{boolean} <b>options.v2Compatible</b>: <br>if true, use RiScript v2-compatible syntax  (default=false)"
         }
       ],
       "returns": [
@@ -385,7 +385,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "optional way to set the options<br><br>{boolean} options.simple:<br>use simple tags or not<br><br>{boolean} options.inline [Only in JS]:<br>if true, output the result in a string, see <a href=\"../posInline\">posInline()</a>"
+          "desc": "(optional) options<br><br>{boolean} <b>options.simple</b>:<br>use simple tags or not<br><br>{boolean} <b>options.inline</b> [Only in JS]:<br>if true, output the result in a string, see <a href=\"../posInline\">posInline()</a>"
         }
       ],
       "returns": [
@@ -413,7 +413,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "optional way to set the option<br><br>{boolean} options.simple:<br>use simple tags or not, default=false"
+          "desc": "(optional) options<br><br>{boolean} <b>options.simple</b>:<br>use simple tags or not, default=false"
         }
       ],
       "returns": [
@@ -480,8 +480,8 @@
           "desc": "the text"
         },
         {
-          "type": "Object<br/>(or Map in Java)",
-          "desc": "options (optional) the relevant options for the KWIC model:<br/><br/>{boolean} options.ignoreCase:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.ignorePunctuation:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} options.wordsToIgnore:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br>"
+          "type": "Object<br>(or Map in Java)",
+          "desc": "options (optional) the relevant options for the KWIC model:<br/><br/>{boolean} <b>options.ignoreCase</b>:<br/>Ignore upper/lower case in the model <br/><br/>{boolean} <b>options.ignoreStopWords</b>: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} <b>options.ignorePunctuation</b>:<br/>Ignore punctuation tokens in the model<br/><br/>{String[]} <b>options.wordsToIgnore</b>:<br/>A set of words (alternative stop-words, for example) to ignore.<br><br>"
         }
       ],
       "returns": [
@@ -490,12 +490,12 @@
           "desc": "the concordance"
         }
       ],
-      "note": "See <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">https://en.wikipedia.org/wiki/Concordance_%28publishing%29</a>"
+      "note": "See <a href=\"https://en.wikipedia.org/wiki/Concordance_%28publishing%29\">Concordance</a> on Wikipedia"
     },
     {
       "name": "kwic",
-      "example": "<br/>opts = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, opts);<br>lines = RiTa.kwic(word, numWords);<br/><br/>",
-      "description": "Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.<br><br>Note: RiTa.concordance() must called before calling kwic().<br><br>",
+      "example": "<br/>options = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, options);<br/><br/>lines = RiTa.kwic(word, numWords);<br/><br/>",
+      "description": "Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.<br><br>Note:  <a href=\"../concordance/\">RiTa.concordance()</a> must called before calling RiTa.kwic()",
       "syntax": "RiTa.kwic(word);<br>RiTa.kwic(word, numWords);<br>// in Java only<br>RiTa.kwic(word, options)",
       "parameters": [
         {
@@ -508,7 +508,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options for the model and the output (optional)<br><br>{String} options.text:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} options.words:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} options.numWords:<br>another way to set the numWords<br><br>{others} others:<br>if options.text or options.words is set, you can also set other concordance options for the model, please see <a href=\"../concordance/\">RiTa.concordance()</a> for detail"
+          "desc": "options for the model and the output (optional)<br><br>{String} <b>options.text</b>:<br>the text as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the existing KWIC model<br><br>{String} <b>options.words</b>:<br>the words as the input of the KWIC model, you can set this option instead of calling RiTa.concordance() before RiTa.kwic(), if this option is set, it will overwrite the exist KWIC model<br><br>{int} <b>options.numWords</b>:<br>another way to set the numWords<br><br>{other} <br>if <b>options.text</b> or <b>options.words</b> is set, you can also set other concordance options for the model, please see <a href=\"../concordance/\">RiTa.concordance()</a> for detail"
         }
       ],
       "returns": [
@@ -627,7 +627,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "{boolean} options.dbug: if true, output debug logs to console (optional)"
+          "desc": "{boolean} <b>options.dbug</b>: if true, output debug logs to console (optional)"
         }
       ],
       "returns": [
@@ -649,7 +649,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "{boolean} options.dbug: if true, output debug log to console (optional)"
+          "desc": "{boolean} <b>options.dbug</b>: if true, output debug log to console (optional)"
         }
       ],
       "returns": [
@@ -681,7 +681,7 @@
       "name": "alliterations",
       "async": true,
       "example": "RiTa.alliterations(\"cat\"); <br/>RiTa.alliterations(\"cat\", {limit: 10});<br/>RiTa.alliterations(\"cat\", { maxLength: 4, numSyllables: 1 });",
-      "description": "Finds alliterations by comparing the phonemes of the input string to those of each word in the lexicon via a minimum-edit-distance metric",
+      "description": "Finds alliterations by comparing the phonemes of the input string to those of each word in the lexicon via a minimum-edit-distance metric.",
       "syntax": "RiTa.alliterations(word);<br/>RiTa.alliterations(word, opts);",
       "parameters": [
         {
@@ -699,11 +699,10 @@
           "desc": "array of alliterations"
         }
       ],
-      "related": "<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
+      "related": "<a href='../rhymes'>RiTa.rhymes()</a>, <a href='../search'>RiTa.search()</a>, <a href='../soundsLike'>RiTa.soundsLike()</a>, <a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "randomWord",
-      "async": true,
       "example": "// a random word from the lexicon<br/>RiTa.randomWord();<br/><br/>// a random plural noun from the lexicon<br/>RiTa.randomWord({ pos: \"nns\"});<br/><br/>// a random word with 3 syllables and length 3 or 4<br/>RiTa.randomWord({ numSyllables: 3, maxLength: 4});",
       "description": "Returns a random word from the lexicon that matches the specified criteria (length, syllable-count, phoneme pattern, stress pattern, part-of-speech, etc.)",
       "syntax": "RiTa.randomWord()<br/>RiTa.randomWord(opts);<br><br>",
@@ -747,7 +746,7 @@
           "desc": "rhymes for the word, or an empty array if none are found"
         }
       ],
-      "related": "<a href='../alliterations'>RiTa.alliterations()</a>,<a href='../search'>RiTa.search()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
+      "related": "<a href='../alliterations'>RiTa.alliterations()</a>, <a href='../search'>RiTa.search()</a>, <a href='../soundsLike'>RiTa.soundsLike()</a>, <a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "search",
@@ -771,7 +770,7 @@
           "desc": "array of words matching the search criteria in the lexicon (or all words if no criteria is provided)"
         }
       ],
-      "related": "<a href='../alliterations'>RiTa.alliterations()</a>,<a href='../rhymes'>RiTa.rhymes()</a>,<a href='../soundsLike'>RiTa.soundsLike()</a>,<a href='../spellsLike'>RiTa.spellsLike()</a>"
+      "related": "<a href='../alliterations'>RiTa.alliterations()</a>, <a href='../rhymes'>RiTa.rhymes()</a>, <a href='../soundsLike'>RiTa.soundsLike()</a>, <a href='../spellsLike'>RiTa.spellsLike()</a>"
     },
     {
       "name": "isAdverb",
