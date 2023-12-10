@@ -5,9 +5,6 @@ var __publicField = (obj, key, value) => {
   return value;
 };
 
-// src/rita.js
-import RiScript from "riscript";
-
 // src/stemmer.js
 var SnowballStemmer = class {
   constructor() {
@@ -4788,6 +4785,9 @@ var Util = class _Util {
   }
   static isNum(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
+  }
+  static numOpt(opts, name, def = 0) {
+    return _Util.isNum(opts?.[name]) ? opts[name] : def;
   }
 };
 var RE2 = class {
@@ -26971,41 +26971,8 @@ var Lexicon = class {
     }
     return false;
   }
-  /*findStem(word) { // JC: what is this function doing?
-  
-      let part = word;
-      let dict = this.data;
-      let words = Object.keys(dict);
-  
-      while (part.length > 1) {
-  
-        let pattern = new RegExp('^' + part);
-        let guess = words.filter(w => pattern.test(w));
-        if (guess && guess.length) {
-  
-          // always look for shorter words first
-          guess.sort((a, b) => a.length - b.length);
-  
-          // look for words stem(b)===a
-          for (let i = 0; i < guess.length; i++) {
-            if (this.RiTa.stem(guess[i]) === word) {
-              return guess[i];
-            }
-          }
-        }
-        part = part.slice(0, -1);
-      }
-  
-      return undefined;
-    }*/
-  async alliterations(theWord, opts = {}) {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(this.alliterationsSync(theWord, opts));
-      } catch (e) {
-        reject(e);
-      }
-    });
+  async alliterations(word, options = {}) {
+    return this._promise(this.alliterationsSync, [word, options]);
   }
   alliterationsSync(theWord, opts = {}) {
     this._parseArgs(opts);
@@ -27052,14 +27019,8 @@ var Lexicon = class {
     }
     return result;
   }
-  async rhymes(theWord, opts = {}) {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(this.rhymesSync(theWord, opts));
-      } catch (e) {
-        reject(e);
-      }
-    });
+  async rhymes(word, options = {}) {
+    return this._promise(this.rhymesSync, [word, options]);
   }
   rhymesSync(theWord, opts = {}) {
     this._parseArgs(opts);
@@ -27097,13 +27058,7 @@ var Lexicon = class {
     return result;
   }
   async spellsLike(word, options = {}) {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(this.spellsLikeSync(word, options));
-      } catch (e) {
-        reject(e);
-      }
-    });
+    return this._promise(this.spellsLikeSync, [word, options]);
   }
   spellsLikeSync(word, options = {}) {
     if (!word || !word.length)
@@ -27112,13 +27067,7 @@ var Lexicon = class {
     return this._byTypeSync(word, options);
   }
   async soundsLike(word, options = {}) {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(this.soundsLikeSync(word, options));
-      } catch (e) {
-        reject(e);
-      }
-    });
+    return this._promise(this.soundsLikeSync, [word, options]);
   }
   soundsLikeSync(word, opts = {}) {
     if (!word || !word.length)
@@ -27137,9 +27086,10 @@ var Lexicon = class {
       }
     }
     opts = opts || {};
-    opts.strictPos = true;
-    opts.shuffle = true;
     opts.limit = 1;
+    opts.shuffle = true;
+    opts.strictPos = true;
+    opts.minLength = util_default.numOpt(opts, "minLength", 4);
     let result = this.searchSync(regex2, opts);
     if (result.length < 1 && opts.hasOwnProperty("pos")) {
       opts.strictPos = false;
@@ -27152,13 +27102,7 @@ var Lexicon = class {
     return result[0];
   }
   async search(pattern, options) {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve(this.searchSync(pattern, options));
-      } catch (e) {
-        reject(e);
-      }
-    });
+    return this._promise(this.searchSync, [pattern, options]);
   }
   searchSync(pattern, options) {
     let words = Object.keys(this.data);
@@ -27209,15 +27153,6 @@ var Lexicon = class {
     return dict ? Object.keys(dict).length : 0;
   }
   //////////////////////////// helpers /////////////////////////////////
-  // async similarByType(pattern, options) {
-  //   return new Promise((resolve, reject) => {
-  //     try {
-  //       resolve(this.similarByTypeSync(pattern, options));
-  //     } catch (e) {
-  //       reject(e);
-  //     }
-  //   });
-  // }
   _byTypeSync(theWord, opts) {
     this._parseArgs(opts);
     const dict = this.data;
@@ -27302,14 +27237,13 @@ var Lexicon = class {
   // Handles: pos, limit, numSyllables, minLength, maxLength
   // potentially appends pluralize, conjugate, targetPos
   _parseArgs(opts) {
-    opts.limit = opts.limit || 10;
-    opts.minDistance = opts.minDistance || 1;
-    opts.numSyllables = opts.numSyllables || 0;
-    opts.maxLength = opts.maxLength || Number.MAX_SAFE_INTEGER;
-    opts.minLength = opts.minLength || 3;
-    if (typeof opts.limit !== "number" || opts.limit < 1) {
+    opts.limit = util_default.numOpt(opts, "limit", 10);
+    opts.minDistance = util_default.numOpt(opts, "minDistance", 1);
+    opts.numSyllables = util_default.numOpt(opts, "numSyllables", 0);
+    opts.maxLength = util_default.numOpt(opts, "maxLength", Number.MAX_SAFE_INTEGER);
+    opts.minLength = util_default.numOpt(opts, "minLength", 3);
+    if (opts.limit < 1)
       opts.limit = Number.MAX_SAFE_INTEGER;
-    }
     let tpos = opts.pos || false;
     if (tpos && tpos.length) {
       opts.pluralize = tpos === "nns";
@@ -27352,13 +27286,7 @@ var Lexicon = class {
   }
   async _bySoundAndLetter(word, opts) {
     let types = ["sound", "letter"];
-    let promises = types.map((type) => new Promise((resolve, reject) => {
-      try {
-        resolve(this._byTypeSync(word, { ...opts, type }));
-      } catch (e) {
-        reject(e);
-      }
-    }));
+    let promises = types.map((type) => this._promise(this._byTypeSync, [word, { ...opts, type }]));
     let results = await Promise.allSettled(promises);
     let [bySound, byLetter] = results.map((r) => r.value);
     if (bySound.length < 1 || byLetter.length < 1)
@@ -27407,6 +27335,15 @@ var Lexicon = class {
     return w.endsWith("ness") || w.endsWith("ism") || pos.indexOf("vbg") > 0 || util_default.MASS_NOUNS.includes(w);
   }
   // helpers ---------------------------------------------------------------
+  _promise(fun, args) {
+    return new Promise((resolve, reject) => {
+      try {
+        resolve(fun.apply(this, args));
+      } catch (e) {
+        reject(e);
+      }
+    });
+  }
   _parseRegex(regex2, opts) {
     if (typeof regex2 === "string") {
       if (opts && opts.type === "stresses") {
@@ -27806,7 +27743,7 @@ var Tagger = class {
         }
       }
       if (tag.startsWith("n")) {
-        if (isNum(word)) {
+        if (util_default.isNum(word)) {
           tag = "cd";
         }
       }
@@ -28042,9 +27979,6 @@ var HYPHENATEDS = {
 var VERB_PREFIX = ["de", "over", "re", "dis", "un", "mis", "out", "pre", "post", "co", "fore", "inter", "sub", "trans", "under"];
 var NOUN_PREFIX = ["anti", "auto", "de", "dis", "un", "non", "co", "over", "under", "up", "down", "hyper", "mono", "bi", "uni", "di", "semi", "omni", "mega", "mini", "macro", "micro", "counter", "ex", "mal", "neo", "out", "poly", "pseudo", "super", "sub", "sur", "tele", "tri", "ultra", "vice"];
 var ARTICLES = ["the", "a", "an", "some"];
-function isNum(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
 var tagger_default = Tagger;
 
 // src/inflector.js
@@ -42497,24 +42431,26 @@ var MULTI_SP_RE = / +/g;
 var markov_default = RiMarkov;
 
 // src/rita.js
+import { RiScript } from "riscript";
+var { Grammar: RiGrammar } = RiScript;
 var RiTa2 = class _RiTa {
   static grammar(rules, context) {
-    return new RiScript.Grammar(...arguments);
+    return new RiGrammar(...arguments);
   }
   static addTransform(name, definition) {
-    return RiScript.addTransform(...arguments);
+    return _RiTa.riscript.addTransform(...arguments);
   }
   static removeTransform(name) {
-    return RiScript.removeTransform(...arguments);
+    return _RiTa.riscript.removeTransform(...arguments);
   }
   static getTransforms() {
-    return RiScript.getTransforms();
+    return _RiTa.riscript.getTransforms();
   }
   static articlize(word) {
     return RiScript.articlize(...arguments);
   }
   static evaluate(script, context, opts) {
-    return RiScript.evaluate(...arguments);
+    return _RiTa.riscript.evaluate(...arguments);
   }
   static markov(n, opts) {
     return new markov_default(...arguments);
@@ -42672,7 +42608,7 @@ var RiTa2 = class _RiTa {
 };
 markov_default.parent = RiTa2;
 stemmer_default.parent = RiTa2;
-RiTa2.RiGrammar = RiScript.Grammar;
+RiTa2.RiGrammar = RiGrammar;
 RiTa2.RiMarkov = markov_default;
 RiTa2.Stemmer = stemmer_default;
 RiTa2.tagger = new tagger_default(RiTa2);
@@ -42685,9 +42621,8 @@ RiTa2.lexicon = new lexicon_default(RiTa2);
 RiTa2.conjugator = new conjugator_default(RiTa2);
 RiTa2.SILENT = false;
 RiTa2.SILENCE_LTS = false;
-RiTa2.CDN = "https://www.unpkg.com/rita/";
 RiTa2.PHONES = ["aa", "ae", "ah", "ao", "aw", "ay", "b", "ch", "d", "dh", "eh", "er", "ey", "f", "g", "hh", "ih", "iy", "jh", "k", "l", "m", "n", "ng", "ow", "oy", "p", "r", "s", "sh", "t", "th", "uh", "uw", "v", "w", "y", "z", "zh"];
-RiTa2.VERSION = "3.0.6";
+RiTa2.VERSION = "3.0.21";
 RiTa2.HAS_LEXICON = typeof __NOLEX__ === "undefined";
 RiTa2.FIRST = 1;
 RiTa2.SECOND = 2;
@@ -42717,8 +42652,8 @@ var ONLY_PUNCT = /^[\p{P}|\+|-|<|>|\^|\$|\ufffd|`]*$/u;
 var IS_LETTER = /^[a-z\u00C0-\u00ff]+$/;
 RiTa2.RiScript = RiScript;
 RiScript.RiTa = RiTa2;
-var rita_default = RiTa2;
+RiTa2.riscript = new RiScript({ RiTa: RiTa2 });
 export {
-  rita_default as default
+  RiTa2 as RiTa
 };
 //# sourceMappingURL=rita.js.map

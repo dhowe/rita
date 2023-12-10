@@ -104,7 +104,7 @@
                   <!-- CLASS -->
                   <td>
                     <h3>
-                      RiTa
+                      RiScript
                     </h3>
                   </td>
                 </tr>
@@ -113,14 +113,14 @@
                   <th scope="row">Name</th>
                   <!-- METHOD NAME -->
                   <td>
-                    <h4>tokens </h4>
+                    <h4>evaluate </h4>
                   </td>
                 </tr>
 
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Return an array containing all unique alphabetical words (tokens) in the text.<br/>.</td>
+                  <td>Parses and executes a <a href="https://observablehq.com/@dhowe/riscript">RiScript</a> string. Available as either a static or instance function.</td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin"><br/>sentence = "A small one is like a big one.";<br/>tokens = RiTa.tokens(sentence); <br/><br/>-> <em> [ 'a', 'small', 'one', 'is', 'like', 'big' ]</em><br/><br/><br/>sentence = "One had escaped, she'd thought."; <br/>tokens = RiTa.tokens(sentence, { splitContractions: true });<br/><br/>-> <em>[ 'one', 'had', 'escaped', 'she', 'had', 'thought' ]</em><br/><br/></pre>
+                      <pre class="margin">// Static<br/><br/>RiScript.evaluate("He was [happy | sad | indifferent]");<br/>RiScript.evaluate("He was [happy | sad | &#36;emo]", context);<br/><br/>// Instance<br/><br/>riscript.evaluate("He was [happy | sad | indifferent]");<br/>riscript.evaluate("He was [happy | sad | &#36;emo]", context);</pre>
                     </div>
                   </td>
                 </tr>
@@ -137,7 +137,7 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br/>(or Map in Java)</th><td width='75%'>options (optional), the relevant options for the function:<br/><br/>{String or Regex} options.regex:<br>customized regex for the tokenization, <br><br>{boolean} options.splitContractions: <br/>Convert contractions (e.g., "I'd" or "she'll") into multiple individual tokens<br/><br/>{boolean} options.includePunct: <br/>Include punctuation tokens in the output<br/><br/>{boolean} options.caseSensitive:<br/>Treat differently cased strings as separate tokens <br/><br/>{boolean} options.ignoreStopWords: <br/>Ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS<br/><br/>{boolean} options.sort:<br/>Return the results in sorted order<br><br></td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the input</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br></th><td width='75%'>the context for any referenced variables or functions (optional)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object<br>)</th><td width='75%'>(optional) options <br><br>{boolean} <b>options.trace</b>:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} <b>options.onepass</b>:<br>if true, run only one pass through engine(default=false)<br><br>{boolean} <b>options.v2Compatible</b>: <br>if true, use RiScript v2-compatible syntax  (default=false)</td></tr></table>
                   </td>
                 </tr>
 
@@ -146,7 +146,7 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>the set of unique alphabetical tokens in the text</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the result of the evaluation</td></tr></table>
                   </td>
                 </tr>
 
@@ -154,7 +154,7 @@
                   <th scope="row">Related</th>
 
                   <!-- RELATED  -->
-                  <td><a href='../tokenize'>RiTa.tokenize()</a><br>RiTa.SPLIT_CONTRACTIONS<br>boolean to globally control the splitting of contractions (e.g. splitting "I'd" or "she'll") into multiple individual tokens), default=false.</td>
+                  <td>See <a href="https://observablehq.com/@dhowe/riscript">RiScript documentation</a></td>
                 </tr>
 
                 <tr class='Note' style='display:none'>
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>RiTa.tokens(text);<br/>RiTa.tokens(text, options);</pre>
+                    <pre>riscript.evaluate(string);<br/>riscript.evaluate(string, context);</pre>
                   </td>
                 </tr>
 
@@ -178,7 +178,7 @@
 
                   <!-- RelatedConstants  -->
                   <td>
-                    <a href='../tokenize'>RiTa.tokenize()</a><br>RiTa.SPLIT_CONTRACTIONS<br>boolean to globally control the splitting of contractions (e.g. splitting "I'd" or "she'll") into multiple individual tokens), default=false.Constants
+                    See <a href="https://observablehq.com/@dhowe/riscript">RiScript documentation</a>Constants
                   </td>
                 </tr>
 

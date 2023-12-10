@@ -121,7 +121,8 @@ public class MakeDocs extends PApplet {
 				contents += "  <div class=\"category\">\n";
 				contents += "    <span style=\"color: #006B8F !important;\"><b>";
 				contents += (cls.equals("RiScript") // special link for RiScript 
-						? "<a href='" + rslink + "' target='_new'>[ " + cls + " ]</a></b><span>"
+						? "<a href='" + rslink + "' target='_new' alt='RiScript Tutorial'"
+            + " style=\"text-decoration: underline; !important;\"> " + cls + " </a></b><span>"
 						: cls + "</b><span>") + "<br><br>\n";  // otherwise no link
 
 				for (int j = 0; j < TYPES.length; j++) {
@@ -165,7 +166,6 @@ public class MakeDocs extends PApplet {
 			tmpl = replaceArr(tmpl, "tmp_contents", contents);
 			tmpl = replaceArr(tmpl, "gallery_contents", generateGallery());
 			writeFile(outputs[f], tmpl);
-
 		}
 	}
 

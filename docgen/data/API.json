@@ -83,6 +83,15 @@
       "statics": [
         "fromJSON"
       ]
+    },
+    {
+      "class": "RiScript",
+      "functions": [
+        "evaluate"
+      ],
+      "constructor": true,
+      "statics": [
+      ]
     }
   ]
 }

@@ -1,7 +1,35 @@
 {
   "class": "RiScript",
   "fields": [],
-  "statics": [],
+  "statics": [
+  ],
   "functions": [
+    {
+      "name": "evaluate",
+      "example": "// Static<br/><br/>RiScript.evaluate(\"He was [happy | sad | indifferent]\");<br/>RiScript.evaluate(\"He was [happy | sad | &#36;emo]\", context);<br/><br/>// Instance<br/><br/>riscript.evaluate(\"He was [happy | sad | indifferent]\");<br/>riscript.evaluate(\"He was [happy | sad | &#36;emo]\", context);",
+      "description": "Parses and executes a <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> string. Available as either a static or instance function.",
+      "syntax": "riscript.evaluate(string);<br/>riscript.evaluate(string, context);",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "the input"
+        },
+        {
+          "type": "Object<br>",
+          "desc": "the context for any referenced variables or functions (optional)"
+        },
+        {
+          "type": "Object<br>)",
+          "desc": "(optional) options <br><br>{boolean} <b>options.trace</b>:<br>if true, output verbose log to console for debugging (default=false)<br><br>{boolean} <b>options.onepass</b>:<br>if true, run only one pass through engine(default=false)<br><br>{boolean} <b>options.v2Compatible</b>: <br>if true, use RiScript v2-compatible syntax  (default=false)"
+        }
+      ],
+      "returns": [
+        {
+          "type": "String",
+          "desc": "the result of the evaluation"
+        }
+      ],
+      "related": "See <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript documentation</a>"
+    }
   ]
 }

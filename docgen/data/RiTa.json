@@ -165,7 +165,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options (optional)<br><br>{boolean} <b>options.simple:</b><br> use simple tags or not, default=false<br><br>{boolean} <b>options.silent</b>:<br> if true, will not output logs to console when running (default=false)<br><br>{boolean} <b>options.inline</b>:<br> inline tags or not (only in JavaScript, default=false)"
+          "desc": "options (optional)<br><br>{boolean} <b>options.simple:</b><br> use simple tags or not, default=false<br><br>{boolean} <b>options.silent</b>:<br> if true, will not output logs to console when running (default=false)"
         }
       ],
       "returns": [
@@ -278,7 +278,7 @@
     },
     {
       "name": "tokens",
-      "example": "<br/>sentence = \"A small one is like a big one.\";<br/>tokens = RiTa.tokens(sentence); <br/><br/>-> <em> [ 'a', 'small', 'one', 'is', 'like', 'big', '.' ]</em><br/><br/><br/>sentence = \"One had escaped, she'd thought.\"; <br/>tokens = RiTa.tokens(sentence, { splitContractions: true });<br/><br/>-> <em>[ 'one', 'had', 'escaped', ',', 'she', 'had', 'thought', '.' ]</em><br/><br/>",
+      "example": "<br/>sentence = \"A small one is like a big one.\";<br/>tokens = RiTa.tokens(sentence); <br/><br/>-> <em> [ 'a', 'small', 'one', 'is', 'like', 'big' ]</em><br/><br/><br/>sentence = \"One had escaped, she'd thought.\"; <br/>tokens = RiTa.tokens(sentence, { splitContractions: true });<br/><br/>-> <em>[ 'one', 'had', 'escaped', 'she', 'had', 'thought' ]</em><br/><br/>",
       "description": "Return an array containing all unique alphabetical words (tokens) in the text.<br/>",
       "syntax": "RiTa.tokens(text);<br/>RiTa.tokens(text, options);",
       "parameters": [
@@ -496,7 +496,7 @@
       "name": "kwic",
       "example": "<br/>options = {<br/> ignoreCase: false,<br/> ignoreStopWords: true<br/>};<br/><br/>RiTa.concordance(text, options);<br/><br/>lines = RiTa.kwic(word, numWords);<br/><br/>",
       "description": "Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.<br><br>Note:  <a href=\"../concordance/\">RiTa.concordance()</a> must called before calling RiTa.kwic()",
-      "syntax": "RiTa.kwic(word);<br>RiTa.kwic(word, numWords);<br>// in Java only<br>RiTa.kwic(word, options)",
+      "syntax": "RiTa.kwic(word);<br>RiTa.kwic(word, numWords);<br>RiTa.kwic(word, options)",
       "parameters": [
         {
           "type": "String",
@@ -531,7 +531,7 @@
         },
         {
           "type": "Object",
-          "desc": "object containing the relevant options (tense, number, person...) for the conjugator<br/><br/>{int} options.tense:<br>[RiTa.PAST, RiTa.PRESENT, or RiTa.FUTURE]<br/><br>{int} options.number:<br>[RiTa.SINGULAR or RiTa.PLURAL]<br/><br>{int} options.person:<br>[RiTa.FIRST, RiTa.SECOND or RiTa.THIRD]<br/><br/>{int} options.form:<br>[RiTa.INFINITIVE or RiTa.GERUND]<br><br>{boolean} options.passive<br><br>{boolean} options.progressive<br><br>{boolean} options.interrogative<br><br>{boolean} options.perfect"
+          "desc": "object containing the relevant options (tense, number, person...) for the conjugator<br/><br/>{int} options.tense:<br>[RiTa.PAST, RiTa.PRESENT, or RiTa.FUTURE]<br/><br>{int} options.number:<br>[RiTa.SINGULAR or RiTa.PLURAL]<br/><br>{int} options.person:<br>[RiTa.FIRST, RiTa.SECOND or RiTa.THIRD]<br/><br/>{int} options.form:<br>[RiTa.INFINITIVE or RiTa.GERUND]<br><br>{boolean} options.passive: true or false<br><br>{boolean} options.progressive: true or false<br><br>{boolean} options.interrogative: true or false<br><br>{boolean} options.perfect: true or false"
         }
       ],
       "returns": [
@@ -540,7 +540,7 @@
           "desc": "the conjugated verb"
         }
       ],
-      "related": "RiTa.FIRST: int, value=1<br>RiTa.SECOND: int, value=2<br>RiTa.THIRD: int, value=3<br>RiTa.PAST: int, value=4<br>RiTa.PRESENT: int, value=5<br>RiTa.FUTURE: int, value=6<br>RiTa.SINGULAR: int, value=7<br>RiTa.PLURAL: int, value=8<br>RiTa.NORMAL: int, value=9<br>RiTa.INFINITIVE: int, value=1<br>RiTa.GERUND: int, value=2"
+      "related": "RiTa.FIRST<br>RiTa.SECOND<br>RiTa.THIRD<br>RiTa.PAST<br>RiTa.PRESENT<br>RiTa.FUTURE<br>RiTa.SINGULAR<br>RiTa.PLURAL<br>RiTa.NORMAL<br>RiTa.INFINITIVE<br>RiTa.GERUND"
     },
     {
       "name": "articlize",
