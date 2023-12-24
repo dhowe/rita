@@ -138,18 +138,19 @@
 
               <tr>
                 <td>
-                  <p><b><a href="https://observablehq.com/@dhowe/riscript">A more detailed tutorial</a> on Observable</b></p>
+                  <p><b><a href="https://observablehq.com/@dhowe/riscript">A more detailed tutorial</a> on
+                      Observable</b></p>
                   <span style="color:rgb(36, 62, 114); font-weight: 600;">RiScript</span> is a simple, writer-oriented,
                   scripting language integrated in RiTa. RiScript statements, the basics of which are
                   described below, can be included in any <a href="./RiTa/grammar/index.html">grammar</a>, or executed
                   directly by calling <a href="./RiTa/evaluate/index.html">RiTa.evaluate()</a>. Fragments of writing
                   can be abitrarily transformed, at runtime, by using the provided <a href="#transforms">transforms</a>,
-                  or by specifying your own bespoke ones. <br><br>RiScript is a simplified version of the Dial scripting
+                  or by specifying your own bespoke ones. <br><br>RiScript is a simplified version of the
+                  <code>Dial</code> scripting
                   language, originally created for <a
                     href="https://rednoise.org/daniel/res/pdfs/dialogic_a_toolkit_for_generative_interactive_game_dialog-HOWE-2020.pdf"
-                    target="_blank">Dialogic</a>. The <a href="https://github.com/antlr/antlr4"
-                    target="_blank">antlr4</a> grammar
-                  for the language is <a href="https://github.com/antlr/antlr4" target="_blank">here</a>.
+                    target="_blank">Dialogic</a>. The language specification and parser were created via the blazing
+                  fast <a target="_blank" href="https://chevrotain.io/docs/">Chevrotain</a> toolkit.
 
                   <h4>Choice</h4>
                   Select a random choice from a group of options:</h5>
@@ -179,10 +180,10 @@
                   <h4>Transforms</h4>
                   <a name="transforms"></a>
                   Transforms allow for the evaluation of variables, choices and raw text at runtime.
-                  RiScript provides a number of built-in transforms, including pluralize(), capitalize() and
-                  articlize(),
+                  RiScript provides a number of built-in transforms, including <code>pluralize</code> ,
+                  <code>capitalize</code> and <code>articlize</code>,
                   which can be nested to create complex expressions. User-defined transforms can be easily added using
-                  RiTa.addTransform() or by
+                  <a href="./RiTa/addTransform/index.html">RiTa.addTransform()</a>  or by
                   simply passing a transform function as part of a script's 'context'.<br>
 
                   <pre>How many [tooth | menu | child].pluralize() do you have?<br>How many [tooth | menu | child].pluralize().toUpper() do you have?<br><br>He grew up to be $animal.articlize().<br>He grew up to be [anteater].articlize().<br>He grew up to be [anteater].articlize().myCustomTransform().</pre>
@@ -194,9 +195,9 @@
                     <table style="font-family: monaco; font-size: 1em; width:90%">
                       <tbody>
                         <tr>
-                          <th style="width:15%; height:3em;">transform </th>
-                          <th style="text-align:center; padding-right: 80px">description</th>
-                          <th style="text-align:center;">alias</th>
+                          <th style="width:15%; height:3em;">Transform </th>
+                          <th style="text-align:center; padding-right: 80px">Description</th>
+                          <th style="text-align:center;">Alias</th>
                         </tr>
                         <tr>
                           <td style="font-size: 1em !important">articlize()</td>
@@ -214,11 +215,17 @@
                           <td style="font-size: 1em !important;text-align:center;font-size: 1em !important">s()</td>
                         </tr>
                         <tr>
+                          <td style="font-size: 1em !important">norepeat()</td>
+                          <td style="font-size: 1em !important;text-align:center; padding-left: 10px">ensures a choice will never repeat its output
+                          </td>
+                          <td style="font-size: 1em !important;text-align:center;">nr()</td>
+                        </tr>
+                        <tr>
                           <td style="font-size: 1em !important">capitalize()</td>
                           <td style="font-size: 1em !important;text-align:center; padding-left: 10px">capitalizes the
                             first letter of the phrase
                           </td>
-                          <td style="font-size: 1em !important;text-align:center;">cap()</td>
+                          <td style="font-size: 1em !important;text-align:center;">ucf()</td>
                         </tr>
                         <tr>
                           <td style="font-size: 1em !important">uppercase()</td>
