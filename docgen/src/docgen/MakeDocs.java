@@ -108,7 +108,8 @@ public class MakeDocs extends PApplet {
 				WWW_OUTPUT + "index." + OUTPUT_TYPE   // homepage index
 		};
 
-		String rslink = "https://observablehq.com/@dhowe/riscript";
+		String rslink = "./reference/riscript.html";
+      //"https://observablehq.com/@dhowe/riscript";
 
 		for (int f = 0; f < templates.length; f++) {
 

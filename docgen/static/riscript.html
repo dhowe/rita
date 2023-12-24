@@ -153,13 +153,13 @@
 
                   <h4>Choice</h4>
                   Select a random choice from a group of options:</h5>
-                  <pre><code>The weather was (sad | gloomy | depressed).  ->  "The weather was gloomy."<br><br>I'm (very | super | really) glad to \ <br>  ((meet | know) you | learn about you).     ->   "I'm very glad to know you."</code></pre>
+                  <pre><code>The weather was [sad | gloomy | depressed].  ->  "The weather was gloomy."<br><br>I'm [very | super | really] glad to \ <br>  [[meet | know] you | learn about you].     ->   "I'm very glad to know you."</code></pre>
 
 
                   <h4>Weighted Choice</h4>
                   Assign weights to the options in a choice. In the example below 'depressed' will be selected four
                   times as often as 'sad' and twice as often as 'gloomy'<br>
-                  <pre>The weather was (sad | gloomy [2] | depressed[4]).  ->  "The weather was depressed." </pre>
+                  <pre>The weather was [sad | gloomy (2) | depressed (4)].  ->  "The weather was depressed." </pre>
 
 
                   <h4>Assignment</h4>
@@ -170,10 +170,10 @@
 
 
                   <h4>Inline Assignment</h4>
-                  Inline assignments (within parentheses) allow one to easily set a variable, output it, and refer to it
+                  Inline assignments (within brackets) allow one to easily set a variable, output it, and refer to it
                   later:<br>
 
-                  <pre>Jane was from ($place=(New York | Berlin | Shanghai)).<br>$place is cold and wet.<br>     ->  "Jane was from Berlin. Berlin is cold and wet."<br><br>$place=(New York | Berlin | Shanghai)<br>$place is cold and wet in winter.<br>     ->  "Berlin is cold and wet in the winter."<br><br>In ($place=(New York | Berlin | Shanghai)) it is cold and wet in winter.<br>     ->  "In Berlin it is cold and wet in the winter."</pre>
+                  <pre>Jane was from [$place=[New York | Berlin | Shanghai]].<br>$place is cold and wet.<br>     ->  "Jane was from Berlin. Berlin is cold and wet."<br><br>$place=(New York | Berlin | Shanghai)<br>$place is cold and wet in winter.<br>     ->  "Berlin is cold and wet in the winter."<br><br>In [$place=[New York | Berlin | Shanghai]] it is cold and wet in winter.<br>     ->  "In Berlin it is cold and wet in the winter."</pre>
 
 
                   <h4>Transforms</h4>
@@ -185,7 +185,7 @@
                   RiTa.addTransform() or by
                   simply passing a transform function as part of a script's 'context'.<br>
 
-                  <pre>How many (tooth | menu | child).pluralize() do you have?<br>How many (tooth | menu | child).pluralize().toUpper() do you have?<br><br>He grew up to be $animal.articlize().<br>He grew up to be (anteater).articlize().<br>He grew up to be (anteater).articlize().myCustomTransform().</pre>
+                  <pre>How many [tooth | menu | child].pluralize() do you have?<br>How many [tooth | menu | child].pluralize().toUpper() do you have?<br><br>He grew up to be $animal.articlize().<br>He grew up to be [anteater].articlize().<br>He grew up to be [anteater].articlize().myCustomTransform().</pre>
                   <br>
 
                   <div style="margin-bottom:10px;">Built-in transforms, with their shortcuts, are listed below</div>
