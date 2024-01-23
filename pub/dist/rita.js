@@ -796,9 +796,9 @@ var _Stemmer = class _Stemmer {
     if (!input.includes(" ")) {
       return _Stemmer.stemEnglish(input);
     }
-    const words = _Stemmer.parent.tokenize(input);
+    const words = _Stemmer.tokenizer.tokenize(input);
     const stems = _Stemmer.stemAll(words);
-    return _Stemmer.parent.untokenize(stems);
+    return _Stemmer.tokenizer.untokenize(stems);
   }
   static stemAll(input) {
     return input.map((i) => _Stemmer.stemEnglish(i));
@@ -830,6 +830,7 @@ var _Stemmer = class _Stemmer {
     return _Stemmer.impl.getCurrent();
   }
 };
+__publicField(_Stemmer, "tokenizer");
 __publicField(_Stemmer, "impl", new SnowballStemmer());
 var Stemmer = _Stemmer;
 var stemmer_default = Stemmer;
@@ -840,57 +841,51 @@ var Tokenizer = class {
     this.RiTa = parent;
     this.splitter = /(\S.+?[.!?]["\u201D]?)(?=\s+|$)/g;
   }
-  tokens(text, opts = {}) {
-    let words = this.tokenize(text, opts), map = {};
+  /**
+   * Returns an array containing all unique alphabetical words (tokens) in the text.
+   * Punctuation and case are ignored unless specified otherwise.
+   * @param {string} text - The text from which to extract the tokens
+   * @param {object} [options] - The options
+   * @param {boolean} [options.caseSensitive=false] - Whether to pay attention to case
+   * @param {boolean} [options.ignoreStopWords=false] - Whether to ignore words like 'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS
+   * @param {boolean} [options.splitContractions=false] - Whether to convert contractions (e.g., "I'd" or "she'll") into multiple individual tokens
+   * @param {boolean} [options.includePunct=false] - Whether to include punctuation in the results
+   * @param {boolean} [options.sort=false] - Whether to sort the tokens before returning them
+   * @returns {string[]} Array of tokens
+   */
+  tokens(text, options = {
+    caseSensitive: false,
+    ignoreStopWords: false,
+    splitContractions: false,
+    includePunct: false,
+    sort: false
+  }) {
+    let words = this.tokenize(text, options), map = {};
     words.forEach((w) => {
-      if (!opts.caseSensitive)
+      if (!options.caseSensitive)
         w = w.toLowerCase();
-      if (opts.includePunct || ALPHA_RE.test(w))
+      if (options.includePunct || ALPHA_RE.test(w))
         map[w] = 1;
     });
     let tokens = Object.keys(map);
-    if (opts.ignoreStopWords)
+    if (options.ignoreStopWords)
       tokens = tokens.filter((t) => !this.RiTa.isStopWord(t));
-    return opts.sort ? tokens.sort() : tokens;
+    return options.sort ? tokens.sort() : tokens;
   }
-  sentences(text, regex2) {
-    if (!text || !text.length)
-      return [text];
-    let clean = text.replace(NL_RE, " ");
-    let delim = "___";
-    let re = new RegExp(delim, "g");
-    let pattern = regex2 || this.splitter;
-    let unescapeAbbrevs = (arr2) => {
-      for (let i = 0; i < arr2.length; i++) {
-        arr2[i] = arr2[i].replace(re, ".");
-      }
-      return arr2;
-    };
-    let escapeAbbrevs = (text2) => {
-      let abbrevs = this.RiTa.ABRV;
-      for (let i = 0; i < abbrevs.length; i++) {
-        let abv = abbrevs[i];
-        let idx = text2.indexOf(abv);
-        while (idx > -1) {
-          text2 = text2.replace(abv, abv.replace(".", delim));
-          idx = text2.indexOf(abv);
-        }
-      }
-      return text2;
-    };
-    let arr = escapeAbbrevs(clean).match(pattern);
-    return arr && arr.length ? unescapeAbbrevs(arr) : [text];
-  }
-  tokenize(input, opts = {}) {
+  tokenize(input, opts = {
+    // regex: null,
+    // splitHyphens: false,
+    // splitContractions: false
+  }) {
     if (typeof input !== "string")
       return [];
     if (opts.regex)
-      return input.split(regex);
+      return input.split(opts.regex);
     let { tags, text } = this.pushTags(input.trim());
     for (let i = 0; i < TOKENIZE_RE.length; i += 2) {
       text = text.replace(TOKENIZE_RE[i], TOKENIZE_RE[i + 1]);
     }
-    if (opts.splitHyphen) {
+    if (opts.splitHyphens) {
       text = text.replace(/([a-zA-Z]+)-([a-zA-Z]+)/g, "$1 - $2");
     }
     if (this.RiTa.SPLIT_CONTRACTIONS || opts.splitContractions) {
@@ -901,11 +896,10 @@ var Tokenizer = class {
     let result = this.popTags(text.trim().split(WS_RE), tags);
     return result;
   }
-  untokenize(arr, delim) {
+  untokenize(arr, delim = " ") {
     if (!arr || !Array.isArray(arr))
       return "";
     arr = this.preProcessTags(arr);
-    delim = delim || " ";
     let nextNoSpace = false, afterQuote = false, midSentence = false;
     let withinQuote = arr.length && QUOTE_RE.test(arr[0]);
     let result = arr[0] || "";
@@ -965,6 +959,40 @@ var Tokenizer = class {
       }
     }
     return result.trim();
+  }
+  /**
+   * Split the input text into sentences according to the options
+   * @param {string} text - The text to split
+   * @param {(string|RegExp)} [regex] - An optional custom regex to split on
+   * @returns {string[]} An array of sentences
+   */
+  sentences(text, regex) {
+    if (!text || !text.length)
+      return [text];
+    let clean = text.replace(NL_RE, " ");
+    let delim = "___";
+    let re = new RegExp(delim, "g");
+    let pattern = regex || this.splitter;
+    let unescapeAbbrevs = (arr2) => {
+      for (let i = 0; i < arr2.length; i++) {
+        arr2[i] = arr2[i].replace(re, ".");
+      }
+      return arr2;
+    };
+    let escapeAbbrevs = (text2) => {
+      let abbrevs = this.RiTa.ABRV;
+      for (let i = 0; i < abbrevs.length; i++) {
+        let abv = abbrevs[i];
+        let idx = text2.indexOf(abv);
+        while (idx > -1) {
+          text2 = text2.replace(abv, abv.replace(".", delim));
+          idx = text2.indexOf(abv);
+        }
+      }
+      return text2;
+    };
+    let arr = escapeAbbrevs(clean).match(pattern);
+    return arr?.length ? unescapeAbbrevs(arr) : [text];
   }
   pushTags(text) {
     let tags = [], tagIdx = 0;
@@ -1335,6 +1363,7 @@ var TOKENIZE_RE = [
   // RS
 ];
 var CONTRACTS_RE = [
+  // TODO: 'She'd have wanted' -> 'She would have wanted'
   /([Cc])an['\u2019]t/g,
   "$1an not",
   /([Dd])idn['\u2019]t/g,
@@ -1348,7 +1377,8 @@ var CONTRACTS_RE = [
   /([tT]hat)['\u2019]s/g,
   "$1 is",
   /(she|he|you|they|i)['\u2019]d/gi,
-  "$1 would",
+  "$1 had",
+  // changed from would, 12/8/23
   /(she|he|you|they|i)['\u2019]ll/gi,
   "$1 will",
   /n['\u2019]t /g,
@@ -1364,9 +1394,9 @@ var tokenizer_default = Tokenizer;
 
 // src/conjugator.js
 var RegularExpression = class {
-  constructor(regex2, offset, suffix) {
-    this.raw = regex2;
-    this.regex = new RegExp(regex2);
+  constructor(regex, offset, suffix) {
+    this.raw = regex;
+    this.regex = new RegExp(regex);
     this.offset = offset;
     this.suffix = suffix || "";
   }
@@ -1383,7 +1413,7 @@ var RegularExpression = class {
     return "/" + this.raw + "/";
   }
 };
-var RE = (a, b, c) => new RegularExpression(a, b, c);
+var RE = (a, b, c, _) => new RegularExpression(a, b, c);
 var Conjugator = class {
   constructor(parent) {
     __publicField(this, "_handleStem", function(word) {
@@ -1432,11 +1462,11 @@ var Conjugator = class {
     }
     args = this._parseArgs(args);
     let frontVG = TO_BE.includes(verb) ? "be" : this._handleStem(verb);
-    let actualModal, verbForm, conjs = [], RiTa3 = this.RiTa;
-    if (this.form === RiTa3.INFINITIVE) {
+    let actualModal, verbForm, conjs = [], RiTa2 = this.RiTa;
+    if (this.form === RiTa2.INFINITIVE) {
       actualModal = "to";
     }
-    if (this.tense === RiTa3.FUTURE) {
+    if (this.tense === RiTa2.FUTURE) {
       actualModal = "will";
     }
     if (this.passive) {
@@ -1456,7 +1486,7 @@ var Conjugator = class {
       frontVG = null;
     }
     if (frontVG) {
-      if (this.form === RiTa3.GERUND) {
+      if (this.form === RiTa2.GERUND) {
         conjs.push(this.presentPart(frontVG));
       } else if (this.interrogative && frontVG != "be" && conjs.length < 1) {
         conjs.push(frontVG);
@@ -1575,19 +1605,19 @@ var Conjugator = class {
   }
   _parseArgs(args) {
     this._reset();
-    const RiTa3 = this.RiTa;
+    const RiTa2 = this.RiTa;
     if (typeof args === "string") {
       if (/^[123][SP](Pr|Pa|Fu)$/.test(args)) {
         let opts = {};
         opts.person = parseInt(args[0]);
-        opts.number = args[1] === "S" ? RiTa3.SINGULAR : RiTa3.PLURAL;
+        opts.number = args[1] === "S" ? RiTa2.SINGULAR : RiTa2.PLURAL;
         let tense = args.substr(2);
         if (tense === "Pr")
-          opts.tense = RiTa3.PRESENT;
+          opts.tense = RiTa2.PRESENT;
         if (tense === "Fu")
-          opts.tense = RiTa3.FUTURE;
+          opts.tense = RiTa2.FUTURE;
         if (tense === "Pa")
-          opts.tense = RiTa3.PAST;
+          opts.tense = RiTa2.PAST;
         args = opts;
       } else {
         throw Error("Invalid args: " + args);
@@ -1678,20 +1708,20 @@ var Conjugator = class {
     return false;
   }
   _pastTense(theVerb, pers, numb) {
-    const RiTa3 = this.RiTa;
+    const RiTa2 = this.RiTa;
     if (theVerb.toLowerCase() === "be") {
       switch (numb) {
-        case RiTa3.SINGULAR:
+        case RiTa2.SINGULAR:
           switch (pers) {
-            case RiTa3.FIRST:
+            case RiTa2.FIRST:
               break;
-            case RiTa3.THIRD:
+            case RiTa2.THIRD:
               return "was";
-            case RiTa3.SECOND:
+            case RiTa2.SECOND:
               return "were";
           }
           break;
-        case RiTa3.PLURAL:
+        case RiTa2.PLURAL:
           return "were";
       }
     }
@@ -1700,17 +1730,17 @@ var Conjugator = class {
   _presentTense(theVerb, person, number) {
     person = person || this.person;
     number = number || this.number;
-    const RiTa3 = this.RiTa;
-    if (person === RiTa3.THIRD && number === RiTa3.SINGULAR) {
+    const RiTa2 = this.RiTa;
+    if (person === RiTa2.THIRD && number === RiTa2.SINGULAR) {
       return this._checkRules(PRESENT_RULESET, theVerb);
     } else if (theVerb === "be") {
-      if (number === RiTa3.SINGULAR) {
+      if (number === RiTa2.SINGULAR) {
         switch (person) {
-          case RiTa3.FIRST:
+          case RiTa2.FIRST:
             return "am";
-          case RiTa3.SECOND:
+          case RiTa2.SECOND:
             return "are";
-          case RiTa3.THIRD:
+          case RiTa2.THIRD:
             return "is";
         }
       } else {
@@ -4791,9 +4821,9 @@ var Util = class _Util {
   }
 };
 var RE2 = class {
-  constructor(regex2, offset, suffix) {
-    this.raw = regex2;
-    this.regex = new RegExp(regex2);
+  constructor(regex, offset, suffix) {
+    this.raw = regex;
+    this.regex = new RegExp(regex);
     this.offset = offset;
     this.suffix = suffix || "";
   }
@@ -27069,20 +27099,25 @@ var Lexicon = class {
   async soundsLike(word, options = {}) {
     return this._promise(this.soundsLikeSync, [word, options]);
   }
+  /**
+   * A synchronous version of RiTa.lexicon.soundsLike().
+   * @param {string} word 
+   * @param {object} [opts]
+   * @returns {string[]} An array of words that sound like the input word
+   */
   soundsLikeSync(word, opts = {}) {
     if (!word || !word.length)
       return [];
-    opts.type = "sound";
-    return opts.matchSpelling ? this._bySoundAndLetter(word, opts) : this._byTypeSync(word, opts);
+    return opts.matchSpelling ? this._bySoundAndLetterSync(word, opts) : this._byTypeSync(word, { ...opts, type: "sound" });
   }
-  randomWord(regex2, opts) {
-    if (!regex2 && !opts) {
+  randomWord(pattern, opts) {
+    if (!pattern && !opts) {
       return this.RiTa.random(Object.keys(this.data));
     }
-    if (!(regex2 instanceof RegExp)) {
-      if (typeof regex2 === "object" && !opts) {
-        opts = regex2;
-        regex2 = void 0;
+    if (!(pattern instanceof RegExp)) {
+      if (typeof pattern === "object" && !opts) {
+        opts = pattern;
+        pattern = void 0;
       }
     }
     opts = opts || {};
@@ -27090,14 +27125,14 @@ var Lexicon = class {
     opts.shuffle = true;
     opts.strictPos = true;
     opts.minLength = util_default.numOpt(opts, "minLength", 4);
-    let result = this.searchSync(regex2, opts);
+    let result = this.searchSync(pattern, opts);
     if (result.length < 1 && opts.hasOwnProperty("pos")) {
       opts.strictPos = false;
-      result = this.searchSync(regex2, opts);
+      result = this.searchSync(pattern, opts);
     }
     if (result.length < 1) {
       ["strictPos", "shuffle", "targetPos"].forEach((k) => delete opts[k]);
-      throw Error("No words matching constraints:\n" + JSON.stringify(opts, 0, 2));
+      throw Error("No words matching constraints:\n" + JSON.stringify(opts, void 0, 2));
     }
     return result[0];
   }
@@ -27108,7 +27143,7 @@ var Lexicon = class {
     let words = Object.keys(this.data);
     if (!pattern && !options)
       return words;
-    let { regex: regex2, opts } = this._parseRegex(pattern, options);
+    let { regex, opts } = this._parseRegex(pattern, options);
     this._parseArgs(opts);
     if (opts.shuffle)
       words = this.RiTa.randomizer.shuffle(words);
@@ -27124,7 +27159,7 @@ var Lexicon = class {
         if (word !== words[i])
           data = this.data[word];
       }
-      if (!regex2 || this._regexMatch(word, data, regex2, opts.type)) {
+      if (!regex || this._regexMatch(word, data, regex, opts.type)) {
         result.push(word);
         if (result.length === opts.limit)
           break;
@@ -27260,29 +27295,36 @@ var Lexicon = class {
     opts.targetPos = tpos;
   }
   _reconjugate(word, pos) {
-    const RiTa3 = this.RiTa;
+    const RiTa2 = this.RiTa;
     switch (pos) {
       case "vbd":
-        return RiTa3.conjugate(word, {
-          number: RiTa3.SINGULAR,
-          person: RiTa3.FIRST,
-          tense: RiTa3.PAST
+        return RiTa2.conjugate(word, {
+          number: RiTa2.SINGULAR,
+          person: RiTa2.FIRST,
+          tense: RiTa2.PAST
         });
       case "vbg":
-        return RiTa3.presentPart(word);
+        return RiTa2.presentPart(word);
       case "vbn":
-        return RiTa3.pastPart(word);
+        return RiTa2.pastPart(word);
       case "vbp":
         return word;
       case "vbz":
-        return RiTa3.conjugate(word, {
-          number: RiTa3.SINGULAR,
-          person: RiTa3.THIRD,
-          tense: RiTa3.PRESENT
+        return RiTa2.conjugate(word, {
+          number: RiTa2.SINGULAR,
+          person: RiTa2.THIRD,
+          tense: RiTa2.PRESENT
         });
       default:
         throw Error("Unexpected pos: " + pos);
     }
+  }
+  _bySoundAndLetterSync(word, opts) {
+    let bySound = this._byTypeSync(word, { ...opts, type: "sound" });
+    let byLetter = this._byTypeSync(word, { ...opts, type: "letter" });
+    if (bySound.length < 1 || byLetter.length < 1)
+      return [];
+    return this._intersect(bySound, byLetter).slice(0, opts.limit);
   }
   async _bySoundAndLetter(word, opts) {
     let types = ["sound", "letter"];
@@ -27307,7 +27349,8 @@ var Lexicon = class {
   // med for 2 strings (or 2 arrays)
   minEditDist(source, target) {
     let cost;
-    let i, j, matrix = [];
+    let i, j;
+    let matrix = [];
     let sI;
     let tJ;
     for (i = 0; i <= source.length; i++) {
@@ -27331,8 +27374,8 @@ var Lexicon = class {
     }
     return matrix[source.length][target.length];
   }
-  isMassNoun(w, pos) {
-    return w.endsWith("ness") || w.endsWith("ism") || pos.indexOf("vbg") > 0 || util_default.MASS_NOUNS.includes(w);
+  isMassNoun(w) {
+    return w.endsWith("ness") || w.endsWith("ism") || this.RiTa.MASS_NOUNS.includes(w);
   }
   // helpers ---------------------------------------------------------------
   _promise(fun, args) {
@@ -27344,44 +27387,44 @@ var Lexicon = class {
       }
     });
   }
-  _parseRegex(regex2, opts) {
-    if (typeof regex2 === "string") {
+  _parseRegex(regex, opts) {
+    if (typeof regex === "string") {
       if (opts && opts.type === "stresses") {
-        if (/^\^?[01]+\$?$/.test(regex2)) {
-          regex2 = regex2.replace(/([01])(?=([01]))/g, "$1/");
+        if (/^\^?[01]+\$?$/.test(regex)) {
+          regex = regex.replace(/([01])(?=([01]))/g, "$1/");
         }
       }
-      regex2 = new RegExp(regex2);
-    } else if (regex2 instanceof RegExp) {
-    } else if (typeof regex2 === "object" || regex2 === void 0 && typeof opts === "object") {
+      regex = new RegExp(regex);
+    } else if (regex instanceof RegExp) {
+    } else if (typeof regex === "object" || regex === void 0 && typeof opts === "object") {
       if (!opts) {
-        opts = regex2;
+        opts = regex;
       }
-      regex2 = opts.regex;
-      if (typeof regex2 === "string") {
+      regex = opts.regex;
+      if (typeof regex === "string") {
         if (opts && opts.type === "stresses") {
-          if (/^\^?[01]+\$?$/.test(regex2)) {
-            regex2 = regex2.replace(/([01])(?=([01]))/g, "$1/");
+          if (/^\^?[01]+\$?$/.test(regex)) {
+            regex = regex.replace(/([01])(?=([01]))/g, "$1/");
           }
         }
-        regex2 = new RegExp(regex2);
+        regex = new RegExp(regex);
       }
     }
-    return { regex: regex2, opts: opts || {} };
+    return { regex, opts: opts || {} };
   }
-  _regexMatch(word, data, regex2, type) {
+  _regexMatch(word, data, regex, type) {
     if (type === "stresses") {
       let phones = data ? data[0] : this.rawPhones(word);
       let stresses = this.analyzer.phonesToStress(phones);
-      if (regex2.test(stresses))
+      if (regex.test(stresses))
         return true;
     } else if (type === "phones") {
       let phones = data ? data[0] : this.rawPhones(word);
       phones = phones.replace(/1/g, "").replace(/ /g, "-");
-      if (regex2.test(phones))
+      if (regex.test(phones))
         return true;
     } else {
-      if (regex2.test(word))
+      if (regex.test(word))
         return true;
     }
   }
@@ -27471,6 +27514,10 @@ var lexicon_default = Lexicon;
 
 // src/tagger.js
 var Tagger = class {
+  /**
+   * Create a Tagger.
+   * @param {any} parent - RiTa parent class.
+   */
   constructor(parent) {
     this.RiTa = parent;
   }
@@ -27535,18 +27582,30 @@ var Tagger = class {
     }
     return [];
   }
-  tag(words, opts) {
-    let simple = opts && opts.simple;
-    let inline = opts && opts.inline;
-    let dbug = 0, result = [], choices2d = [];
-    if (opts && opts.dbug)
-      dbug = 1;
-    if (!words || !words.length)
-      return inline ? "" : [];
-    if (!Array.isArray(words)) {
-      if (!words.trim().length)
-        return inline ? "" : [];
-      words = this.RiTa.tokenizer.tokenize(words);
+  /**
+   * Tags an array of words with their part-of-speech
+   * @param {(string|string[])} input - The input containing a word or words
+   * @param {object} [opts] - options for the tagging {inline, simple}
+   * @param {boolean} [opts.inline] - tags are returned inline with words
+   * @param {boolean} [opts.simple] - use simple tags (noun=n,verb=v,adverb=a,adjective=r)
+   * @returns {any} the pos tag(s) or string with tags inline
+   */
+  tag(input, opts = {
+    inline: false,
+    simple: false
+  }) {
+    let result = [], choices2d = [];
+    let dbug = opts?.dbug || false;
+    if (!input || !input.length)
+      return opts.inline ? "" : [];
+    let words;
+    if (!Array.isArray(input)) {
+      if (!input.trim().length) {
+        return opts.inline ? "" : [];
+      }
+      words = this.RiTa.tokenizer.tokenize(input);
+    } else {
+      words = input;
     }
     for (let i = 0, l = words.length; i < l; i++) {
       let word = words[i];
@@ -27563,7 +27622,7 @@ var Tagger = class {
       }
     }
     let tags = this._applyContext(words, result, choices2d, dbug);
-    if (simple) {
+    if (opts.simple) {
       for (let i = 0; i < tags.length; i++) {
         if (NOUNS.includes(tags[i]))
           tags[i] = "n";
@@ -27577,7 +27636,7 @@ var Tagger = class {
           tags[i] = "-";
       }
     }
-    return inline ? this.inlineTags(words, tags) : tags;
+    return opts.inline ? this.inlineTags(words, tags) : tags;
   }
   //////////////////////////////////////////////////////////////////
   _isNoLexIrregularVerb(stem) {
@@ -27719,7 +27778,14 @@ var Tagger = class {
     console.log("\n  Custom(" + i + ") tagged '" + frm + "' -> '" + to + "'\n\n");
   }
   // debug only: not available in built version since 'dbug' in tag() is 0
-  // Applies a customized subset of the Brill transformations
+  /**
+   * Applies a customized subset of the Brill transformations
+   * @param {string[]} words 
+   * @param {string[]} result 
+   * @param {string[]} choices 
+   * @param {boolean} dbug 
+   * @returns 
+   */
   _applyContext(words, result, choices, dbug) {
     for (let i = 0, l = words.length; i < l; i++) {
       let word = words[i], tag = result[i];
@@ -27802,7 +27868,7 @@ var Tagger = class {
         let idx = result.slice(i + 1).indexOf("nn");
         let allJJ = true;
         for (let k = 0; k < idx; k++) {
-          if (!result[i + 1 + k] === "jj") {
+          if (result[i + 1 + k] !== "jj") {
             allJJ = false;
             break;
           }
@@ -27948,7 +28014,7 @@ var Tagger = class {
       for (let j = 0; j < tags.length; j++) {
         if (pos === tags[j])
           return true;
-        if (pos === "n" && NOUNS.includes(tags[j]) || pos === "v" && VERBS.includes(tags[j]) || pos === "r" && ADVS.includes(tags[j]) || pos === "a" && ADJS.includes.isAdjTag(tags[j])) {
+        if (pos === "n" && NOUNS.includes(tags[j]) || pos === "v" && VERBS.includes(tags[j]) || pos === "r" && ADVS.includes(tags[j]) || pos === "a" && ADJS.includes(tags[j])) {
           return true;
         }
       }
@@ -27996,7 +28062,7 @@ var Inflector = class {
     if (!word.length)
       return "";
     let check = word.toLowerCase();
-    if (this.RiTa.MASS_NOUNS.includes(check)) {
+    if (this.RiTa.lexicon.isMassNoun(check)) {
       dbug && console.log(word + " hit MASS_NOUNS");
       return word;
     }
@@ -28011,11 +28077,6 @@ var Inflector = class {
     return word;
   }
   singularize(word, opts) {
-    if (this.isSingular(word, opts)) {
-      if (opts && opts.debug)
-        console.log("pluralize returning via isPlural()");
-      return word;
-    }
     return this.adjustNumber(word, SING, opts && opts.dbug);
   }
   pluralize(word, opts) {
@@ -28026,30 +28087,30 @@ var Inflector = class {
     }
     return this.adjustNumber(word, PLUR, opts && opts.dbug);
   }
-  isSingular(word, opts) {
-    return false;
-    if (word && typeof word !== "string") {
-      throw Error(`isSingular() takes string`);
-    }
-    if (!word || !word.length)
-      return false;
-    let dbug = opts && opts.dbug;
-    word = word.toLowerCase();
-    if (this.RiTa.MASS_NOUNS.includes(word)) {
-      dbug && console.log(word + " is mass noun");
-      return true;
-    }
-    return NN_ENDS_IN_S.includes(word);
-  }
+  /*isSingular(word, opts) { 
+      // return false;
+      // if (word && typeof word !== 'string') {
+      //   throw Error(`isSingular() takes string`);
+      // }
+      if (!word || !word.length) return false;
+  
+      let dbug = opts && opts.dbug;
+  
+      word = word.toLowerCase();
+  
+      if (this.RiTa.MASS_NOUNS.includes(word)) {
+        dbug && console.log(word + " is mass noun");
+        return true;
+      }
+  
+      return NOUNS_ENDING_IN_S.includes(word);
+    }*/
   isPlural(word, opts) {
-    if (word && typeof word !== "string") {
-      throw Error(`isPlural() takes string`);
-    }
     if (!word || !word.length)
       return false;
     let dbug = opts && opts.dbug;
     word = word.toLowerCase();
-    if (this.RiTa.MASS_NOUNS.includes(word)) {
+    if (this.RiTa.lexicon.isMassNoun(word)) {
       dbug && console.log(word + " is mass noun");
       return true;
     }
@@ -28075,13 +28136,9 @@ var Inflector = class {
         dbug && console.log(word + ": latin rule -a to -ae");
         return true;
       }
-      if (this.RiTa.HAS_LEXICON) {
-        let tags = this.RiTa.tagger.allTags(sing, { noGuessing: true });
-        if (tags.includes("nn")) {
-          dbug && console.log(word + "'s singular form " + sing + " is nn");
-          return true;
-        }
-      } else {
+      let tags = this.RiTa.tagger.allTags(sing, { noGuessing: true });
+      if (tags.includes("nn")) {
+        dbug && console.log(word + "'s singular form " + sing + " is nn");
         return true;
       }
     }
@@ -28159,7 +28216,7 @@ var SING_RULES = [
   RE3("(sh|ch|o|ss|x|z|us)es$", 2),
   RE3("ses$", 2, "is"),
   // catharses, prognoses
-  // singulars ending in s, TODO: replace with NN_ENDS_IN_S list
+  // singulars ending in s, TODO: replace with NOUNS_ENDING_IN_S list
   RE3("([vs]is|gas|[im]nus|genus|[ptbl]us|[ai]ss|[dr]ess)$", 0),
   // octopus, thesis, alumnus, gas, bus (singulars)
   DEFAULT_SING
@@ -28242,7 +28299,10 @@ var LetterToSound = class _LetterToSound {
     this.tokenizer.tokenize(line, " ");
     let type = this.tokenizer.nextToken();
     if (type === "S" || type === "P") {
-      this.stateMachine[this.numStates++] = this.createState(type, this.tokenizer);
+      this.stateMachine[this.numStates++] = this.createState(
+        type
+        /*, this.tokenizer*/
+      );
     } else if (type === "I") {
       let index = parseInt(this.tokenizer.nextToken());
       if (index != this.numStates) {
@@ -28256,12 +28316,12 @@ var LetterToSound = class _LetterToSound {
     }
   }
   buildPhones(word, opts) {
-    const RiTa3 = this.RiTa;
-    if (!word || !word.length || RiTa3.isPunct(word))
+    const RiTa2 = this.RiTa;
+    if (!word || !word.length || RiTa2.isPunct(word))
       return;
     let phoneList = [], windowSize = 4;
     let fullBuff, tmp, currentState, startIndex, stateIndex, c;
-    let silent = RiTa3.SILENT || RiTa3.SILENCE_LTS || opts && opts.silent;
+    let silent = RiTa2.SILENT || RiTa2.SILENCE_LTS || opts && opts.silent;
     if (!_LetterToSound.RULES) {
       if (!this.warnedForNoLTS) {
         this.warnedForNoLTS = true;
@@ -28273,16 +28333,14 @@ var LetterToSound = class _LetterToSound {
     word = word.toLowerCase();
     if (util_default.isNum(word)) {
       if (/^[0-9]+$/.test(word)) {
-        if (RiTa3.HAS_LEXICON) {
-          word = word.length > 1 ? word.split("") : [word];
-          for (let k = 0; k < word.length; k++) {
-            let asWord = util_default.Numbers.toWords[parseInt(word[k])];
-            let phs = RiTa3.lexicon.rawPhones(asWord, { noLts: true });
-            phs = phs.replace(/1/g, "").replace(/ /g, "-");
-            phoneList.push(...phs.split("-"));
-          }
-          return phoneList;
+        word = word.length > 1 ? word.split("") : [word];
+        for (let k = 0; k < word.length; k++) {
+          let asWord = util_default.Numbers.toWords[parseInt(word[k])];
+          let phs = RiTa2.lexicon.rawPhones(asWord, { noLts: true });
+          phs = phs.replace(/1/g, "").replace(/ /g, "-");
+          phoneList.push(...phs.split("-"));
         }
+        return phoneList;
       }
     }
     tmp = "000#" + word.trim() + "#000", fullBuff = tmp.split("");
@@ -28297,7 +28355,7 @@ var LetterToSound = class _LetterToSound {
       startIndex = this.letterIndex[c];
       if (isNaN(parseFloat(startIndex)) || !isFinite(startIndex)) {
         if (!silent) {
-          console.warn("Unable to generate LTS for '" + word + "', no index for '" + c + "', isDigit=" + util_default.isNum(c) + ", isPunct=" + RiTa3.isPunct(c));
+          console.warn("Unable to generate LTS for '" + word + "', no index for '" + c + "', isDigit=" + util_default.isNum(c) + ", isPunct=" + RiTa2.isPunct(c));
         }
         return;
       }
@@ -28322,7 +28380,7 @@ var LetterToSound = class _LetterToSound {
       return state;
     } else {
       this.tokenizer.tokenize(i);
-      return this.getState(this.tokenizer.nextToken(), this.tokenizer);
+      return this.getState(this.tokenizer.nextToken());
     }
   }
 };
@@ -41533,8 +41591,7 @@ var Analyzer = class {
     return features;
   }
   computePhones(word, opts) {
-    if (!this.lts)
-      this.lts = new rita_lts_default(this.RiTa);
+    this.lts = this.lts || new rita_lts_default(this.RiTa);
     return this.lts.buildPhones(word, opts);
   }
   phonesToStress(phones) {
@@ -41551,8 +41608,7 @@ var Analyzer = class {
     return stress;
   }
   analyzeWord(word, opts = {}) {
-    let RiTa3 = this.RiTa;
-    let result = RiTa3.CACHING && this.cache[word];
+    let result = this.RiTa.CACHING && this.cache[word];
     if (typeof result === "undefined") {
       let slash = "/", delim = "-";
       let lex = this.RiTa.lexicon;
@@ -41581,7 +41637,7 @@ var Analyzer = class {
       }
       result = { phones, stresses, syllables };
       Object.keys(result).forEach((k) => result[k] = result[k].trim());
-      if (RiTa3.CACHING)
+      if (this.RiTa.CACHING)
         this.cache[word] = result;
     }
     return result;
@@ -41601,15 +41657,15 @@ var Analyzer = class {
   }
   //#HWF this part is unchanged but move to a separated function
   _computePhonesWord(word, lex, opts, isPart) {
-    let rawPhones, RiTa3 = this.RiTa;
+    let rawPhones, RiTa2 = this.RiTa;
     if (isPart)
       rawPhones = lex.rawPhones(word, { noLts: true });
     if (!rawPhones && word.endsWith("s")) {
-      let sing = RiTa3.singularize(word);
+      let sing = RiTa2.singularize(word);
       rawPhones = lex.rawPhones(sing, { noLts: true });
       rawPhones && (rawPhones += "-z");
     }
-    let silent = RiTa3.SILENT || RiTa3.SILENCE_LTS || opts && opts.silent;
+    let silent = RiTa2.SILENT || RiTa2.SILENCE_LTS || opts && opts.silent;
     if (!rawPhones) {
       let ltsPhones = this.computePhones(word, opts);
       if (ltsPhones && ltsPhones.length) {
@@ -41740,7 +41796,7 @@ var SeededRandom = class {
     if (!(Array.isArray(arg) || util_default.isNum(arg)))
       throw Error("Expects [] or int");
     let o = Array.isArray(arg) ? arg : Array.from(Array(arg).keys());
-    for (let j, x, i = o.length; i; j = parseInt(this.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {
+    for (let j, x, i = o.length; i; j = Math.floor(this.random() * i), x = o[--i], o[i] = o[j], o[j] = x) {
     }
     return o;
   }
@@ -41866,16 +41922,31 @@ var randgen_default = SeededRandom;
 
 // src/markov.js
 import { parse, stringify } from "@ungap/structured-clone/json";
-var RiMarkov = class _RiMarkov {
-  constructor(n, opts = {}) {
+var _RiMarkov = class _RiMarkov {
+  // RiTa
+  /**
+   * Creates a new RiMarkov object with functions for text-generation and other probabilistic functions, 
+   * via Markov chains (or n-grams) with options to process words or tokens split by arbitrary regular expressions.
+   * @param {number} [n] - the n-gram size (an integer >= 2)
+   * @param {object} [options={}] - options for the model
+   * @param {string|string[]} [options.text] - a text string, or array of sentences, to add to the model (same as via model.addText()
+   * @param {boolean} [options.trace] - output trace info to the console
+   * @param {number} [options.maxLengthMatch] - # of words allowed in result to match a sequence in the input, default=∞
+   * @param {number} [options.maxAttempts=999] - max attempts before to complete one ore more generations before erroring, default=999
+   * @param {object} [options.tokenize] - custom tokenize() function, defaults to RiTa.tokenize()
+   * @param {function} [options.untokenize] - custom untokenize() function, defaults to RiTa.untokenize()
+   * @param {boolean} [options.disableInputChecks=false] - if true, allow result to be present in the input, default
+   * @memberof RiMarkov
+   */
+  constructor(n, options = {}) {
     this.n = n;
     this.root = new Node(null, "ROOT");
-    this.trace = opts.trace;
-    this.mlm = opts.maxLengthMatch;
-    this.maxAttempts = opts.maxAttempts || 999;
-    this.tokenize = opts.tokenize || RiTa().tokenize;
-    this.untokenize = opts.untokenize || RiTa().untokenize;
-    this.disableInputChecks = opts.disableInputChecks;
+    this.trace = options.trace;
+    this.mlm = options.maxLengthMatch;
+    this.maxAttempts = options.maxAttempts || 999;
+    this.tokenize = options.tokenize || _RiMarkov.parent.tokenize;
+    this.untokenize = options.untokenize || _RiMarkov.parent.untokenize;
+    this.disableInputChecks = options.disableInputChecks;
     this.sentenceStarts = [];
     this.sentenceEnds = /* @__PURE__ */ new Set();
     if (this.n < 2)
@@ -41884,12 +41955,19 @@ var RiMarkov = class _RiMarkov {
       throw Error("maxLengthMatch must be >= N");
     if (!this.disableInputChecks || this.mlm)
       this.input = [];
-    if (opts.text)
-      this.addText(opts.text);
+    if (options.text)
+      this.addText(options.text);
   }
+  /**
+   * Loads text into the model. If a raw string is provided, it will be split into sentences 
+   * via RiTa.sentences(). If an array is provided, each string will be treated as an individual sentence.
+   * @param {string|string[]} text - a text string, or array of sentences, to add to the model
+   * @param {number} [multiplier=1] - number of times to add the text to the model
+   * @return {RiMarkov} - the RiMarkov instance
+   */
   addText(text, multiplier = 1) {
-    let sents = Array.isArray(text) ? text : RiTa().sentences(text);
-    let wrap, allWords = [];
+    let sents = Array.isArray(text) ? text : _RiMarkov.parent.sentences(text);
+    let allWords = [];
     for (let k = 0; k < multiplier; k++) {
       for (let i = 0; i < sents.length; i++) {
         let words = this.tokenize(sents[i]);
@@ -41904,19 +41982,47 @@ var RiMarkov = class _RiMarkov {
         this.input.push(allWords[i]);
       }
     }
+    return this;
   }
-  generate(count, opts = {}) {
+  /** 
+   * @overload
+   * @param {number} count
+   * @param {object} [options={}] - options for the generation
+   * @param {number} [options.minLength=5] - minimum length of each sentence
+   * @param {number} [options.maxLength=35] - maximum length of each sentence
+   * @param {number} [options.temperature=1] - temperature acts as a knob to adjust the probability that input elements will be selected for the output. At higher values, infrequent words are more likely to be chosen, while at lower values the most frequent inputs are more likely to be output. If no value is provided, then tokens are chosen according to their relative frequency in the input.
+   * @param {boolean} [options.allowDuplicates=false] - if true, allow duplicate sentences in the output
+   * @param {string|string[]} [options.seed] - a seed string or array of tokens to start the generation
+   * @returns {string[]}
+   *
+   * @overload
+   * @param {object} [options={}] - options for the generation
+   * @param {number} [options.minLength=5] - minimum length of each sentence
+   * @param {number} [options.maxLength=35] - maximum length of each sentence
+   * @param {number} [options.temperature=1] - temperature acts as a knob to adjust the probability that input elements will be selected for the output. At higher values, infrequent words are more likely to be chosen, while at lower values the most frequent inputs are more likely to be output. If no value is provided, then tokens are chosen according to their relative frequency in the input.
+   * @param {boolean} [options.allowDuplicates=false] - if true, allow duplicate sentences in the output
+   * @param {string|string[]} [options.seed] - a seed string or array of tokens to start the generation
+   * @returns {string}
+   */
+  generate(count, options = {}) {
+    let returnsArray = false;
+    if (typeof count === "number") {
+      if (count === 1) {
+        throw Error("For one result, use generate() with no 'count' argument");
+      }
+      returnsArray = true;
+    }
     if (arguments.length === 1 && typeof count === "object") {
-      opts = count;
+      options = count;
       count = 1;
     }
     const num = count || 1;
-    const minLength = opts.minLength || 5;
-    const maxLength = opts.maxLength || 35;
-    if (typeof opts.temperature !== "undefined" && opts.temperature <= 0) {
+    const minLength = options.minLength || 5;
+    const maxLength = options.maxLength || 35;
+    if (typeof options.temperature !== "undefined" && options.temperature <= 0) {
       throw Error("Temperature option must be greater than 0");
     }
-    let tries = 0, tokens = [], usedStarts = [];
+    let tries = 0, tokens = [];
     let minIdx = 0, sentenceIdxs = [];
     let markedNodes = [];
     const unmarkNodes = () => {
@@ -41955,7 +42061,7 @@ var RiMarkov = class _RiMarkov {
         return false;
       }
       let flatSent = this.untokenize(sentence);
-      if (!opts.allowDuplicates && isSubArray(sentence, tokens.slice(0, sentIdx))) {
+      if (!options.allowDuplicates && isSubArray(sentence, tokens.slice(0, sentIdx))) {
         fail("duplicate (pop: " + next.token + ")");
         return false;
       }
@@ -42042,7 +42148,7 @@ var RiMarkov = class _RiMarkov {
       return len ? sentenceIdxs[len - 1] : 0;
     };
     const selectStart = () => {
-      let seed = opts.seed;
+      let seed = options.seed;
       if (seed && seed.length) {
         if (typeof seed === "string")
           seed = this.tokenize(seed);
@@ -42055,7 +42161,7 @@ var RiMarkov = class _RiMarkov {
         let usableStarts = this.sentenceStarts.filter((ss) => notMarked(this.root.child(ss)));
         if (!usableStarts.length)
           throw Error("No valid sentence-starts remaining");
-        let start = RiTa().random(usableStarts);
+        let start = _RiMarkov.parent.random(usableStarts);
         let startTok = this.root.child(start);
         markNode(startTok);
         usableStarts = this.sentenceStarts.filter((ss) => notMarked(this.root.child(ss)));
@@ -42072,7 +42178,7 @@ var RiMarkov = class _RiMarkov {
         continue;
       }
       let parent = this._pathTo(tokens);
-      let next = this._selectNext(parent, opts.temperature, tokens, notMarked);
+      let next = this._selectNext(parent, options.temperature, tokens, notMarked);
       if (!next) {
         fail("mlm-fail(" + this.mlm + ")", this._flatten(tokens), true);
         continue;
@@ -42091,13 +42197,22 @@ var RiMarkov = class _RiMarkov {
     }
     unmarkNodes();
     let str = this.untokenize(tokens.map((t) => t.token)).trim();
-    return num > 1 ? this._splitEnds(str) : str;
+    return returnsArray ? this._splitEnds(str) : str;
   }
+  /**
+   * Converts the model to a JSON-formatted string for storage or serialization
+   * @return {string} - the JSON string
+   */
   toJSON() {
     let data = Object.keys(this).reduce((acc, k) => Object.assign(acc, { [k]: this[k] }), {});
     data.sentenceEnds = [...data.sentenceEnds];
     return stringify(data);
   }
+  /**
+   * Creates a new model from one previously saved as JSON
+   * @param {string} json - the JSON string to load
+   * @return {RiMarkov} - the RiMarkov instance
+   */
   static fromJSON(json) {
     let parsed = parse(json);
     let rm = Object.assign(new _RiMarkov(), parsed);
@@ -42108,14 +42223,20 @@ var RiMarkov = class _RiMarkov {
     populate(rm.root = new Node(null, "ROOT"), jsonRoot);
     return rm;
   }
-  /* returns array of possible tokens after pre and (optionally) before post */
+  /**
+   * Returns array of possible tokens after pre and (optionally) before post. If only one array parameter is provided, this function returns all possible next words, ordered by probability, for the given array. 
+   * If two arrays are provided, it returns an unordered list of possible words w that complete the n-gram consisting of: pre[0]...pre[k], w, post[k+1]...post[n].
+   * @param {string[]} pre - the list of tokens preceding the completion
+   * @param {string[]} [post] - the (optional) list of tokens following the completion
+   * @return {string[]} - an unordered list of possible next tokens 
+   */
   completions(pre, post) {
     let tn, result = [];
     if (post) {
       if (pre.length + post.length > this.n)
         throw Error("Sum of pre.length && post.length must be <= N, was " + (pre.length + post.length));
       if (!(tn = this._pathTo(pre))) {
-        if (!RiTa().SILENT)
+        if (!_RiMarkov.parent.SILENT)
           console.warn("Unable to find nodes in pre: " + pre);
         return;
       }
@@ -42132,8 +42253,14 @@ var RiMarkov = class _RiMarkov {
     }
     return result;
   }
-  /* return an object mapping {string -> prob} */
-  probabilities(path, temp) {
+  /**
+   * Returns the full set of possible next tokens as a object, mapping tokens to probabilities,
+   *  given an array of tokens representing the path down the tree (with length less than `n`).
+   * @param {string|string[]} path - the path to the node as a string or an array of tokens
+   * @param {number} [temperature=1] - temperature acts as a knob to adjust the probability that input elements will be selected for the output. At higher values, infrequent words are more likely to be chosen, while at lower values the most frequent inputs are more likely to be output. If no value is provided, then tokens are chosen according to their relative frequency in the input.
+   * @return {object} - a map of tokens to probabilities
+   */
+  probabilities(path, temperature) {
     if (!Array.isArray(path))
       path = this.tokenize(path);
     const probs = {};
@@ -42141,11 +42268,17 @@ var RiMarkov = class _RiMarkov {
     if (parent) {
       const children = parent.childNodes();
       const weights = children.map((n) => n.count);
-      const pdist = _RiMarkov.parent.randomizer.ndist(weights, temp);
+      const pdist = _RiMarkov.parent.randomizer.ndist(weights, temperature);
       children.forEach((c, i) => probs[c.token] = pdist[i]);
     }
     return probs;
   }
+  /**
+   * Returns either the raw (unigram) probability for a single token in the model (0 if it does not exist), OR
+   * the probability of a sequence of K tokens where K is less than `n` (0 if the sequence does not exist).
+   * @param {string|string[]} data - the token or array of tokens to check
+   * @return {number} - the probability of the token or sequence
+   */
   probability(data) {
     let p = 0;
     if (data && data.length) {
@@ -42155,10 +42288,20 @@ var RiMarkov = class _RiMarkov {
     }
     return p;
   }
+  /**
+   * Returns a string representation of the model or a subtree of the model, optionally ordered by probability.
+   * @param {object} root - the root node of the subtree to print
+   * @param {boolean} sort - if true, sort the nodes by probability
+   * @return {string} - the string representation of the model 
+   */
   toString(root, sort) {
     root = root || this.root;
     return root.asTree(sort).replace(/{}/g, "");
   }
+  /**
+   * Returns the number of tokens currently in the model.
+   * @return {number} - number of tokens
+   */
   size() {
     return this.root.childCount(true);
   }
@@ -42281,6 +42424,8 @@ var RiMarkov = class _RiMarkov {
     return sent.replace(MULTI_SP_RE, " ");
   }
 };
+__publicField(_RiMarkov, "parent");
+var RiMarkov = _RiMarkov;
 var Node = class _Node {
   constructor(parent, word, count) {
     this.children = {};
@@ -42289,6 +42434,7 @@ var Node = class _Node {
     this.count = count || 0;
     this.numChildren = -1;
     this.marked = false;
+    this.hidden = false;
   }
   // Find a (direct) child node with matching token, given a word or node
   child(word) {
@@ -42407,9 +42553,6 @@ function populate(objNode, jsonNode) {
     populate(newNode, child);
   }
 }
-function RiTa() {
-  return RiMarkov.parent;
-}
 function throwError(tries, oks) {
   throw Error("Failed after " + tries + " tries" + (oks ? " and " + oks + " successes" : "") + ", you may need to adjust options or add more text");
 }
@@ -42431,229 +42574,699 @@ var MULTI_SP_RE = / +/g;
 var markov_default = RiMarkov;
 
 // src/rita.js
-import { RiScript } from "riscript";
-var { Grammar: RiGrammar } = RiScript;
-var RiTa2 = class _RiTa {
-  static grammar(rules, context) {
-    return new RiGrammar(...arguments);
+import { RiScript, RiGrammar } from "riscript";
+var RiTa = class _RiTa {
+  /**
+   * Create a RiTa grammar instance
+   * @param {object} [rules] - the rules of the grammar
+   * @param {object} [context] - the context of the grammar
+   * @param {object} [options] - options for the grammar
+   * @returns {RiGrammar} - a new RiGrammar instance
+   */
+  static grammar(rules, context, options) {
+    return new RiGrammar(rules, context, { ...options, RiTa: _RiTa });
   }
+  /**
+   * Add a transform function to the RiScript parser
+   * @param {string} name - the name of the transform
+   * @param {function} definition - the transform function
+   */
   static addTransform(name, definition) {
-    return _RiTa.riscript.addTransform(...arguments);
+    _RiTa.riscript.addTransform(name, definition);
   }
+  /**
+   * Remove a transform function from the RiScript parser
+   * @param {string} name - the name of the transform to remove
+   */
   static removeTransform(name) {
-    return _RiTa.riscript.removeTransform(...arguments);
+    _RiTa.riscript.removeTransform(name);
   }
+  /**
+   * Returns the names of all current transform functions
+   * @returns {string[]} the names of all transforms
+   */
   static getTransforms() {
     return _RiTa.riscript.getTransforms();
   }
+  /**
+   * Adds the appropriate article ('a' or 'an') to the word, according to its phonemes (useful as a transform function)
+   * @param {string} word - the word to transform
+   * @returns {string} - the word with an article, e.g., 'honor' -> 'an honor'
+   */
   static articlize(word) {
-    return RiScript.articlize(...arguments);
+    return RiScript.articlize(word, _RiTa);
   }
-  static evaluate(script, context, opts) {
-    return _RiTa.riscript.evaluate(...arguments);
+  /**
+   * Evaluates the input script via the RiScript parser
+   * @param {string} script - the script to evaluate
+   * @param {object} [context] - the context to evaluate the script ing
+   * @param {object} [options] - options for the evaluation
+   * @param {boolean} [options.trace] - whether to trace the evaluation
+   * @returns {string} the result of the evaluation
+   */
+  static evaluate(script, context, options) {
+    return _RiTa.riscript.evaluate(script, context, { ...options });
   }
-  static markov(n, opts) {
-    return new markov_default(...arguments);
+  /**
+   * Creates a new RiMarkov object
+   * @param {number} n - an int representing the n-factor of the markov chain 
+   * @param {object} [options] - options for the markov chain
+   * @param {string|string[]} [options.text] - a text string, or array of sentences, to add to the model (same as via model.addText()
+   * @param {number} [options.maxLengthMatch] - # of words allowed in result to match a sequence in the input, default=∞
+   * @param {number} [options.maxAttempts=999] - max attempts before to complete one ore more generations before erroring, default=999
+   * @param {function} [options.tokenize] - custom tokenizer with tokenize() method, defaults to RiTa.tokenize()
+   * @param {function} [options.untokenize] - custom untokenizer with untokenize() method, defaults to RiTa.untokenize()
+   * @param {boolean} [options.disableInputChecks=false] - if true, allow result to be present in the input, default
+   * @param {boolean} [options.trace] - output trace info to the console
+   * @returns {RiMarkov}
+   */
+  static markov(n, options) {
+    return new markov_default(n, options);
   }
-  static kwic(word, opts) {
-    return _RiTa.concorder.kwic(...arguments);
+  /**
+   * Return a list of occurrences of the key word in the Key-Word-In-Context (KWIC) model.
+   * @overload
+   * @param {string} keyword 
+   * @param {object} [options]  
+   * @param {number} [options.numWords] - the number of words to include in the context
+   * @param {string} [options.text] - the text as input for the KWIC model
+   * @param {string[]} [options.words] - the array of words to be used as input for the KWIC model
+   * @returns {string[]} all the occurrences of the keyword in the model, each with no more 
+   * than 'numWords' words of context on either side
+   * @overload
+   * @param {string} keyword
+   * @param {number} text - the number of words to include in the context
+   * @returns {string[]} all the occurrences of the keyword in the model, each with no more 
+   * than 'numWords' words of context on either side
+   */
+  static kwic(keyword, options) {
+    return _RiTa.concorder.kwic(keyword, options);
   }
-  static concordance(string, opts) {
-    return _RiTa.concorder.concordance(...arguments);
+  /**
+   * Creates a concordance, a list of words with their frequency of occurence, from the given text and options.
+   * @param {string} text - the text from which to create the concordance
+   * @param {object} [options] - options for the concordance
+   * @param {boolean} [options.ignoreCase=false] - whether to ignore case when creating the concordance
+   * @param {boolean} [options.ignoreStopWords=false] - whether to ignore stop words like
+   *  'the', 'and', 'a', 'of', etc, as specified in RiTa.STOP_WORDS
+   * @param {boolean} [options.ignorePunctuation=false] - whether to ignore punctuation when creating the concordance
+   * @param {string[]} [options.wordsToIgnore=null] - words to ignore when creating the concordance (alternate stop-words)
+   * @returns {object} the concordance, an object with words as keys and frequencies as values
+   */
+  static concordance(text, options) {
+    return _RiTa.concorder.concordance(text, options);
   }
+  /**
+   * Returns a random ordering of the input array or a random ordering of integers from 1 to k
+   * @overload
+   * @param {object[]} array - the array to shuffle
+   * @returns {object[]} the input array in a random order
+   * @overload
+   * @param {number} k - the number of integers to return
+   * @returns {number[]} an array of arrays of integers from 1 to k in random order 
+   */
   static randomOrdering(arrayOrInt) {
-    return _RiTa.randomizer.randomOrdering(...arguments);
+    return _RiTa.randomizer.randomOrdering(arrayOrInt);
   }
-  static randomSeed(number) {
-    return _RiTa.randomizer.seed(number);
+  /**
+   * Sets the seed for the RiTa random number generator
+   * @param {number} seed - the seed to set 
+   */
+  static randomSeed(seed) {
+    _RiTa.randomizer.seed(seed);
   }
+  /**
+   * Returns true if the sentence is a question, else false
+   * @param {string} sentence 
+   * @returns {boolean} - true if the sentence is a question, else false
+   */
   static isQuestion(sentence) {
     return _RiTa.QUESTIONS.includes(_RiTa.tokenize(sentence)[0].toLowerCase());
   }
+  /**
+   * Returns true if the character is a vowel, else false
+   * @param {string} char 
+   * @returns {boolean} - true if the character is a vowel, else false
+   */
   static isVowel(char) {
     return char && char.length === 1 && _RiTa.VOWELS.includes(char);
   }
+  /**
+   * Returns true if the character is a consonant, else false
+   * @param {string} char 
+   * @returns {boolean} - true if the character is a consonant, else false
+   */
   static isConsonant(char) {
     return char && char.length === 1 && !_RiTa.VOWELS.includes(char) && IS_LETTER.test(char);
   }
+  /**
+   * Capitalizes the first letter of the input string, leaving others unchanged
+   * @param {string} string - the string to capitalize
+   * @returns {string} the capitalized string
+   */
   static capitalize(string) {
     return string ? string[0].toUpperCase() + string.substring(1) : "";
   }
-  static randomWord(opts) {
-    return _RiTa.lexicon.randomWord(...arguments);
+  /**
+   * Return a random word from the lexicon matching the specified criteria 
+   * (length, syllable-count, phonemic pattern, stress pattern, part-of-speech, etc.).
+   * @param {(string|RegExp)} [pattern] - the pattern to match
+   * @param {object} [options] 
+   * @param {number} [options.minLength=4] - the minimum length of the word
+   * @param {number} [options.maxLength=-1] - the maximum length of the word
+   * @param {number} [options.numSyllables=null] - the number of syllables in the word 
+   * @param {number} [options.limit=10] - the maximum number of results to retur   
+   * @param {string} [options.pos=null] - the part-of-speech of the word to return,
+   *  either from the Penn tag set or the simplified tag set [a, r, v, n]
+   * @param {RegExp} [options.pattern=null] - the spelling or phonemic pattern to match
+   * @param {string} [options.type=null] - the type of regex or string pattern to match, 
+   * options are 'stresses' or 'phones' or 'letters' (the default)
+   * @returns {string} a random word matching the criteria in the options object 
+   */
+  static randomWord(pattern, options) {
+    return _RiTa.lexicon.randomWord(pattern, options);
   }
-  static async rhymes(word, opts) {
-    return await _RiTa.lexicon.rhymes(...arguments);
+  /**
+   * Returns words that rhyme with the given word. Two words are considered as rhyming if
+   * their final stressed vowel and all following phonemes are identical.
+   * @param {string} word 
+   * @param {object} [options]
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words 
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   *  or the simplified tag set [a, r, v, n]
+   * @returns {Promise<string[]>} an array of rhymes that match criteria in the options object 
+   */
+  static async rhymes(word, options) {
+    return await _RiTa.lexicon.rhymes(word, options);
   }
+  /**
+   * Returns words that rhyme with the given word. Two words are considered as rhyming if
+   * their final stressed vowel and all following phonemes are identical.
+   * @param {string} word1 - the first word to compare
+   * @param {string} word2 - the second word to compare
+   * @returns {boolean}  true if the two words rhyme, else false
+   */
   static isRhyme(word1, word2) {
-    return _RiTa.lexicon.isRhyme(...arguments);
+    return _RiTa.lexicon.isRhyme(word1, word2);
   }
-  static async alliterations(word, opts) {
-    return await _RiTa.lexicon.alliterations(...arguments);
+  /**
+   * Finds alliterations by comparing the phonemes of the input string to those
+   *  of each word in the lexicon via a minimum-edit-distance metric.
+   * @param {string} word 
+   * @param {object} [options]
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words 
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   *  or the simplified tag set [a, r, v, n]
+   * @returns {Promise<string[]>} an array of alliterations matching criteria in the options object 
+   */
+  static async alliterations(word, options) {
+    return await _RiTa.lexicon.alliterations(word, options);
   }
-  static hasWord(word) {
-    return _RiTa.lexicon.hasWord(...arguments);
+  /**
+   * Returns true if the word is in the lexicon, else false
+   * @param {string} word - the word to check
+   * @param {object} [options] - options for the search
+   * @param {boolean} [options.noDerivations=false] - whether to ignore derivations and only search for raw words
+   * @returns {boolean} true if the word is in the lexicon, else false
+   */
+  static hasWord(word, options) {
+    return _RiTa.lexicon.hasWord(word, options);
   }
-  static isAbbrev(input, { caseSensitive = false } = {}) {
+  /**
+   * Returns true if the word is an abbreviation, else false
+   * @param {string} input - the word to check
+   * @param {object} [options] - options for the search
+   * @param {boolean} [options.caseSensitive=false] - whether to ignore case when checking for abbreviations
+   * @returns {boolean} true if the word is an abbreviation, else false
+   */
+  static isAbbrev(input, options) {
     if (typeof input === "string") {
-      if (caseSensitive)
+      if (options?.caseSensitive)
         return _RiTa.ABRV.includes(input.trim());
       let check = input.trim().toLowerCase();
       return _RiTa.ABRV.some((a) => a.toLowerCase() === check);
     }
   }
+  /**
+   * Returns true if the two words are an alliteration (if their first stressed consonants match). 
+   * Note: returns true if wordA.equals(wordB) and false if either (or both) are null.
+   * @param {string} word1 - the first word to compare
+   * @param {string} word2 - the second word to compare
+   * @returns {boolean}  true if the two words are an alliteration, else false
+   */
   static isAlliteration(word1, word2) {
-    return _RiTa.lexicon.isAlliteration(...arguments);
+    return _RiTa.lexicon.isAlliteration(word1, word2);
   }
-  static async spellsLike(word, opts) {
-    return await _RiTa.lexicon.spellsLike(...arguments);
+  /**
+   * Compares the letters of the input word (using a version of the Levenstein min-edit distance algorithm) 
+   * to each word in the lexicon, returning the set of closest matches that also match the criteria in the options object.
+   * @param {string} word - the word to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words 
+   * @param {number} [options.limit=10] - the maximum number of results to return  (pass -1 to return all matches) 
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set or the simplified tag set [a, r, v, n]
+   * @returns {Promise<string[]>} an array of words matching the spelling pattern and criteria in the options object 
+   */
+  static async spellsLike(word, options) {
+    return await _RiTa.lexicon.spellsLike(word, options);
   }
-  static async soundsLike(word, opts) {
-    return await _RiTa.lexicon.soundsLike(...arguments);
+  /**
+   * Compares the phonemes of the input pattern (using a version of the Levenstein min-edit distance algorithm)
+   *  to each word in the lexicon, returning the set of closest matches that also match the criteria in the options object.
+   * @param {string} word - the word to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words 
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {boolean} [options.matchSpelling=false] if true will also attempt to match spelling by returning an intersection with RiTa.spellsLike()
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   *  or the simplified tag set [a, r, v, n]
+   * @returns {Promise<string[]>} an array of words matching the phonemic pattern and criteria in the options object 
+   */
+  static async soundsLike(word, options) {
+    return await _RiTa.lexicon.soundsLike(word, options);
   }
-  static pos(word) {
-    return _RiTa.tagger.tag(...arguments);
+  /**
+   * Generates part-of-speech tags for each word in the input with tags 
+   * from the Penn tag set or the simplified tag set [a, r, v, n].
+   * @param {(string|string[])} word - the word or words to tag
+   * @param {object} [options] - options for the tagging
+   * @param {boolean} [options.simple] - use simple tags (noun=n,verb=v,adverb=a,adjective=r)
+   * @returns {string|string[]} - an array of part-of-speech tags for each word in the input
+   */
+  static pos(word, options) {
+    if (options && "inline" in options) {
+      throw Error("Use RiTa.posInline() instead");
+    }
+    return _RiTa.tagger.tag(word, options);
   }
+  /**
+   * Returns true if the word has a noun form. That is, if any of its possible
+   *  parts of speech are any variant of a noun in the Penn tag set(e.g. nn, nns, nnp, nnps).
+   * @param {string} word - the word to check
+   * @returns {string} - true if the word is a noun, else false
+   */
   static isNoun(word) {
     return _RiTa.tagger.isNoun(word);
   }
+  /**
+   * Returns true if word has an adjective form. That is, if any of its possible parts of speech
+   *  are any variant of an adjective in the Penn tag set (e.g. jj, jjr, jjs).
+   * @param {string} word - the word to check
+   * @returns {string} - true if the word is an adjective, else false
+   */
   static isAdjective(word) {
     return _RiTa.tagger.isAdjective(word);
   }
+  /**
+   * Returns true if the word has an adverb form. That is, if any of its possible parts of speech 
+   * are any variant of an adverb in the Penn tag set (e.g. rb, rbr, rbs).
+   * @param {string} word - the word to check
+   * @returns {string} - true if the word is an adverb, else false
+   */
   static isAdverb(word) {
     return _RiTa.tagger.isAdverb(word);
   }
-  static isPunct(text) {
-    return text && text.length && ONLY_PUNCT.test(text);
-  }
+  /**
+   * Returns true for if word has a verb form. That is, if any of its possible 
+   * parts of speech are any variant of a verb in the Penn tag set (e.g. vb, vbg, vbd, vbp, vbz).
+   * @param {string} word - the word to check
+   * @returns {string} - true if the word is a verb, else false
+   */
   static isVerb(word) {
     return _RiTa.tagger.isVerb(word);
   }
-  static posInline(words, opts = {}) {
-    opts.inline = true;
-    return _RiTa.tagger.tag(words, opts);
+  /**
+   * Returns true if every character of 'text' is a punctuation character.
+   * @param {string} text 
+   * @returns {boolean} true if every character of 'text' is punctuation, else false
+   */
+  static isPunct(text) {
+    return text && text.length && ONLY_PUNCT.test(text);
   }
+  /**
+   * Tags the input string with part-of-speech tags, either from the Penn tag set or the simplified tag set [a, r, v, n].
+   * @param {string} sentence - the sentence to tag
+   * @param {object} [options] - options for the tagging
+   * @param {boolean} [options.simple=false] - use the simplified tag set [a, r, v, n]
+   * @returns {string} the tagged sentence
+   */
+  static posInline(sentence, options) {
+    return _RiTa.tagger.tag(sentence, { ...options, inline: true });
+  }
+  /**
+   * Return the singular form of the input word
+   * @param {string} word - the word to singularize
+   * @returns {string} the singular form of the input word
+   */
   static singularize(word) {
-    return _RiTa.inflector.singularize(...arguments);
+    return _RiTa.inflector.singularize(word);
   }
+  /**
+   * Return the plural form of the input word
+   * @param {string} word - the word to pluralize
+   * @returns {string} the plural form of the input word
+   */
   static pluralize(word) {
-    return _RiTa.inflector.pluralize(...arguments);
+    return _RiTa.inflector.pluralize(word);
   }
-  static async search(pattern, opts) {
-    return await _RiTa.lexicon.search(...arguments);
+  /**
+   * Searches for words in the lexicon matching the given criteria, either by length, syllable-count, 
+   * spelling, phonemes, stresses, part-of-speech, etc. If no regex or options are supplied, the full set of words is returned.
+   * @param {(string|RegExp)} [pattern] - the pattern to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words 
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   *  or the simplified tag set [a, r, v, n]
+   * @param {string} [options.type] - the type of regex or string pattern to match, options are 'stresses'
+   *  or 'phones' or 'letters' (the default)
+   * @returns {Promise<string[]>} an array of words matching the criteria in both the pattern and the options object 
+   */
+  static async search(pattern, options) {
+    return await _RiTa.lexicon.search(pattern, options);
   }
-  static tokens(string, opts) {
-    return _RiTa.tokenizer.tokens(...arguments);
+  /**
+    * Returns an array containing all unique alphabetical words (tokens) in the text.
+    * Punctuation and case are ignored unless specified otherwise.
+    * @param {string} text - The text from which to extract the tokens
+    * @param {object} [options] - The options
+    * @param {boolean} [options.caseSensitive=false] - Whether to pay attention to case
+    * @param {boolean} [options.ignoreStopWords=false] - Whether to ignore words such as 'the', 'and', 'a', 'of', etc,
+    *  as specified in RiTa.STOP_WORDS
+    * @param {boolean} [options.splitContractions=false] - Whether to convert contractions
+    *  (e.g., "I'd" or "she'll") into multiple individual tokens
+    * @param {boolean} [options.includePunct=false] - Whether to include punctuation in the results
+    * @param {boolean} [options.sort=false] - Whether to sort the tokens before returning them
+    * @returns {string[]} Array of tokens
+    */
+  static tokens(text, options = {
+    caseSensitive: false,
+    ignoreStopWords: false,
+    splitContractions: false,
+    includePunct: false,
+    sort: false
+  }) {
+    return _RiTa.tokenizer.tokens(text, options);
   }
-  static tokenize(string, opts) {
-    return _RiTa.tokenizer.tokenize(...arguments);
+  /**
+   * Tokenizes an input string into words, according to the Penn Treebank conventions
+   * @param {string} input - The text to tokenize
+   * @param {object} [options] - The options
+   * @param {RegExp} [options.regex=null] - An optional custom regex to split on
+   * @param {boolean} [options.splitHyphens=false] - Whether to split hyphenated words 
+   * (e.g., "mother-in-law") into multiple individual tokens
+   * @param {boolean} [options.splitContractions=false] - Whether to split contractions 
+   * (e.g., "I'd" or "she'll") into multiple individual tokens
+   * @returns {string[]} Array of tokens
+   */
+  static tokenize(input, options) {
+    return _RiTa.tokenizer.tokenize(input, options);
   }
-  static untokenize(stringArray, delim) {
-    return _RiTa.tokenizer.untokenize(...arguments);
+  /**
+   * Joins an array (of words and punctuation) into a sentence, according to 
+   * the Penn Treebank conventions. The inverse of RiTa.tokenize().
+   * @param {string[]} input - The array of words to join
+   * @param {string} [delim=' '] - The delimiter to use between words, or a space by default
+   * @returns {string} The joined sentence
+   */
+  static untokenize(input, delim = " ") {
+    return _RiTa.tokenizer.untokenize(input, delim);
   }
-  static sentences(string) {
-    return _RiTa.tokenizer.sentences(...arguments);
+  /**
+   * Split the input text into sentences following using Penn Treebank conventions and the specified options.
+   * @param {string} text - The text to split
+   * @param {(string|RegExp)} [pattern] - An optional custom regex to split on
+   * @returns {string[]} An array of sentences
+   */
+  static sentences(text, pattern) {
+    return _RiTa.tokenizer.sentences(text, pattern);
   }
-  static isStopWord(w) {
-    return _RiTa.STOP_WORDS.includes(w.toLowerCase());
+  /**
+   * Returns true if the word is a 'stop word', a commonly used word that is often ignored in text processing. 
+   * To use your own list, set RiTa.STOP_WORDS to a new array of (lowercase) words.
+   * @param {string} word - the word to check
+   * @returns {boolean} true if the word is a stop word, else false
+   */
+  static isStopWord(word) {
+    return _RiTa.STOP_WORDS.includes(word.toLowerCase());
   }
-  static stem(string) {
-    return stemmer_default.stem(...arguments);
+  /**
+   * Extracts base roots from a word according to the Pling stemming algorithm.
+   * @param {string} word - the word to stem 
+   * @returns {string} the base root of the word
+   */
+  static stem(word) {
+    return stemmer_default.stem(word);
   }
+  /**
+   * Returns the present participle of the input word (e.g., "walking" for "walk").
+   * @param {string} verbWord - the word to get the present participle of
+   * @returns {string} the present participle of the input word
+   */
   static presentPart(verbWord) {
-    return _RiTa.conjugator.presentPart(...arguments);
+    return _RiTa.conjugator.presentPart(verbWord);
   }
+  /**
+   * Returns the past participle of the input word (e.g., "walked" for "walk").
+   * @param {string} verbWord 
+   * @returns {string} the past participle of the input word
+   */
   static pastPart(verbWord) {
-    return _RiTa.conjugator.pastPart(...arguments);
+    return _RiTa.conjugator.pastPart(verbWord);
   }
-  static conjugate(verbWord, opts) {
-    return _RiTa.conjugator.conjugate(...arguments);
+  /**
+   * Conjugates the 'verb' according to the specified options (tense, person, number, etc.)
+   * @param {string} verbWord 
+   * @param {object} [options]
+   * @param {number} [options.tense] - the tense of the verb, either RiTa.PAST, RiTa.PRESENT, or RiTa.FUTURE
+   * @param {number} [options.person] - the person of the verb, either RiTa.FIRST, RiTa.SECOND, or RiTa.THIRD
+   * @param {number} [options.number] - the number of the verb, either RiTa.SINGULAR or RiTa.PLURAL
+   * @param {number} [options.form] - the form of the verb, either RiTa.INFINITIVE or RiTa.GERUND
+   * @param {boolean} [options.passive] - whether the verb should be passive
+   * @param {boolean} [options.progressive] - whether the verb should be progressive
+   * @param {boolean} [options.perfect] - whether the verb should be perfect
+   * @param {boolean} [options.interrogative] - whether the verb should be in interrogative form
+   * @returns {string} the conjugated verb
+   */
+  static conjugate(verbWord, options) {
+    return _RiTa.conjugator.conjugate(verbWord, options);
   }
-  static stresses(string) {
-    return _RiTa.analyzer.analyze(...arguments).stresses;
+  /**
+   * Analyzes the input and returns a new string containing the stresses for each syllable of the input text .
+   * @param {string} input - the text to analyze
+   * @param {object} [options] - options for the analysis
+   * @returns {string} a string containing the stresses for each syllable of the input text
+   */
+  static stresses(input, options) {
+    return _RiTa.analyzer.analyze(input, options).stresses;
   }
-  static syllables(string) {
-    return _RiTa.analyzer.analyze(...arguments).syllables;
+  /**
+   * Analyzes the input and returns a new string containing the syllables of the input text.
+   * @param {string} input - the text to analyze
+   * @param {object} [options] - options for the analysis
+   * @returns {string} a string containing the syllables of the input text
+   */
+  static syllables(input, options) {
+    return _RiTa.analyzer.analyze(input, options).syllables;
   }
-  static phones(string) {
-    return _RiTa.analyzer.analyze(...arguments).phones;
+  /**
+   * Analyzes the input and returns a new string containing the phonemes of the input text.
+   * @param {string} input - the text to analyze
+   * @param {object} [options] - options for the analysis
+   * @returns {string} a string containing the phones of the input text
+   */
+  static phones(input, options) {
+    return _RiTa.analyzer.analyze(input, options).phones;
   }
-  static analyze(string) {
-    return _RiTa.analyzer.analyze(...arguments);
+  /**
+   * Analyzes the input to compute a set of features for the input,
+   * including phonemes, syllables, stresses, and part-of-speech tags.
+   * @param {string} input - the text to analyze
+   * @param {object} [options] - options for the analysis
+   * @param {boolean} [options.simple=false] - whether to use the simplified tag set [a, r, v, n]
+   * @returns {object} an object containing the features of the input text (phones, syllables, stresses, pos), or the features inline
+   */
+  static analyze(input, options) {
+    return _RiTa.analyzer.analyze(input, options);
   }
   ////////////////////////////// lex-sync ////////////////////////////
-  static spellsLikeSync(word, opts) {
-    return _RiTa.lexicon.spellsLikeSync(...arguments);
+  /**
+   * A synchronous version of RiTa.spellsLike(). It compares the letters of the input word 
+   * (using a version of the Levenstein min-edit distance algorithm) to each word in the lexicon,
+   *  returning the set of closest matches that also match the criteria in the options object.
+   * @param {string} word - the word to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   * or the simplified tag set [a, r, v, n]
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @return {string[]} an array of words matching the spelling pattern and criteria in the options object
+   */
+  static spellsLikeSync(word, options) {
+    return _RiTa.lexicon.spellsLikeSync(word, options);
   }
-  static sountsLikeSync(word, opts) {
-    return _RiTa.lexicon.sountsLikeSync(...arguments);
+  /**
+   * A synchronous version of RiTa.lexicon.soundsLike(). It compares the phonemes of the input pattern (using a version of the Levenstein min-edit distance algorithm)
+   *  to each word in the lexicon, returning the set of closest matches that also match the criteria in the options object.
+   * @param {string} word - the word to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words 
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.matchSpelling=false] if true will also attempt to match spelling by returning an intersection with RiTa.spellsLike()
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   *  or the simplified tag set [a, r, v, n]
+   * @return {string[]} an array of words matching the phonemic pattern and criteria in the options object 
+   */
+  static soundsLikeSync(word, options) {
+    return _RiTa.lexicon.soundsLikeSync(word, options);
   }
-  static rhymesSync(word, opts) {
-    return _RiTa.lexicon.rhymesSync(...arguments);
+  /**
+   * Synchronous version of RiTa.rhymes(). Returns words that rhyme with the given word. 
+   * Two words are considered as rhyming if their final stressed vowel and all following phonemes are identical.
+   * @param {string} word - the word to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set  
+   * or the simplified tag set [a, r, v, n]
+   * @return {string[]} an array of rhymes that match criteria in the options object
+   */
+  static rhymesSync(word, options) {
+    return _RiTa.lexicon.rhymesSync(word, options);
   }
-  // TODO: all need tests
-  static searchSync(word, opts) {
-    return _RiTa.lexicon.rhymesSync(...arguments);
+  /**
+   * A synchronous version of RiTa.search(). Searches for words in the lexicon matching
+   *  the given criteria, either by length, syllable-count, spelling, phonemes, stresses, 
+   * part-of-speech, etc.
+   * @param {(string|RegExp)} [pattern] - the pattern to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   * or the simplified tag set [a, r, v, n]
+   * @param {string} [options.type] - the type of regex or string pattern to match, options are 'stresses' or 'phones' or 'letters' (the default)
+   * @return {string[]} an array of words matching the criteria in both the pattern and the options object
+   */
+  static searchSync(pattern, options) {
+    return _RiTa.lexicon.searchSync(pattern, options);
   }
-  static alliterationsSync(word, opts) {
-    return _RiTa.lexicon.alliterationsSync(...arguments);
+  /**
+   * A synchronous version of RiTa.alliterations(). Finds alliterations by comparing the phonemes
+   * of the input string to those of each word in the lexicon via a minimum-edit-distance metric.
+   * @param {string} word - the word to match
+   * @param {object} [options] - options for the search
+   * @param {number} [options.minLength=4] - the minimum length of the words
+   * @param {number} [options.maxLength] - the maximum length of the words
+   * @param {number} [options.numSyllables] - the number of syllables in the words
+   * @param {number} [options.limit=10] - the maximum number of results to return (pass -1 to return all matches)
+   * @param {boolean} [options.shuffle=false] - whether to shuffle the results before returning them
+   * @param {string} [options.pos] - the part-of-speech of the words to return, either from the Penn tag set
+   *  or the simplified tag set [a, r, v, n]
+   * @return {string[]} an array of alliterations matching criteria in the options object
+   */
+  static alliterationsSync(word, options) {
+    return _RiTa.lexicon.alliterationsSync(word, options);
   }
   ////////////////////////////// niapa /////////////////////////////
-  static randi(opts) {
-    return Math.floor(_RiTa.randomizer.random(...arguments));
+  /**
+   * Returns a random integer from a range
+   * The version of random() with one parameter returns a random integer from 0 up to but not including the number. 
+   * The version of random() with two parameters returns a random integer from the first number up to but not including the second.
+   * @param {number} param1 - the first parameter
+   * @param {number} [param2] - the second optional parameter
+   * @returns {number} a random integer from the range
+   */
+  static randi(param1, param2) {
+    return Math.floor(_RiTa.random(...arguments));
   }
-  static random(opts) {
+  /**
+   * Returns a random number or a random element from an array.
+   * The version of random() with no parameters returns a random number from 0 up to but not including 1.
+   * The version of random() with one parameter works one of two ways. If the argument passed is a number, random() returns a random number from 0 up to but not including the number. 
+   * If the argument passed is an array, random() returns a random element from that array.
+   * The version of random() with two parameters returns a random number from the first number up to but not including the second.   
+   * @param {number|object[]} [param1] - the minimum value of the random number, or an array of values to choose from
+   * @param {number} [param2] - the maximum value of the random number
+   * @returns {number|object} a random number or a random element from the array
+   */
+  static random(param1, param2) {
     return _RiTa.randomizer.random(...arguments);
   }
 };
-markov_default.parent = RiTa2;
-stemmer_default.parent = RiTa2;
-RiTa2.RiGrammar = RiGrammar;
-RiTa2.RiMarkov = markov_default;
-RiTa2.Stemmer = stemmer_default;
-RiTa2.tagger = new tagger_default(RiTa2);
-RiTa2.analyzer = new analyzer_default(RiTa2);
-RiTa2.concorder = new concorder_default(RiTa2);
-RiTa2.tokenizer = new tokenizer_default(RiTa2);
-RiTa2.inflector = new inflector_default(RiTa2);
-RiTa2.randomizer = new randgen_default(RiTa2);
-RiTa2.lexicon = new lexicon_default(RiTa2);
-RiTa2.conjugator = new conjugator_default(RiTa2);
-RiTa2.SILENT = false;
-RiTa2.SILENCE_LTS = false;
-RiTa2.PHONES = ["aa", "ae", "ah", "ao", "aw", "ay", "b", "ch", "d", "dh", "eh", "er", "ey", "f", "g", "hh", "ih", "iy", "jh", "k", "l", "m", "n", "ng", "ow", "oy", "p", "r", "s", "sh", "t", "th", "uh", "uw", "v", "w", "y", "z", "zh"];
-RiTa2.VERSION = "3.0.21";
-RiTa2.HAS_LEXICON = typeof __NOLEX__ === "undefined";
-RiTa2.FIRST = 1;
-RiTa2.SECOND = 2;
-RiTa2.THIRD = 3;
-RiTa2.PAST = 4;
-RiTa2.PRESENT = 5;
-RiTa2.FUTURE = 6;
-RiTa2.SINGULAR = 7;
-RiTa2.PLURAL = 8;
-RiTa2.NORMAL = 9;
-RiTa2.STRESS = "1";
-RiTa2.NOSTRESS = "0";
-RiTa2.PHONE_BOUNDARY = "-";
-RiTa2.WORD_BOUNDARY = " ";
-RiTa2.SYLLABLE_BOUNDARY = "/";
-RiTa2.SENTENCE_BOUNDARY = "|";
-RiTa2.VOWELS = "aeiou";
-RiTa2.MODAL_EXCEPTIONS = ["hardness", "shortness"];
-RiTa2.ABRV = ["Adm.", "Capt.", "Cmdr.", "Col.", "Dr.", "Gen.", "Gov.", "Lt.", "Maj.", "Messrs.", "Mr.", "Mrs.", "Ms.", "Prof.", "Rep.", "Reps.", "Rev.", "Sen.", "Sens.", "Sgt.", "Sr.", "St.", "A.k.a.", "C.f.", "I.e.", "E.g.", "Vs.", "V.", "Jan.", "Feb.", "Mar.", "Apr.", "Mar.", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
-RiTa2.QUESTIONS = ["was", "what", "when", "where", "which", "why", "who", "will", "would", "who", "how", "if", "is", "could", "might", "does", "are", "have"];
-RiTa2.STOP_WORDS = ["and", "a", "of", "in", "i", "you", "is", "to", "that", "it", "for", "on", "have", "with", "this", "be", "not", "are", "as", "was", "but", "or", "from", "my", "at", "if", "they", "your", "all", "he", "by", "one", "me", "what", "so", "can", "will", "do", "an", "about", "we", "just", "would", "there", "no", "like", "out", "his", "has", "up", "more", "who", "when", "don't", "some", "had", "them", "any", "their", "it's", "only", "which", "i'm", "been", "other", "were", "how", "then", "now", "her", "than", "she", "well", "also", "us", "very", "because", "am", "here", "could", "even", "him", "into", "our", "much", "too", "did", "should", "over", "want", "these", "may", "where", "most", "many", "those", "does", "why", "please", "off", "going", "its", "i've", "down", "that's", "can't", "you're", "didn't", "another", "around", "must", "few", "doesn't", "the", "every", "yes", "each", "maybe", "i'll", "away", "doing", "oh", "else", "isn't", "he's", "there's", "hi", "won't", "ok", "they're", "yeah", "mine", "we're", "what's", "shall", "she's", "hello", "okay", "here's", "less", "didn't", "said", "over", "this", "that", "just", "then", "under", "some"];
-RiTa2.MASS_NOUNS = ["abalone", "asbestos", "barracks", "bathos", "breeches", "beef", "britches", "chaos", "chinese", "cognoscenti", "clippers", "corps", "cosmos", "crossroads", "diabetes", "ethos", "gallows", "graffiti", "herpes", "innings", "lens", "means", "measles", "mews", "mumps", "news", "pasta", "pathos", "pincers", "pliers", "proceedings", "rabies", "rhinoceros", "sassafras", "scissors", "series", "shears", "species", "tuna", "acoustics", "aesthetics", "aquatics", "basics", "ceramics", "classics", "cosmetics", "dialectics", "deer", "dynamics", "ethics", "harmonics", "heroics", "mechanics", "metrics", "ooze", "optics", "physics", "polemics", "pyrotechnics", "statistics", "tactics", "tropics", "bengalese", "bengali", "bonsai", "booze", "cellulose", "mess", "moose", "burmese", "chinese", "colossus", "congolese", "discus", "electrolysis", "emphasis", "expertise", "flu", "fructose", "gauze", "glucose", "grease", "guyanese", "haze", "incense", "japanese", "lebanese", "malaise", "mayonnaise", "maltese", "music", "money", "menopause", "merchandise", "olympics", "overuse", "paradise", "poise", "potash", "portuguese", "prose", "recompense", "remorse", "repose", "senegalese", "siamese", "singhalese", "sleaze", "sioux", "sudanese", "suspense", "swiss", "taiwanese", "vietnamese", "unease", "aircraft", "anise", "antifreeze", "applause", "archdiocese", "apparatus", "asparagus", "bellows", "bison", "bluefish", "bourgeois", "bream", "brill", "butterfingers", "cargo", "carp", "catfish", "chassis", "clone", "clones", "clothes", "chub", "cod", "codfish", "coley", "contretemps", "crawfish", "crayfish", "cuttlefish", "dice", "dogfish", "doings", "dory", "downstairs", "eldest", "earnings", "economics", "electronics", "firstborn", "fish", "flatfish", "flounder", "fowl", "fry", "fries", "works", "goldfish", "golf", "grand", "grief", "haddock", "hake", "halibut", "headquarters", "herring", "hertz", "honey", "horsepower", "goods", "hovercraft", "ironworks", "kilohertz", "ling", "shrimp", "swine", "lungfish", "mackerel", "macaroni", "megahertz", "moorfowl", "moorgame", "mullet", "nepalese", "offspring", "pants", "patois", "pekinese", "perch", "pickerel", "pike", "potpourri", "precis", "quid", "rand", "rendezvous", "roach", "salmon", "samurai", "seychelles", "shad", "sheep", "shellfish", "smelt", "spaghetti", "spacecraft", "starfish", "stockfish", "sunfish", "superficies", "sweepstakes", "smallpox", "swordfish", "tennis", "tobacco", "triceps", "trout", "tunafish", "turbot", "trousers", "turf", "dibs", "undersigned", "waterfowl", "waterworks", "waxworks", "wildfowl", "woodworm", "yen", "aries", "pisces", "forceps", "jeans", "mathematics", "odds", "politics", "remains", "aids", "wildlife", "shall", "would", "may", "might", "ought", "should", "acne", "admiration", "advice", "air", "anger", "anticipation", "assistance", "awareness", "bacon", "baggage", "blood", "bravery", "chess", "clay", "clothing", "coal", "compliance", "comprehension", "confusion", "consciousness", "cream", "darkness", "diligence", "dust", "education", "empathy", "enthusiasm", "envy", "equality", "equipment", "evidence", "feedback", "fitness", "flattery", "foliage", "fun", "furniture", "garbage", "gold", "gossip", "grammar", "gratitude", "gravel", "guilt", "happiness", "hardware", "hate", "hay", "health", "heat", "help", "hesitation", "homework", "honesty", "honor", "honour", "hospitality", "hostility", "humanity", "humility", "ice", "immortality", "independence", "information", "integrity", "intimidation", "jargon", "jealousy", "jewelry", "justice", "knowledge", "literacy", "logic", "luck", "lumber", "luggage", "mail", "management", "milk", "morale", "mud", "nonsense", "oppression", "optimism", "oxygen", "participation", "pay", "peace", "perseverance", "pessimism", "pneumonia", "poetry", "police", "pride", "privacy", "propaganda", "public", "punctuation", "recovery", "rice", "rust", "satisfaction", "schnapps", "shame", "slang", "software", "stamina", "starvation", "steam", "steel", "stuff", "support", "sweat", "thunder", "timber", "toil", "traffic", "tongs", "training", "trash", "valor", "vehemence", "violence", "warmth", "waste", "weather", "wheat", "wisdom", "work", "accommodation", "advertising", "aid", "art", "bread", "business", "butter", "calm", "cash", "cheese", "childhood", "clothing ", "coffee", "content", "corruption", "courage", "currency", "damage", "danger", "determination", "electricity", "employment", "energy", "entertainment", "failure", "fame", "fire", "flour", "food", "freedom", "friendship", "fuel", "genetics", "hair", "harm", "hospitality ", "housework", "humour", "imagination", "importance", "innocence", "intelligence", "juice", "kindness", "labour", "lack", "laughter", "leisure", "literature", "litter", "love", "magic", "metal", "motherhood", "motivation", "nature", "nutrition", "obesity", "oil", "old age", "paper", "patience", "permission", "pollution", "poverty", "power", "production", "progress", "pronunciation", "publicity", "quality", "quantity", "racism", "rain", "relaxation", "research", "respect", "room (space)", "rubbish", "safety", "salt", "sand", "seafood", "shopping", "silence", "smoke", "snow", "soup", "speed", "spelling", "stress ", "sugar", "sunshine", "tea", "time", "tolerance", "trade", "transportation", "travel", "trust", "understanding", "unemployment", "usage", "vision", "water", "wealth", "weight", "welfare", "width", "wood", "yoga", "youth", "homecare", "childcare", "fanfare", "healthcare", "medicare"];
-RiTa2.INFINITIVE = 1;
-RiTa2.GERUND = 2;
-RiTa2.SPLIT_CONTRACTIONS = false;
+RiTa.RiGrammar = RiGrammar;
+RiTa.RiMarkov = markov_default;
+RiTa.Stemmer = stemmer_default;
+RiTa.randomizer = new randgen_default();
+RiTa.tagger = new tagger_default(RiTa);
+RiTa.analyzer = new analyzer_default(RiTa);
+RiTa.concorder = new concorder_default(RiTa);
+RiTa.tokenizer = new tokenizer_default(RiTa);
+RiTa.inflector = new inflector_default(RiTa);
+RiTa.lexicon = new lexicon_default(RiTa);
+RiTa.conjugator = new conjugator_default(RiTa);
+markov_default.parent = RiTa;
+stemmer_default.tokenizer = RiTa.tokenizer;
+RiTa.SILENT = false;
+RiTa.SILENCE_LTS = false;
+RiTa.VERSION = "3.0.28";
+RiTa.FIRST = 1;
+RiTa.SECOND = 2;
+RiTa.THIRD = 3;
+RiTa.PAST = 4;
+RiTa.PRESENT = 5;
+RiTa.FUTURE = 6;
+RiTa.SINGULAR = 7;
+RiTa.PLURAL = 8;
+RiTa.NORMAL = 9;
+RiTa.STRESS = "1";
+RiTa.NOSTRESS = "0";
+RiTa.PHONE_BOUNDARY = "-";
+RiTa.WORD_BOUNDARY = " ";
+RiTa.SYLLABLE_BOUNDARY = "/";
+RiTa.SENTENCE_BOUNDARY = "|";
+RiTa.VOWELS = "aeiou";
+RiTa.PHONES = ["aa", "ae", "ah", "ao", "aw", "ay", "b", "ch", "d", "dh", "eh", "er", "ey", "f", "g", "hh", "ih", "iy", "jh", "k", "l", "m", "n", "ng", "ow", "oy", "p", "r", "s", "sh", "t", "th", "uh", "uw", "v", "w", "y", "z", "zh"];
+RiTa.ABRV = ["Adm.", "Capt.", "Cmdr.", "Col.", "Dr.", "Gen.", "Gov.", "Lt.", "Maj.", "Messrs.", "Mr.", "Mrs.", "Ms.", "Prof.", "Rep.", "Reps.", "Rev.", "Sen.", "Sens.", "Sgt.", "Sr.", "St.", "A.k.a.", "C.f.", "I.e.", "E.g.", "Vs.", "V.", "Jan.", "Feb.", "Mar.", "Apr.", "Mar.", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
+RiTa.QUESTIONS = ["was", "what", "when", "where", "which", "why", "who", "will", "would", "who", "how", "if", "is", "could", "might", "does", "are", "have"];
+RiTa.STOP_WORDS = ["and", "a", "of", "in", "i", "you", "is", "to", "that", "it", "for", "on", "have", "with", "this", "be", "not", "are", "as", "was", "but", "or", "from", "my", "at", "if", "they", "your", "all", "he", "by", "one", "me", "what", "so", "can", "will", "do", "an", "about", "we", "just", "would", "there", "no", "like", "out", "his", "has", "up", "more", "who", "when", "don't", "some", "had", "them", "any", "their", "it's", "only", "which", "i'm", "been", "other", "were", "how", "then", "now", "her", "than", "she", "well", "also", "us", "very", "because", "am", "here", "could", "even", "him", "into", "our", "much", "too", "did", "should", "over", "want", "these", "may", "where", "most", "many", "those", "does", "why", "please", "off", "going", "its", "i've", "down", "that's", "can't", "you're", "didn't", "another", "around", "must", "few", "doesn't", "the", "every", "yes", "each", "maybe", "i'll", "away", "doing", "oh", "else", "isn't", "he's", "there's", "hi", "won't", "ok", "they're", "yeah", "mine", "we're", "what's", "shall", "she's", "hello", "okay", "here's", "less", "didn't", "said", "over", "this", "that", "just", "then", "under", "some"];
+RiTa.MASS_NOUNS = ["abalone", "asbestos", "barracks", "bathos", "breeches", "beef", "britches", "chaos", "chinese", "cognoscenti", "clippers", "corps", "cosmos", "crossroads", "diabetes", "ethos", "gallows", "graffiti", "herpes", "innings", "lens", "means", "measles", "mews", "mumps", "news", "pasta", "pathos", "pincers", "pliers", "proceedings", "rabies", "rhinoceros", "sassafras", "scissors", "series", "shears", "species", "tuna", "acoustics", "aesthetics", "aquatics", "basics", "ceramics", "classics", "cosmetics", "dialectics", "deer", "dynamics", "ethics", "harmonics", "heroics", "mechanics", "metrics", "ooze", "optics", "physics", "polemics", "pyrotechnics", "statistics", "tactics", "tropics", "bengalese", "bengali", "bonsai", "booze", "cellulose", "mess", "moose", "burmese", "chinese", "colossus", "congolese", "discus", "electrolysis", "emphasis", "expertise", "flu", "fructose", "gauze", "glucose", "grease", "guyanese", "haze", "incense", "japanese", "lebanese", "malaise", "mayonnaise", "maltese", "music", "money", "menopause", "merchandise", "olympics", "overuse", "paradise", "poise", "potash", "portuguese", "prose", "recompense", "remorse", "repose", "senegalese", "siamese", "singhalese", "sleaze", "sioux", "sudanese", "suspense", "swiss", "taiwanese", "vietnamese", "unease", "aircraft", "anise", "antifreeze", "applause", "archdiocese", "apparatus", "asparagus", "bellows", "bison", "bluefish", "bourgeois", "bream", "brill", "butterfingers", "cargo", "carp", "catfish", "chassis", "clone", "clones", "clothes", "chub", "cod", "codfish", "coley", "contretemps", "crawfish", "crayfish", "cuttlefish", "dice", "dogfish", "doings", "dory", "downstairs", "eldest", "earnings", "economics", "electronics", "firstborn", "fish", "flatfish", "flounder", "fowl", "fry", "fries", "works", "goldfish", "golf", "grand", "grief", "haddock", "hake", "halibut", "headquarters", "herring", "hertz", "honey", "horsepower", "goods", "hovercraft", "ironworks", "kilohertz", "ling", "shrimp", "swine", "lungfish", "mackerel", "macaroni", "megahertz", "moorfowl", "moorgame", "mullet", "nepalese", "offspring", "pants", "patois", "pekinese", "perch", "pickerel", "pike", "potpourri", "precis", "quid", "rand", "rendezvous", "roach", "salmon", "samurai", "seychelles", "shad", "sheep", "shellfish", "smelt", "spaghetti", "spacecraft", "starfish", "stockfish", "sunfish", "superficies", "sweepstakes", "smallpox", "swordfish", "tennis", "tobacco", "triceps", "trout", "tunafish", "turbot", "trousers", "turf", "dibs", "undersigned", "waterfowl", "waterworks", "waxworks", "wildfowl", "woodworm", "yen", "aries", "pisces", "forceps", "jeans", "mathematics", "odds", "politics", "remains", "aids", "wildlife", "shall", "would", "may", "might", "ought", "should", "acne", "admiration", "advice", "air", "anger", "anticipation", "assistance", "awareness", "bacon", "baggage", "blood", "bravery", "chess", "clay", "clothing", "coal", "compliance", "comprehension", "confusion", "consciousness", "cream", "darkness", "diligence", "dust", "education", "empathy", "enthusiasm", "envy", "equality", "equipment", "evidence", "feedback", "fitness", "flattery", "foliage", "fun", "furniture", "garbage", "gold", "gossip", "grammar", "gratitude", "gravel", "guilt", "happiness", "hardware", "hate", "hay", "health", "heat", "help", "hesitation", "homework", "honesty", "honor", "honour", "hospitality", "hostility", "humanity", "humility", "ice", "immortality", "independence", "information", "integrity", "intimidation", "jargon", "jealousy", "jewelry", "justice", "knowledge", "literacy", "logic", "luck", "lumber", "luggage", "mail", "management", "milk", "morale", "mud", "nonsense", "oppression", "optimism", "oxygen", "participation", "pay", "peace", "perseverance", "pessimism", "pneumonia", "poetry", "police", "pride", "privacy", "propaganda", "public", "punctuation", "recovery", "rice", "rust", "satisfaction", "schnapps", "shame", "slang", "software", "stamina", "starvation", "steam", "steel", "stuff", "support", "sweat", "thunder", "timber", "toil", "traffic", "tongs", "training", "trash", "valor", "vehemence", "violence", "warmth", "waste", "weather", "wheat", "wisdom", "work", "accommodation", "advertising", "aid", "art", "bread", "business", "butter", "calm", "cash", "cheese", "childhood", "clothing ", "coffee", "content", "corruption", "courage", "currency", "damage", "danger", "determination", "electricity", "employment", "energy", "entertainment", "failure", "fame", "fire", "flour", "food", "freedom", "friendship", "fuel", "genetics", "hair", "harm", "hospitality ", "housework", "humour", "imagination", "importance", "innocence", "intelligence", "juice", "kindness", "labour", "lack", "laughter", "leisure", "literature", "litter", "love", "magic", "metal", "motherhood", "motivation", "nature", "nutrition", "obesity", "oil", "old age", "paper", "patience", "permission", "pollution", "poverty", "power", "production", "progress", "pronunciation", "publicity", "quality", "quantity", "racism", "rain", "relaxation", "research", "respect", "room (space)", "rubbish", "safety", "salt", "sand", "seafood", "shopping", "silence", "smoke", "snow", "soup", "speed", "spelling", "stress ", "sugar", "sunshine", "tea", "time", "tolerance", "trade", "transportation", "travel", "trust", "understanding", "unemployment", "usage", "vision", "water", "wealth", "weight", "welfare", "width", "wood", "yoga", "youth", "homecare", "childcare", "fanfare", "healthcare", "medicare"];
+RiTa.INFINITIVE = 1;
+RiTa.GERUND = 2;
+RiTa.SPLIT_CONTRACTIONS = false;
 var ONLY_PUNCT = /^[\p{P}|\+|-|<|>|\^|\$|\ufffd|`]*$/u;
 var IS_LETTER = /^[a-z\u00C0-\u00ff]+$/;
-RiTa2.RiScript = RiScript;
-RiScript.RiTa = RiTa2;
-RiTa2.riscript = new RiScript({ RiTa: RiTa2 });
+RiTa.riscript = new RiScript({ RiTa });
 export {
-  RiTa2 as RiTa
+  markov_default as RiMarkov,
+  RiTa
 };
 //# sourceMappingURL=rita.js.map
