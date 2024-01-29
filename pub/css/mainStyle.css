@@ -148,7 +148,18 @@ a:focus {
 }
 
 #whats-new a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
+}
+
+#important-list a {
+  text-decoration: none;
+  font-weight:normal;
+  color: #FEC0CB;
+}
+
+#important-list a:hover {
+  text-decoration: underline;
+  font-weight:normal;
 }
 
 #whats-new h4 {

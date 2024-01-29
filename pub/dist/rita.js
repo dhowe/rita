@@ -42242,10 +42242,11 @@ var _RiMarkov = class _RiMarkov {
       }
       const nexts = tn.childNodes();
       for (let i = 0; i < nexts.length; i++) {
-        let atest = pre.slice(0);
-        atest.push(nexts[i].token, ...post);
-        if (this._pathTo(atest))
-          result.push(nexts[i].token);
+        let atest = pre.slice(0), next = nexts[i];
+        atest.push(next.token, ...post);
+        if (this._pathTo(atest)) {
+          result.push(next.token);
+        }
       }
     } else {
       const pr = this.probabilities(pre);
@@ -43237,7 +43238,7 @@ markov_default.parent = RiTa;
 stemmer_default.tokenizer = RiTa.tokenizer;
 RiTa.SILENT = false;
 RiTa.SILENCE_LTS = false;
-RiTa.VERSION = "3.0.28";
+RiTa.VERSION = "3.1.0";
 RiTa.FIRST = 1;
 RiTa.SECOND = 2;
 RiTa.THIRD = 3;
