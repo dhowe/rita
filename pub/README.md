@@ -1,2 +1,2 @@
 # RiTaWeb
-Website for RiTa version 2
+Website for RiTa version 3.x
