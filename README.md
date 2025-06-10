@@ -109,7 +109,7 @@ For documentation, see [this interactive notebook](https://observablehq.com/@dho
 
 
 ## Developers
-The website in this repo is generated via the `./scripts/make-site.sh` script.
+The website in this repo is generated via the `./scripts/make-site.sh` script, which requires `entr` and `ant`
 
 ### Static pages
 The best way to make updates to static pages is to do the following:
