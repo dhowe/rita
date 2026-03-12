@@ -5,6 +5,8 @@
 #   ./scripts/publish-lib.sh -v 2.4.87 -p
 #   ./scripts/publish-lib.sh -v 2.4.87 -pJ (no java)
 
+# NOTE: to update docs only, run build-site.sh, then push, then pull in server:~/git/rita
+
 set -e
 
 start=`date +%s`
