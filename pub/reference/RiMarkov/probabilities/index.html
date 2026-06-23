@@ -120,7 +120,7 @@
                 <tr class="">
                   <th scope="row">Description</th>
                   <!-- DESCRIPTION  -->
-                  <td>Returns the full set of possible next tokens as a map, given an array of tokens representing the path down the tree (with length less than n).<br/>&nbsp;<br/>Note: seed arrays of any size (>0) may be input, but only the last n-1 elements will be considered.   .</td>
+                  <td>Returns the full set of possible next tokens as an object, given an array of tokens as context.<br/><br/>If no tokens are provided, returns the distribution following the implicit start token.<br/>Special start/end tokens are excluded from the result unless <b>options.allowSpecial</b> is set.</td>
                 </tr>
 
                 <tr class='Example'>
@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">rm = new RiMarkov(3); <br/>rm.loadText(theText);<br/>rm.probabilities(["be", "thought"]);</pre>
+                      <pre class="margin">rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>// next-word distribution after 'the cat'<br/>dist = rm.probabilities(["the", "cat"]);<br/>// -> { sat: 0.5, jumped: 0.3, meowed: 0.2 }<br/><br/>// with temperature<br/>dist = rm.probabilities(["the"], { temp: 1.5 });</pre>
                     </div>
                   </td>
                 </tr>
@@ -137,7 +137,7 @@
                   <th scope="row">Parameters</th>
                   <td>
                     <!-- PARAMETERS  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String OR String[]</th><td width='75%'>a single token or array of tokens (strings)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>double</th><td width='75%'>temperature (optional)</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>context tokens (optional — defaults to start-of-sequence)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object</th><td width='75%'>options (optional)<br><br>{number} <b>options.temp:</b><br>sampling temperature (default=0, i.e. raw frequencies)<br><br>{boolean} <b>options.allowSpecial:</b><br>if true, include internal start/end tokens in the result (default=false)</td></tr></table>
                   </td>
                 </tr>
 
@@ -146,7 +146,7 @@
                   <th scope="row">Returns</th>
                   <td>
                     <!-- RETURNS/TYPE (for variables)  -->
-                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Object<br>(or Map in Java)</th><td width='75%'>An object (JS) or HashMap (Java) mapping words to probabilities</td></tr></table>
+                    <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>Object</th><td width='75%'>an object mapping possible next tokens to their probabilities, or an empty object if no continuations exist</td></tr></table>
                   </td>
                 </tr>
 
@@ -169,7 +169,7 @@
 
                   <!-- SYNTAX  -->
                   <td>
-                    <pre>probabilities(pathString);<br/>probabilities(pathArray);<br>probabilities(pathString, temperature);<br>probabilities(pathArray, temperature);</pre>
+                    <pre>probabilities();<br/>probabilities(tokens);<br/>probabilities(tokens, opts);</pre>
                   </td>
                 </tr>
 
