@@ -8,7 +8,7 @@ const opts: Options = {
   outDir: 'dist',
   watch: false,
   clean: true,
-  minify: false,
+  minify: true,
   sourcemap: true,
   dts: false,
   bundle: true,

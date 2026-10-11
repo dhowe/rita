@@ -12,12 +12,28 @@ import { join, dirname } from 'path';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const data = JSON.parse(readFileSync(join(root, 'shared', 'rita_dict.json'), 'utf8'));
-const body = JSON.stringify(data, null, 2);
+
+// Serialize with 2-space indent and inline leaf arrays, e.g.
+//   "a": ["ey1", "dt"],
+// (JSON.stringify(_, null, 2) would expand every leaf array to 4 lines,
+// ballooning the file ~4x and producing a huge no-op diff.)
+const serialize = (obj) => {
+  const keys = Object.keys(obj);
+  const lines = keys.map((key, i) => {
+    const val = obj[key];
+    const encoded = Array.isArray(val)
+      ? `[${val.map((x) => JSON.stringify(x)).join(', ')}]`
+      : JSON.stringify(val);
+    return `  ${JSON.stringify(key)}: ${encoded}${i < keys.length - 1 ? ',' : ''}`;
+  });
+  return `{\n${lines.join('\n')}\n}`;
+};
+const body = serialize(data);
 
 const targets = [
   {
     path: join(root, 'js', 'src', 'rita_dict.js'),
-    content: `/** @type {object} */\nexport default ${body};\n`,
+    content: `\n/** @type {object} */\nexport default ${body};\n`,
   },
   {
     path: join(root, 'java', 'src', 'main', 'resources', 'rita', 'rita_dict.js'),

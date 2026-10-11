@@ -20241,7 +20241,7 @@ export default {
   "tweed": ["t-w-iy1-d", "nn"],
   "tweedy": ["t-w-iy1 d-iy", "jj"],
   "tweezer": ["t-w-iy1 z-er", "nn"],
-  "twenty": ["t-w-eh1-n t-iy", "cd nn"], //#HWF
+  "twenty": ["t-w-eh1-n t-iy", "cd nn"],
   "twice": ["t-w-ay1-s", "rb jj"],
   "twig": ["t-w-ih1-g", "nn"],
   "twilight": ["t-w-ay1 l-ay-t", "nn"],
