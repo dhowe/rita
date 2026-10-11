@@ -767,6 +767,7 @@ RiTa.conjugator = new Conjugator(RiTa);
 // BACKREFS
 RiMarkov.RiTa = RiTa;
 RiTa.Model.RiTa = RiTa;
+SuffixArray.RiTa = RiTa;
 Stemmer.tokenizer = RiTa.tokenizer;
 
 // MESSAGES

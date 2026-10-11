@@ -152,6 +152,28 @@ describe('Markov.SuffixArray', () => {
     expect(decoded).to.deep.equal(['The', 'The']);
     expect(model.randSeqStart()).to.equal('The');
   });
+
+  it('SuffixArray.randSeqStart() honors RiTa.randomSeed', () => {
+
+    // Regression: randSeqStart used Math.random(), bypassing RiTa.randomizer,
+    // so RiTa.randomSeed() had no effect on it
+    const toks = [
+      SEQ_START_TOKEN, 'The', 'dog', 'ran', SEQ_END_TOKEN,
+      SEQ_START_TOKEN, 'A', 'cat', 'sat', SEQ_END_TOKEN,
+      SEQ_START_TOKEN, 'Some', 'bird', 'flew', SEQ_END_TOKEN
+    ];
+    const model = new SuffixArray(toks);
+    const draw = (seed) => {
+      RiTa.randomSeed(seed);
+      return Array.from({ length: 10 }, () => model.randSeqStart());
+    };
+    try {
+      expect(draw(1)).to.eql(draw(1));            // reproducible
+      expect(draw(1)).to.not.eql(draw(500));      // actually seeded
+    } finally {
+      RiTa.randomSeed(Date.now());                // don't leak a fixed seed
+    }
+  });
   it('SuffixArray.find()', () => {
     let sa, min, max, patt, tokens, count;
 

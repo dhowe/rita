@@ -369,11 +369,14 @@ describe('Markov', function () {
   it('should call generate4', function () {
     let rm = new RiMarkov(3); // 3 is max for sample, with input checking
     rm.addText(sample);
-    let s = rm.generate();
+    // Pass the bounds explicitly: bare generate() defaults maxLength to 999,
+    // so asserting <= 35 here was an unfounded guess that failed ~2-4% of runs.
+    // (The generator enforces explicit bounds exactly -- see generate.minMaxLength.)
+    let s = rm.generate({ minLength: 5, maxLength: 35 });
     expect(s && s[0] === s[0].toUpperCase(), "FAIL: bad first char in '" + s + "'").to.be.true;
     expect(/[!?.]$/.test(s), "FAIL: bad last char in '" + s + "'").to.be.true;
     let num = RiTa.tokenize(s).length;
-    expect(num >= 5 && num <= 35).to.be.true;
+    expect(num >= 5 && num <= 35, num + ' not within 5-35').to.be.true;
   });
 
   it('should call generate5', function () { // misc

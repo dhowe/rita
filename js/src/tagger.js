@@ -209,7 +209,7 @@ class Tagger {
       VBZ 	Verb, 3rd person singular present
       NNS   Noun, plural
     */
-    const lex = this.RiTa.lexicon, tags = lex._posArr(word);
+    const lex = this.RiTa.lexicon;// tags = lex._posArr(word);
 
     if (word.endsWith("ress")) {
       let pos = lex._posArr(word.substring(0, word.length - 3)); // murderess

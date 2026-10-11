@@ -17,6 +17,15 @@ export default class SuffixArray {
   static SEQ_END_TOKEN = '</s>';
   static USE_COMPRESSION = true;
 
+  /**
+   * Returns a random float in [0,1) from the shared seeded RNG (RiTa.randomizer)
+   * when available, so RiTa.randomSeed() makes selection reproducible. Falls
+   * back to Math.random() for standalone use without a loaded RiTa.
+   */
+  static random() {
+    return SuffixArray.RiTa ? SuffixArray.RiTa.randomizer.random() : Math.random();
+  }
+
   static __props__ = ['startToken', 'endToken', 'xoverWindow', 'compressed', 'length', 'decoder', 'encoder'];
   static __dict__ = [ ...SuffixArray.__props__, 'input', 'seqmap', 'data', 'xovers' ];
 
@@ -451,7 +460,7 @@ export default class SuffixArray {
    */
   randSeqStart() {
     let indexes = this.startIndexes();
-    let start = indexes[Math.floor(Math.random() * indexes.length)];
+    let start = indexes[Math.floor(SuffixArray.random() * indexes.length)];
     return this._decode(start);
   }
 

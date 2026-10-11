@@ -278,11 +278,11 @@ describe("Markov", function() {
   it("should call generate4", function() {
     let rm = new RiMarkov(3);
     rm.addText(sample);
-    let s = rm.generate();
+    let s = rm.generate({ minLength: 5, maxLength: 35 });
     expect(s && s[0] === s[0].toUpperCase(), "FAIL: bad first char in '" + s + "'").to.be.true;
     expect(/[!?.]$/.test(s), "FAIL: bad last char in '" + s + "'").to.be.true;
     let num = RiTa.tokenize(s).length;
-    expect(num >= 5 && num <= 35).to.be.true;
+    expect(num >= 5 && num <= 35, num + " not within 5-35").to.be.true;
   });
   it("should call generate5", function() {
     let rm = new RiMarkov(3);
