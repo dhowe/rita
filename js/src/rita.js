@@ -809,10 +809,10 @@ RiTa.GERUND = 2;
 // For tokenization, Can't -> Can not, etc.
 RiTa.SPLIT_CONTRACTIONS = false;
 
-// Fast set mirrors for the word arrays above; each Set is rebuilt
-// lazily when its source array changes; reassignment is detected, and
-// in-place push/pop/splice is caught by the length check.
-function defineSetMirror(name, getArray) {
+// Fast set mirrors for the word lists above; each Set is rebuilt
+// lazily when its source array changes; reassignment is detected, 
+// in-place push/pop/splice is caught by length check.
+function createSetMirror(name, getArray) {
   let ref = getArray(), len = ref.length, set = new Set(ref);
   Object.defineProperty(RiTa, name, {
     configurable: true, enumerable: false,
@@ -825,15 +825,14 @@ function defineSetMirror(name, getArray) {
     }
   });
 }
-defineSetMirror('STOP_WORDS_SET', () => RiTa.STOP_WORDS);
-defineSetMirror('MASS_NOUNS_SET', () => RiTa.MASS_NOUNS);
-defineSetMirror('QUESTIONS_SET', () => RiTa.QUESTIONS);
+
+createSetMirror('STOP_WORDS_SET', () => RiTa.STOP_WORDS);
+createSetMirror('MASS_NOUNS_SET', () => RiTa.MASS_NOUNS);
+createSetMirror('QUESTIONS_SET', () => RiTa.QUESTIONS);
 
 const ONLY_PUNCT = /^[\p{P}|+|-|<|>|^|$|\ufffd|`]*$/u;
 const IS_LETTER = /^[a-z\u00C0-\u00ff]+$/;
 
 RiTa.riscript = new RiScript({ RiTa });
 
-// Note: RiMarkov is intentionally not exported; it is exposed via RiTa.RiMarkov
-// and the RiTa.markov() factory, so RiTa remains the only public entry point.
-export { RiTa };
+export { RiTa, RiMarkov };

@@ -1,5 +1,7 @@
+import { RiGrammar, RiScript } from 'riscript';
+
 export class RiTa {
-    static grammar(rules?: object, context?: object): any;
+    static grammar(rules?: object, context?: object): RiGrammar;
     static addTransform(name: string, definition: ((...args: any[]) => string) | object): void;
     static removeTransform(name: string): void;
     static getTransforms(): string[];
@@ -185,15 +187,28 @@ export class RiTa {
     static randi(param1: number, param2?: number): number;
     static random(param1?: number | object[], param2?: number): number | object;
 
-    static randomizer: { seed(n: number): void; random(...args: any[]): number; pselect<T>(arr: T[]): T; pselectIndex(arr: number[]): number; pselect2(arr: number[]): number; ndist(weights: number[], temp?: number): number[]; randomOrdering<T>(arr: T[]): T[]; };
+    static randomizer: RandGen;
+    static RiGrammar: typeof RiGrammar;
+    static Stemmer: typeof Stemmer;
+    static Model: typeof SuffixGram;
     static RiMarkov: typeof RiMarkov;
     static BackoffModel: typeof BackoffModel;
     static SuffixArray: typeof SuffixArray;
+
+    static tagger: Tagger;
+    static analyzer: Analyzer;
+    static concorder: Concorder;
+    static tokenizer: Tokenizer;
+    static inflector: Inflector;
+    static lexicon: Lexicon;
+    static conjugator: Conjugator;
+    static riscript: RiScript;
 
     static VERSION: string;
     static SILENT: boolean;
     static SILENCE_LTS: boolean;
     static SPLIT_CONTRACTIONS: boolean;
+    static CACHING: boolean;
 
     static STRESS: string;
     static NOSTRESS: string;
@@ -207,6 +222,13 @@ export class RiTa {
     static QUESTIONS: string[];
     static STOP_WORDS: string[];
     static MASS_NOUNS: string[];
+
+    /** Lazily rebuilt mirror of STOP_WORDS */
+    static readonly STOP_WORDS_SET: ReadonlySet<string>;
+    /** Lazily rebuilt mirror of MASS_NOUNS */
+    static readonly MASS_NOUNS_SET: ReadonlySet<string>;
+    /** Lazily rebuilt mirror of QUESTIONS */
+    static readonly QUESTIONS_SET: ReadonlySet<string>;
 
     static INFINITIVE: number;
     static FIRST: number;
@@ -324,8 +346,190 @@ declare class RiMarkov {
     size(): number;
 }
 
-// These three classes are not part of the runtime export surface (only RiTa is
-// exported), so they are re-exported as types only. This keeps `RiTa.RiMarkov`
-// usable as a value while making `import { RiMarkov } from 'rita'` a type error
-// instead of a runtime failure.
-export type { BackoffModel, SuffixArray, RiMarkov };
+// ---------------------------------------------------------------------------
+// Component classes — not part of the runtime export surface; reachable as
+// RiTa.<name> (either a class, for Stemmer/Model, or a singleton instance).
+// ---------------------------------------------------------------------------
+
+// Not exported: reachable as RiTa.Stemmer.
+declare class Stemmer {
+    /** Set by rita.js as a backref to RiTa.tokenizer */
+    static tokenizer: Tokenizer;
+    static stem(input: string): string;
+    static stemAll(input: string[]): string[];
+    static stemEnglish(word: string): string;
+}
+
+// Not exported: reachable as RiTa.Model (the base class of BackoffModel).
+declare class SuffixGram {
+    static SILENT: boolean;
+    static RiTa: typeof RiTa;
+    static defaults: {
+        debug: boolean;
+        ready: boolean;
+        suffixes: boolean;
+        compressed: boolean;
+        startToken: string;
+        endToken: string;
+        tokenize?: (input: string) => string[];
+        untokenize?: (tokens: string[], delim?: string) => string;
+    };
+    static options: string[];
+    constructor(input?: string | string[], opts?: object);
+    /** Subclasses implement this; the base class throws. */
+    build(): SuffixGram;
+    size(): number;
+    toString(opts?: object): string;
+    toJSON(): object;
+    addText(rawText: string): SuffixGram;
+    addSentences(sentences: string[]): SuffixGram;
+    addTokens(tokens: string[]): SuffixGram;
+    tokens: string[];
+    tokenCount: number;
+    startToken: string;
+    endToken: string;
+    ready: boolean;
+    suffixes: SuffixArray;
+    tokenize?: (input: string) => string[];
+    untokenize?: (tokens: string[], delim?: string) => string;
+}
+
+// Not exported: reachable as RiTa.tagger.
+declare class Tagger {
+    constructor(parent: typeof RiTa);
+    allTags(word: string, opts?: { noGuessing?: boolean }): string[];
+    isVerb(word: string, opts?: object): boolean;
+    isNoun(word: string): boolean;
+    isAdjective(word: string): boolean;
+    isAdverb(word: string): boolean;
+    isLikelyPlural(word: string): boolean;
+    hasTag(choices: string[], tag: string): boolean;
+    inlineTags(words: string[], tags: string[], delimiter?: string): string;
+}
+
+// Not exported: reachable as RiTa.analyzer.
+declare class Analyzer {
+    constructor(parent: typeof RiTa);
+    analyze(text: string, opts?: { simple?: boolean; ipaPhones?: boolean }): object;
+    analyzeWord(word: string, opts?: { simple?: boolean; ipaPhones?: boolean }): {
+        phones: string;
+        stresses: string;
+        syllables: string;
+    };
+    computePhones(word: string, opts?: object): string;
+    phonesToStress(phones: string): string | undefined;
+}
+
+// Not exported: reachable as RiTa.concorder.
+declare class Concorder {
+    constructor(parent: typeof RiTa);
+    concordance(text: string | string[], options?: {
+        ignoreCase?: boolean;
+        ignoreStopWords?: boolean;
+        ignorePunctuation?: boolean;
+        wordsToIgnore?: string[];
+    }): Record<string, number>;
+    /** opts may be an options object or a number of context words */
+    kwic(word: string, opts?: object | number): string[];
+    count(word: string): number;
+}
+
+// Not exported: reachable as RiTa.tokenizer.
+declare class Tokenizer {
+    constructor(parent: typeof RiTa);
+    tokens(text: string, options?: {
+        caseSensitive?: boolean;
+        ignoreStopWords?: boolean;
+        splitContractions?: boolean;
+        includePunct?: boolean;
+        sort?: boolean;
+    }): string[];
+    tokenize(input: string, opts?: {
+        regex?: RegExp;
+        debug?: boolean;
+        splitHyphens?: boolean;
+        splitContractions?: boolean;
+    }): string[];
+    untokenize(tokenArray: string[], delim?: string): string;
+    sentences(text: string, regex?: string | RegExp): string[];
+}
+
+// Not exported: reachable as RiTa.inflector.
+declare class Inflector {
+    constructor(parent: typeof RiTa);
+    singularize(word: string, opts?: object): string;
+    pluralize(word: string, opts?: object): string;
+    isPlural(word: string, opts?: object): boolean;
+    adjustNumber(word: string, type: number, dbug?: boolean): string;
+}
+
+// Not exported: reachable as RiTa.lexicon.
+declare class Lexicon {
+    constructor(parent: typeof RiTa, custom?: object);
+    /** the underlying word -> [phones, pos] map */
+    data: Record<string, [string, string]>;
+    hasWord(word: string, opts?: { noDerivations?: boolean }): boolean;
+    randomWord(pattern?: string | RegExp, opts?: {
+        minLength?: number;
+        maxLength?: number;
+        numSyllables?: number;
+        limit?: number;
+        pos?: string;
+        type?: string;
+        shuffle?: boolean;
+    }): string;
+    searchSync(pattern?: string | RegExp, options?: {
+        minLength?: number;
+        maxLength?: number;
+        numSyllables?: number;
+        limit?: number;
+        shuffle?: boolean;
+        pos?: string;
+        type?: string;
+    }): string[];
+    rhymesSync(theWord: string, opts?: object): string[];
+    alliterationsSync(theWord: string, opts?: object): string[];
+    spellsLikeSync(word: string, options?: object): string[];
+    soundsLikeSync(word: string, opts?: object): string[];
+    isAlliteration(word1: string, word2: string): boolean;
+    isRhyme(word1: string, word2: string): boolean;
+    isMassNoun(word: string): boolean;
+    rawPhones(word: string, opts?: object): string;
+    minEditDist(source: string, target: string): number;
+    size(): number;
+}
+
+// Not exported: reachable as RiTa.conjugator.
+declare class Conjugator {
+    constructor(parent: typeof RiTa);
+    conjugate(verb: string, args?: object | string): string;
+    unconjugate(word: string, opts?: object): string | undefined;
+    presentPart(theVerb: string): string;
+    pastPart(theVerb: string): string;
+    toString(): string;
+}
+
+// Not exported: reachable as RiTa.randomizer.
+declare class RandGen {
+    constructor();
+    seed(num: number): void;
+    /** random() -> 0..1, random(k) -> 0..k, random(j,k) -> j..k, random(arr) -> item */
+    random(...args: any[]): any;
+    randomBias(min: number, max: number, bias: number, influence?: number): number;
+    shuffle<T>(arr: T[]): T[];
+    randomOrdering(arg: any[] | number): any[];
+    /** returns the selected index */
+    pselect(probs: number[]): number;
+    /** returns the selected key */
+    pselectObj(dist: Record<string, number>): string;
+    pselectIndex(probs: number[]): number;
+    pselect2(weightsArray: number[]): number;
+    ndist(weights: number[], temp?: number): number[];
+}
+
+export type {
+    BackoffModel, SuffixArray, RiMarkov,
+    Stemmer, SuffixGram, Tagger, Analyzer, Concorder,
+    Tokenizer, Inflector, Lexicon, Conjugator, RandGen,
+    RiGrammar, RiScript,
+};
