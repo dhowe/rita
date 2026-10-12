@@ -153,7 +153,7 @@ class Tokenizer {
 
     // derived booleans — computed once per state, used below
     const thisNBPunct = NOSP_BF_PUNCT_RE.test(curr) || UNTAG_RE[2].test(curr) || LINEBREAK_RE.test(curr); // no space before curr
-    const lastNBPunct = NOSP_BF_PUNCT_RE.test(prev) || LINEBREAK_RE.test(prev);
+    const lastNBPunct = NOSP_BF_PUNCT_RE.test(prev) || LINEBREAK_RE.test(prev) || ELLIPSIS_RE.test(prev);
     const lastNAPunct = NOSP_AF_PUNCT_RE.test(prev) || UNTAG_RE[1].test(prev) || LINEBREAK_RE.test(prev); // no space after prev
     const thisLBracket = LB_RE.test(curr), thisRBracket = RB_RE.test(curr);
     const lastLB = LB_RE.test(prev), lastRB = RB_RE.test(prev);
@@ -217,6 +217,15 @@ class Tokenizer {
       return [true, false, { withinQuote, afterQuote, midSentence: false, nextNoSpace }];
     }
 
+    // period-run (ellipsis) token: glued to a preceding word, but spaced after
+    // punctuation or after a token that already ends in a dot. This must not
+    // depend on isLast, otherwise untokenize of a token window differs from
+    // untokenize of the same tokens in the full text.
+    if (ELLIPSIS_RE.test(curr)) {
+      const glue = !lastNBPunct && !/\.$/.test(prev);
+      return [!glue, false, { withinQuote, afterQuote, midSentence, nextNoSpace }];
+    }
+
     // general case
     const generalSpace = (!thisNBPunct && !lastQuote && !lastNAPunct && !lastLB && !thisRBracket)
       || (!isLast && thisNBPunct && lastNBPunct && !lastNAPunct
@@ -238,6 +247,11 @@ class Tokenizer {
     for (let i = 0; i < result.length; i++) {
       if (POPTAG_RE.test(result[i])) {
         result[i] = tags.shift();
+      }
+      // restore the raw period-run spelling captured during tokenize
+      if (ELLIPSIS_ENC_RE.test(result[i])) {
+        result[i] = result[i].replace(ELLIPSIS_ENC_RE,
+          (m, s) => s.replace(/\u2062/g, '.').replace(/\u2063/g, ' '));
       }
       if (result[i].includes('_') && !EMAIL_RE.test(result[i]) && !URL_RE.test(result[i])) {
         result[i] = result[i].replace(UNDER_RE, "$1 $2");
@@ -336,6 +350,9 @@ const NOSP_BF_PUNCT_RE = /^[,.;:?!)""\u201c\u201d\u2019\u2018`'%\u2026\u2103^*\u
 const LINEBREAK_RE = /\r?\n/;//[\n\r\036]/;
 const URL_RE = /((http[s]?):(\/\/))?([-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b)([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 const EMAIL_RE = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+// period-run tokens: ELLIPSIS_RE matches a decoded token, ELLIPSIS_ENC_RE the encoded placeholder
+const ELLIPSIS_RE = /^(?:\.\s*){2,}$/;
+const ELLIPSIS_ENC_RE = /^_el([\u2062\u2063]+)_$/;
 
 const TOKENIZE_RE = [
   // save  --------
@@ -379,7 +396,12 @@ const TOKENIZE_RE = [
   /\r/g, " _CARRIAGERETURN_ ", // CR
   ///\036/g, " _RECORDSEPARATOR_ ", // RS
   //--------------------------
-  /\.\.\.\s/g, "_elipsis_ ",
+  // collapse any run of 2+ periods (whitespace allowed between) into a single
+  // token that preserves its exact original spelling, so ". . .", "...", "..",
+  // ". ." etc. all roundtrip verbatim. Dots and spaces are encoded as U+2062 /
+  // U+2063 so they survive the punctuation-splitting rules below, and are
+  // decoded back to the raw substring in _popTags.
+  /\.(?:\s*\.)+/g, m => " _el" + m.replace(/\./g, "\u2062").replace(/\s+/g, "\u2063") + "_ ",
   /([?!"\u201C.,;:@#$%&])/g, " $1 ",
   /\u2026/g, " \u2026 ",
   /\s+/g, ' ',
@@ -399,7 +421,6 @@ const TOKENIZE_RE = [
   /^\s+/g, '',
   /\^/g, " ^ ",
   /\u00b0/g, " \u00b0 ",
-  /_elipsis_/g, " ... ",
 
   //pop ------------------
   /_([Ee])([Gg])_/g, "$1.$2.", //Eg

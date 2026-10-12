@@ -1,13 +1,6 @@
 
-import { createRequire } from 'module';
-
 // EOL for serialization
 const EOL = '\n';
-
-// Lazy node loader — no-ops in non-Node envs
-function nodeRequire(mod) {
-  try { return createRequire(import.meta.url)(mod); } catch { return {}; }
-}
 
 export default class SuffixArray {
 
@@ -82,46 +75,6 @@ export default class SuffixArray {
     }
 
     return compressed;
-  }
-
-  toFileSync(path) {
-    const fs = nodeRequire('fs');
-    fs.writeFileSync(path, this.toRawString());
-  }
-
-  static fromFileSync(path) {
-    const fs = nodeRequire('fs');
-    const { EOL: eol = EOL } = nodeRequire('os');
-    let data = fs.readFileSync(path, 'utf8');
-    let lines = data.split(eol);
-    return SuffixArray.fromRawLines(lines);
-  }
-
-  async toFileStream(path) {
-    const { default: fs } = await import('fs');
-    const { EOL: eol } = await import('os');
-    return new Promise((resolve, reject) => {
-      const outputStream = fs.createWriteStream(path);
-      let records = [this.headerRecord(), ...this.dataRecords()];
-      records.forEach(r => outputStream.write(r + eol));
-      outputStream.end();
-      outputStream.on("finish", resolve).on('error', reject);
-    });
-  }
-
-  static async fromFileStream(path) {
-    const { default: fs } = await import('fs');
-    const { default: readline } = await import('readline');
-    return new Promise((resolve, reject) => {
-      const records = [];
-      readline.createInterface({
-        input: fs.createReadStream(path)
-      }).on('line', function (line) {
-        records.push(line);
-      }).on('close', function () {
-        resolve(SuffixArray.fromRawLines(records));
-      }).on('error', reject);
-    });
   }
 
   static initFromMeta(meta) {

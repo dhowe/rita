@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 
 import { RiTa } from './index.js';
+import { log } from 'console';
 
 describe('Tokenizer', () => {
 
@@ -763,6 +764,52 @@ describe('Tokenizer', () => {
     output = RiTa.tokenize("http://example.com/An_Example_Page");
     expect(output).eql(["http://example.com/An_Example_Page"]);
 
+  });
+
+  it('Should handle line breaks', function () {
+    expect(RiTa.untokenize(RiTa.tokenize('A CARAFE, THAT IS A BLIND GLASS.\nA kind in glass and a cousin.'))).eq("A CARAFE, THAT IS A BLIND GLASS.\nA kind in glass and a cousin.");
+    expect(RiTa.untokenize(RiTa.tokenize('A CARAFE, THAT IS A BLIND GLASS.\r\nA kind in glass and a cousin.')))
+      .eq("A CARAFE, THAT IS A BLIND GLASS.\r\nA kind in glass and a cousin.");
+  });
+
+  it('Should roundtrip ellipses as single raw tokens', function () {
+    // Any run of 2+ periods (whitespace allowed between) becomes ONE token that
+    // keeps its exact original spelling, so untokenize returns it verbatim.
+    expect(RiTa.tokenize("the loss. . . ocean")).eql(["the", "loss", ". . .", "ocean"]);
+    expect(RiTa.tokenize("the loss... ocean")).eql(["the", "loss", "...", "ocean"]);
+    expect(RiTa.tokenize("the loss.. ocean")).eql(["the", "loss", "..", "ocean"]);
+    expect(RiTa.tokenize("the loss. . ocean")).eql(["the", "loss", ". .", "ocean"]);
+    expect(RiTa.tokenize("the loss.... ocean")).eql(["the", "loss", "....", "ocean"]);
+    expect(RiTa.tokenize("the loss. . . . . ocean")).eql(["the", "loss", ". . . . .", "ocean"]);
+
+    // Dot count and internal spacing are preserved exactly.
+    expect(RiTa.untokenize(RiTa.tokenize("the loss. . . ocean"))).eq("the loss. . . ocean");
+    expect(RiTa.untokenize(RiTa.tokenize("the loss.... ocean"))).eq("the loss.... ocean");
+    expect(RiTa.untokenize(RiTa.tokenize("a.. b.... c"))).eq("a.. b.... c");
+    expect(RiTa.untokenize(RiTa.tokenize("away. . .. But"))).eq("away. . .. But");
+    expect(RiTa.untokenize(RiTa.tokenize("darkness. . . , the Book"))).eq("darkness. . . , the Book");
+
+    // A run that follows punctuation or a token ending in a dot keeps the space
+    // before it, and a run glued to a word stays glued.
+    expect(RiTa.untokenize(RiTa.tokenize("knew very well. ... And"))).eq("knew very well. ... And");
+    expect(RiTa.untokenize(RiTa.tokenize("oh, didn’t I! ... Now"))).eq("oh, didn’t I! ... Now");
+    expect(RiTa.untokenize(RiTa.tokenize("certain... But"))).eq("certain... But");
+    expect(RiTa.untokenize(RiTa.tokenize("well... so"))).eq("well... so");
+
+    // Spacing must not depend on whether the run is the last token, so that
+    // untokenize of a token window matches the same tokens in full text.
+    expect(RiTa.untokenize(["I", "!", "...", "Now"]).startsWith(RiTa.untokenize(["I", "!", "..."]))).eq(true);
+    expect(RiTa.untokenize(["very", "well", "...", "so"]).startsWith(RiTa.untokenize(["very", "well", "..."]))).eq(true);
+
+    // Single dots are untouched: abbreviations, decimals and sentence ends.
+    expect(RiTa.tokenize("e.g. the cat.")).eql(["e.g.", "the", "cat", "."]);
+    expect(RiTa.tokenize("Pi is 3.14.")).eql(["Pi", "is", "3.14", "."]);
+    expect(RiTa.tokenize("Mr. and Mrs. Stevens.")).eql(["Mr.", "and", "Mrs", ".", "Stevens", "."]);
+    expect(RiTa.untokenize(RiTa.tokenize("end. Next"))).eq("end. Next");
+
+    // Known limitation: whitespace before the first dot is not part of the token,
+    // so "word . . ." canonicalizes to the glued "word. . ." form.
+    expect(RiTa.untokenize(RiTa.tokenize("the loss . . . ocean"))).eq("the loss. . . ocean");
   });
 
 });
