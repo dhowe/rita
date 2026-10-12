@@ -217,11 +217,11 @@ class Tokenizer {
       return [true, false, { withinQuote, afterQuote, midSentence: false, nextNoSpace }];
     }
 
-    // period-run (ellipsis) token: glued to a preceding word, but spaced after
-    // punctuation or after a token that already ends in a dot. This must not
-    // depend on isLast, otherwise untokenize of a token window differs from
-    // untokenize of the same tokens in the full text.
-    if (ELLIPSIS_RE.test(curr)) {
+    // Period-run (ellipsis) and dash tokens: glued to a preceding word, but
+    // spaced after punctuation or after a token that already ends in a dot.
+    // This must not depend on isLast, otherwise untokenize of a token window
+    // differs from untokenize of the same tokens in the full text.
+    if (ELLIPSIS_RE.test(curr) || DASH_RE.test(curr)) {
       const glue = !lastNBPunct && !/\.$/.test(prev);
       return [!glue, false, { withinQuote, afterQuote, midSentence, nextNoSpace }];
     }
@@ -353,6 +353,9 @@ const EMAIL_RE = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 // period-run tokens: ELLIPSIS_RE matches a decoded token, ELLIPSIS_ENC_RE the encoded placeholder
 const ELLIPSIS_RE = /^(?:\.\s*){2,}$/;
 const ELLIPSIS_ENC_RE = /^_el([\u2062\u2063]+)_$/;
+// dash tokens (em/en/hyphen runs) share the ellipsis spacing rule: glued to a
+// preceding word, spaced after punctuation, and never isLast-dependent
+const DASH_RE = /^[\u2012\u2013\u2014-]+$/;
 
 const TOKENIZE_RE = [
   // save  --------

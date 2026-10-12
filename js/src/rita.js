@@ -834,4 +834,6 @@ const IS_LETTER = /^[a-z\u00C0-\u00ff]+$/;
 
 RiTa.riscript = new RiScript({ RiTa });
 
-export { RiTa, RiMarkov };
+// Note: RiMarkov is intentionally not exported; it is exposed via RiTa.RiMarkov
+// and the RiTa.markov() factory, so RiTa remains the only public entry point.
+export { RiTa };

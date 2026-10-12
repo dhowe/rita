@@ -772,6 +772,23 @@ describe('Tokenizer', () => {
       .eq("A CARAFE, THAT IS A BLIND GLASS.\r\nA kind in glass and a cousin.");
   });
 
+  it('Should space dashes like ellipses', function () {
+    // A dash token is glued to a preceding word but spaced after punctuation,
+    // and -- like the ellipsis rule -- this must not depend on isLast, so that
+    // untokenize of a token window matches the same tokens in full text.
+    expect(RiTa.untokenize(RiTa.tokenize("sight absolute? —and in a"))).eq("sight absolute? —and in a");
+    expect(RiTa.untokenize(RiTa.tokenize("Bang! Bang! —shot th"))).eq("Bang! Bang! —shot th");
+    // isLast-independence: the window must be a prefix of the full-text form.
+    expect(RiTa.untokenize(["absolute", "?", "—", "and"]).startsWith(RiTa.untokenize(["absolute", "?", "—"]))).eq(true);
+    expect(RiTa.untokenize(["and", "—", "shot"])).eq("and—shot");
+
+    // Hyphenated words and dashes between words are unchanged.
+    expect(RiTa.untokenize(["face", "-", "to", "-", "face", "class"])).eq("face-to-face class");
+    expect(RiTa.untokenize(["the", "-", "dash"])).eq("the-dash");
+    expect(RiTa.untokenize(["day", "-", "dreaming"])).eq("day-dreaming");
+    expect(RiTa.untokenize(["things", "--", "spiders"])).eq("things--spiders");
+  });
+
   it('Should roundtrip ellipses as single raw tokens', function () {
     // Any run of 2+ periods (whitespace allowed between) becomes ONE token that
     // keeps its exact original spelling, so untokenize returns it verbatim.

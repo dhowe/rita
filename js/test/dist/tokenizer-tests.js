@@ -741,6 +741,16 @@ describe("Tokenizer", () => {
     expect(RiTa.untokenize(RiTa.tokenize("A CARAFE, THAT IS A BLIND GLASS.\nA kind in glass and a cousin."))).eq("A CARAFE, THAT IS A BLIND GLASS.\nA kind in glass and a cousin.");
     expect(RiTa.untokenize(RiTa.tokenize("A CARAFE, THAT IS A BLIND GLASS.\r\nA kind in glass and a cousin."))).eq("A CARAFE, THAT IS A BLIND GLASS.\r\nA kind in glass and a cousin.");
   });
+  it("Should space dashes like ellipses", function() {
+    expect(RiTa.untokenize(RiTa.tokenize("sight absolute? \u2014and in a"))).eq("sight absolute? \u2014and in a");
+    expect(RiTa.untokenize(RiTa.tokenize("Bang! Bang! \u2014shot th"))).eq("Bang! Bang! \u2014shot th");
+    expect(RiTa.untokenize(["absolute", "?", "\u2014", "and"]).startsWith(RiTa.untokenize(["absolute", "?", "\u2014"]))).eq(true);
+    expect(RiTa.untokenize(["and", "\u2014", "shot"])).eq("and\u2014shot");
+    expect(RiTa.untokenize(["face", "-", "to", "-", "face", "class"])).eq("face-to-face class");
+    expect(RiTa.untokenize(["the", "-", "dash"])).eq("the-dash");
+    expect(RiTa.untokenize(["day", "-", "dreaming"])).eq("day-dreaming");
+    expect(RiTa.untokenize(["things", "--", "spiders"])).eq("things--spiders");
+  });
   it("Should roundtrip ellipses as single raw tokens", function() {
     expect(RiTa.tokenize("the loss. . . ocean")).eql(["the", "loss", ". . .", "ocean"]);
     expect(RiTa.tokenize("the loss... ocean")).eql(["the", "loss", "...", "ocean"]);

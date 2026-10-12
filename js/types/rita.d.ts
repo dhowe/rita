@@ -281,7 +281,8 @@ export class SuffixArray {
     length: number;
 }
 
-export class RiMarkov {
+// Not exported: reachable as RiTa.RiMarkov (or via RiTa.markov()).
+declare class RiMarkov {
     static fromJSON(json: string): RiMarkov;
     /** new RiMarkov(n, opts) */
     constructor(n: number, options?: MarkovOptions);
