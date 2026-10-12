@@ -1,0 +1,7 @@
+{
+  "mochaExplorer.cwd": "js",
+  "mochaExplorer.files": "test/*-tests*.js",
+  "mochaExplorer.env": {
+    "NODE_ENV": "dev"
+  }
+}
