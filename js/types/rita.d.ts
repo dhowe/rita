@@ -255,7 +255,8 @@ export interface GenerateOptions {
     allowDuplicates?: boolean;
 }
 
-export class BackoffModel {
+// Not exported: reachable as RiTa.BackoffModel.
+declare class BackoffModel {
     static SILENT: number;
     static fromJSON(json: string): BackoffModel;
     constructor(input?: string | string[], opts?: MarkovOptions);
@@ -272,7 +273,8 @@ export class BackoffModel {
     ready: boolean;
 }
 
-export class SuffixArray {
+// Not exported: reachable as RiTa.SuffixArray.
+declare class SuffixArray {
     static SEQ_START_TOKEN: string;
     static SEQ_END_TOKEN: string;
     hasPrefix(seq: string[]): boolean;
@@ -321,3 +323,9 @@ declare class RiMarkov {
     toString(opts?: object): string;
     size(): number;
 }
+
+// These three classes are not part of the runtime export surface (only RiTa is
+// exported), so they are re-exported as types only. This keeps `RiTa.RiMarkov`
+// usable as a value while making `import { RiMarkov } from 'rita'` a type error
+// instead of a runtime failure.
+export type { BackoffModel, SuffixArray, RiMarkov };
