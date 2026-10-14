@@ -7,17 +7,22 @@ import SuffixArray from "./suffixes.js";
 export default class BackoffModel extends SuffixGram {
 
   static generationDefaults = {
-    debug: false, debugCache: false, minLength: 5, maxLength: 999, prompt: 0,
+    debug: false, minLength: 5, maxLength: 999,
     maxAttempts: 999, maxBacktracks: 9999, forceOriginal: false,
     maxLengthMatch: Infinity, temp: 1, topK: 20, depth: 50,
-    allowSpecial: false, sortByProb: false, strictBackoff: false
+    allowSpecial: false, sortByProb: false
   }
 
   static generationAliases = {
-    dbug: 'debug', dbugCache: 'debugCache', minTokens: 'minLength',
-    maxTokens: 'maxLength', seed: 'prompt', temperature: 'temp',
-    mlm: 'maxLengthMatch'
+    dbug: 'debug', minTokens: 'minLength', maxTokens: 'maxLength',
+    temperature: 'temp', mlm: 'maxLengthMatch'
   }
+
+  // Option keys that are accepted but are not generation tunables, so they
+  // pass validation without needing an entry in generationDefaults. `trace`
+  // is accepted for compatibility with the documented RiMarkov option.
+  static generationIgnorable = ['numSentences', 'generateUntil',
+    'allowDuplicates', 'prompt', 'n', 'trace']
 
   /**
    * Creates a new BackoffModel instance
@@ -199,11 +204,12 @@ export default class BackoffModel extends SuffixGram {
           const nonSpecial = context.filter(t => !(t.startsWith('<') && t.endsWith('>')));
           const seq = [...nonSpecial.slice(-maxLengthMatch), token];
           const hp = this.suffixes.hasPrefix(seq);
-          if (debug) console.log(`[MLM] token="${token}" seq.len=${seq.length} mlm=${maxLengthMatch} seqGtMlm=${seq.length > maxLengthMatch} hasPrefix=${hp} seq=[${seq.join(',')}]`);
+          if (debug) console.log(`[MLM] token="${token}" seq.len=${seq.length} mlm=${maxLengthMatch}`
+            + ` seqGtMlm=${seq.length > maxLengthMatch} hasPrefix=${hp} seq=[${seq.join(',')}]`);
           if (seq.length > maxLengthMatch && hp) {
             // violates maxLengthMatch constraint — skip and try again
-            if (debug) console.log('[FAIL] ' + `skipping token "${token}" due to maxLengthMatch constraint: `
-              + `sequence [${seq.join(', ')}] found in training data`);
+            if (debug) console.log('[FAIL] ' + `skipping token "${token}" due to maxLengthMatch`
+              + ` constraint: sequence [${seq.join(', ')}] found in training data`);
 
             continue;
           }
@@ -252,14 +258,20 @@ export default class BackoffModel extends SuffixGram {
    */
   backtrackingGenerate(n, prompt, opts = {}) {
 
+    // resolve aliases (minTokens/maxTokens/temperature/mlm/dbug) and apply
+    // generationDefaults, so the generate() path honors the same options as
+    // streamTokens() and generationPaths()
+    const resolved = BackoffModel.resolveOpts(n, opts);
+
     const numSentences = opts.numSentences ?? 2;
-    const maxBacktracks = opts.maxBacktracks ?? 9999;
-    const perMax = opts.maxLength ?? BackoffModel.generationDefaults.maxLength;
-    const perMin = opts.minLength ?? BackoffModel.generationDefaults.minLength;
-    const mlm = opts.maxLengthMatch ?? BackoffModel.generationDefaults.maxLengthMatch;
-    const maxAttempts = opts.maxAttempts ?? BackoffModel.generationDefaults.maxAttempts;
-    
-    const temp = opts.temp, endToken = this.endToken, startToken = this.startToken;
+    const maxBacktracks = resolved.maxBacktracks;
+    const perMax = resolved.maxLength;
+    const perMin = resolved.minLength;
+    const mlm = resolved.maxLengthMatch;
+    const maxAttempts = resolved.maxAttempts;
+
+    const temp = resolved.temp, endToken = this.endToken, startToken = this.startToken;
+    const debug = resolved.debug;
     const isSpecial = token => token.startsWith('<') && token.endsWith('>');
     const saOpts = { temp, n };
 
@@ -319,16 +331,19 @@ export default class BackoffModel extends SuffixGram {
     while (++attempts <= maxAttempts) {
 
       let context = [...randomStarter()];
+      if (debug) console.log(`[GEN] attempt ${attempts}/${maxAttempts} seed=[${context.join(' ')}] n=${n} numSentences=${numSentences}`);
       const floor = context.length; // seed boundary — cannot backtrack before this
       const choicePoints = []; // choicePoints[i] describes context[i]
+
       // the first sentence's length count includes the prompt/seed tokens, later sentences start at 0
       const sentenceStarts = [0];
 
-      let endsSeen = 0, backtracks = 0,  gaveUp = false;
+      let endsSeen = 0, backtracks = 0, gaveUp = false;
 
-      const backtrack = () => {
+      const backtrack = (reason) => {
         if (context.length <= floor) return false;
         const poppedIdx = context.length - 1;
+        const popped = context[poppedIdx];
         context.pop();
         const cp = choicePoints[poppedIdx];
         if (cp && cp.isSentenceEnd) {
@@ -339,6 +354,7 @@ export default class BackoffModel extends SuffixGram {
         // if the position is recomputed — only clear isSentenceEnd flag
         if (cp) cp.isSentenceEnd = false;
         backtracks++;
+        if (debug) console.log(`[BACKTRACK] ${backtracks}/${maxBacktracks} popped="${popped}" (${reason})`);
         return true;
       };
 
@@ -357,7 +373,8 @@ export default class BackoffModel extends SuffixGram {
 
         if (!dist || Object.keys(dist).length === 0) {
           // genuine "no path at all" deadend (should be very rare) 
-          if (!backtrack()) { gaveUp = true; break; }
+          if (debug) console.log(`[FAIL] no distribution for query [${query.join(',')}] at pos=${pos}`);
+          if (!backtrack('no distribution')) { gaveUp = true; break; }
           continue;
         }
 
@@ -369,17 +386,21 @@ export default class BackoffModel extends SuffixGram {
           } else if (isFinite(mlm) && !isSpecial(token)) {
             const nonSpecial = context.filter(t => !isSpecial(t));
             const seq = [...nonSpecial.slice(-mlm), token];
-            if (seq.length > mlm && this.suffixes.hasPrefix(seq)) continue; // violates MLM
+            if (seq.length > mlm && this.suffixes.hasPrefix(seq)) {
+              if (debug) console.log(`[MLM] skipping token="${token}" seq=[${seq.join(',')}] found in training data`);
+              continue; // violates MLM
+            }
           }
           candidates.push([token, prob]);
         }
 
         if (candidates.length === 0) {
           // every remaining candidate has been filtered out or already tried
-          if (!backtrack()) { gaveUp = true; break; }
+          if (!backtrack('all candidates filtered')) { gaveUp = true; break; }
           continue;
         }
         const token = weightedSelect(candidates);
+        if (debug) console.log(`[GEN] pos=${pos} sentLen=${tokensInSentence} chose="${token}" of ${candidates.length} candidates`);
 
         // record this position's state BEFORE deciding accept/reject, so a future
         // backtrack to this position knows `token` was already tried
@@ -390,6 +411,7 @@ export default class BackoffModel extends SuffixGram {
           const sentLen = tokensInSentence;
           if (sentLen < perMin || sentLen > perMax) {
             // invalid length, do not advance context, mark tried & retry this position
+            if (debug) console.log(`[FAIL] skipping endToken: sentence length ${sentLen} outside [${perMin},${perMax}]`);
             continue;
           }
           context.push(token);
@@ -458,8 +480,9 @@ export default class BackoffModel extends SuffixGram {
     Object.keys(BackoffModel.generationDefaults).forEach(o => {
       resolved[o] ??= BackoffModel.generationDefaults[o];
     });
+    const allowed = [...BackoffModel.generationIgnorable, ...ignorableKeys];
     Object.keys(resolved).forEach(key => {
-      if (!Object.prototype.hasOwnProperty.call(BackoffModel.generationDefaults, key) && !ignorableKeys.includes(key)) {
+      if (!Object.prototype.hasOwnProperty.call(BackoffModel.generationDefaults, key) && !allowed.includes(key)) {
         throw Error(`Invalid option key: ${key}`);
       }
     });
