@@ -1,6 +1,6 @@
 {
   "name": "rita",
-  "version": "4.0.2-beta.16",
+  "version": "4.0.2-beta.17",
   "author": "Daniel C Howe",
   "description": "tools for generative natural language",
   "homepage": "https://rednoise.org/rita",
@@ -33,7 +33,7 @@
     "url": "git+https://github.com/dhowe/ritajs.git"
   },
   "engines": {
-    "node": ">=14.0"
+    "node": ">=18.0"
   },
   "keywords": [
     "natural language",
@@ -58,6 +58,6 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "riscript": "^1.2.0"
+    "riscript": "^1.2.3"
   }
 }
