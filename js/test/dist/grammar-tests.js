@@ -2,6 +2,29 @@ import { expect } from "chai";
 import { RiTa } from "./index.js";
 describe("Grammar", () => {
   const T = { trace: 1 };
+  it("Should call RiTa.grammar() for a blank grammar", function() {
+    const rg = RiTa.grammar();
+    expect(rg).to.be.an.instanceof(RiTa.RiGrammar);
+  });
+  it("Should call RiGrammar.fromJSON(rules)", function() {
+    const rules = {
+      start: "Meet $person.name. $person.pronoun.cap() drives $person.car.art().",
+      "#person": "$sam | $lucy"
+    };
+    const rg = RiTa.RiGrammar.fromJSON(JSON.stringify(rules));
+    expect(rg).to.be.an.instanceof(RiTa.RiGrammar);
+  });
+  it("Should allow constructions from object or string", function() {
+    const rules = {
+      start: "Meet $person.name. $person.pronoun.cap() drives $person.car.art().",
+      "#person": "$sam | $lucy"
+    };
+    const rg1 = RiTa.grammar(rules);
+    const rg2 = RiTa.grammar(JSON.stringify(rules));
+    const rg3 = RiTa.RiGrammar.fromJSON(JSON.stringify(rules));
+    expect(rg1.toJSON()).to.deep.equal(rg2.toJSON());
+    expect(rg1.toJSON()).to.deep.equal(rg3.toJSON());
+  });
   it("Should call RiTa.grammar().expand()", function() {
     const context = {
       lucy: {

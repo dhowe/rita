@@ -256,6 +256,12 @@ pre code {
   padding: 0;
 }
 
+/* the global `li + li` spacing rule would offset every nav item except the
+   first inside the centered flex row — cancel it so the labels align */
+.site-nav li {
+  margin: 0;
+}
+
 .site-nav a {
   color: var(--fg);
   text-decoration: none;
