@@ -80,6 +80,7 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiTa/tokenize/index.html">RiTa.tokenize()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/tokens/index.html">RiTa.tokens()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/untokenize/index.html">RiTa.untokenize()</a><br/>
+       <a href="https://rednoise.org/rita/reference/RiTa/VERSION/index.html">RiTa.VERSION</a><br/>
     </td>
     <td style="vertical-align: top; padding-top: 15px; min-width: 125px">
       <a href="https://rednoise.org/rita/reference/RiMarkov/addSentences/index.html">addSentences()</a><br/>
@@ -103,9 +104,9 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiGrammar/toString/index.html">toString()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/fromJSON/index.html">fromJSON()</a><br/>
     </td>
-    <td style="vertical-align: top; padding-top: 15px; min-width: 125px">
+    <!-- <td style="vertical-align: top; padding-top: 15px; min-width: 125px">
       <a href="https://rednoise.org/rita/reference/RiScript/evaluate/index.html">evaluate()</a><br/>
-    </td>
+    </td> -->
   </tr>
 </table>
 
