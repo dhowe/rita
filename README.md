@@ -109,6 +109,8 @@ RiTa is implemented in Java and JavaScript, with a common [API](https://rednoise
   </tr>
 </table>
 
+<br>&nbsp;<br>
+
 ## RiScript
 
 RiScript is a writer-focused scripting language integrated with RiTa. It enables simple generative primitives within plain text for dynamic expansion at runtime. RiScript primitives can be used as part of any [RiTa grammar](https://rednoise.org/rita/reference/RiTa/grammar/) or executed directly using [RiTa.evaluate()](https://rednoise.org/rita/reference/RiTa/evaluate/). 
