@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">rg = new RiGrammar(); <br>rg.addRule("pet", "dog | hawk | crow", 1); <br>rg.removeRule("pet");</pre>
+                      <pre class="margin">rg = new RiTa.RiGrammar();<br/>rg.addRule("start", "[ dog | hawk | crow ]");<br/>rg.addRule("pet", "dog | hawk | crow");<br/>rg.removeRule("pet");</pre>
                     </div>
                   </td>
                 </tr>

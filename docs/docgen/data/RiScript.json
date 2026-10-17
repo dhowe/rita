@@ -5,7 +5,7 @@
   "functions": [
     {
       "name": "evaluate",
-      "example": "// Static<br/><br/>RiScript.evaluate(\"He was [happy | sad | indifferent]\");<br/>RiScript.evaluate(\"He was [happy | sad | &#36;emo]\", context);<br/><br/>// Instance<br/><br/>riscript.evaluate(\"He was [happy | sad | indifferent]\");<br/>riscript.evaluate(\"He was [happy | sad | &#36;emo]\", context);",
+      "example": "// Static<br/><br/>RiTa.evaluate(\"He was [happy | sad | indifferent]\");<br/>RiTa.evaluate(\"He was [happy | sad | &#36;emo]\", context);<br/><br/>// Instance<br/><br/>RiTa.riscript.evaluate(\"He was [happy | sad | indifferent]\");<br/>RiTa.riscript.evaluate(\"He was [happy | sad | &#36;emo]\", context);",
       "description": "Parses and executes a <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> string. Available as either a static or instance function.",
       "syntax": "riscript.evaluate(string);<br/>riscript.evaluate(string, context);",
       "parameters": [

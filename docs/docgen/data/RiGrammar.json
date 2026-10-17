@@ -4,7 +4,7 @@
   "statics": [
     {
       "name": "fromJSON",
-      "example": "rg = RiGrammar.fromJSON(grammarRules);",
+      "example": "rg = RiTa.RiGrammar.fromJSON(grammarRules);",
       "description": "Creates a new grammar object from a JSON string",
       "syntax": "RiGrammar.fromJSON(grammarRules);<br>RiGrammar.fromJSON(grammarRules, context);",
       "parameters": [
@@ -28,7 +28,7 @@
   "functions": [
     {
       "name": "addRule",
-      "example": "rg = new RiGrammar();<br/>rg.addRule(\"start\", \"animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");<br><br><br>// To add weights, specify them inline with brackets<br><br>rg.addRule(\"animal\", \"cat [4] | dog | chicken\");",
+      "example": "rg =  RiTa.grammar();<br/>rg.addRule(\"start\", \"animal\");<br/>rg.addRule(\"animal\", \"cat | dog | chicken\");<br><br><br>// To add weights, specify them inline with brackets<br><br>rg.addRule(\"animal\", \"cat [4] | dog | chicken\");",
       "description": "Adds a rule to the existing grammar, replacing any existing rule with the same name.",
       "syntax": "addRule(name, definition);",
       "parameters": [
@@ -50,7 +50,7 @@
     },
     {
       "name": "expand",
-      "example": "rg = RiTa.grammar(rules); <br/>result = rg.expand();<br><br>rg = RiTa.grammar(rules); <br/>result = rg.expand(ruleName);<br><br>rg = RiTa.grammar(rules, context); <br/>result = rg.expand(ruleName);",
+      "example": "rg = RiTa.grammar(rules);<br/>result = rg.expand();<br/><br/>rg = RiTa.grammar(rules);<br/>result = rg.expand({ start: \"mid\" });<br/><br/>rg = RiTa.grammar(rules, context);<br/>result = rg.expand();",
       "description": "Expands a grammar from the supplied rule. If no rule is provided the &#36;start and &#60;start&#62; symbols will be checked respectively. <br/><br/>If a context is needed, it should be passed in when the grammar is created (see 3rd example below).",
       "syntax": "expand();<br/>expand(ruleName);",
       "parameters": [
@@ -72,7 +72,7 @@
     },
     {
       "name": "removeRule",
-      "example": "rg = new RiGrammar(); <br>rg.addRule(\"pet\", \"dog | hawk | crow\", 1); <br>rg.removeRule(\"pet\");",
+      "example": "rg = RiTa.grammar();<br/>rg.addRule(\"start\", \"[ dog | hawk | crow ]\");<br/>rg.addRule(\"pet\", \"dog | hawk | crow\");<br/>rg.removeRule(\"pet\");",
       "description": "Deletes the named rule from the grammar",
       "syntax": "removeRule(name);",
       "parameters": [
@@ -90,7 +90,7 @@
     },
     {
       "name": "setRules",
-      "example": "rg = new RiGrammar(); <br>rg.setRules(rules);",
+      "example": "rg = RiTa.grammar();<br/>rg.setRules(rules);",
       "description": "Loads a grammar from an object (or Map in Java).",
       "syntax": "rg.setRules(grammarRules);",
       "parameters": [
@@ -108,7 +108,7 @@
     },
     {
       "name": "toString",
-      "example": "rm = new RiGrammar(rules);<br/>s = rm.toString();",
+      "example": "rg = RiTa.grammar(rules);<br/>s = rg.toString();",
       "description": "Returns a formatted version of this grammar",
       "syntax": "rg.toString();",
       "parameters": [],
@@ -121,7 +121,7 @@
     },
     {
       "name": "toJSON",
-      "example": "rg = new RiGrammar(rules);<br/>json = rg.toJSON();",
+      "example": "rg = RiTa.grammar(rules);<br/>json = rg.toJSON();",
       "description": "Return a formatted version of this grammar.",
       "syntax": "rg.toJSON();",
       "parameters": [

@@ -147,7 +147,7 @@
     },
     {
       "name": "PRESENT",
-      "example": "RiTa.conjugate(\"walk\", { tense: RiTa.PRESENT }); // -> 'walks'",
+      "example": "RiTa.conjugate(\"walk\", { tense: RiTa.PRESENT }); // -> 'walk'",
       "variable": true,
       "description": "Constant for present tense, used as an option value with RiTa.conjugate(). Value: 5.",
       "syntax": "RiTa.PRESENT",
@@ -177,7 +177,7 @@
     },
     {
       "name": "SINGULAR",
-      "example": "RiTa.conjugate(\"walk\", { number: RiTa.SINGULAR }); // -> 'walks'",
+      "example": "RiTa.conjugate(\"walk\", { number: RiTa.SINGULAR }); // -> 'walk'",
       "variable": true,
       "description": "Constant for singular number, used as an option value with RiTa.conjugate(). Value: 7.",
       "syntax": "RiTa.SINGULAR",
@@ -254,7 +254,7 @@
   "statics": [
     {
       "name": "grammar",
-      "example": "rg = RiTa.grammar(rulesObject);<br>result = rg.expand();<br><br>rg = RiTa.grammar();<br>rg.addRule(\"start\", \"[ cat | dog | fish ]\");<br>let result = rg.expand();",
+      "example": "rg = RiTa.grammar(rulesObject);<br>result = rg.expand();<br><br>rg = RiTa.grammar();<br>rg.addRule(\"start\", \"[ cat | dog | fish ]\");<br>result = rg.expand();",
       "description": "Creates a new RiGrammar object: a probabilistic context-free grammar for text-generation. You may use any of the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> features in a grammar, including transforms, sequences, and assignments.<br><br><pre class=\"margin\">rg = RiTa.grammar(theRules);<br>result = rg.expand();</pre><br>RiTa grammars are JS objects (or valid <a href=\"https://json.org/\" target=\"new\">JSON</a> formatted strings, or Java Maps), as follows<br><br><pre class=\"margin\">{<br>  start: [ $rule1 | $rule2 | $rule3 ],<br><br>  rule2: [ terminal1 | terminal2 | $rule1 ],<br><br>   ...<br>}</pre><br> If you're not sure whether your grammar is valid JSON, check it at <a target=\"new\" href='https://jsonlint.com/'> jsonlint.com</a>.<br><br>Note: a RiGrammar object will assign (by default) equal weights to all choices in a rule. You can adjust the weights by adding 'multipliers' as described in the <a href=\"https://observablehq.com/@dhowe/riscript\">RiScript</a> reference. For example, in the rule below 'terminal1' will be chosen twice as often as the two other choices.<p><pre class=\"margin\">rule2: [ terminal1 (2) | terminal2 | $rule1 ]</pre><br>",
       "syntax": "// Initialize an empty RiGrammar object<br>rg = RiTa.grammar();<br><br>// Or specify a grammar in a JS object (or JSON string)<br>rg = RiTa.grammar(rules);<br><br>// Or optionally supply a context<br>rg = RiTa.grammar(rules, context);",
       "parameters": [
@@ -281,7 +281,7 @@
     },
     {
       "name": "markov",
-      "example": "txt = \"This is a two sentence example. This is the second one.\"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt);<br>sentences = rm.generate(2);<br><br>",
+      "example": "txt = \"This is a two sentence example. This is the second one.\"<br><br>rm = RiTa.markov(3);<br>rm.addText(txt);<br>sentences = rm.generate({ numSentences: 2 });<br><br>",
       "description": "Creates a new RiMarkov object with functions for text-generation, as well as a range of other probabilistic functions.<br><br>This object uses Markov chains (aka n-grams) with options to process words or arbitrary regular expressions",
       "syntax": "// Constructs a RiMarkov object and set its n-factor.<br><br>RiTa.markov(nFactor);<br><br><br>// Create an object and specify one or more options<br><br>RiTa.markov(nFactor, optionsObject);<br><br>",
       "parameters": [
@@ -344,7 +344,7 @@
     },
     {
       "name": "isPunct",
-      "example": "isPunct(\"?\"); // returns -> true",
+      "example": "RiTa.isPunct(\"?\"); // returns -> true",
       "description": "Returns true if every character of 'text' is a punctuation character",
       "syntax": "RiTa.isPunct(text);",
       "parameters": [
@@ -418,7 +418,7 @@
     },
     {
       "name": "sentences",
-      "example": "RiTa.sentences(\"The boy went fishing.\", he said. Then he went away.\");",
+      "example": "RiTa.sentences(\"The boy went fishing. he said. Then he went away.\");",
       "description": "Splits 'text' into sentences (according to Penn Treebank conventions)",
       "syntax": "RiTa.sentences(text);<br/>RiTa.sentences(text, regex);",
       "parameters": [
@@ -485,7 +485,7 @@
     },
     {
       "name": "tokens",
-      "example": "<br/>sentence = \"A small one is like a big one.\";<br/>tokens = RiTa.tokens(sentence); <br/><br/>-> <em> [ 'a', 'small', 'one', 'is', 'like', 'big' ]</em><br/><br/><br/>sentence = \"One had escaped, she'd thought.\"; <br/>tokens = RiTa.tokens(sentence, { splitContractions: true });<br/><br/>-> <em>[ 'one', 'had', 'escaped', 'she', 'had', 'thought' ]</em><br/><br/>",
+      "example": "<br/>sentence = \"A small one is like a big one.\";<br/>tokens = RiTa.tokens(sentence);<br/>// -> [ 'a', 'small', 'one', 'is', 'like', 'big' ]<br/><br/>sentence = \"One had escaped, she'd thought.\";<br/>tokens = RiTa.tokens(sentence, { splitContractions: true });<br/>// -> [ 'one', 'had', 'escaped', 'she', 'had', 'thought' ]<br/><br/>",
       "description": "Return an array containing all unique alphabetical words (tokens) in the text.<br/>",
       "syntax": "RiTa.tokens(text);<br/>RiTa.tokens(text, options);",
       "parameters": [

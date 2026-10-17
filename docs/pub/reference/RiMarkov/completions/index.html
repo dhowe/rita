@@ -129,7 +129,7 @@
                     <div class="example">
 
                       <!-- EXAMPLE  -->
-                      <pre class="margin">result = rm.completions([ &#34;the&#34;, &#34;red&#34;]);<br/>&nbsp;<br/>result = rm.completions([ &#34;the&#34; ], [ &#34;red&#34;, &#34;ball&#34; ]);</pre>
+                      <pre class="margin">rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>result = rm.completions([ "the" ]);<br/><br/>result = rm.completions([ "the" ], [ "sat" ]);</pre>
                     </div>
                   </td>
                 </tr>

@@ -44,7 +44,7 @@
     },
     {
       "name": "completions",
-      "example": "result = rm.completions([ &#34;the&#34;, &#34;red&#34;]);<br/>&nbsp;<br/>result = rm.completions([ &#34;the&#34; ], [ &#34;red&#34;, &#34;ball&#34; ]);",
+      "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>result = rm.completions([ \"the\" ]);<br/><br/>result = rm.completions([ \"the\" ], [ \"sat\" ]);",
       "syntax": "completions(preArray);<br/>completions(preArray, postArray);<br/>completions(preArray, postArray, opts);",
       "description": "If only one array parameter is provided, this function returns all possible next words, ordered by probability, for the given array.<br/>&nbsp;<br/>If two arrays are provided, it returns an unordered array of possible words <i>w</i> that complete the n-gram consisting of: pre[0]...pre[k], <i>w</i>, post[k+1]...post[n].<br/><br/><pre>result = rm.completions([ &#34;the&#34; ], [ &#34;red&#34;, &#34;ball&#34; ]);</pre>The line above will return all the single words that occur between 'the' and 'red ball' in the current model (assuming n > 3), eg [ 'round', 'big', 'bouncy' ]).<br/><br/>Note: For this operation to be valid, (pre.length + post.length) must be less than the model's n-factor, otherwise an error will be thrown.",
       "parameters": [
@@ -70,8 +70,7 @@
     },
     {
       "name": "generate",
-      "example": "rm = new RiMarkov(3);<br/>rm.addText(sentences);<br/><br/>// Generate one sentence<br/>sent = rm.generate();<br/><br/>// Generate 5 sentences<br/>sents = rm.generate({ numSentences: 5 });<br/><br/>// Generate from a prompt<br/>sent = rm.generate([\"the\", \"cat\"]);",
-      "description": "Generates one or more sentences from the model.<br/><br/>Supports several call signatures:<br/><pre>generate(n, prompt, opts) — explicit n-gram order, prompt array, options<br/>generate(n, opts)         — n-gram order and options<br/>generate(prompt, opts)    — prompt array and options<br/>generate(opts)            — all parameters in options object</pre><br/>Note: when <b>numSentences</b> &gt; 1, multiple sentences <em>follow the model across sentence boundaries</em> — they are not independent generations.",
+      "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>// Generate one sentence<br/>sent = rm.generate();<br/><br/>// Generate 5 sentences<br/>sents = rm.generate({ numSentences: 5 });<br/><br/>// Generate from a prompt<br/>sent = rm.generate([\"the\", \"cat\"]);",      "description": "Generates one or more sentences from the model.<br/><br/>Supports several call signatures:<br/><pre>generate(n, prompt, opts) — explicit n-gram order, prompt array, options<br/>generate(n, opts)         — n-gram order and options<br/>generate(prompt, opts)    — prompt array and options<br/>generate(opts)            — all parameters in options object</pre><br/>Note: when <b>numSentences</b> &gt; 1, multiple sentences <em>follow the model across sentence boundaries</em> — they are not independent generations.",
       "syntax": "generate();<br/>generate(opts);<br/>generate(prompt, opts);<br/>generate(n, prompt, opts);",
       "parameters": [
         {
@@ -118,7 +117,7 @@
     },
     {
       "name": "size",
-      "example": "rm = new RiMarkov(3);<br/>rm.addText(sentences); if (rm.size() > 10) { ... }",
+      "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>if (rm.size() > 10) {<br/>  // model is large enough<br/>}",
       "description": "Returns the number of tokens currently in the model",
       "syntax": "rm.size();",
       "parameters": [],
@@ -131,7 +130,7 @@
     },
     {
       "name": "toString",
-      "example": "rm = new RiMarkov(3);<br/>rm.addText(sentences);<br/>s = rm.toString();",
+      "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/>s = rm.toString();",
       "description": "Returns a formatted version of this model",
       "syntax": "rm.toString();",
       "parameters": [
@@ -149,7 +148,7 @@
     },
     {
       "name": "toJSON",
-      "example": "rm = new RiMarkov(3);<br/>rm.addText(sentences);<br/>json = rm.toJSON();",
+      "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/>json = rm.toJSON();",
       "description": "Converts the model to a JSON-formatted string  (JavaScript only)",
       "syntax": "toJSON();",
       "parameters": [],
@@ -163,7 +162,7 @@
     },
     {
       "name": "stream",
-      "example": "rm = new RiMarkov(3);<br/>rm.addText(sentences);<br/><br/>for (const token of rm.stream([\"the\"])) {<br/>  process.stdout.write(token + ' ');<br/>}",
+      "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>for (const token of rm.stream([\"the\"])) {<br/>  process.stdout.write(token + ' ');<br/>}",
       "description": "A generator that streams tokens one-by-one from the model as they are sampled. Useful for real-time or incremental output.<br/><br/>Supports the same polymorphic call signatures as <a href='../generate'>generate()</a>.",
       "syntax": "stream();<br/>stream(prompt);<br/>stream(n, prompt, opts);",
       "parameters": [
