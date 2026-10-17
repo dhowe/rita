@@ -70,7 +70,7 @@ function nextWord() {
     }
   }
   layout(txt, 40, 40, 520, 23);
-  setTimeout(nextWord, next ? 2000 : 1000);
+  setTimeout(nextWord, next ? 1500 : 1000);
 }
 
 // layout text, word by word

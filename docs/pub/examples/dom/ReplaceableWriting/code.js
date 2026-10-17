@@ -49,6 +49,6 @@ $(function () {
     // recombine into string and update
     $('#words').html(txt = RiTa.untokenize(words));
 
-    setTimeout(nextWord, 2000);
+    setTimeout(nextWord, 1500);
   }
 });

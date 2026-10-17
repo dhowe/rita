@@ -17,7 +17,7 @@ $(function () {
 });
 
 function generate() {
-  let lines = markov.generate(10);
+  let lines = markov.generate({ numSentences: 10 });
   $('.textarea').text(lines.join(' '));
   $('.textarea').css('align-items', 'stretch');
 }

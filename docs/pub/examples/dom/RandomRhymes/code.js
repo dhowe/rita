@@ -14,6 +14,6 @@ $(function () {
     $('#word').html(word);
     $('#rhyme').html(tmp.join("<br>"));
 
-    setTimeout(findRhymes, 2000);
+    setTimeout(findRhymes, 1500);
   }
 });

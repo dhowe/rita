@@ -58,5 +58,5 @@ async function nextWord() {
   fill(250, 240, 230);
   text(txt, 50, 30, 500, height);
 
-  setTimeout(nextWord, 2000);
+  setTimeout(nextWord, 1500);
 }

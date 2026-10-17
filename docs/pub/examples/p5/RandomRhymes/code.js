@@ -32,5 +32,5 @@ function findRhymes() {
 
   rhymes = tmp.join("\n");
 
-  setTimeout(findRhymes, 2000);
+  setTimeout(findRhymes, 1500);
 }

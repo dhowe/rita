@@ -59,7 +59,7 @@ function nextWord() {
   }
 
   createWords(words, txt, 50, 30, 500, 20);
-  setTimeout(nextWord, 2000); // 2 sec
+  setTimeout(nextWord, 1500);
 }
 
 

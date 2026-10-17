@@ -32,7 +32,7 @@ function drawText() {
 }
 
 function mouseClicked() {
-  lines = markov.generate(10);
+  lines = markov.generate({ numSentences: 10 });
   x = y = 40;
   drawText();
 }
