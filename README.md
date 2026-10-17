@@ -93,7 +93,7 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiMarkov/size/index.html">size()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiMarkov/stream/index.html">stream()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiMarkov/toJSON/index.html">toJSON()</a><br/>
-      <a href="https://rednoise.org/rita/reference/RiMarkov/toString/index.html">toString()</a><br/>
+      <!-- <a href="https://rednoise.org/rita/reference/RiMarkov/toString/index.html">toString()</a><br/> -->
       <a href="https://rednoise.org/rita/reference/RiMarkov/fromJSON/index.html">fromJSON()</a>
        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </td>
@@ -103,7 +103,7 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiGrammar/expand/index.html">expand()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/removeRule/index.html">removeRule()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/toJSON/index.html">toJSON()</a><br/>
-      <a href="https://rednoise.org/rita/reference/RiGrammar/toString/index.html">toString()</a><br/>
+      <!-- <a href="https://rednoise.org/rita/reference/RiGrammar/toString/index.html">toString()</a><br/> -->
       <a href="https://rednoise.org/rita/reference/RiGrammar/fromJSON/index.html">fromJSON()</a>
        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </td>
