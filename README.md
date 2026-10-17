@@ -50,10 +50,10 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiTa/isVerb/index.html">RiTa.isVerb()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/kwic/index.html">RiTa.kwic()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/markov/index.html">RiTa.markov()</a><br/>
-    </td>
-    <td style="vertical-align: top; padding-top: 15px">
       <a href="https://rednoise.org/rita/reference/RiTa/pastPart/index.html">RiTa.pastPart()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/phones/index.html">RiTa.phones()</a><br/>
+    </td>
+    <td style="vertical-align: top; padding-top: 15px">
       <a href="https://rednoise.org/rita/reference/RiTa/pluralize/index.html">RiTa.pluralize()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/pos/index.html">RiTa.pos()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/posInline/index.html">RiTa.posInline()</a><br/>
