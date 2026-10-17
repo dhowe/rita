@@ -152,11 +152,11 @@ public class MakeDocs extends PApplet {
 
 							contents += "    <a href=\"" + href + "\">" + display + "</a><br/>\n";
 
-							if (k == 21) {  // longest column
+							if (k == 25) {  // split RiTa into two balanced columns
 								contents += "  </div>\n";
 								contents += "</div>\n\n";
 								contents += "<div class=\"section\">\n";
-								contents += "  <div class=\"category\">\n<br><br>\n";
+								contents += "  <div class=\"category continuation\">\n<br><br>\n";
 							}
 						}
 					}

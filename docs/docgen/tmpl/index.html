@@ -1,703 +1,410 @@
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
+<html lang="en">
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
-  <meta name="description" content="RiTa - tools for generative language">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="RiTa — AI-free tools for natural language and generative writing">
   <meta name="robots" content="noodp">
   <link rel="canonical" href="https://github.com/dhowe/ritajs/">
-  <meta property="og:url" content="http://www.rednoise.org">
+  <meta property="og:url" content="https://rednoise.org/rita">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
   <meta property="og:site_name" content="RiTa">
   <meta property="og:title" content="RiTa">
-  <meta property="og:description" content="RiTa - tools for generative language">
+  <meta property="og:description" content="RiTa — AI-free tools for natural language and generative writing">
   <meta property="og:image"
     content="https://camo.githubusercontent.com/4010ad42fed03e50903db30dbd0d4c650087b0d6/68747470733a2f2f7265646e6f6973652e6f72672f726974612f696d672f526954612d6c6f676f332e706e67">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="650">
-  <meta name="twitter:description" content="RiTa - tools for generative language">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="RiTa">
+  <meta name="twitter:description" content="RiTa — AI-free tools for natural language and generative writing">
   <link rel="icon" type="image/x-icon" href="./img/favicon2.png">
 
-  <title>RiTa</title>
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <!-- slick js-->
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-  <!-- css -->
-  <link rel="stylesheet" href="css/svg.css">
-  <link rel="stylesheet" href="css/slick.css">
-  <link rel="stylesheet" href="css/icomoon.css">
-  <link rel="stylesheet" href="css/animate.css">
-  <link rel="stylesheet" href="css/mainStyle.css">
-  <link rel="stylesheet" href="css/main.css">
-  <script src="js/wow.min.js"></script>
-  <script src="js/main.js"></script>
+  <title>RiTa — tools for generative language</title>
 
+  <link rel="stylesheet" href="css/home.css">
+  <script src="js/home.js" defer></script>
 </head>
 
 <body>
-  <!-- Nav Bar -->
-  <div class="navbar-sticky visible">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="container">
-      <div class="logo-wrapper d-inline-block"> <a href="./"> <img src="img/RiTaLogo.png"
-            alt="RiTa - tools for generative language"> </a> </div>
-      <div class="menu-icon-mobile"><a href="#"> <img src="./css/menu-icon.svg" /> </a></div>
-      <ul class="nav-wrapper d-inline-block">
-        <li class="hidden-sm" style="display: inline-block !important;"><a class="" data-toggle="collapse"
-            href="#download" role="button" aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a>
-        </li>
-        <li class="hidden-sm" style="display: inline-block !important;"><a href="#learning">Learning</a></li>
-        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="#examples">Examples</a>
-        </li>
-        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank" href="#gallery">Gallery</a>
-        </li>
-        <li class="hidden-sm" style="display: inline-block !important;"><a target="blank"
-            href="#reference">Reference</a></li>
-        <li> <a href="https://github.com/dhowe/ritajs" target="blank" class="icon m-l-30"> <svg
-              class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
-              role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
-              <path fill="currentColor"
-                d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
-              </path>
-            </svg><!-- <i class="fab fa-github"></i> --> </a> </li>
-        <li>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./">
+        <img src="img/RiTaLogo.png" alt="">
+        <span>RiTa</span>
+      </a>
 
-          <a href="https://twitter.com/intent/tweet?text=Generative%20language%20with%20RiTa%20https://rednoise.org/rita"
-            target="blank" class="icon"> <svg class="svg-inline--fa fa-twitter fa-w-16" aria-hidden="true"
-              data-prefix="fab" data-icon="twitter" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-              data-fa-i2svg="">
-              <path fill="currentColor"
-                d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
-              </path>
-            </svg><!-- <i class="fab fa-twitter"></i> --> </a>
-          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <!-- End of Nav Bar -->
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
 
-  <header class="page-header">
-    <div class="video-background wow fadeIn" data-wow-delay="1s">
-      <video playsinline autoplay muted loop preload="auto" poster="video/snap.png" id="bigvid" loop>
-        <source src="video/demo1.mp4" type="video/mp4">
-        <source src="video/demo1.ogg" type="video/ogg">
-      </video>
-    </div>
-    <div class="container">
-      <div id="download-wrapper">
-
-        <div id="main-wrapper">
-
-          <h1 class="wow fadeIn">RiTa <span class="new-ver-bubble"><a target="blank" href="#whats-new">Version&nbsp;4.0&nbsp;</a></span> </h1>
-
-          <h4 class="wow fadeIn">AI-free tools for natural language and generative writing</h4>
-
-          <div class="buttons-wrapper"><a class="btn btn-primary d-inline-block" data-toggle="collapse" href="#download"
-              role="button" aria-expanded="false" aria-controls="collapseExample" id="dlbtn">Download</a>
-            <a href="https://github.com/dhowe/ritajs/" class="btn btn-secondary d-inline-block"> <svg
-                class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github"
-                role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
-                <path fill="currentColor"
-                  d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
-                </path>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#download">Download</a></li>
+          <li><a href="#learning">Learning</a></li>
+          <li><a href="#examples">Examples</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#reference">Reference</a></li>
+          <li>
+            <a class="icon" href="https://github.com/dhowe/ritajs" target="_blank" rel="noopener"
+               aria-label="RiTa on GitHub">
+              <svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2.3z"/>
               </svg>
-              <span>Source code</span>
             </a>
-          </div>
-        </div>
-        <div class="collapse" id="download">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-2">
-              </div>
-              <div class="col-md-8 card card-body">
-                <h3>Downloads&nbsp;</h3>
-
-                <div class="row pad-small">
-                  <h4>Java (complete)</h4>
-                  <div class="downloadbox">
-                    <a href="https://rednoise.org/rita/rita.zip" download="rita.zip"><span></span></a>
-                    RiTa
-                    <span>jar, source, examples, reference, etc.</span>
-                  </div>
-                </div>
-
-                <div class="row pad-small">
-                  <h4>Node</h4>
-                  <div class="downloadbox">
-                    <a target="_blank" href="https://www.npmjs.com/package/rita"><span></span></a>Via NPM</a>
-                  </div>
-                </div>
-
-                <div class="row pad-small">
-                  <h4>Browser</h4>
-                  <div class="downloadbox">
-                    <a target="_blank" href="https://unpkg.com/rita"> <span></span></a>
-                    Full library via UNPKG
-                    <span class="sizes">
-                      <a class="mini default">1.4M</a> </span>
-                  </div>
-                  <div class="downloadbox">
-                    <a target="_blank" href="https://unpkg.com/riscript"> <span></span></a>
-                    RiScript/RiGrammar only via UNPKG (no lexicon)
-                    <span class="sizes">
-                      <a class="mini default">270K</a>
-                    </span>
-                  </div>
-                </div>
-
-                <div class="row pad-small">
-                  <h4>Java</h4>
-                  <div class="downloadbox">
-                    <a target="_blank" href="https://github.com/dhowe/rita/packages/"><span></span></a>Via GitHub
-                    Packages
-                  </div>
-                  <div class="downloadbox"><a target="_blank"
-                      href="https://search.maven.org/artifact/org.rednoise/rita">
-                      <span></span></a>Via Maven Central
-                  </div>
-
-                </div>
-
-              </div>
-              <div class="col-md-2">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          </li>
+        </ul>
+      </nav>
     </div>
   </header>
 
-  <div id="description-wrapper">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-2">
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <h1>RiTa <a class="badge" href="#whats-new">v4</a></h1>
+        <p class="tagline">AI-free tools for natural language and generative writing.</p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="#download">Download</a>
+          <a class="btn btn-ghost" href="https://github.com/dhowe/ritajs/" target="_blank" rel="noopener">
+            Source code
+          </a>
         </div>
-        <div class="col-md-8 wow fadeIn">
-          <p>RiTa<sup>†</sup> is an open-source library for writing in computational environments. It provides functions
-            for
-            simple language processing and generation tasks without the overhead or complexity of a full NLP stack.
-            Designed to be small and easy-to-use, it runs in a variety of environments including the browser, <a
-              href="http://p5js.org/" target="_blank">p5.js</a>, <a href="https://processing.org/"
-              target="_blank">Processing</a>, <a href="https://nodejs.org/" target="_blank">Node</a> and Android.
-            Features include grammar and Markov-based text generation, tools for inflection, conjugation, stemming and
-            tokenization, as well as analysis of English features such as part-of-speech, phonemes, syllables, and
-            stresses. RiTa's customizable lexicon can be searched via partial matches on combinations of any of the
-            features listed above. It also includes a letter-to-sound engine for analysis of unknown words, and a small
-            scripting language designed for writers (<a href="https://observablehq.com/@dhowe/riscript"
-              target="_blank">RiScript</a>).
-          </p>
-          <div class="row">
 
-            <div class="col-md-12">
-              <div class="platforms">
-                <div class="platform wow slideInUp" data-wow-delay="0.1s">
-
-                  <img src="img/java-seeklogo.com.svg" alt="Java" height="40px" width="40px" />
-
-                  <p>Java</p>
-                </div>
-                <div class="platform wow slideInUp" data-wow-delay="0.2s">
-
-                  <img src="img/javascript-logo.png" alt="Javascript" height="40px" width="40px" />
-
-                  <p>Javascript</p>
-                </div>
-                <div class="platform wow slideInUp" data-wow-delay="0.3s">
-
-                  <img src="img/Processing_Logo_Clipped.svg" alt="Processing" height="40px" width="40px" />
-
-                  <p>Processing</p>
-                </div>
-                <div class="platform wow slideInUp" data-wow-delay="0.4s">
-                  <img src="img/Node.js_logo.svg" alt="node.js" height="40px" width="40px" />
-
-                  <p>Node JS</p>
-                </div>
-                <div class="platform wow slideInUp" data-wow-delay="0.5s">
-                  <img src="img/Android_robot.svg" alt="Android" height="40px" width="40px" />
-                  <p>Android</p>
-                </div>
-                <div class="platform wow slideInUp" data-wow-delay="0.6s">
-                  <img src="img/p5js.svg" alt="p5.js" height="40px" width="40px" />
-                  <p>p5.js</p>
-                </div>
-                <div class="platform wow slideInUp" data-wow-delay="0.7s">
-                  <img src="img/Observable.png" alt="Observable" height="40px" width="40px" />
-                  <p>Observable</p>
-                </div>
+        <details class="downloads" id="download">
+          <summary>Downloads</summary>
+          <div class="downloads-body">
+            <div class="dl-grid">
+              <div>
+                <h3>JavaScript</h3>
+                <ul>
+                  <li><a href="https://www.npmjs.com/package/rita" target="_blank" rel="noopener">npm</a>
+                    <span class="note">— <code>npm install rita</code></span></li>
+                  <li><a href="https://unpkg.com/rita" target="_blank" rel="noopener">unpkg</a>
+                    <span class="note">— full library, ~1.4M</span></li>
+                  <li><a href="https://unpkg.com/riscript" target="_blank" rel="noopener">unpkg (RiScript only)</a>
+                    <span class="note">— no lexicon, ~270K</span></li>
+                </ul>
+              </div>
+              <div>
+                <h3>Java</h3>
+                <ul>
+                  <li><a href="https://rednoise.org/rita/rita.zip" download="rita.zip">Complete package</a>
+                    <span class="note">— jar, source, examples, reference</span></li>
+                  <li><a href="https://search.maven.org/artifact/org.rednoise/rita" target="_blank"
+                         rel="noopener">Maven Central</a></li>
+                  <li><a href="https://github.com/dhowe/rita/packages/" target="_blank" rel="noopener">GitHub
+                      Packages</a></li>
+                </ul>
               </div>
             </div>
-
           </div>
-          <p class="supText"><sup>†</sup> from old Norse, meaning to mark, scratch, or scribble</p>
-
-        </div>
-
-        <div class="col-md-2">
-        </div>
+        </details>
       </div>
-    </div>
-  </div>
-  <div id="whats-new">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-2">
+    </section>
+
+    <section class="band">
+      <div class="wrap">
+        <div class="prose">
+          <p>RiTa<sup>&dagger;</sup> is an open-source library for writing in computational environments. It provides
+            functions for simple language processing and generation tasks without the overhead or complexity of a full
+            NLP stack. Designed to be small and easy to use, it runs in the browser, <a href="https://p5js.org/"
+              target="_blank" rel="noopener">p5.js</a>, <a href="https://processing.org/" target="_blank"
+              rel="noopener">Processing</a>, <a href="https://nodejs.org/" target="_blank" rel="noopener">Node</a> and
+            Android.</p>
+          <p>Features include grammar- and Markov-based text generation, tools for inflection, conjugation, stemming
+            and tokenization, and analysis of English features such as part-of-speech, phonemes, syllables and
+            stresses. RiTa's customizable lexicon can be searched via partial matches on combinations of any of those
+            features, and a letter-to-sound engine allows analysis of words not in the lexicon. It also includes a
+            small scripting language designed for writers (<a href="https://observablehq.com/@dhowe/riscript"
+              target="_blank" rel="noopener">RiScript</a>).</p>
         </div>
-        <div class="col-md-8 wow fadeIn">
-          <h4>RiTa Version 4</h4>
-          <br><strong>Key Features</strong>
-          <ul style="padding-inline-start: 35px !important;">
-            <li>A complete rewrite of the Markov generator now efficiently employing unbounded (infinite) N-grams</li>
-            <li>Integration of the <a target="_blank" href="https://github.com/dhowe/riscript/">RiScript</a>
-              scripting language, designed for writers</li>
-            <li>Letter-to-sound engine for feature analysis of arbitrary words (with/without a lexicon)</li>
-            <li>Smart lexicon search for words matching part-of-speech, syllable, stress and rhyme patterns </li>
-            <li>Heuristic algorithms for inflection, conjugation, stemming, tokenization, and more</li>
-            <li>Powerful generation options via grammars and Markov chains</li>
+
+        <div class="platforms">
+          <span class="platform"><img src="img/java-seeklogo.com.svg" alt=""> Java</span>
+          <span class="platform"><img src="img/javascript-logo.png" alt=""> JavaScript</span>
+          <span class="platform"><img src="img/Processing_Logo_Clipped.svg" alt=""> Processing</span>
+          <span class="platform"><img src="img/Node.js_logo.svg" alt=""> Node.js</span>
+          <span class="platform"><img src="img/Android_robot.svg" alt=""> Android</span>
+          <span class="platform"><img src="img/p5js.svg" alt=""> p5.js</span>
+          <span class="platform"><img src="img/Observable.png" alt=""> Observable</span>
+        </div>
+
+        <p class="footnote"><sup>&dagger;</sup> from old Norse, meaning to mark, scratch, or scribble</p>
+      </div>
+    </section>
+
+    <section class="band band-alt" id="whats-new">
+      <div class="wrap">
+        <h2 class="section-title">RiTa Version 4</h2>
+        <div class="feature-grid">
+          <div class="feature">
+            <h3>Unbounded N-grams</h3>
+            <p>A complete rewrite of the Markov generator, efficiently employing unbounded (infinite) N-grams.</p>
+          </div>
+          <div class="feature">
+            <h3>RiScript built in</h3>
+            <p>Integration of the <a href="https://github.com/dhowe/riscript/" target="_blank"
+                rel="noopener">RiScript</a> scripting language, designed for writers.</p>
+          </div>
+          <div class="feature">
+            <h3>Letter-to-sound</h3>
+            <p>Feature analysis of arbitrary words, with or without a lexicon.</p>
+          </div>
+          <div class="feature">
+            <h3>Smart lexicon search</h3>
+            <p>Match words by part-of-speech, syllable count, stress and rhyme patterns.</p>
+          </div>
+          <div class="feature">
+            <h3>Heuristic transforms</h3>
+            <p>Inflection, conjugation, stemming, tokenization, and more.</p>
+          </div>
+          <div class="feature">
+            <h3>Powerful generation</h3>
+            <p>Rich options via context-free grammars and Markov chains.</p>
+          </div>
+        </div>
+
+        <div class="prose" style="margin-top: var(--space-4)">
+          <h3>Important changes</h3>
+          <ul>
+            <li>Nearly all features are now static functions on the <code>RiTa</code> object, so there is only one
+              object to import: <a href="reference/RiTa/phones/">RiTa.phones()</a>,
+              <a href="reference/RiTa/tokenize/">RiTa.tokenize()</a>,
+              <a href="reference/RiTa/conjugate/">RiTa.conjugate()</a>, and so on.</li>
+            <li><code>RiMarkov</code> and <code>RiGrammar</code> are now accessed via
+              <a href="reference/RiTa/markov/">RiTa.markov()</a> and
+              <a href="reference/RiTa/grammar">RiTa.grammar()</a>, and are significantly improved. Grammars are still
+              JSON-compatible but can now include all the features of RiScript, and use the choice primitive via square
+              brackets &mdash; e.g. <a href="https://observablehq.com/@dhowe/riscript" target="_blank"
+                rel="noopener">[ unicorn | wizard | elf ]</a> &mdash; rather than parentheses.</li>
+            <li>RiScript is a scripting language designed specifically for writers, enabling easy integration of static
+              text with algorithmic elements (choices, sequences, transforms, gates, etc). It can be run via
+              <a href="reference/RiTa/evaluate/">RiTa.evaluate()</a> or included in any RiTa grammar. Details
+              <a href="https://observablehq.com/@dhowe/riscript" target="_blank" rel="noopener">here</a>.</li>
           </ul>
-          <br><strong>Important Changes</strong><br>
-          <ul id="important-list" style="padding-inline-start: 35px !important;">
-            <li>Nearly all features of the library are now static functions on the RiTa object. So you can access them
-              as RiTa.XXX(), e.g., <a target="_blank" href="reference/RiTa/phones/">RiTa.phones()</a>,
-              <a target="_blank" href="reference/RiTa/tokenize/">RiTa.tokenize()</a>,
-              <a target="_blank" href="reference/RiTa/conjugate/">RiTa.conjugate()</a> and so on, which means there is
-              only one object to import into your programs.
-            </li>
-            <li>The RiMarkov and RiGrammar objects, now accessed via <a target="_blank"
-                href="reference/RiTa/markov/">RiTa.markov()</a>
-              and <a target="_blank" href="reference/RiTa/grammar">RiTa.grammar()</a>
-              are significantly improved. RiTa grammars are still JSON-compatible, but can now include all the features
-              of RiScript.
-              Grammars also now use the RiScript choice primitive via square brackets, e.g.,
-              <a target="_blank" href="https://observablehq.com/@dhowe/riscript">[ unicorn | wizard | elf ]</a>,
-              rather than parentheses.
-            </li>
-            <li>RiScript is a scripting language, designed specifically for writers, that enables the easy integration
-              of static text with algorithmic elements (choices, sequences, transforms, gates, etc). RiScript can be run
-              via <a target="_blank" href="reference/RiTa/phones/">RiTa.evaluate()</a> or included
-              in any RiTa grammar. Read more about the details <a target="_blank"
-                href="https://observablehq.com/@dhowe/riscript">here</a>.
-            </li>
-            <!--li>RiTa v3 is available for Java (via <a target="_blank"
-                href="https://search.maven.org/artifact/org.rednoise/rita">Maven</a> and
-              <a target="_blank" href="https://github.com/dhowe/rita/packages/">Github Packages</a>) and JavaScript
-              (via <a target="_blank" href="https://www.npmjs.com/package/rita">NPM</a> and <a target="_blank"
-                href="https://unpkg.com/rita">UNPKG</a>).
-              It is also available, of course, as a library for <a target="_blank"
-                href="https://rednoise.org/rita/rita.zip">Processing</a>
-              and <a target="_blank" href="https://unpkg.com/rita">p5.js</a>.
-            </li-->
-          </ul>
-          <br /><strong>Note: you can find archives of versions <a href="https://rednoise.org/rita1"
-              target="_blank">1.x</a>, <a href="https://rednoise.org/rita2" target="_blank">2.x</a> 
-              and <a href="https://rednoise.org/rita3" target="_blank">3.x</a> here.</strong>
-        </div>
-        <div class="col-md-2">
+          <p><strong>Archives of versions <a href="https://rednoise.org/rita1" target="_blank"
+                rel="noopener">1.x</a>, <a href="https://rednoise.org/rita2" target="_blank" rel="noopener">2.x</a> and
+              <a href="https://rednoise.org/rita3" target="_blank" rel="noopener">3.x</a> are available.</strong></p>
         </div>
       </div>
-    </div>
-  </div>
-  <div id="highlights-wrapper">
-    <div class="container wow fadeIn">
-      <div class="row">
-        <div class="col-md-4 highlight-block">
-          <span class="icon-generate  wow fadeInUp" data-wow-delay="0.5s">
-          </span>
-          <p>Text-generation via Markov-chains and context-free grammars (with built-in support for RiScript)</p>
-        </div>
-        <div class="col-md-4 highlight-block">
-          <span class="icon-dictionary wow fadeInUp" data-wow-delay="1.0s"></span>
-          <p>Smart lexicon search to match
-            pos, stress, syllable and letter count,
-            stress, soundex, and rhyme (regex) patterns
-          </p>
-        </div>
-        <div class="col-md-4 highlight-block">
-          <span class="icon-tool   wow fadeInUp" data-wow-delay="0.6s">
-          </span>
-          <p>Modules for tokenization, inflection,
-            <br>stemming, verb conjugation, and
-            <br>concordance/KWIC model creation
-          </p>
-        </div>
+    </section>
 
-      </div>
-      <div class="row">
-        <div class="col-md-4 highlight-block">
-          <span class="icon-sound wow fadeInUp" data-wow-delay="0.7s">
-          </span>
-          <p>Customizable lexicon
-            with a powerful letter-to-sound algorithm
-            for analysis of unknown words
-          </p>
-        </div>
-        <div class="col-md-4 highlight-block">
-          <span class="icon-bookmark  wow fadeInUp" data-wow-delay="0.8s">
-          </span>
-          <p>Taggers for a range of granular features, including phonemes, stress, part-of-speech, syllables, etc.</p>
-        </div>
-        <div class="col-md-4 highlight-block">
-          <span class="icon-diamond   wow fadeInUp" data-wow-delay="0.9s"></span>
-          </span>
-          <p>Runs in Node or the browser
-            <br> with or without p5/js & Processing
-            <br>(also in Android)
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="learning">
-    <div class="container wow fadeIn ">
-      <div class="row">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6">
-              <h4>Quick Start</h4>
-              <div class="panel-group">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a data-toggle="collapse" href="#collapseQS1">Using RiTa in JavaScript</a>
-                    </h5>
-                  </div>
-                  <div id="collapseQS1" class="panel-collapse collapse">
-                    <ul class="list-group">
-                      <li class="list-group-item"><a href="https://www.npmjs.com/package/rita" target="_blank">In
-                          node.js (via npm)</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/ritajs#a-simple-sketch"
-                          target="_blank">In the browser (with unpkg)</a></li>
-                      <li class="list-group-item"><a href="https://github.com/dhowe/ritajs#with-p5js" target="_blank">In
-                          the browser (with p5.js)</a></li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a data-toggle="collapse" href="#collapseQS2">Using RiTa in Java</a>
-                    </h5>
-                  </div>
-                  <div id="collapseQS2" class="panel-collapse collapse">
-                    <ul class="list-group">
-                      <li class="list-group-item"><a href="https://github.com/dhowe/rita#in-processing"
-                          target="_blank">In processing</a></li>
-                      <!--li class="list-group-item"><a href="https://github.com/dhowe/rita#in-processing-android-mode"
-                          target="_blank">In processing for android</a></li>
-                      <li class="list-group-item"><a
-                          href="https://github.com/dhowe/RiTa/blob/master/README.android.md#in-android"
-                          target="_blank">As a standalone android app (jar)</a></li-->
-                      <li class="list-group-item"><a href="https://github.com/dhowe/rita#a-simple-example-java"
-                          target="_blank">As a standalone java program</a></li>
-
-                      <!-- TODO: update link
-                      <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">In a java program via maven</a></li> -->
-                    </ul>
-                  </div>
-                </div>
-
-                <!--div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a data-toggle="collapse" href="#collapseQS3">Development</a>
-                    </h5>
-                  </div>
-                  <div id="collapseQS3" class="panel-collapse collapse">
-                    <ul class="list-group">
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse"
-                          target="_blank">Eclipse (java) via git/ant</a></li>
-
-                      COMMENT: TODO: update link
-                      <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">Eclipse (java) via git/maven</a></li> END-COMMENT
-
-                      <li class="list-group-item"><a href="https://github.com/dhowe/RiTaJS#development-setup"
-                          target="_blank">Javascript via git/npm/gulp</a></li>
-
-                      COMMENT: TODO: update link
-                      <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">In a java program via maven</a></li> END-COMMENT
-                    </ul>
-                  </div>
-                </div-->
-              </div>
-            </div>
-            <div class="col-md-3">
-            </div>
+    <section class="band">
+      <div class="wrap">
+        <h2 class="section-title">What it does</h2>
+        <div class="feature-grid">
+          <div class="feature">
+            <h3>Generation</h3>
+            <p>Text generation via Markov chains and context-free grammars, with built-in support for RiScript.</p>
           </div>
-          <div class="row">
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-6">
-              <h4>Tutorials</h4>
-              <div class="panel-group">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a data-toggle="collapse" href="#collapseTu1">Video Tutorials on RiTa (js)</a>
-                    </h5>
-                  </div>
-                  <div id="collapseTu1" class="panel-collapse collapse">
-                    <ul class="list-group">
-                      <li class="list-group-item"><a href="https://www.youtube.com/watch?v=lIPEvh8HbGQ"
-                          target="_blank">An Introduction to RiTa, <span>by Dan Shiffman</span></a> [v1.x]
-                      </li>
-                      <li class="list-group-item"><a href="https://www.youtube.com/watch?v=VaAoIaZ3YKs"
-                          target="_blank">Generating with Grammars, <span>by Dan Shiffman</span></a> [v1.x]
-                      </li>
-                      <li class="list-group-item"><a
-                          href="https://egghead.io/lessons/node-js-make-a-bot-that-sounds-like-you-with-rita-js"
-                          target="_blank">Making a Bot That Sounds Like You, <span>by Hannah Davis</span></a> [v1.x]
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a data-toggle="collapse" href="#collapseTu2">Analyzing text</a>
-                    </h5>
-                  </div>
-                  <div id="collapseTu2" class="panel-collapse collapse">
-                    <ul class="list-group">
-                      <li class="list-group-item"><a href="tutorials/analyzing.html#Phonemes">Phonemes</a></li>
-                      <li class="list-group-item"><a href="tutorials/analyzing.html#Stresses">Stresses</a></li>
-                      <li class="list-group-item"><a href="tutorials/analyzing.html#POS">POS (Part of speech)</a></li>
-                      <!-- TODO: update link
-                  <li><a href="https://github.com/dhowe/RiTa#development-setup-in-eclipse" target="_blank">In a java program via maven</a></li> -->
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a data-toggle="collapse" href="#collapseTu3">Transformation</a>
-                    </h5>
-                  </div>
-                  <div id="collapseTu3" class="panel-collapse collapse">
-                    <ul class="list-group">
-                      <li class="list-group-item"><a href="tutorials/transform.html#Conjugation">Conjugation</a></li>
-                      <li class="list-group-item"><a href="tutorials/transform.html#Stemming">Stemming</a></li>
-                      <li class="list-group-item"><a href="tutorials/transform.html#Plurals/Singulars">Plurals /
-                          Singulars</a></li>
-                      <li class="list-group-item"><a
-                          href="tutorials/transform.html#Splitting-sentences">Splitting-sentences</a></li>
-                      <li class="list-group-item"><a href="tutorials/transform.html#Tokenizing/Untokenizing">Tokenizing
-                          / Untokenizing</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a href="https://observablehq.com/@dhowe/tut-rita-grammars">Generating with grammars</a>
-                    </h5>
-                  </div>
-
-                </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a href="https://observablehq.com/@dhowe/tut-rita-ngrams">Generating with n-grams</a>
-                    </h5>
-                  </div>
-
-                </div>
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h5 class="panel-title">
-                      <a href="tutorials/concordance.html">Concordance and Key-Word-In-Context</a>
-                    </h5>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-            </div>
+          <div class="feature">
+            <h3>Lexicon search</h3>
+            <p>Match part-of-speech, syllable and letter count, stress, soundex and rhyme (regex) patterns.</p>
+          </div>
+          <div class="feature">
+            <h3>Word tools</h3>
+            <p>Modules for tokenization, inflection, stemming, verb conjugation and concordance/KWIC models.</p>
+          </div>
+          <div class="feature">
+            <h3>Unknown words</h3>
+            <p>A customizable lexicon with a letter-to-sound algorithm for analysis of words it doesn't contain.</p>
+          </div>
+          <div class="feature">
+            <h3>Taggers</h3>
+            <p>Granular features including phonemes, stress, part-of-speech and syllables.</p>
+          </div>
+          <div class="feature">
+            <h3>Runs anywhere</h3>
+            <p>Node or the browser, with or without p5.js and Processing. Also Android.</p>
           </div>
         </div>
-
-
       </div>
+    </section>
 
-
-
-    </div>
-
-  </div>
-  <div id="examples">
-    <div class="container  wow fadeIn">
-      <div class="row">
-        <div class="col-md-2">
+    <section class="band band-alt" id="learning">
+      <div class="wrap">
+        <h2 class="section-title">Learning</h2>
+        <div class="link-columns">
+          <div>
+            <h3>Quick start &mdash; JavaScript</h3>
+            <ul>
+              <li><a href="https://www.npmjs.com/package/rita" target="_blank" rel="noopener">In node.js (via
+                  npm)</a></li>
+              <li><a href="https://github.com/dhowe/ritajs#a-simple-browser-sketch" target="_blank"
+                  rel="noopener">In the browser (with unpkg)</a></li>
+              <li><a href="https://github.com/dhowe/ritajs#with-p5js" target="_blank" rel="noopener">In the browser
+                  (with p5.js)</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Quick start &mdash; Java</h3>
+            <ul>
+              <li><a href="https://github.com/dhowe/rita#in-processing" target="_blank" rel="noopener">In
+                  Processing</a></li>
+              <li><a href="https://github.com/dhowe/rita#a-simple-example-java" target="_blank" rel="noopener">As a
+                  standalone Java program</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Video tutorials</h3>
+            <ul>
+              <li><a href="https://www.youtube.com/watch?v=lIPEvh8HbGQ" target="_blank" rel="noopener">An Introduction
+                  to RiTa <span class="sub">by Dan Shiffman [v1.x]</span></a></li>
+              <li><a href="https://www.youtube.com/watch?v=VaAoIaZ3YKs" target="_blank" rel="noopener">Generating with
+                  Grammars <span class="sub">by Dan Shiffman [v1.x]</span></a></li>
+              <li><a href="https://egghead.io/lessons/node-js-make-a-bot-that-sounds-like-you-with-rita-js"
+                  target="_blank" rel="noopener">Making a Bot That Sounds Like You <span class="sub">by Hannah Davis
+                    [v1.x]</span></a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Analyzing text</h3>
+            <ul>
+              <li><a href="tutorials/analyzing.html#Phonemes">Phonemes</a></li>
+              <li><a href="tutorials/analyzing.html#Stresses">Stresses</a></li>
+              <li><a href="tutorials/analyzing.html#POS">Part of speech</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Transformation</h3>
+            <ul>
+              <li><a href="tutorials/transform.html#Conjugation">Conjugation</a></li>
+              <li><a href="tutorials/transform.html#Stemming">Stemming</a></li>
+              <li><a href="tutorials/transform.html#Plurals/Singulars">Plurals / Singulars</a></li>
+              <li><a href="tutorials/transform.html#Splitting-sentences">Splitting sentences</a></li>
+              <li><a href="tutorials/transform.html#Tokenizing/Untokenizing">Tokenizing / Untokenizing</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Generating</h3>
+            <ul>
+              <li><a href="https://observablehq.com/@dhowe/tut-rita-grammars" target="_blank" rel="noopener">Generating
+                  with grammars</a></li>
+              <li><a href="https://observablehq.com/@dhowe/tut-rita-ngrams" target="_blank" rel="noopener">Generating
+                  with n-grams</a></li>
+              <li><a href="tutorials/concordance.html">Concordance and Key-Word-In-Context</a></li>
+            </ul>
+          </div>
         </div>
-        <div class="col-md-8">
-          <h4>Examples</h4>
-          <div class="row">
-            <div class="col-md-4">
-              <a class="nodec" href="examples/p5/HaikuGrammar/" target="_blank">
-                <p>HaikuGrammar</p>
-                <img class="example-img" src="img/examples/haiku.png" alt="">
-              </a>
-              <p>
-                <a href="examples/p5/HaikuGrammar/" target="_blank">p5js</a> <a
-                  href="examples/p5/HaikuGrammar/index.html#source">(source)</a>
-                <br>
-                <a href="examples/dom/HaikuGrammar/" target="_blank">dom</a> <a
-                  href="examples/dom/HaikuGrammar/index.html#source">(source)</a>
-              </p>
-            </div>
-            <div class="col-md-4">
-              <a class="nodec" href="examples/p5/Kafgenstein/" target="_blank">
-                <p>Kafgenstein(RiMarkov) </p>
-                <img class="example-img" src="img/examples/kafgenstein.png" alt="">
-              </a>
-              <p> <a href="examples/p5/Kafgenstein/" target="_blank">p5js</a> <a
-                  href="examples/p5/Kafgenstein/index.html#source">(source)</a>
-                <br>
-                <a href="examples/dom/Kafgenstein/" target="_blank">dom</a> <a
-                  href="examples/dom/Kafgenstein/index.html#source">(source)</a>
-              </p>
-            </div>
-            <div class="col-md-4">
-              <a class="nodec" href="examples/p5/KWICmodel/" target="_blank">
-                <p>KeyWordsInContext </p>
-                &nbsp;<img class="example-img" src="img/examples/kwic.png" alt="">
-              </a>&nbsp;
-              <p> <a href="examples/p5/KWICmodel/" target="_blank">p5js</a> <a
-                  href="examples/p5/KWICmodel/index.html#source">(source)</a>
-                <br>
-                <a href="examples/dom/KWICmodel/" target="_blank">dom</a> <a
-                  href="examples/dom/KWICmodel/index.html#source">(source)</a>
+      </div>
+    </section>
+
+    <section class="band" id="examples">
+      <div class="wrap">
+        <h2 class="section-title">Examples</h2>
+        <div class="card-grid">
+          <div class="card">
+            <a href="examples/p5/HaikuGrammar/" target="_blank" rel="noopener">
+              <img src="img/examples/haiku.png" alt="HaikuGrammar example" loading="lazy">
+            </a>
+            <div class="card-body">
+              <h3>HaikuGrammar</h3>
+              <p class="meta">
+                <a href="examples/p5/HaikuGrammar/" target="_blank" rel="noopener">p5.js</a>
+                <a href="examples/dom/HaikuGrammar/" target="_blank" rel="noopener">dom</a>
               </p>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-4">
-              <a class="nodec" href="examples/p5/Analysis/" target="_blank">
-                <p>FeatureAnalysis</p>
-                &nbsp;<img class="example-img" src="img/examples/analysis.png" alt="">
-              </a>&nbsp;
-              <p> <a href="examples/p5/Analysis/" target="_blank">p5js</a> <a
-                  href="examples/p5/Analysis/index.html#source">(source)</a>
-                <br>
-                <a href="examples/dom/Analysis/" target="_blank">dom</a> <a
-                  href="examples/dom/Analysis/index.html#source">(source)</a>
-              </p>
-            </div>
-            <div class="col-md-4">
-              <a class="nodec" href="examples/p5/RandomRhymes/" target="_blank">
-                <p>RandomRhymes</p>
-                &nbsp;<img class="example-img" src="img/examples/rhymes.png" alt="">
-              </a>&nbsp;
-              <p> <a href="examples/p5/RandomRhymes/" target="_blank">p5js</a> <a
-                  href="examples/p5/RandomRhymes/index.html#source">(source)</a>
-                <br>
-                <a href="examples/dom/RandomRhymes/" target="_blank">dom</a> <a
-                  href="examples/dom/RandomRhymes/index.html#source">(source)</a>
-              </p>
-            </div>
-            <div class="col-md-4">
-              <a class="nodec" href="examples/p5/ReplaceableWriting/" target="_blank">
-                <p>ReplaceableWriting</p>
-                &nbsp;<img class="example-img" src="img/examples/replaceable.png" alt="">
-              </a>&nbsp;
-              <p> <a href="examples/p5/ReplaceableWriting/" target="_blank">p5js</a> <a
-                  href="examples/p5/ReplaceableWriting/index.html#source">(source)</a>
-                <br>
-                <a href="examples/dom/ReplaceableWriting/" target="_blank">dom</a> <a
-                  href="examples/dom/ReplaceableWriting/index.html#source">(source)</a>
+          <div class="card">
+            <a href="examples/p5/Kafgenstein/" target="_blank" rel="noopener">
+              <img src="img/examples/kafgenstein.png" alt="Kafgenstein example" loading="lazy">
+            </a>
+            <div class="card-body">
+              <h3>Kafgenstein</h3>
+              <p class="meta">
+                <a href="examples/p5/Kafgenstein/" target="_blank" rel="noopener">p5.js</a>
+                <a href="examples/dom/Kafgenstein/" target="_blank" rel="noopener">dom</a>
               </p>
             </div>
           </div>
-          <div class="row" style="margin-top: 20px !important;">
-            <p>View the above examples <a href="https://editor.p5js.org/rita-examples/collections/ltF2vMtaL"
-                target="_blank">in the p5.js online editor</a></p>
+          <div class="card">
+            <a href="examples/p5/KWICmodel/" target="_blank" rel="noopener">
+              <img src="img/examples/kwic.png" alt="KeyWordsInContext example" loading="lazy">
+            </a>
+            <div class="card-body">
+              <h3>KeyWordsInContext</h3>
+              <p class="meta">
+                <a href="examples/p5/KWICmodel/" target="_blank" rel="noopener">p5.js</a>
+                <a href="examples/dom/KWICmodel/" target="_blank" rel="noopener">dom</a>
+              </p>
+            </div>
           </div>
-
+          <div class="card">
+            <a href="examples/p5/Analysis/" target="_blank" rel="noopener">
+              <img src="img/examples/analysis.png" alt="FeatureAnalysis example" loading="lazy">
+            </a>
+            <div class="card-body">
+              <h3>FeatureAnalysis</h3>
+              <p class="meta">
+                <a href="examples/p5/Analysis/" target="_blank" rel="noopener">p5.js</a>
+                <a href="examples/dom/Analysis/" target="_blank" rel="noopener">dom</a>
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <a href="examples/p5/RandomRhymes/" target="_blank" rel="noopener">
+              <img src="img/examples/rhymes.png" alt="RandomRhymes example" loading="lazy">
+            </a>
+            <div class="card-body">
+              <h3>RandomRhymes</h3>
+              <p class="meta">
+                <a href="examples/p5/RandomRhymes/" target="_blank" rel="noopener">p5.js</a>
+                <a href="examples/dom/RandomRhymes/" target="_blank" rel="noopener">dom</a>
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <a href="examples/p5/ReplaceableWriting/" target="_blank" rel="noopener">
+              <img src="img/examples/replaceable.png" alt="ReplaceableWriting example" loading="lazy">
+            </a>
+            <div class="card-body">
+              <h3>ReplaceableWriting</h3>
+              <p class="meta">
+                <a href="examples/p5/ReplaceableWriting/" target="_blank" rel="noopener">p5.js</a>
+                <a href="examples/dom/ReplaceableWriting/" target="_blank" rel="noopener">dom</a>
+              </p>
+            </div>
+          </div>
         </div>
-
-
+        <p style="margin-top: var(--space-3)">View these examples
+          <a href="https://editor.p5js.org/rita-examples/collections/ltF2vMtaL" target="_blank" rel="noopener">in the
+            p5.js online editor</a>.</p>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div id="gallery">
-    <div class="container wow fadeIn">
-      <div class="row">
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-8">
-          <h4>Gallery</h4>
-        </div>
-        <div class="col-md-2">
+    <section class="band band-alt" id="gallery">
+      <div class="wrap">
+        <h2 class="section-title">Gallery</h2>
+        <div class="gallery">
+          gallery_contents
         </div>
       </div>
-    </div>
-    <div class="container">
-      <div class="row slick-slider-gallery" id="gallery-slider">
-        gallery_contents
-      </div>
-    </div>
-  </div>
+    </section>
 
-  <div id="reference">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-2"> </div>
-        <div class="col-md-8">
-          <h3 id="reference-title">Reference</h3>
+    <section class="band" id="reference">
+      <div class="wrap">
+        <h2 class="section-title">Reference</h2>
+        <div class="api">
+          tmp_contents
         </div>
-        <div class="col-md-2"> </div>
       </div>
-      <div class="row" style="width: 15%; height: 100px"></div>
-      <!--To make it looks like centered-->
-      <div class="row" style="width: 80%">
-        tmp_contents
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Released under the GPL License. Copyright &copy; 2020&ndash;2026 by
+        <a href="https://rednoise.org/daniel/" target="_blank" rel="noopener">Daniel Howe</a>.</p>
+      <div class="social">
+        <a class="icon" href="https://github.com/dhowe/ritajs" target="_blank" rel="noopener"
+           aria-label="RiTa on GitHub">
+          <svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2.3z"/>
+          </svg>
+        </a>
       </div>
-    </div>
-  </div>
-
-
-  <footer class="page-footer">
-    <div class="container wow fadeIn">
-      <div id="social-wrapper"> <a href="https://github.com/dhowe/ritajs" target="blank" class="icon"> <svg
-            class="svg-inline--fa fa-github fa-w-16" aria-hidden="true" data-prefix="fab" data-icon="github" role="img"
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" data-fa-i2svg="">
-            <path fill="currentColor"
-              d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z">
-            </path>
-          </svg><!-- <i class="fab fa-github"></i> --> </a> <a
-          href="https://twitter.com/home?status=Generative%20writing%20with%20RiTa%20https://rednoise.org/rita"
-          target="blank" class="icon"> <svg class="svg-inline--fa fa-twitter fa-w-16" aria-hidden="true"
-            data-prefix="fab" data-icon="twitter" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-            data-fa-i2svg="">
-            <path fill="currentColor"
-              d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
-            </path>
-          </svg><!-- <i class="fab fa-twitter"></i> --> </a> </div>
-      <p> Released under the GPL License <br> Copyright © 2020 by <a href="https://rednoise.org/daniel/"
-          target="blank">Daniel Howe</a></p> <br>
-
     </div>
   </footer>
 </body>

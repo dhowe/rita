@@ -748,7 +748,7 @@
     {
       "name": "articlize",
       "example": "RiTa.articlize(\"kitten\"); // returns -> 'a kitten'<br/><br/>RiTa.articlize(\"honor\"); // returns -> 'an honor'",
-      "description": "Prepends the correct article (\"a\" or \"an\") for a word, based on its <a href='../phonemes'>phonemes</a>",
+      "description": "Prepends the correct article (\"a\" or \"an\") for a word, based on its <a href='../phones/'>phonemes</a>",
       "syntax": "RiTa.articlize(verb);",
       "parameters": [
         {

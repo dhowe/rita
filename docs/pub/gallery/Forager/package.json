@@ -1,0 +1,14 @@
+{
+  "name": "@florencewallis/forager",
+  "main": "4261beea77bc5131@283.js",
+  "version": "283.0.0",
+  "homepage": "https://observablehq.com/@florencewallis/forager",
+  "author": {
+    "name": "Florence Wallis",
+    "url": "https://observablehq.com/@florencewallis"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4"
+  }
+}

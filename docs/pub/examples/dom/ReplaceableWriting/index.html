@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Replaceable Writing (dom)</title>
+  <meta charset="utf-8">
+  <script src="../../../dist/rita.min.js"></script>
+  <script src="../../lib/jquery-1.12.4.js"></script>
+  <script src="../../lib/prism.js"></script>
+  <script src="../../lib/sourcecode.js"></script>
+  <script src="code.js"></script>
+  <link rel='stylesheet' href='../../lib/prism.css' />
+  <style>
+    body {
+      font-family: Georgia, serif;
+    }
+
+    .canvas {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      overflow: hidden;
+      background-color: rgb(20, 30, 55);
+    }
+
+    #words {
+      position: absolute;
+      top: 30px;
+      left: 50px;
+      font-size: 17.5px;
+      width: 505px;
+      color: rgb(250, 240, 230);
+      text-align: left;
+      line-height: 22.5px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <a href="../../../index.html#examples">&lt;back</a>
+  <a href="#source" id="view-source">source</a>
+  <div class="code" id="source">
+    <pre>
+    <code id="source-code" class="language-java"></code>
+    </pre>
+  </div>
+  <br>
+  <div class="canvas">
+    <div id="words"></div>
+  </div>
+  <div id="idiv" style="width:550px; text-align:center; font-size: 12px;
+    font-family: sans-serif; margin: 10px">Replaces a word in the paragraph with a similar word every two seconds (text by Mark Helprin)
+  </div>
+</body>
+
+</html>
