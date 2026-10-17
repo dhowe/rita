@@ -17,15 +17,15 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
 
 ## API
 
-<table cellspacing="0" cellpadding="0">
-  <tr>
-    <th colspan=2 align="left" style="padding-left: 12px">RiTa</th>
-    <th align="left">RiMarkov</th>
-    <th align="left">RiGrammar</th>
-    <th align="left">RiScript</th>
-  </tr>
-  <tr>
-    <td align="top" style="padding-top: 15px">
+<table cellspacing="0" cellpadding="0" style="vertical-align: top;">
+   <tr>
+    <th colspan=2 style="vertical-align: top;text-align: left; padding-left: 12px">RiTa
+    </th>
+    <th colspan=1 style="vertical-align: top;text-align: left;">RiMarkov</th>
+    <th colspan=1 style="vertical-align: top;text-align: left;">RiGrammar</th>
+   </tr>
+   <tr>
+    <td style="vertical-align: top; padding-top: 15px">
       <a href="https://rednoise.org/rita/reference/RiTa/addTransform/index.html">RiTa.addTransform()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/alliterations/index.html">RiTa.alliterations()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/alliterationsSync/index.html">RiTa.alliterationsSync()</a><br/>
@@ -45,15 +45,15 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiTa/isNoun/index.html">RiTa.isNoun()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/isPunct/index.html">RiTa.isPunct()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/isQuestion/index.html">RiTa.isQuestion()</a><br/>
-      <a href="https://rednoise.org/rita/reference/RiTa/isRhyme/index.html">RiTa.isRhyme()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/isStopWord/index.html">RiTa.isStopWord()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiTa/isRhyme/index.html">RiTa.isRhyme()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/isVerb/index.html">RiTa.isVerb()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/kwic/index.html">RiTa.kwic()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/markov/index.html">RiTa.markov()</a><br/>
+    </td>
+    <td style="vertical-align: top; padding-top: 15px">
       <a href="https://rednoise.org/rita/reference/RiTa/pastPart/index.html">RiTa.pastPart()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/phones/index.html">RiTa.phones()</a><br/>
-    </td>
-    <td align="top" style="padding-top: 15px">
       <a href="https://rednoise.org/rita/reference/RiTa/pluralize/index.html">RiTa.pluralize()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/pos/index.html">RiTa.pos()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/posInline/index.html">RiTa.posInline()</a><br/>
@@ -66,6 +66,7 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiTa/removeTransform/index.html">RiTa.removeTransform()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/rhymes/index.html">RiTa.rhymes()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/rhymesSync/index.html">RiTa.rhymesSync()</a><br/>
+      <!--a href="./RiTa/scripting/index.html">RiTa.scripting()</a><br/-->
       <a href="https://rednoise.org/rita/reference/RiTa/search/index.html">RiTa.search()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/searchSync/index.html">RiTa.searchSync()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/sentences/index.html">RiTa.sentences()</a><br/>
@@ -82,7 +83,7 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiTa/untokenize/index.html">RiTa.untokenize()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiTa/VERSION/index.html">RiTa.VERSION</a><br/>
     </td>
-    <td align="top" style="padding-top: 15px">
+    <td style="vertical-align: top !important; padding-top: 15px; min-width: 125px">
       <a href="https://rednoise.org/rita/reference/RiMarkov/addSentences/index.html">addSentences()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiMarkov/addText/index.html">addText()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiMarkov/addTokens/index.html">addTokens()</a><br/>
@@ -93,22 +94,19 @@ RiTa is implemented in Java and JavaScript, with a common [API](#API) for both, 
       <a href="https://rednoise.org/rita/reference/RiMarkov/stream/index.html">stream()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiMarkov/toJSON/index.html">toJSON()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiMarkov/toString/index.html">toString()</a><br/>
-      <a href="https://rednoise.org/rita/reference/RiMarkov/fromJSON/index.html">fromJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiMarkov/fromJSON/index.html">fromJSON()</a><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </td>
-    <td align="top" style="padding-top: 15px">
+    <td style="vertical-align: top !important; padding-top: 15px; min-width: 125px">
       <a href="https://rednoise.org/rita/reference/RiGrammar/addRule/index.html">addRule()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/setRules/index.html">setRules()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/expand/index.html">expand()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/removeRule/index.html">removeRule()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/toJSON/index.html">toJSON()</a><br/>
       <a href="https://rednoise.org/rita/reference/RiGrammar/toString/index.html">toString()</a><br/>
-      <a href="https://rednoise.org/rita/reference/RiGrammar/fromJSON/index.html">fromJSON()</a><br/>
+      <a href="https://rednoise.org/rita/reference/RiGrammar/fromJSON/index.html">fromJSON()</a><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     </td>
-    <td align="top" style="padding-top: 15px">
-      <a href="https://rednoise.org/rita/reference/RiScript/evaluate/index.html">evaluate()</a><br/>
-    </td>
-  </tr>
-</table>   
+ </tr>
+</table>
 
 <br>&nbsp;<br>
 
