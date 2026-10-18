@@ -1,0 +1,66 @@
+# RiTa for Java
+
+Tools for generative natural language — the Java implementation of RiTa.
+
+**Requirements:** JDK 11+ (the Gradle wrapper is checked in, so no Gradle install is needed)
+
+## Build
+
+```sh
+./gradlew build                # compile, test, and assemble rita.jar + rita.zip
+./gradlew test                 # run tests only
+./gradlew javadoc              # API reference docs
+./gradlew processingLibrary    # build/distributions/rita.zip (Processing library)
+```
+
+The artifact is `org.rednoise:rita`, versioned in [`gradle.properties`](gradle.properties)
+(`library.properties` is checked against it by `./gradlew check`).
+
+## Layout
+
+```
+java/
+├── build.gradle.kts          # build, shared-data staging, Processing packaging
+├── library.properties        # Processing library metadata
+├── examples/HelloRita/       # example sketch, bundled into the library
+└── src/
+    ├── main/java/rita/       # library sources (package `rita`)
+    ├── main/resources/rita/  # version.properties (dict data is staged, not committed)
+    └── test/java/rita/       # tests
+```
+
+## Shared data
+
+The canonical dictionary lives in [`../shared/rita_dict.json`](../shared/rita_dict.json) and
+is staged onto the classpath at `rita/rita_dict.json` by the `syncSharedData` task — nothing
+is generated into this folder, so it can't drift from the source of truth. Load it with:
+
+```java
+RiTa.class.getResourceAsStream("/rita/rita_dict.json")
+```
+
+## Using as a Processing library
+
+Unzip `build/distributions/rita.zip` into your Processing libraries folder:
+
+```sh
+unzip build/distributions/rita.zip -d ~/Documents/Processing/libraries/
+```
+
+Then in a sketch:
+
+```java
+import rita.*;
+
+void setup() {
+  println(RiTa.tokenize("How now, brown cow?"));
+  println(RiTa.evaluate("i {have|own} a {blue|green} {bird|fish}"));
+}
+```
+
+See [`examples/HelloRita/HelloRita.pde`](examples/HelloRita/HelloRita.pde) for more.
+
+## Status
+
+Scaffolding only — the port of the JavaScript sources in [`../js/src`](../js/src) is in
+progress. Module names are mirrored 1:1 under `rita.*`.

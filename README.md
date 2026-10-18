@@ -35,10 +35,19 @@ The build uses [tsup](https://tsup.egoist.dev/) and outputs to `js/dist/`:
 
 ## Java (`java/`)
 
-**Requirements:** 
+**Requirements:** JDK 11+ (Gradle wrapper included)
 
 ```sh
+cd java
+./gradlew build                # compile, test, and assemble rita.jar + rita.zip
+./gradlew test                 # run tests only
+./gradlew processingLibrary    # build/distributions/rita.zip (Processing library)
+./gradlew javadoc              # reference docs (also bundled into rita.zip)
 ```
+
+The artifact is `org.rednoise:rita`. The canonical dictionary is read directly from
+`shared/rita_dict.json` (staged into the build by `gradlew processResources`), so there
+is no generated copy to keep in sync.
 
 
 ---

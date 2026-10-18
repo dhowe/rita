@@ -1,0 +1,18 @@
+# Gradle
+build/
+.gradle/
+
+# Generated reference docs (produced by `gradlew javadoc` / processingLib)
+reference/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+bin/
+
+# macOS
+.DS_Store

@@ -30,14 +30,12 @@ const serialize = (obj) => {
 };
 const body = serialize(data);
 
+// Java reads shared/rita_dict.json directly (staged into its build by Gradle),
+// so only the JS module is generated here.
 const targets = [
   {
     path: join(root, 'js', 'src', 'rita_dict.js'),
     content: `\n/** @type {object} */\nexport default ${body};\n`,
-  },
-  {
-    path: join(root, 'java', 'src', 'main', 'resources', 'rita', 'rita_dict.js'),
-    content: `export default ${body};\n`,
   },
 ];
 
