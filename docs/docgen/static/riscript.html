@@ -67,8 +67,9 @@
               <tr>
                 <td>
                   <p><b><a href="https://observablehq.com/@dhowe/riscript">A more detailed tutorial</a> on
-                      Observable</b></p>
-                  <span style="color:rgb(36, 62, 114); font-weight: 600;">RiScript</span> is a simple, writer-oriented,
+                      Observable</b></p><br>&nbsp;<br>
+
+                  <span style="color:rgb(250, 250, 250); font-weight: 600;">RiScript</span> is a simple, writer-oriented,
                   scripting language integrated in RiTa. RiScript statements, the basics of which are
                   described below, can be included in any <a href="./RiTa/grammar/index.html">grammar</a>, or executed
                   directly by calling <a href="./RiTa/evaluate/index.html">RiTa.evaluate()</a>. Fragments of writing
@@ -79,32 +80,32 @@
                     href="https://rednoise.org/daniel/res/pdfs/dialogic_a_toolkit_for_generative_interactive_game_dialog-HOWE-2020.pdf"
                     target="_blank">Dialogic</a>. The language specification and parser were created via the blazing
                   fast <a target="_blank" href="https://chevrotain.io/docs/">Chevrotain</a> toolkit.
-
+<br>&nbsp;<br>
                   <h4>Choice</h4>
                   Select a random choice from a group of options:</h5>
                   <pre><code>The weather was [sad | gloomy | depressed].  ->  "The weather was gloomy."<br><br>I'm [very | super | really] glad to \ <br>  [[meet | know] you | learn about you].     ->   "I'm very glad to know you."</code></pre>
 
-
+<br>&nbsp;<br>
                   <h4>Weighted Choice</h4>
                   Assign weights to the options in a choice. In the example below 'depressed' will be selected four
                   times as often as 'sad' and twice as often as 'gloomy'<br>
                   <pre>The weather was [sad | gloomy (2) | depressed (4)].  ->  "The weather was depressed." </pre>
 
-
+<br>&nbsp;<br>
                   <h4>Assignment</h4>
                   Basic assignments, which start a line, do not have output. They simply create or update a variable to
                   be used elsewhere
                   (variables in JavaScript can also be used when passed in via the script's <em>context</em>)<br>
                   <pre>$desc=wet and cold<br>The weather was $desc  ->  "The weather was wet and cold" </pre>
 
-
+<br>&nbsp;<br>
                   <h4>Inline Assignment</h4>
                   Inline assignments (within brackets) allow one to easily set a variable, output it, and refer to it
                   later:<br>
 
                   <pre>Jane was from [$place=[New York | Berlin | Shanghai]].<br>$place is cold and wet.<br>     ->  "Jane was from Berlin. Berlin is cold and wet."<br><br>$place=(New York | Berlin | Shanghai)<br>$place is cold and wet in winter.<br>     ->  "Berlin is cold and wet in the winter."<br><br>In [$place=[New York | Berlin | Shanghai]] it is cold and wet in winter.<br>     ->  "In Berlin it is cold and wet in the winter."</pre>
 
-
+<br>&nbsp;<br>
                   <h4>Transforms</h4>
                   <a name="transforms"></a>
                   Transforms allow for the evaluation of variables, choices and raw text at runtime.
