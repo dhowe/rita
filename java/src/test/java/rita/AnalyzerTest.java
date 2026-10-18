@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -30,6 +31,17 @@ class AnalyzerTest {
 
     // mirrors `let hasLex = true` in the JS suite
     private static final boolean HAS_LEX = true;
+
+    /**
+     * Reset the mutable global flag before each test. Tests that flip {@code SILENCE_LTS} restore it
+     * in a trailing statement, but while the implementation is still a stub the call in between throws
+     * before the restore runs — so the flag would leak into the next test. This keeps each test
+     * independent without altering any assertion.
+     */
+    @BeforeEach
+    void resetGlobals() {
+        RiTa.SILENCE_LTS = false;
+    }
 
     @Test
     void shouldCallAnalyzerAnalyze() {

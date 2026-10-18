@@ -109,6 +109,7 @@ def java_blocks(path):
     n = len(lines)
     while i < n:
         if re.match(r"^    @Test\b", lines[i]):
+            disabled = any("@Disabled" in lines[k] for k in range(max(0, i - 3), i))
             count = 0
             depth = 0
             entered = False
@@ -125,7 +126,7 @@ def java_blocks(path):
                 if entered and depth <= 0:
                     break
                 j += 1
-            blocks.append(count)
+            blocks.append((disabled, count))
             i = j + 1
             continue
         i += 1
@@ -134,9 +135,11 @@ def java_blocks(path):
 
 def main():
     js = js_blocks(sys.argv[1])
-    java = java_blocks(sys.argv[2])
+    java_all = java_blocks(sys.argv[2])
     # JS blocks that are disabled (0 &&) have no Java counterpart -> drop them.
+    # Java @Disabled methods mirror those disabled JS blocks -> drop them too.
     js_active = [c for (dis, c) in js if not dis]
+    java = [c for (dis, c) in java_all if not dis]
     ok = diff = 0
     for k in range(max(len(js_active), len(java))):
         a = js_active[k] if k < len(js_active) else None

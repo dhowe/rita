@@ -29,7 +29,6 @@ public final class RiTa {
     public static final Lexicon lexicon = new Lexicon();
     public static final Conjugator conjugator = new Conjugator();
     public static final RiScript riscript = new RiScript();
-    public static final Util Util = new Util();
 
     // ---- constants ------------------------------------------------------------------
     public static final String VERSION = "4.0.3";
@@ -63,10 +62,53 @@ public final class RiTa {
     public static List<String> STOP_WORDS = new java.util.ArrayList<>(List.of("and", "a", "of", "in", "i", "you", "is", "to", "that", "it", "for", "on", "have", "with", "this", "be", "not", "are", "as", "was", "but", "or", "from", "my", "at", "if", "they", "your", "all", "he", "by", "one", "me", "what", "so", "can", "will", "do", "an", "about", "we", "just", "would", "there", "no", "like", "out", "his", "has", "up", "more", "who", "when", "don't", "some", "had", "them", "any", "their", "it's", "only", "which", "i'm", "been", "other", "were", "how", "then", "now", "her", "than", "she", "well", "also", "us", "very", "because", "am", "here", "could", "even", "him", "into", "our", "much", "too", "did", "should", "over", "want", "these", "may", "where", "most", "many", "those", "does", "why", "please", "off", "going", "its", "i've", "down", "that's", "can't", "you're", "didn't", "another", "around", "must", "few", "doesn't", "the", "every", "yes", "each", "maybe", "i'll", "away", "doing", "oh", "else", "isn't", "he's", "there's", "hi", "won't", "ok", "they're", "yeah", "mine", "we're", "what's", "shall", "she's", "hello", "okay", "here's", "less", "said", "under"));
     public static List<String> MASS_NOUNS = new java.util.ArrayList<>(List.of("abalone", "asbestos", "barracks", "bathos", "breeches", "beef", "britches", "chaos", "chinese", "cognoscenti", "clippers", "corps", "cosmos", "crossroads", "diabetes", "ethos", "gallows", "graffiti", "herpes", "innings", "lens", "means", "measles", "mews", "mumps", "news", "pasta", "pathos", "pincers", "pliers", "proceedings", "rabies", "rhinoceros", "sassafras", "scissors", "series", "shears", "species", "tuna"));
 
-    // Set mirrors (rebuilt lazily in the real impl; static here for the stub).
-    public static Set<String> STOP_WORDS_SET = new java.util.LinkedHashSet<>(STOP_WORDS);
-    public static Set<String> MASS_NOUNS_SET = new java.util.LinkedHashSet<>(MASS_NOUNS);
-    public static Set<String> QUESTIONS_SET = new java.util.LinkedHashSet<>(QUESTIONS);
+    // Set mirrors (rebuilt lazily when the source list changes, mirroring JS createSetMirror).
+    public static final Set<String> STOP_WORDS_SET = new MirrorSet(() -> STOP_WORDS);
+    public static final Set<String> MASS_NOUNS_SET = new MirrorSet(() -> MASS_NOUNS);
+    public static final Set<String> QUESTIONS_SET = new MirrorSet(() -> QUESTIONS);
+
+    /**
+     * A live view over a mutable list, mirroring the JS {@code createSetMirror} getter: the
+     * backing set is rebuilt whenever the source list is reassigned or its length changes.
+     */
+    static final class MirrorSet extends java.util.AbstractSet<String> {
+        private final java.util.function.Supplier<List<String>> getArray;
+        private List<String> ref;
+        private int len;
+        private Set<String> set;
+
+        MirrorSet(java.util.function.Supplier<List<String>> getArray) {
+            this.getArray = getArray;
+            this.ref = getArray.get();
+            this.len = ref.size();
+            this.set = new java.util.LinkedHashSet<>(ref);
+        }
+
+        private Set<String> sync() {
+            List<String> arr = getArray.get();
+            if (arr != ref || arr.size() != len) {
+                ref = arr;
+                len = arr.size();
+                set = new java.util.LinkedHashSet<>(arr);
+            }
+            return set;
+        }
+
+        @Override
+        public java.util.Iterator<String> iterator() {
+            return sync().iterator();
+        }
+
+        @Override
+        public int size() {
+            return sync().size();
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            return sync().contains(o);
+        }
+    }
 
     // ---- static methods -------------------------------------------------------------
 
@@ -123,7 +165,27 @@ public final class RiTa {
         throw notPorted("kwic");
     }
 
+    /** JS {@code kwic("cat")} — keyword with no options. */
+    public static List<String> kwic(String keyword) {
+        throw notPorted("kwic");
+    }
+
+    /** JS {@code kwic("cat", 4)} — number of context words. */
+    public static List<String> kwic(String keyword, int numWords) {
+        throw notPorted("kwic");
+    }
+
     public static Map<String, Integer> concordance(String text, Map<String, Object> options) {
+        throw notPorted("concordance");
+    }
+
+    /** JS {@code concordance(text)} — text with no options. */
+    public static Map<String, Integer> concordance(String text) {
+        throw notPorted("concordance");
+    }
+
+    /** JS {@code concordance()} — undefined text throws. */
+    public static Map<String, Integer> concordance() {
         throw notPorted("concordance");
     }
 
@@ -330,39 +392,39 @@ public final class RiTa {
     }
 
     public static String[] tokens(String text, Map<String, Object> options) {
-        throw notPorted("tokens");
+        return tokenizer.tokens(text, options);
     }
 
     public static String[] tokens(String text) {
-        throw notPorted("tokens");
+        return tokenizer.tokens(text, Map.of());
     }
 
     public static String[] tokenize(String input, Map<String, Object> options) {
-        throw notPorted("tokenize");
+        return tokenizer.tokenize(input, options);
     }
 
     public static String[] tokenize(String input) {
-        throw notPorted("tokenize");
+        return tokenizer.tokenize(input, Map.of());
     }
 
     public static String untokenize(String[] input, String delim) {
-        throw notPorted("untokenize");
+        return tokenizer.untokenize(input, delim);
     }
 
     public static String untokenize(String[] input) {
-        throw notPorted("untokenize");
+        return tokenizer.untokenize(input, " ");
     }
 
     public static String[] sentences(String text, String pattern) {
-        throw notPorted("sentences");
+        return tokenizer.sentences(text, pattern);
     }
 
     public static String[] sentences(String text) {
-        throw notPorted("sentences");
+        return tokenizer.sentences(text, null);
     }
 
     public static boolean isStopWord(String word) {
-        throw notPorted("isStopWord");
+        return STOP_WORDS_SET.contains(word.toLowerCase());
     }
 
     public static String stem(String word) {
@@ -455,6 +517,11 @@ public final class RiTa {
         throw notPorted("randi");
     }
 
+    /** JS {@code randi()} — no args returns 0. */
+    public static int randi() {
+        throw notPorted("randi");
+    }
+
     public static int randi(int param1, int param2) {
         throw notPorted("randi");
     }
@@ -468,6 +535,11 @@ public final class RiTa {
     }
 
     public static int random(int param1, int param2) {
+        throw notPorted("random");
+    }
+
+    /** JS {@code random(array)} — a random element of the list. */
+    public static <T> T random(List<T> array) {
         throw notPorted("random");
     }
 
