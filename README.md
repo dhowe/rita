@@ -5,7 +5,7 @@ This repository contains all RiTa implementations and documentation
 ```
 rita4/
   js/        JavaScript/TypeScript implementation
-  java/      Java implementation
+  java/      Java implementation (gradle)
   python/    Python implementation
   docs/      Website and API reference
   shared/    Shared data (rita_dict.json — canonical dictionary)
@@ -35,16 +35,11 @@ The build uses [tsup](https://tsup.egoist.dev/) and outputs to `js/dist/`:
 
 ## Java (`java/`)
 
-**Requirements:** JDK 11+, Maven 3.6+
+**Requirements:** 
 
 ```sh
-cd java
-mvn test                      # compile and run tests
-mvn package                   # build rita-<version>.jar in target/
-mvn package -DskipTests       # build without running tests
 ```
 
-The artifact is `org.rednoise:rita`.
 
 ---
 
