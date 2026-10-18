@@ -60,10 +60,32 @@ val syncSharedData = tasks.register<Sync>("syncSharedData") {
     }
 }
 
+// Test fixtures (shared/*.json) are staged onto the test classpath under fixtures/ so
+// data-driven suites can load them as a resource from any working directory.
+val syncFixtures = tasks.register<Sync>("syncFixtures") {
+    description = "Stage shared/*.json onto the test classpath (fixtures/<name>.json)"
+    group = "build"
+    from(sharedDir) {
+        include("*.json")
+        into("fixtures")
+    }
+    // harvard-data.json lives in js/test/ (a JS-authored fixture), not shared/.
+    from(rootDir.toPath().parent.resolve("js").resolve("test").toFile()) {
+        include("harvard-data.json")
+        into("fixtures")
+    }
+    into(layout.buildDirectory.dir("generated/test-resources"))
+}
+
 sourceSets {
     main {
         resources {
             srcDir(layout.buildDirectory.dir("generated/resources"))
+        }
+    }
+    test {
+        resources {
+            srcDir(layout.buildDirectory.dir("generated/test-resources"))
         }
     }
 }
@@ -75,6 +97,10 @@ tasks.processResources {
     }
 }
 
+tasks.processTestResources {
+    dependsOn(syncFixtures)
+}
+
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -83,6 +109,9 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    // Test-only JSON reader for the shared fixtures (shared/*.json). The library itself
+    // stays dependency-free; Processing libraries must not drag in shaded jars.
+    testImplementation("com.google.code.gson:gson:2.11.0")
 }
 
 tasks.test {
