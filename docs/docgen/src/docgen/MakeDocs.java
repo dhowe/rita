@@ -401,7 +401,8 @@ public class MakeDocs extends PApplet {
 		if (!methodName[idx].toUpperCase().equals(shortName.toUpperCase())) {
 			lines = replaceArr(lines, "tmp_methodName", methodName[idx]);
 		}
-    lines = replaceArr(lines, "tmp_asyncTag", async[idx] ? "[async]" : "");
+    lines = replaceArr(lines, "tmp_asyncTag",
+                    async[idx] ? "<span class=\"async-tag\">async</span>" : "");
 
 		optionalTag("example", example[idx]);
 		optionalTag("syntax", syntax[idx]);
