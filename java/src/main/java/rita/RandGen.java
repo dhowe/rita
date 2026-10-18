@@ -50,6 +50,11 @@ public class RandGen {
         throw RiTa.notPorted("randomizer.pselect");
     }
 
+    /** JS {@code pselect()} — no args throws ('Array required'). */
+    public int pselect() {
+        throw RiTa.notPorted("randomizer.pselect");
+    }
+
     public int pselectIndex(double[] probs) {
         throw RiTa.notPorted("randomizer.pselectIndex");
     }

@@ -154,6 +154,11 @@ public class RiMarkov {
         throw RiTa.notPorted("RiMarkov.probability");
     }
 
+    /** JS {@code probability(non-array, ...)} — throws (prompt must be an array). */
+    public double probability(Object prompt, Object next) {
+        throw RiTa.notPorted("RiMarkov.probability");
+    }
+
     public double probability(String token) {
         throw RiTa.notPorted("RiMarkov.probability");
     }
