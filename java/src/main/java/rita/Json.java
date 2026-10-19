@@ -31,6 +31,93 @@ final class Json {
         return (Map<String, Object>) parse(text);
     }
 
+    /** Serialises Maps/Lists/Strings/Numbers/Booleans/null to JSON. A SuffixArray is
+     *  embedded via its own {@code toJSON()} (raw, not quoted). */
+    static String write(Object value) {
+        StringBuilder sb = new StringBuilder();
+        writeValue(value, sb);
+        return sb.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void writeValue(Object v, StringBuilder sb) {
+        if (v == null) {
+            sb.append("null");
+        }
+        else if (v instanceof Map) {
+            sb.append('{');
+            boolean first = true;
+            for (Map.Entry<String, Object> e : ((Map<String, Object>) v).entrySet()) {
+                if (!first) {
+                    sb.append(',');
+                }
+                first = false;
+                sb.append(quote(e.getKey())).append(':');
+                writeValue(e.getValue(), sb);
+            }
+            sb.append('}');
+        }
+        else if (v instanceof List) {
+            sb.append('[');
+            List<Object> list = (List<Object>) v;
+            for (int i = 0; i < list.size(); i++) {
+                if (i > 0) {
+                    sb.append(',');
+                }
+                writeValue(list.get(i), sb);
+            }
+            sb.append(']');
+        }
+        else if (v instanceof SuffixArray) {
+            sb.append(((SuffixArray) v).toJSON());
+        }
+        else if (v instanceof String) {
+            sb.append(quote((String) v));
+        }
+        else if (v instanceof Boolean) {
+            sb.append(v.toString());
+        }
+        else if (v instanceof Number) {
+            double d = ((Number) v).doubleValue();
+            if (d == Math.floor(d) && !Double.isInfinite(d) && v instanceof Integer) {
+                sb.append(v.toString());
+            }
+            else {
+                sb.append(v.toString());
+            }
+        }
+        else {
+            sb.append(quote(String.valueOf(v)));
+        }
+    }
+
+    private static String quote(String s) {
+        StringBuilder sb = new StringBuilder("\"");
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.append('"').toString();
+    }
+
     private static final class Reader {
         private final String s;
         private int i;

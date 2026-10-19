@@ -25,6 +25,43 @@ public class Util {
         return obj != null && obj.containsKey(key);
     }
 
+    /**
+     * JS {@code str.charAt(i)} — returns the empty string for out-of-range (including negative)
+     * indices, where Java's {@code charAt} would throw.
+     */
+    public static String charAt(String s, int i) {
+        if (i < 0 || i >= s.length()) {
+            return "";
+        }
+        return String.valueOf(s.charAt(i));
+    }
+
+    /**
+     * JS {@code str.substring(a, b)} — clamps negative/oversized indices to the string bounds and
+     * swaps them when {@code a > b}, so it never throws.
+     */
+    public static String substring(String s, int a, int b) {
+        int len = s.length();
+        if (a < 0) {
+            a = 0;
+        }
+        if (b < 0) {
+            b = 0;
+        }
+        if (a > len) {
+            a = len;
+        }
+        if (b > len) {
+            b = len;
+        }
+        if (a > b) {
+            int t = a;
+            a = b;
+            b = t;
+        }
+        return s.substring(a, b);
+    }
+
     /** JS {@code isNum} — {@code !isNaN(parseFloat(n)) && isFinite(n)}. */
     public static boolean isNum(Object n) {
         if (n == null) {

@@ -56,11 +56,19 @@ public final class RiTa {
     public static final String SENTENCE_BOUNDARY = "|";
     public static final String VOWELS = "aeiou";
 
+    /** JS {@code ONLY_PUNCT} — matches a string of only punctuation characters. */
+    private static final java.util.regex.Pattern ONLY_PUNCT =
+        java.util.regex.Pattern.compile("^[\\p{IsPunctuation}|+,<>^$\ufffd`]*$");
+
+    /** JS {@code IS_LETTER} — matches one or more ASCII/latin letters. */
+    private static final java.util.regex.Pattern IS_LETTER =
+        java.util.regex.Pattern.compile("^[a-z\\u00C0-\\u00ff]+$");
+
     public static final String[] PHONES = {"aa", "ae", "ah", "ao", "aw", "ay", "b", "ch", "d", "dh", "eh", "er", "ey", "f", "g", "hh", "ih", "iy", "jh", "k", "l", "m", "n", "ng", "ow", "oy", "p", "r", "s", "sh", "t", "th", "uh", "uw", "v", "w", "y", "z", "zh"};
     public static final String[] ABRV = {"Adm.", "Capt.", "Cmdr.", "Col.", "Dr.", "Gen.", "Gov.", "Lt.", "Maj.", "Messrs.", "Mr.", "Mrs.", "Ms.", "Prof.", "Rep.", "Reps.", "Rev.", "Sen.", "Sens.", "Sgt.", "Sr.", "St.", "A.k.a.", "C.f.", "I.e.", "E.g.", "Vs.", "V.", "Jan.", "Feb.", "Mar.", "Apr.", "Mar.", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."};
     public static List<String> QUESTIONS = new java.util.ArrayList<>(List.of("was", "what", "when", "where", "which", "why", "who", "will", "would", "who", "how", "if", "is", "could", "might", "does", "are", "have"));
-    public static List<String> STOP_WORDS = new java.util.ArrayList<>(List.of("and", "a", "of", "in", "i", "you", "is", "to", "that", "it", "for", "on", "have", "with", "this", "be", "not", "are", "as", "was", "but", "or", "from", "my", "at", "if", "they", "your", "all", "he", "by", "one", "me", "what", "so", "can", "will", "do", "an", "about", "we", "just", "would", "there", "no", "like", "out", "his", "has", "up", "more", "who", "when", "don't", "some", "had", "them", "any", "their", "it's", "only", "which", "i'm", "been", "other", "were", "how", "then", "now", "her", "than", "she", "well", "also", "us", "very", "because", "am", "here", "could", "even", "him", "into", "our", "much", "too", "did", "should", "over", "want", "these", "may", "where", "most", "many", "those", "does", "why", "please", "off", "going", "its", "i've", "down", "that's", "can't", "you're", "didn't", "another", "around", "must", "few", "doesn't", "the", "every", "yes", "each", "maybe", "i'll", "away", "doing", "oh", "else", "isn't", "he's", "there's", "hi", "won't", "ok", "they're", "yeah", "mine", "we're", "what's", "shall", "she's", "hello", "okay", "here's", "less", "said", "under"));
-    public static List<String> MASS_NOUNS = new java.util.ArrayList<>(List.of("abalone", "asbestos", "barracks", "bathos", "breeches", "beef", "britches", "chaos", "chinese", "cognoscenti", "clippers", "corps", "cosmos", "crossroads", "diabetes", "ethos", "gallows", "graffiti", "herpes", "innings", "lens", "means", "measles", "mews", "mumps", "news", "pasta", "pathos", "pincers", "pliers", "proceedings", "rabies", "rhinoceros", "sassafras", "scissors", "series", "shears", "species", "tuna"));
+    public static List<String> STOP_WORDS = new java.util.ArrayList<>(List.of("and", "a", "of", "in", "i", "you", "is", "to", "that", "it", "for", "on", "have", "with", "this", "be", "not", "are", "as", "was", "but", "or", "from", "my", "at", "if", "they", "your", "all", "he", "by", "one", "me", "what", "so", "can", "will", "do", "an", "about", "we", "just", "would", "there", "no", "like", "out", "his", "has", "up", "more", "who", "when", "don't", "some", "had", "them", "any", "their", "it's", "only", "which", "i'm", "been", "other", "were", "how", "then", "now", "her", "than", "she", "well", "also", "us", "very", "because", "am", "here", "could", "even", "him", "into", "our", "much", "too", "did", "should", "over", "want", "these", "may", "where", "most", "many", "those", "does", "why", "please", "off", "going", "its", "i've", "down", "that's", "can't", "you're", "didn't", "another", "around", "must", "few", "doesn't", "the", "every", "yes", "each", "maybe", "i'll", "away", "doing", "oh", "else", "isn't", "he's", "there's", "hi", "won't", "ok", "they're", "yeah", "mine", "we're", "what's", "shall", "she's", "hello", "okay", "here's", "less", "didn't", "said", "over", "this", "that", "just", "then", "under", "some"));
+    public static List<String> MASS_NOUNS = new java.util.ArrayList<>(List.of("abalone", "asbestos", "barracks", "bathos", "breeches", "beef", "britches", "chaos", "chinese", "cognoscenti", "clippers", "corps", "cosmos", "crossroads", "diabetes", "ethos", "gallows", "graffiti", "herpes", "innings", "lens", "means", "measles", "mews", "mumps", "news", "pasta", "pathos", "pincers", "pliers", "proceedings", "rabies", "rhinoceros", "sassafras", "scissors", "series", "shears", "species", "tuna", "acoustics", "aesthetics", "aquatics", "basics", "ceramics", "classics", "cosmetics", "dialectics", "deer", "dynamics", "ethics", "harmonics", "heroics", "mechanics", "metrics", "ooze", "optics", "physics", "polemics", "pyrotechnics", "statistics", "tactics", "tropics", "bengalese", "bengali", "bonsai", "booze", "cellulose", "mess", "moose", "burmese", "chinese", "colossus", "congolese", "discus", "electrolysis", "emphasis", "expertise", "flu", "fructose", "gauze", "glucose", "grease", "guyanese", "haze", "incense", "japanese", "lebanese", "malaise", "mayonnaise", "maltese", "music", "money", "menopause", "merchandise", "olympics", "overuse", "paradise", "poise", "potash", "portuguese", "prose", "recompense", "remorse", "repose", "senegalese", "siamese", "singhalese", "sleaze", "sioux", "sudanese", "suspense", "swiss", "taiwanese", "vietnamese", "unease", "aircraft", "anise", "antifreeze", "applause", "archdiocese", "apparatus", "asparagus", "bellows", "bison", "bluefish", "bourgeois", "bream", "brill", "butterfingers", "cargo", "carp", "catfish", "chassis", "clone", "clones", "clothes", "chub", "cod", "codfish", "coley", "contretemps", "crawfish", "crayfish", "cuttlefish", "dice", "dogfish", "doings", "dory", "downstairs", "eldest", "earnings", "economics", "electronics", "firstborn", "fish", "flatfish", "flounder", "fowl", "fry", "fries", "works", "goldfish", "golf", "grand", "grief", "haddock", "hake", "halibut", "headquarters", "herring", "hertz", "honey", "horsepower", "goods", "hovercraft", "ironworks", "kilohertz", "ling", "shrimp", "swine", "lungfish", "mackerel", "macaroni", "megahertz", "moorfowl", "moorgame", "mullet", "myrrh", "nepalese", "offspring", "pants", "patois", "pekinese", "perch", "pickerel", "pike", "potpourri", "precis", "quid", "rand", "rendezvous", "roach", "salmon", "samurai", "seychelles", "shad", "sheep", "shellfish", "smelt", "spaghetti", "spacecraft", "starfish", "stockfish", "sunfish", "superficies", "sweepstakes", "smallpox", "swordfish", "tennis", "tobacco", "triceps", "trout", "tunafish", "turbot", "trousers", "turf", "dibs", "undersigned", "waterfowl", "waterworks", "waxworks", "wildfowl", "woodworm", "yen", "aries", "pisces", "forceps", "jeans", "mathematics", "odds", "politics", "remains", "aids", "wildlife", "shall", "would", "may", "might", "ought", "should", "acne", "admiration", "advice", "air", "anger", "anticipation", "assistance", "awareness", "bacon", "baggage", "blood", "bravery", "chess", "clay", "clothing", "coal", "compliance", "comprehension", "confusion", "consciousness", "cream", "darkness", "diligence", "dust", "education", "empathy", "enthusiasm", "envy", "equality", "equipment", "evidence", "feedback", "fitness", "flattery", "foliage", "fun", "furniture", "garbage", "gold", "gossip", "grammar", "gratitude", "gravel", "guilt", "happiness", "hardware", "hate", "hay", "health", "heat", "help", "hesitation", "homework", "honesty", "honor", "honour", "hospitality", "hostility", "humanity", "humility", "ice", "immortality", "independence", "information", "integrity", "intimidation", "jargon", "jealousy", "jewelry", "justice", "knowledge", "literacy", "logic", "luck", "lumber", "luggage", "mail", "management", "milk", "morale", "mud", "nonsense", "oppression", "optimism", "oxygen", "participation", "pay", "peace", "perseverance", "pessimism", "pneumonia", "poetry", "police", "pride", "privacy", "propaganda", "public", "punctuation", "recovery", "rice", "rust", "satisfaction", "schnapps", "shame", "slang", "software", "stamina", "starvation", "steam", "steel", "stuff", "support", "sweat", "thunder", "timber", "toil", "traffic", "tongs", "training", "trash", "valor", "vehemence", "violence", "warmth", "waste", "weather", "wheat", "wisdom", "work", "accommodation", "advertising", "aid", "art", "bread", "business", "butter", "calm", "cash", "cheese", "childhood", "clothing ", "coffee", "content", "corruption", "courage", "currency", "damage", "danger", "determination", "electricity", "employment", "energy", "entertainment", "failure", "fame", "fire", "flour", "food", "freedom", "friendship", "fuel", "genetics", "hair", "harm", "hospitality ", "housework", "humour", "imagination", "importance", "innocence", "intelligence", "juice", "kindness", "labour", "lack", "laughter", "leisure", "literature", "litter", "love", "magic", "metal", "motherhood", "motivation", "nature", "nutrition", "obesity", "oil", "old age", "paper", "patience", "permission", "pollution", "poverty", "power", "production", "progress", "pronunciation", "publicity", "quality", "quantity", "racism", "rain", "relaxation", "research", "respect", "room (space)", "rubbish", "safety", "salt", "sand", "seafood", "shopping", "silence", "smoke", "snow", "soup", "speed", "spelling", "stress ", "sugar", "sunshine", "tea", "time", "tolerance", "trade", "transportation", "travel", "trust", "understanding", "unemployment", "usage", "vision", "water", "wealth", "weight", "welfare", "width", "wood", "yoga", "youth", "homecare", "childcare", "fanfare", "healthcare", "medicare"));
 
     // Set mirrors (rebuilt lazily when the source list changes, mirroring JS createSetMirror).
     public static final Set<String> STOP_WORDS_SET = new MirrorSet(() -> STOP_WORDS);
@@ -113,80 +121,87 @@ public final class RiTa {
     // ---- static methods -------------------------------------------------------------
 
     public static RiGrammar grammar() {
-        throw notPorted("grammar");
+        return new RiGrammar();
     }
 
     public static RiGrammar grammar(Object rules) {
-        throw notPorted("grammar");
+        return new RiGrammar(rules);
     }
 
     public static RiGrammar grammar(Object rules, Map<String, Object> context) {
-        throw notPorted("grammar");
+        return new RiGrammar(rules, context);
     }
 
     public static void addTransform(String name, Object definition) {
-        throw notPorted("addTransform");
+        riscript.addTransform(name, definition);
     }
 
     public static void removeTransform(String name) {
-        throw notPorted("removeTransform");
+        riscript.removeTransform(name);
     }
 
     public static Set<String> getTransforms() {
-        throw notPorted("getTransforms");
+        return riscript.getTransforms();
     }
 
     public static String articlize(String word) {
-        throw notPorted("articlize");
+        if (word == null || word.isEmpty()) {
+            return "";
+        }
+        String first = word.split("\\s+")[0];
+        // JS: phones(first,{silent:true}) → "an " iff the first phone char is a vowel, else "a ".
+        String ph = phones(first, Map.of("silent", true));
+        boolean vowel = ph != null && !ph.isEmpty() && VOWELS.indexOf(ph.charAt(0)) >= 0;
+        return (vowel ? "an " : "a ") + word;
     }
 
     public static String evaluate(String script) {
-        throw notPorted("evaluate");
+        return riscript.evaluate(script);
     }
 
     /** JS {@code evaluate(script, context)} — context may be a Map or a falsy scalar (e.g. 0). */
     public static String evaluate(String script, Object context) {
-        throw notPorted("evaluate");
+        return riscript.evaluate(script, context);
     }
 
     public static String evaluate(String script, Object context, Map<String, Object> options) {
-        throw notPorted("evaluate");
+        return riscript.evaluate(script, context, options);
     }
 
     public static RiMarkov markov(int n) {
-        throw notPorted("markov");
+        return new RiMarkov(n);
     }
 
     public static RiMarkov markov(int n, Map<String, Object> options) {
-        throw notPorted("markov");
+        return new RiMarkov(n, options);
     }
 
     public static List<String> kwic(String keyword, Map<String, Object> options) {
-        throw notPorted("kwic");
+        return concorder.kwic(keyword, options);
     }
 
     /** JS {@code kwic("cat")} — keyword with no options. */
     public static List<String> kwic(String keyword) {
-        throw notPorted("kwic");
+        return concorder.kwic(keyword, (Object) null);
     }
 
     /** JS {@code kwic("cat", 4)} — number of context words. */
     public static List<String> kwic(String keyword, int numWords) {
-        throw notPorted("kwic");
+        return concorder.kwic(keyword, (Object) numWords);
     }
 
     public static Map<String, Integer> concordance(String text, Map<String, Object> options) {
-        throw notPorted("concordance");
+        return concorder.concordance((Object) text, options);
     }
 
     /** JS {@code concordance(text)} — text with no options. */
     public static Map<String, Integer> concordance(String text) {
-        throw notPorted("concordance");
+        return concorder.concordance((Object) text, null);
     }
 
     /** JS {@code concordance()} — undefined text throws. */
     public static Map<String, Integer> concordance() {
-        throw notPorted("concordance");
+        return concorder.concordance((Object) null, null);
     }
 
     public static int[] randomOrdering(int k) {
@@ -202,15 +217,19 @@ public final class RiTa {
     }
 
     public static boolean isQuestion(String sentence) {
-        throw notPorted("isQuestion");
+        String[] toks = tokenize(sentence);
+        return toks.length > 0 && QUESTIONS_SET.contains(toks[0].toLowerCase());
     }
 
     public static boolean isVowel(String charOrWord) {
-        throw notPorted("isVowel");
+        return charOrWord != null && charOrWord.length() == 1
+            && VOWELS.contains(charOrWord.toLowerCase());
     }
 
     public static boolean isConsonant(String charOrWord) {
-        throw notPorted("isConsonant");
+        return charOrWord != null && charOrWord.length() == 1
+            && !VOWELS.contains(charOrWord.toLowerCase())
+            && IS_LETTER.matcher(charOrWord.toLowerCase()).matches();
     }
 
     public static String capitalize(String string) {
@@ -218,177 +237,207 @@ public final class RiTa {
     }
 
     public static String randomWord(Object pattern, Map<String, Object> options) {
-        throw notPorted("randomWord");
+        return lexicon.randomWord(pattern, options);
     }
 
     /** JS {@code randomWord("^a")} — a pattern string with no options. */
     public static String randomWord(String pattern) {
-        throw notPorted("randomWord");
+        return lexicon.randomWord(pattern, null);
     }
 
     /** JS {@code randomWord({ pos: "nn" })} — options only. */
     public static String randomWord(Map<String, Object> options) {
-        throw notPorted("randomWord");
+        return lexicon.randomWord(null, options);
     }
 
     public static String randomWord() {
-        throw notPorted("randomWord");
+        return lexicon.randomWord(null, null);
     }
 
     public static List<String> rhymes(String word, Map<String, Object> options) {
-        throw notPorted("rhymes");
+        return lexicon.rhymesSync(word, options);
     }
 
     public static List<String> rhymes(String word, int limit) {
-        throw notPorted("rhymes");
+        Map<String, Object> opts = new java.util.LinkedHashMap<>();
+        opts.put("limit", limit);
+        return lexicon.rhymesSync(word, opts);
     }
 
     public static boolean isRhyme(String word1, String word2) {
-        throw notPorted("isRhyme");
+        return lexicon.isRhyme(word1, word2);
     }
 
     public static List<String> alliterations(String word, Map<String, Object> options) {
-        throw notPorted("alliterations");
+        return lexicon.alliterationsSync(word, options);
     }
 
     public static boolean hasWord(String word, Map<String, Object> options) {
-        throw notPorted("hasWord");
+        return lexicon.hasWord(word, options);
     }
 
     public static boolean hasWord(String word) {
-        throw notPorted("hasWord");
+        return lexicon.hasWord(word, Map.of());
     }
 
     public static boolean isAbbrev(String input, Map<String, Object> options) {
-        throw notPorted("isAbbrev");
+        if (input == null) {
+            return false;
+        }
+        if (options != null && truthy(options.get("caseSensitive"))) {
+            String trimmed = input.trim();
+            for (String a : ABRV) {
+                if (a.equals(trimmed)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        String check = input.trim().toLowerCase();
+        for (String a : ABRV) {
+            if (a.toLowerCase().equals(check)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isAbbrev(String input) {
-        throw notPorted("isAbbrev");
+        return isAbbrev(input, Map.of());
     }
 
     public static boolean isAlliteration(String word1, String word2) {
-        throw notPorted("isAlliteration");
+        return lexicon.isAlliteration(word1, word2);
     }
 
     public static List<String> spellsLike(String word, Map<String, Object> options) {
-        throw notPorted("spellsLike");
+        return lexicon.spellsLikeSync(word, options);
     }
 
     public static List<String> soundsLike(String word, Map<String, Object> options) {
-        throw notPorted("soundsLike");
+        return lexicon.soundsLikeSync(word, options);
     }
 
     public static String[] pos(String word, Map<String, Object> options) {
-        throw notPorted("pos");
+        if (options != null && options.containsKey("inline")) {
+            throw new RuntimeException("Use RiTa.posInline() instead");
+        }
+        return (String[]) tagger.tag(word, options);
     }
 
     public static String[] pos(String word) {
-        throw notPorted("pos");
+        return (String[]) tagger.tag(word, Map.of());
     }
 
     public static String[] pos(String[] words) {
-        throw notPorted("pos");
+        return (String[]) tagger.tag(words, Map.of());
     }
 
     public static String[] pos(String[] words, Map<String, Object> options) {
-        throw notPorted("pos");
+        if (options != null && options.containsKey("inline")) {
+            throw new RuntimeException("Use RiTa.posInline() instead");
+        }
+        return (String[]) tagger.tag(words, options);
     }
 
     public static boolean isNoun(String word) {
-        throw notPorted("isNoun");
+        return tagger.isNoun(word);
     }
 
     /** JS {@code isNoun()} — undefined is not a noun. */
     public static boolean isNoun() {
-        throw notPorted("isNoun");
+        return false;
     }
 
     public static boolean isAdjective(String word) {
-        throw notPorted("isAdjective");
+        return tagger.isAdjective(word);
     }
 
     public static boolean isAdjective() {
-        throw notPorted("isAdjective");
+        return false;
     }
 
     public static boolean isAdverb(String word) {
-        throw notPorted("isAdverb");
+        return tagger.isAdverb(word);
     }
 
     public static boolean isAdverb() {
-        throw notPorted("isAdverb");
+        return false;
     }
 
     public static boolean isVerb(String word) {
-        throw notPorted("isVerb");
+        return tagger.isVerb(word, Map.of());
     }
 
     public static boolean isVerb() {
-        throw notPorted("isVerb");
+        return false;
     }
 
     public static boolean isPunct(String text) {
-        throw notPorted("isPunct");
+        return text != null && !text.isEmpty() && ONLY_PUNCT.matcher(text).matches();
     }
 
     public static String posInline(String sentence, Map<String, Object> options) {
-        throw notPorted("posInline");
+        Map<String, Object> opts = new java.util.LinkedHashMap<>(options == null ? Map.of() : options);
+        opts.put("inline", true);
+        return (String) tagger.tag(sentence, opts);
     }
 
     public static String posInline(String sentence) {
-        throw notPorted("posInline");
+        return (String) tagger.tag(sentence, Map.of("inline", true));
     }
 
     public static String posInline(String[] words) {
-        throw notPorted("posInline");
+        return (String) tagger.tag(words, Map.of("inline", true));
     }
 
     public static String posInline(String[] words, Map<String, Object> options) {
-        throw notPorted("posInline");
+        Map<String, Object> opts = new java.util.LinkedHashMap<>(options == null ? Map.of() : options);
+        opts.put("inline", true);
+        return (String) tagger.tag(words, opts);
     }
 
     public static String singularize(String word) {
-        throw notPorted("singularize");
+        return inflector.singularize(word);
     }
 
     public static String singularize(String word, Map<String, Object> options) {
-        throw notPorted("singularize");
+        return inflector.singularize(word, options);
     }
 
     /** JS {@code RiTa.singularize()} — undefined input yields the empty string. */
     public static String singularize() {
-        throw notPorted("singularize");
+        return "";
     }
 
     public static String pluralize(String word) {
-        throw notPorted("pluralize");
+        return inflector.pluralize(word);
     }
 
     public static String pluralize(String word, Map<String, Object> options) {
-        throw notPorted("pluralize");
+        return inflector.pluralize(word, options);
     }
 
     /** JS {@code RiTa.pluralize()} — undefined input yields the empty string. */
     public static String pluralize() {
-        throw notPorted("pluralize");
+        return "";
     }
 
     public static List<String> search(Object pattern, Map<String, Object> options) {
-        throw notPorted("search");
+        return lexicon.searchSync(pattern, options);
     }
 
     /** JS {@code search("phant")} — a pattern string with no options. */
     public static List<String> search(String pattern) {
-        throw notPorted("search");
+        return lexicon.searchSync(pattern, null);
     }
 
     public static List<String> search(Map<String, Object> options) {
-        throw notPorted("search");
+        return lexicon.searchSync(null, options);
     }
 
     public static List<String> search() {
-        throw notPorted("search");
+        return lexicon.searchSync(null, null);
     }
 
     public static String[] tokens(String text, Map<String, Object> options) {
@@ -436,81 +485,93 @@ public final class RiTa {
     }
 
     public static String presentPart(String verbWord) {
-        throw notPorted("presentPart");
+        return conjugator.presentPart(verbWord);
     }
 
     public static String pastPart(String verbWord) {
-        throw notPorted("pastPart");
+        return conjugator.pastPart(verbWord);
     }
 
     public static String conjugate(String verbWord, Map<String, Object> options) {
-        throw notPorted("conjugate");
+        return conjugator.conjugate(verbWord, options);
     }
 
     /** JS {@code conjugate(verbWord, "1SPr")} — string-form options. */
     public static String conjugate(String verbWord, String args) {
-        throw notPorted("conjugate");
+        return conjugator.conjugate(verbWord, args);
     }
 
     public static String conjugate(String verbWord) {
-        throw notPorted("conjugate");
+        return conjugator.conjugate(verbWord, (Map<String, Object>) null);
     }
 
     /** JS {@code conjugate()} — undefined input throws. */
     public static String conjugate() {
-        throw notPorted("conjugate");
+        return conjugator.conjugate();
     }
 
     public static String stresses(String input, Map<String, Object> options) {
-        throw notPorted("stresses");
+        return analyzer.analyze(input, options).stresses;
     }
 
     public static String stresses(String input) {
-        throw notPorted("stresses");
+        return analyzer.analyze(input, Map.of()).stresses;
     }
 
     public static String syllables(String input, Map<String, Object> options) {
-        throw notPorted("syllables");
+        Analysis result = analyzer.analyze(input, options);
+        if (options != null && truthy(options.get("ipaPhones"))) {
+            return Analyzer.syllablesToIpa(result.syllables, result.stresses, true);
+        }
+        return result.syllables;
     }
 
     public static String syllables(String input) {
-        throw notPorted("syllables");
+        return analyzer.analyze(input, Map.of()).syllables;
     }
 
     public static String phones(String input, Map<String, Object> options) {
-        throw notPorted("phones");
+        Analysis result = analyzer.analyze(input, options);
+        if (options != null && truthy(options.get("ipaPhones"))) {
+            return Analyzer.syllablesToIpa(result.syllables, result.stresses);
+        }
+        return result.phones;
     }
 
     public static String phones(String input) {
-        throw notPorted("phones");
+        return analyzer.analyze(input, Map.of()).phones;
     }
 
     public static Analysis analyze(String input, Map<String, Object> options) {
-        throw notPorted("analyze");
+        Analysis result = analyzer.analyze(input, options);
+        if (options != null && truthy(options.get("ipaPhones"))) {
+            result.phones = Analyzer.syllablesToIpa(result.syllables, result.stresses);
+        }
+        return result;
     }
 
     public static Analysis analyze(String input) {
-        throw notPorted("analyze");
+        return analyzer.analyze(input, Map.of());
     }
 
     public static List<String> spellsLikeSync(String word, Map<String, Object> options) {
-        throw notPorted("spellsLikeSync");
+        return lexicon.spellsLikeSync(word, options);
     }
 
     public static List<String> soundsLikeSync(String word, Map<String, Object> options) {
-        throw notPorted("soundsLikeSync");
+        return lexicon.soundsLikeSync(word, options);
     }
 
     public static List<String> rhymesSync(String word, Map<String, Object> options) {
-        throw notPorted("rhymesSync");
+        return lexicon.rhymesSync(word, options);
     }
 
     public static List<String> searchSync(Object pattern, Map<String, Object> options) {
-        throw notPorted("searchSync");
+        return lexicon.searchSync(pattern, options);
     }
 
     public static List<String> alliterationsSync(String word, Map<String, Object> options) {
-        throw notPorted("alliterationsSync");
+        return lexicon.alliterationsSync(word, options);
     }
 
     public static int randi(int param1) {
@@ -581,5 +642,22 @@ public final class RiTa {
 
     static UnsupportedOperationException notPorted(String name) {
         return new UnsupportedOperationException("RiTa." + name + " not yet ported from js/src");
+    }
+
+    /** JS truthiness for option values. */
+    static boolean truthy(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (o instanceof Boolean) {
+            return (Boolean) o;
+        }
+        if (o instanceof Number) {
+            return ((Number) o).doubleValue() != 0;
+        }
+        if (o instanceof String) {
+            return !((String) o).isEmpty();
+        }
+        return true;
     }
 }

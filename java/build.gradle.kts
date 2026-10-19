@@ -48,14 +48,20 @@ tasks.withType<Javadoc>().configureEach {
 val sharedDir = rootDir.toPath().parent.resolve("shared").toFile()
 val sharedDict = sharedDir.resolve("rita_dict.json")
 
+val sharedLts = sharedDir.resolve("rita_lts.json")
+
 val syncSharedData = tasks.register<Sync>("syncSharedData") {
-    description = "Stage shared/rita_dict.json into the build resources (jar path: rita/rita_dict.json)"
+    description = "Stage shared/rita_dict.json + rita_lts.json into the build resources (jar path: rita/)"
     group = "build"
     from(sharedDict) { into("rita") }
+    from(sharedLts) { into("rita") }
     into(layout.buildDirectory.dir("generated/resources"))
     doFirst {
         if (!sharedDict.exists()) {
             throw GradleException("Missing canonical dictionary: $sharedDict")
+        }
+        if (!sharedLts.exists()) {
+            throw GradleException("Missing canonical LTS rules: $sharedLts")
         }
     }
 }

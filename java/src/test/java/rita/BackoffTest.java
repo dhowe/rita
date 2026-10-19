@@ -50,7 +50,9 @@ class BackoffTest {
         assertEquals(21, lm2.size());
 
         assertThrows(Exception.class, () -> new BackoffModel(4));
-        assertThrows(Exception.class, () -> new BackoffModel(List.of(RiTa.sentences(exampleStr))));
+        // JS `new BackoffModel([sentences])` is a 2-D array (one nested array); Java's
+        // List.of(String[]) spreads to 1-D, so wrap as a single Object element to mirror JS.
+        assertThrows(Exception.class, () -> new BackoffModel(List.of((Object) RiTa.sentences(exampleStr))));
     }
 
     @Test

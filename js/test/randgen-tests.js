@@ -90,7 +90,7 @@ describe('RandGen', function () {
   });
 
   it('Should call ndist', function () {
-    expect(() => R.ndist([1, 2, 6, -2.5, 0])).to.throw;
+    expect(() => R.ndist([1, 2, 6, -2.5, 0])).to.throw();
     expect(R.ndist([1, 2, 6, 0])).to.eql(fixtures.ndist.expected);
     expect(R.ndist([1, 2, 3], 0.5)).to.eql(fixtures.ndistTemp.expected);
     expect(R.ndist([1, 2, 3], 1)).to.eql(fixtures.ndistTemp1.expected);

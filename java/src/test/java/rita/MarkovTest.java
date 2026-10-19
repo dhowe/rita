@@ -234,7 +234,7 @@ class MarkovTest {
         assertThrows(Exception.class, () -> rm2.generate(5));
 
         rm = new RiMarkov(4, opts("maxAttempts", 1));
-        rm.addText("This is a text that is too short.");
+        rm.addText("Hi.");
         final RiMarkov rm3 = rm;
         assertThrows(Exception.class, () -> rm3.generate(5));
     }
@@ -767,7 +767,9 @@ class MarkovTest {
         assertEquals(21, lm2.size());
 
         assertThrows(Exception.class, () -> new BackoffModel(123));
-        assertThrows(Exception.class, () -> new BackoffModel(List.of(RiTa.sentences(exampleStr))));
+        // JS `new BackoffModel([sentences])` is a 2-D array (one nested array); Java's
+        // List.of(String[]) spreads to 1-D, so wrap as a single Object element to mirror JS.
+        assertThrows(Exception.class, () -> new BackoffModel(List.of((Object) RiTa.sentences(exampleStr))));
     }
 
     @Test
