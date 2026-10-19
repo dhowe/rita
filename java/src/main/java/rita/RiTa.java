@@ -190,15 +190,15 @@ public final class RiTa {
     }
 
     public static int[] randomOrdering(int k) {
-        throw notPorted("randomOrdering");
+        return randomizer.randomOrdering(k);
     }
 
     public static <T> List<T> randomOrdering(List<T> array) {
-        throw notPorted("randomOrdering");
+        return randomizer.randomOrdering(array);
     }
 
     public static void randomSeed(int seed) {
-        throw notPorted("randomSeed");
+        randomizer.seed(seed);
     }
 
     public static boolean isQuestion(String sentence) {
@@ -428,7 +428,7 @@ public final class RiTa {
     }
 
     public static String stem(String word) {
-        throw notPorted("stem");
+        return rita.Stemmer.stem(word);
     }
 
     public static boolean findStem(String word) {
@@ -514,33 +514,33 @@ public final class RiTa {
     }
 
     public static int randi(int param1) {
-        throw notPorted("randi");
+        return (int) Math.floor(randomizer.random(param1));
     }
 
     /** JS {@code randi()} — no args returns 0. */
     public static int randi() {
-        throw notPorted("randi");
+        return (int) Math.floor(randomizer.random());
     }
 
     public static int randi(int param1, int param2) {
-        throw notPorted("randi");
+        return (int) Math.floor(randomizer.random(param1, param2));
     }
 
     public static double random() {
-        throw notPorted("random");
+        return randomizer.random();
     }
 
-    public static int random(int param1) {
-        throw notPorted("random");
+    public static double random(int param1) {
+        return randomizer.random(param1);
     }
 
-    public static int random(int param1, int param2) {
-        throw notPorted("random");
+    public static double random(int param1, int param2) {
+        return randomizer.random(param1, param2);
     }
 
     /** JS {@code random(array)} — a random element of the list. */
     public static <T> T random(List<T> array) {
-        throw notPorted("random");
+        return randomizer.random(array);
     }
 
     /**
@@ -552,7 +552,7 @@ public final class RiTa {
         }
 
         public static String[] stemAll(String[] words) {
-            throw notPorted("Stemmer.stemAll");
+            return rita.Stemmer.stemAll(words);
         }
     }
 

@@ -1,4 +1,7 @@
 {
+  "java.project.referencedLibraries": [
+    "docs/docgen/lib/core3.5.3.jar"
+  ],
   "mochaExplorer.cwd": "js",
   "mochaExplorer.files": "test/*-tests*.js",
   "mochaExplorer.env": {
