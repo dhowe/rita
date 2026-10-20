@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -414,38 +415,38 @@ class LexiconTest {
 
     @Test
     void shouldCallSearchWithoutRegex() {
-        assertTrue(RiTa.search().size() > 20000); // all words
-        assertEquals(11, RiTa.search(Map.of("limit", 11)).size());
+        assertTrue(RiTa.search().length > 20000); // all words
+        assertEquals(11, RiTa.search(Map.of("limit", 11)).length);
 
         assertEquals(List.of("abalone", "abandonment", "abbey", "abbot", "abbreviation", "abdomen",
             "abduction", "aberration", "ability", "abnormality"),
-            RiTa.search(Map.of("pos", "n")));
+            Arrays.asList(RiTa.search(Map.of("pos", "n"))));
 
         assertEquals(List.of("abashed", "abate", "abbey", "abbot", "abduct", "abet", "abhor",
             "abide", "abject", "ablaze"),
-            RiTa.search(Map.of("numSyllables", 2)));
+            Arrays.asList(RiTa.search(Map.of("numSyllables", 2))));
 
         assertEquals(List.of("abbey", "abbot", "abode", "abscess", "absence", "abstract", "abuse",
             "abyss", "accent", "access"),
-            RiTa.search(Map.of("numSyllables", 2, "pos", "n")));
+            Arrays.asList(RiTa.search(Map.of("numSyllables", 2, "pos", "n"))));
 
         assertEquals(List.of("ace", "ache", "act", "age", "aid", "aide", "aim", "air", "aisle", "ale"),
-            RiTa.search(Map.of("numSyllables", 1, "pos", "n")));
+            Arrays.asList(RiTa.search(Map.of("numSyllables", 1, "pos", "n"))));
 
-        List<String> search = RiTa.search(Map.of("pos", "vb", "limit", -1));
+        List<String> search = Arrays.asList(RiTa.search(Map.of("pos", "vb", "limit", -1)));
         assertFalse(search.contains("concerned"));
         assertFalse(search.contains("committed"));
         assertFalse(search.contains("called"));
         assertFalse(search.contains("computerized"));
 
-        search = RiTa.search(Map.of("pos", "vbd", "limit", -1));
+        search = Arrays.asList(RiTa.search(Map.of("pos", "vbd", "limit", -1)));
         assertTrue(search.contains("concerned"));
         assertTrue(search.contains("committed"));
         assertTrue(search.contains("called"));
         assertTrue(search.contains("computerized"));
         // JS: 0 && expect(search.includes("conclude")) — disabled.
 
-        search = RiTa.search(Map.of("pos", "vbn", "limit", -1));
+        search = Arrays.asList(RiTa.search(Map.of("pos", "vbn", "limit", -1)));
         assertTrue(search.contains("concerned"));
         assertTrue(search.contains("committed"));
         assertTrue(search.contains("called"));
@@ -457,84 +458,84 @@ class LexiconTest {
     void shouldCallSearchWithLetters() {
         List<String> expected = List.of("elephant", "elephantine", "phantom", "sycophantic",
             "triumphant", "triumphantly");
-        assertEquals(expected, RiTa.search("phant"));
-        assertEquals(expected, RiTa.search("phant"));
-        assertEquals(expected, RiTa.search(Map.of("regex", "phant")));
-        assertEquals(expected, RiTa.search(Map.of("regex", "phant")));
+        assertEquals(expected, Arrays.asList(RiTa.search("phant")));
+        assertEquals(expected, Arrays.asList(RiTa.search("phant")));
+        assertEquals(expected, Arrays.asList(RiTa.search(Map.of("regex", "phant"))));
+        assertEquals(expected, Arrays.asList(RiTa.search(Map.of("regex", "phant"))));
     }
 
     @Test
     void shouldCallSearchWithPhonesLimit() {
         // omitting no limit tests as they are a bit slow
-        List<String> result = RiTa.search("f-a[eh]-n-t", Map.of("type", "phones", "limit", 10));
+        List<String> result = Arrays.asList(RiTa.search("f-a[eh]-n-t", Map.of("type", "phones", "limit", 10)));
         assertEquals(List.of("elephant", "elephantine", "fantasia", "fantasize", "fantastic",
             "fantastically", "fantasy", "infant", "infantile", "infantry"), result);
 
-        result = RiTa.search("f-ah-n-t", Map.of("type", "phones", "limit", 5));
+        result = Arrays.asList(RiTa.search("f-ah-n-t", Map.of("type", "phones", "limit", 5)));
         assertEquals(List.of("elephant", "infant", "infantile", "infantry", "oftentimes"), result);
 
         // regex in options
-        result = RiTa.search(Map.of("regex", "f-a[eh]-n-t", "type", "phones", "limit", 10));
+        result = Arrays.asList(RiTa.search(Map.of("regex", "f-a[eh]-n-t", "type", "phones", "limit", 10)));
         assertEquals(List.of("elephant", "elephantine", "fantasia", "fantasize", "fantastic",
             "fantastically", "fantasy", "infant", "infantile", "infantry"), result);
     }
 
     @Test
     void shouldCallSearchWithPhonesNoLimitAndShuffle() {
-        List<String> result = RiTa.search(Map.of("regex", "f-ah-n-t", "type", "phones", "limit", -1));
+        List<String> result = Arrays.asList(RiTa.search(Map.of("regex", "f-ah-n-t", "type", "phones", "limit", -1)));
         assertEquals(List.of("elephant", "infant", "infantile", "infantry", "oftentimes",
             "triumphant", "triumphantly"), result);
 
-        List<String> result2 = new ArrayList<>(RiTa.search(Map.of("regex", "f-ah-n-t", "type", "phones", "limit", -1, "shuffle", true)));
+        List<String> result2 = new ArrayList<>(Arrays.asList(RiTa.search(Map.of("regex", "f-ah-n-t", "type", "phones", "limit", -1, "shuffle", true))));
         Collections.sort(result2);
         assertEquals(result, result2);
     }
 
     @Test
     void shouldCallSearchWithPosPhonesSyllsLimit() {
-        List<String> res = RiTa.search("f-ah-n-t", Map.of("type", "phones", "pos", "n", "limit", 3, "numSyllables", 2));
+        List<String> res = Arrays.asList(RiTa.search("f-ah-n-t", Map.of("type", "phones", "pos", "n", "limit", 3, "numSyllables", 2)));
         assertEquals(List.of("infant"), res);
     }
 
     @Test
     void shouldCallSearchWithPosPhonesLimit() {
-        List<String> res = RiTa.search("f-ah-n-t", Map.of("type", "phones", "pos", "n", "limit", 3));
+        List<String> res = Arrays.asList(RiTa.search("f-ah-n-t", Map.of("type", "phones", "pos", "n", "limit", 3)));
         assertEquals(List.of("elephant", "infant", "infantry"), res);
 
-        res = RiTa.search("f-a[eh]-n-t", Map.of("type", "phones", "pos", "v", "limit", 5));
+        res = Arrays.asList(RiTa.search("f-a[eh]-n-t", Map.of("type", "phones", "pos", "v", "limit", 5)));
         assertEquals(List.of("fantasize"), res);
     }
 
     @Test
     void shouldCallSearchWithPosRegex() {
-        List<String> res = RiTa.search("cares$", Map.of("pos", "nns", "limit", -1));
+        List<String> res = Arrays.asList(RiTa.search("cares$", Map.of("pos", "nns", "limit", -1)));
         assertEquals(List.of("cares", "scares"), res);
 
-        res = RiTa.search("^rice$", Map.of("pos", "nns", "limit", -1));
+        res = Arrays.asList(RiTa.search("^rice$", Map.of("pos", "nns", "limit", -1)));
         assertEquals(List.of("rice"), res);
     }
 
     @Test
     void shouldCallSearchWithPosLetters() {
-        List<String> res = RiTa.search("cause", Map.of("pos", "nns"));
+        List<String> res = Arrays.asList(RiTa.search("cause", Map.of("pos", "nns")));
         assertEquals(List.of("causes", "causeways"), res);
 
         // https://github.com/dhowe/rita/issues/177
-        res = RiTa.search("gain", Map.of("pos", "vbd", "numSyllables", 1));
+        res = Arrays.asList(RiTa.search("gain", Map.of("pos", "vbd", "numSyllables", 1)));
         assertEquals(List.of("gained"), res);
-        res = RiTa.search("end", Map.of("pos", "vbd", "minLength", 2, "limit", -1));
+        res = Arrays.asList(RiTa.search("end", Map.of("pos", "vbd", "minLength", 2, "limit", -1)));
         assertTrue(res.contains("ended"));
-        res = RiTa.search("commit", Map.of("pos", "vbd"));
+        res = Arrays.asList(RiTa.search("commit", Map.of("pos", "vbd")));
         assertTrue(res.contains("committed"));
-        res = RiTa.search("involve", Map.of("pos", "vbd"));
+        res = Arrays.asList(RiTa.search("involve", Map.of("pos", "vbd")));
         assertTrue(res.contains("involved"));
-        res = RiTa.search("outpace", Map.of("pos", "vbn"));
+        res = Arrays.asList(RiTa.search("outpace", Map.of("pos", "vbn")));
         assertEquals(List.of("outpaced"), res);
-        res = RiTa.search("paid", Map.of("pos", "vbd"));
+        res = Arrays.asList(RiTa.search("paid", Map.of("pos", "vbd")));
         assertTrue(res.contains("prepaid"));
-        res = RiTa.search("made", Map.of("pos", "vbd"));
+        res = Arrays.asList(RiTa.search("made", Map.of("pos", "vbd")));
         assertTrue(res.contains("remade"));
-        res = RiTa.search("re", Map.of("pos", "vbd", "limit", -1));
+        res = Arrays.asList(RiTa.search("re", Map.of("pos", "vbd", "limit", -1)));
         assertTrue(res.contains("reopened"));
         assertTrue(res.contains("resold"));
     }
@@ -542,59 +543,59 @@ class LexiconTest {
     @Test
     void shouldCallSearchWithSimplePosPhonesLimit() {
         assertEquals(List.of("fantasize"),
-            RiTa.search("f-a[eh]-n-t", Map.of("type", "phones", "pos", "vb", "limit", 5)));
+            Arrays.asList(RiTa.search("f-a[eh]-n-t", Map.of("type", "phones", "pos", "vb", "limit", 5))));
         assertEquals(List.of("elephants", "infants", "infantries"),
-            RiTa.search("f-ah-n-t", Map.of("type", "phones", "pos", "nns", "limit", 3)));
+            Arrays.asList(RiTa.search("f-ah-n-t", Map.of("type", "phones", "pos", "nns", "limit", 3))));
     }
 
     @Test
     void shouldCallSearchWithPosStressLimit() {
         assertEquals(List.of("abalone", "abandonment", "abbreviation", "abdomen", "abduction"),
-            RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "n")));
+            Arrays.asList(RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "n"))));
 
         assertEquals(List.of("abdomen", "abduction", "abortion", "abruptness", "absorber"),
-            RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "n", "numSyllables", 3)));
+            Arrays.asList(RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "n", "numSyllables", 3))));
 
         assertEquals(List.of("abalone", "abandonments", "abbreviations", "abductions", "abilities"),
-            RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "nns")));
+            Arrays.asList(RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "nns"))));
 
         assertEquals(List.of("abalone", "abandonments", "abbreviations", "abductions", "abilities"),
-            RiTa.search("0/1/0", Map.of("type", "stresses", "limit", 5, "pos", "nns")));
+            Arrays.asList(RiTa.search("0/1/0", Map.of("type", "stresses", "limit", 5, "pos", "nns"))));
 
         assertEquals(List.of("abductions", "abortions", "absorbers", "abstentions", "abstractions"),
-            RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "nns", "numSyllables", 3)));
+            Arrays.asList(RiTa.search("010", Map.of("type", "stresses", "limit", 5, "pos", "nns", "numSyllables", 3))));
     }
 
     @Test
     void shouldCallSearchWithStressesLimit() {
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"),
-            RiTa.search("010000", Map.of("type", "stresses", "limit", 5)));
+            Arrays.asList(RiTa.search("010000", Map.of("type", "stresses", "limit", 5))));
 
         assertEquals(List.of("colonialism", "imperialism", "materialism"),
-            RiTa.search("010000", Map.of("type", "stresses", "limit", 5, "maxLength", 11)));
+            Arrays.asList(RiTa.search("010000", Map.of("type", "stresses", "limit", 5, "maxLength", 11))));
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "conciliatory"),
-            RiTa.search("010000", Map.of("type", "stresses", "limit", 5, "minLength", 12)));
+            Arrays.asList(RiTa.search("010000", Map.of("type", "stresses", "limit", 5, "minLength", 12))));
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"),
-            RiTa.search("0/1/0/0/0/0", Map.of("type", "stresses", "limit", 5)));
+            Arrays.asList(RiTa.search("0/1/0/0/0/0", Map.of("type", "stresses", "limit", 5))));
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"),
-            RiTa.search(Map.of("regex", "010000", "type", "stresses", "limit", 5)));
+            Arrays.asList(RiTa.search(Map.of("regex", "010000", "type", "stresses", "limit", 5))));
 
         assertEquals(List.of("colonialism", "imperialism", "materialism"),
-            RiTa.search(Map.of("regex", "010000", "type", "stresses", "limit", 5, "maxLength", 11)));
+            Arrays.asList(RiTa.search(Map.of("regex", "010000", "type", "stresses", "limit", 5, "maxLength", 11))));
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "conciliatory"),
-            RiTa.search(Map.of("regex", "010000", "type", "stresses", "limit", 5, "minLength", 12)));
+            Arrays.asList(RiTa.search(Map.of("regex", "010000", "type", "stresses", "limit", 5, "minLength", 12))));
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"),
-            RiTa.search(Map.of("regex", "0/1/0/0/0/0", "type", "stresses", "limit", 5)));
+            Arrays.asList(RiTa.search(Map.of("regex", "0/1/0/0/0/0", "type", "stresses", "limit", 5))));
     }
 
     @Test
     void shouldCallSearchWithStressRegexLimit() {
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"),
-            RiTa.search("0/1/0/0/0/0", Map.of("type", "stresses", "limit", 5)));
+            Arrays.asList(RiTa.search("0/1/0/0/0/0", Map.of("type", "stresses", "limit", 5))));
 
         // regex in options
         assertEquals(List.of("accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"),
-            RiTa.search(Map.of("regex", "0/1/0/0/0/0", "type", "stresses", "limit", 5)));
+            Arrays.asList(RiTa.search(Map.of("regex", "0/1/0/0/0/0", "type", "stresses", "limit", 5))));
     }
 
     @Test
@@ -633,7 +634,7 @@ class LexiconTest {
 
     @Test
     void shouldCallAlliterationsNumSyllables() {
-        List<String> result = RiTa.alliterations("cat", Map.of("minLength", 1, "numSyllables", 7));
+        List<String> result = Arrays.asList(RiTa.alliterations("cat", Map.of("minLength", 1, "numSyllables", 7)));
         assertEquals(List.of("electrocardiogram", "electromechanical", "telecommunications"), result);
         for (String r : result) {
             assertTrue(RiTa.isAlliteration(r, "cat"), "FAIL2: " + r);
@@ -644,19 +645,19 @@ class LexiconTest {
     void shouldCallAlliterationsPos() {
         List<String> res;
 
-        res = RiTa.alliterations("cat", Map.of("numSyllables", 7, "pos", "n"));
+        res = Arrays.asList(RiTa.alliterations("cat", Map.of("numSyllables", 7, "pos", "n")));
         assertEquals(List.of("electrocardiogram", "telecommunications"), res);
         for (String r : res) {
             assertTrue(RiTa.isAlliteration(r, "cat"), "FAIL2: " + r);
         }
 
-        res = RiTa.alliterations("cat", Map.of("minLength", 14, "pos", "v"));
+        res = Arrays.asList(RiTa.alliterations("cat", Map.of("minLength", 14, "pos", "v")));
         for (String r : res) {
             assertTrue(r.length() >= 14);
         }
         assertEquals(List.of("counterbalance"), res);
 
-        res = RiTa.alliterations("dog", Map.of("minLength", 13, "pos", "rb", "limit", 11));
+        res = Arrays.asList(RiTa.alliterations("dog", Map.of("minLength", 13, "pos", "rb", "limit", 11)));
         for (String r : res) {
             assertTrue(r.length() >= 13);
         }
@@ -664,7 +665,7 @@ class LexiconTest {
             "devastatingly", "expeditiously", "paradoxically", "predominantly", "traditionally",
             "unconditionally", "unpredictably"), res);
 
-        res = RiTa.alliterations("freedom", Map.of("minLength", 14, "pos", "nns"));
+        res = Arrays.asList(RiTa.alliterations("freedom", Map.of("minLength", 14, "pos", "nns")));
         for (String r : res) {
             assertTrue(r.length() >= 14);
         }
@@ -676,51 +677,51 @@ class LexiconTest {
     void shouldCallAlliterations() {
         List<String> result;
 
-        result = RiTa.alliterations("", Map.of("silent", 1));
+        result = Arrays.asList(RiTa.alliterations("", Map.of("silent", 1)));
         assertTrue(result.size() < 1);
 
-        result = RiTa.alliterations("#$%^&*", Map.of("silent", 1));
+        result = Arrays.asList(RiTa.alliterations("#$%^&*", Map.of("silent", 1)));
         assertTrue(result.size() < 1);
 
-        result = RiTa.alliterations("umbrella", Map.of("silent", 1));
+        result = Arrays.asList(RiTa.alliterations("umbrella", Map.of("silent", 1)));
         assertTrue(result.size() < 1, "failed on 'umbrella'");
 
-        result = RiTa.alliterations("cat", Map.of("limit", 100));
+        result = Arrays.asList(RiTa.alliterations("cat", Map.of("limit", 100)));
         assertEquals(100, result.size(), "failed on 'cat'");
         assertFalse(result.contains("cat"));
         for (String r : result) {
             assertTrue(RiTa.isAlliteration(r, "cat"));
         }
 
-        result = RiTa.alliterations("dog", Map.of("limit", 100));
+        result = Arrays.asList(RiTa.alliterations("dog", Map.of("limit", 100)));
         assertFalse(result.contains("dog"));
         assertEquals(100, result.size(), "failed on 'dog'");
         for (String r : result) {
             assertTrue(RiTa.isAlliteration(r, "dog"));
         }
 
-        result = RiTa.alliterations("dog", Map.of("minLength", 15));
+        result = Arrays.asList(RiTa.alliterations("dog", Map.of("minLength", 15)));
         assertTrue(result.size() > 0 && result.size() < 5, "got length=" + result.size());
         for (String r : result) {
             assertTrue(RiTa.isAlliteration(r, "dog"), "FAIL1: " + r);
         }
 
-        result = RiTa.alliterations("cat", Map.of("minLength", 16));
+        result = Arrays.asList(RiTa.alliterations("cat", Map.of("minLength", 16)));
         assertTrue(result.size() > 0 && result.size() < 15, "failed on 'cat'");
         for (String r : result) {
             assertTrue(RiTa.isAlliteration(r, "cat"), "FAIL2: " + r);
         }
 
-        result = RiTa.alliterations("khatt", Map.of("minLength", 16));
+        result = Arrays.asList(RiTa.alliterations("khatt", Map.of("minLength", 16)));
         assertTrue(result.size() > 0 && result.size() < 15, "failed on 'khatt'");
         for (String r : result) {
             assertTrue(RiTa.isAlliteration(r, "cat"), "FAIL2: " + r);
         }
 
         // for one letter words should return []
-        assertEquals(List.of(), RiTa.alliterations("a", Map.of()));
-        assertEquals(List.of(), RiTa.alliterations("I", Map.of()));
-        assertEquals(List.of(), RiTa.alliterations("K", Map.of()));
+        assertEquals(List.of(), Arrays.asList(RiTa.alliterations("a", Map.of())));
+        assertEquals(List.of(), Arrays.asList(RiTa.alliterations("I", Map.of())));
+        assertEquals(List.of(), Arrays.asList(RiTa.alliterations("K", Map.of())));
     }
 
     @Test
@@ -732,62 +733,62 @@ class LexiconTest {
 
     @Test
     void shouldCallRhymes() {
-        assertEquals(10, RiTa.rhymes("cat", Map.of()).size());
-        assertTrue(RiTa.rhymes("cat", Map.of()).contains("hat"));
-        assertTrue(RiTa.rhymes("yellow", Map.of()).contains("mellow"));
-        assertTrue(RiTa.rhymes("toy", Map.of()).contains("boy"));
-        assertTrue(RiTa.rhymes("crab", Map.of()).contains("drab"));
+        assertEquals(10, Arrays.asList(RiTa.rhymes("cat", Map.of())).size());
+        assertTrue(Arrays.asList(RiTa.rhymes("cat", Map.of())).contains("hat"));
+        assertTrue(Arrays.asList(RiTa.rhymes("yellow", Map.of())).contains("mellow"));
+        assertTrue(Arrays.asList(RiTa.rhymes("toy", Map.of())).contains("boy"));
+        assertTrue(Arrays.asList(RiTa.rhymes("crab", Map.of())).contains("drab"));
 
-        assertTrue(RiTa.rhymes("mouse", Map.of()).contains("house"));
-        assertFalse(RiTa.rhymes("apple", Map.of()).contains("polo"));
-        assertFalse(RiTa.rhymes("this", Map.of()).contains("these"));
+        assertTrue(Arrays.asList(RiTa.rhymes("mouse", Map.of())).contains("house"));
+        assertFalse(Arrays.asList(RiTa.rhymes("apple", Map.of())).contains("polo"));
+        assertFalse(Arrays.asList(RiTa.rhymes("this", Map.of())).contains("these"));
 
-        assertFalse(RiTa.rhymes("hose", Map.of()).contains("house"));
-        assertFalse(RiTa.rhymes("sieve", Map.of()).contains("mellow"));
-        assertFalse(RiTa.rhymes("swag", Map.of()).contains("grab"));
+        assertFalse(Arrays.asList(RiTa.rhymes("hose", Map.of())).contains("house"));
+        assertFalse(Arrays.asList(RiTa.rhymes("sieve", Map.of())).contains("mellow"));
+        assertFalse(Arrays.asList(RiTa.rhymes("swag", Map.of())).contains("grab"));
 
-        assertTrue(RiTa.rhymes("weight", Map.of("limit", 1000)).contains("eight"));
-        assertTrue(RiTa.rhymes("eight", Map.of("limit", 1000)).contains("weight"));
-        assertTrue(RiTa.rhymes("sieve", Map.of("limit", 1000)).contains("give"));
-        assertTrue(RiTa.rhymes("shore", Map.of("limit", 1000)).contains("more"));
-        assertTrue(RiTa.rhymes("tense", Map.of("limit", 1000)).contains("sense"));
+        assertTrue(Arrays.asList(RiTa.rhymes("weight", Map.of("limit", 1000))).contains("eight"));
+        assertTrue(Arrays.asList(RiTa.rhymes("eight", Map.of("limit", 1000))).contains("weight"));
+        assertTrue(Arrays.asList(RiTa.rhymes("sieve", Map.of("limit", 1000))).contains("give"));
+        assertTrue(Arrays.asList(RiTa.rhymes("shore", Map.of("limit", 1000))).contains("more"));
+        assertTrue(Arrays.asList(RiTa.rhymes("tense", Map.of("limit", 1000))).contains("sense"));
 
-        assertTrue(RiTa.rhymes("bog", Map.of()).contains("fog"));
-        assertTrue(RiTa.rhymes("dog", Map.of()).contains("log"));
+        assertTrue(Arrays.asList(RiTa.rhymes("bog", Map.of())).contains("fog"));
+        assertTrue(Arrays.asList(RiTa.rhymes("dog", Map.of())).contains("log"));
 
         // for single letter word return []
-        assertEquals(List.of(), RiTa.rhymes("a", Map.of()));
-        assertEquals(List.of(), RiTa.rhymes("I", Map.of()));
-        assertEquals(List.of(), RiTa.rhymes("Z", Map.of()));
-        assertEquals(List.of(), RiTa.rhymes("B", Map.of()));
-        assertEquals(List.of(), RiTa.rhymes("K", Map.of()));
+        assertEquals(List.of(), Arrays.asList(RiTa.rhymes("a", Map.of())));
+        assertEquals(List.of(), Arrays.asList(RiTa.rhymes("I", Map.of())));
+        assertEquals(List.of(), Arrays.asList(RiTa.rhymes("Z", Map.of())));
+        assertEquals(List.of(), Arrays.asList(RiTa.rhymes("B", Map.of())));
+        assertEquals(List.of(), Arrays.asList(RiTa.rhymes("K", Map.of())));
     }
 
     @Test
     void shouldCallRhymesPos() {
-        assertFalse(RiTa.rhymes("cat", Map.of("pos", "v")).contains("hat"));
-        assertTrue(RiTa.rhymes("yellow", Map.of("pos", "a")).contains("mellow"));
-        assertTrue(RiTa.rhymes("toy", Map.of("pos", "n")).contains("boy"));
-        assertFalse(RiTa.rhymes("sieve", Map.of("pos", "n")).contains("give"));
+        assertFalse(Arrays.asList(RiTa.rhymes("cat", Map.of("pos", "v"))).contains("hat"));
+        assertTrue(Arrays.asList(RiTa.rhymes("yellow", Map.of("pos", "a"))).contains("mellow"));
+        assertTrue(Arrays.asList(RiTa.rhymes("toy", Map.of("pos", "n"))).contains("boy"));
+        assertFalse(Arrays.asList(RiTa.rhymes("sieve", Map.of("pos", "n"))).contains("give"));
 
-        assertTrue(RiTa.rhymes("tense", Map.of("pos", "v")).contains("condense"));
-        assertFalse(RiTa.rhymes("crab", Map.of("pos", "n")).contains("drab"));
-        assertFalse(RiTa.rhymes("shore", Map.of("pos", "v")).contains("more"));
+        assertTrue(Arrays.asList(RiTa.rhymes("tense", Map.of("pos", "v"))).contains("condense"));
+        assertFalse(Arrays.asList(RiTa.rhymes("crab", Map.of("pos", "n"))).contains("drab"));
+        assertFalse(Arrays.asList(RiTa.rhymes("shore", Map.of("pos", "v"))).contains("more"));
 
-        assertTrue(RiTa.rhymes("mouse", Map.of("pos", "nn")).contains("house"));
+        assertTrue(Arrays.asList(RiTa.rhymes("mouse", Map.of("pos", "nn"))).contains("house"));
 
-        assertFalse(RiTa.rhymes("weight", Map.of("pos", "vb")).contains("eight"));
-        assertTrue(RiTa.rhymes("eight", Map.of("pos", "nn", "limit", 1000)).contains("weight"));
+        assertFalse(Arrays.asList(RiTa.rhymes("weight", Map.of("pos", "vb"))).contains("eight"));
+        assertTrue(Arrays.asList(RiTa.rhymes("eight", Map.of("pos", "nn", "limit", 1000))).contains("weight"));
 
-        assertFalse(RiTa.rhymes("apple", Map.of("pos", "v")).contains("polo"));
-        assertFalse(RiTa.rhymes("this", Map.of("pos", "v")).contains("these"));
+        assertFalse(Arrays.asList(RiTa.rhymes("apple", Map.of("pos", "v"))).contains("polo"));
+        assertFalse(Arrays.asList(RiTa.rhymes("this", Map.of("pos", "v"))).contains("these"));
 
-        assertFalse(RiTa.rhymes("hose", Map.of("pos", "v")).contains("house"));
-        assertFalse(RiTa.rhymes("sieve", Map.of("pos", "v")).contains("mellow"));
-        assertFalse(RiTa.rhymes("swag", Map.of("pos", "v")).contains("grab"));
+        assertFalse(Arrays.asList(RiTa.rhymes("hose", Map.of("pos", "v"))).contains("house"));
+        assertFalse(Arrays.asList(RiTa.rhymes("sieve", Map.of("pos", "v"))).contains("mellow"));
+        assertFalse(Arrays.asList(RiTa.rhymes("swag", Map.of("pos", "v"))).contains("grab"));
 
         // https://github.com/dhowe/rita/issues/177
-        List<String> rhyme = RiTa.rhymes("spreads", Map.of("pos", "vbz", "limit", 1000));
+        List<String> rhyme = Arrays.asList(RiTa.rhymes("spreads", Map.of("pos", "vbz", "limit", 1000)));
         assertFalse(rhyme.contains("discriminateds"));
         assertFalse(rhyme.contains("endeds"));
         assertFalse(rhyme.contains("finisheds"));
@@ -795,18 +796,18 @@ class LexiconTest {
         assertFalse(rhyme.contains("proliferateds"));
         assertFalse(rhyme.contains("outpaceds"));
         assertFalse(rhyme.contains("liveds"));
-        assertFalse(RiTa.rhymes("hit", Map.of("pos", "vb")).contains("bit"));
-        assertTrue(RiTa.rhymes("hit", Map.of("pos", "vbd")).contains("bit"));
-        assertFalse(RiTa.rhymes("stroke", Map.of("pos", "vb")).contains("broke"));
-        assertTrue(RiTa.rhymes("stroke", Map.of("pos", "vbd")).contains("broke"));
-        assertFalse(RiTa.rhymes("evolved", Map.of("pos", "vb")).contains("involved"));
-        assertTrue(RiTa.rhymes("evolved", Map.of("pos", "vbd")).contains("involved"));
+        assertFalse(Arrays.asList(RiTa.rhymes("hit", Map.of("pos", "vb"))).contains("bit"));
+        assertTrue(Arrays.asList(RiTa.rhymes("hit", Map.of("pos", "vbd"))).contains("bit"));
+        assertFalse(Arrays.asList(RiTa.rhymes("stroke", Map.of("pos", "vb"))).contains("broke"));
+        assertTrue(Arrays.asList(RiTa.rhymes("stroke", Map.of("pos", "vbd"))).contains("broke"));
+        assertFalse(Arrays.asList(RiTa.rhymes("evolved", Map.of("pos", "vb"))).contains("involved"));
+        assertTrue(Arrays.asList(RiTa.rhymes("evolved", Map.of("pos", "vbd"))).contains("involved"));
     }
 
     @Test
     void shouldCallRhymesPosNid() {
         // special case, where word is not in dictionary
-        List<String> rhymes = RiTa.rhymes("abated", Map.of("pos", "vbd", "limit", 1000));
+        List<String> rhymes = Arrays.asList(RiTa.rhymes("abated", Map.of("pos", "vbd", "limit", 1000)));
         assertTrue(rhymes.contains("allocated"));
         assertTrue(rhymes.contains("annihilated"));
         assertFalse(rhymes.contains("condensed"));
@@ -814,15 +815,15 @@ class LexiconTest {
 
     @Test
     void shouldCallRhymesNumSyllables() {
-        assertTrue(RiTa.rhymes("cat", Map.of("numSyllables", 1)).contains("hat"));
-        assertFalse(RiTa.rhymes("cat", Map.of("numSyllables", 2)).contains("hat"));
-        assertFalse(RiTa.rhymes("cat", Map.of("numSyllables", 3)).contains("hat"));
+        assertTrue(Arrays.asList(RiTa.rhymes("cat", Map.of("numSyllables", 1))).contains("hat"));
+        assertFalse(Arrays.asList(RiTa.rhymes("cat", Map.of("numSyllables", 2))).contains("hat"));
+        assertFalse(Arrays.asList(RiTa.rhymes("cat", Map.of("numSyllables", 3))).contains("hat"));
 
-        assertTrue(RiTa.rhymes("yellow", Map.of("numSyllables", 2)).contains("mellow"));
-        assertFalse(RiTa.rhymes("yellow", Map.of("numSyllables", 3)).contains("mellow"));
+        assertTrue(Arrays.asList(RiTa.rhymes("yellow", Map.of("numSyllables", 2))).contains("mellow"));
+        assertFalse(Arrays.asList(RiTa.rhymes("yellow", Map.of("numSyllables", 3))).contains("mellow"));
 
         // special case, where word is not in dictionary
-        List<String> rhymes = RiTa.rhymes("abated", Map.of("numSyllables", 3));
+        List<String> rhymes = Arrays.asList(RiTa.rhymes("abated", Map.of("numSyllables", 3)));
         assertTrue(rhymes.contains("elated"));
         assertFalse(rhymes.contains("abated"));
         assertFalse(rhymes.contains("allocated"));
@@ -831,11 +832,11 @@ class LexiconTest {
 
     @Test
     void shouldCallRhymesWordLength() {
-        assertFalse(RiTa.rhymes("cat", Map.of("minLength", 4)).contains("hat"));
-        assertFalse(RiTa.rhymes("cat", Map.of("maxLength", 2)).contains("hat"));
+        assertFalse(Arrays.asList(RiTa.rhymes("cat", Map.of("minLength", 4))).contains("hat"));
+        assertFalse(Arrays.asList(RiTa.rhymes("cat", Map.of("maxLength", 2))).contains("hat"));
 
         // special case, where word is not in dictionary
-        List<String> rhymes = RiTa.rhymes("abated", Map.of("pos", "vbd", "maxLength", 9));
+        List<String> rhymes = Arrays.asList(RiTa.rhymes("abated", Map.of("pos", "vbd", "maxLength", 9)));
         assertTrue(rhymes.contains("allocated"));
         assertFalse(rhymes.contains("annihilated"));
         assertFalse(rhymes.contains("condensed"));
@@ -845,16 +846,16 @@ class LexiconTest {
     void shouldCallSpellsLike() {
         List<String> result;
 
-        result = RiTa.spellsLike("", Map.of());
+        result = Arrays.asList(RiTa.spellsLike("", Map.of()));
         assertEquals(List.of(), result);
 
-        result = RiTa.spellsLike("banana", Map.of());
+        result = Arrays.asList(RiTa.spellsLike("banana", Map.of()));
         assertEquals(List.of("banal", "bonanza", "cabana", "manna"), result);
 
-        result = RiTa.spellsLike("tornado", Map.of());
+        result = Arrays.asList(RiTa.spellsLike("tornado", Map.of()));
         assertEquals(List.of("torpedo"), result);
 
-        result = RiTa.spellsLike("ice", Map.of());
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of()));
         assertEquals(List.of("ace", "dice", "iced", "icy", "ire", "lice", "nice", "rice", "vice"), result);
     }
 
@@ -862,74 +863,74 @@ class LexiconTest {
     void shouldCallSpellsLikeOptions() {
         List<String> result;
 
-        result = RiTa.spellsLike("banana", Map.of("minLength", 6, "maxLength", 6));
+        result = Arrays.asList(RiTa.spellsLike("banana", Map.of("minLength", 6, "maxLength", 6)));
         assertEquals(List.of("cabana"), result);
 
-        result = RiTa.spellsLike("banana", Map.of("minLength", 6, "maxLength", 6));
+        result = Arrays.asList(RiTa.spellsLike("banana", Map.of("minLength", 6, "maxLength", 6)));
         assertEquals(List.of("cabana"), result);
 
-        result = RiTa.spellsLike("banana", Map.of("minDistance", 1));
+        result = Arrays.asList(RiTa.spellsLike("banana", Map.of("minDistance", 1)));
         assertEquals(List.of("banal", "bonanza", "cabana", "manna"), result);
 
-        result = RiTa.spellsLike("ice", Map.of("maxLength", 3));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("maxLength", 3)));
         assertEquals(List.of("ace", "icy", "ire"), result);
 
-        result = RiTa.spellsLike("ice", Map.of("minDistance", 2, "minLength", 3, "maxLength", 3, "limit", 1000));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("minDistance", 2, "minLength", 3, "maxLength", 3, "limit", 1000)));
         for (String r : result) {
             assertEquals(3, r.length());
         }
         assertTrue(result.size() > 10);
 
-        result = RiTa.spellsLike("ice", Map.of("minDistance", 0, "minLength", 3, "maxLength", 3));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("minDistance", 0, "minLength", 3, "maxLength", 3)));
         assertEquals(List.of("ace", "icy", "ire"), result);
 
-        result = RiTa.spellsLike("ice", Map.of("minLength", 3, "maxLength", 3));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("minLength", 3, "maxLength", 3)));
         for (String r : result) {
             assertEquals(3, r.length());
         }
         assertEquals(List.of("ace", "icy", "ire"), result);
 
-        result = RiTa.spellsLike("ice", Map.of("minLength", 3, "maxLength", 3, "pos", "n"));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("minLength", 3, "maxLength", 3, "pos", "n")));
         for (String r : result) {
             assertEquals(3, r.length());
         }
         assertEquals(List.of("ace", "ire"), result);
 
-        result = RiTa.spellsLike("ice", Map.of("minLength", 4, "maxLength", 4, "pos", "v", "limit", 5));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("minLength", 4, "maxLength", 4, "pos", "v", "limit", 5)));
         for (String r : result) {
             assertEquals(4, r.length());
         }
         assertEquals(List.of("ache", "bide", "bite", "cite", "dine"), result);
 
-        result = RiTa.spellsLike("ice", Map.of("minLength", 4, "maxLength", 4, "pos", "nns", "limit", 5));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("minLength", 4, "maxLength", 4, "pos", "nns", "limit", 5)));
         for (String r : result) {
             assertEquals(4, r.length());
         }
         assertEquals(List.of("dice", "rice"), result);
 
-        result = RiTa.spellsLike("ice", Map.of("minLength", 4, "maxLength", 4, "pos", "nns", "minDistance", 3, "limit", 5));
+        result = Arrays.asList(RiTa.spellsLike("ice", Map.of("minLength", 4, "maxLength", 4, "pos", "nns", "minDistance", 3, "limit", 5)));
         for (String r : result) {
             assertEquals(4, r.length());
         }
         assertEquals(List.of("axes", "beef", "deer", "dibs", "fame"), result);
 
         // special case, where word is not in dictionary
-        result = RiTa.spellsLike("abated", Map.of("pos", "vbd"));
+        result = Arrays.asList(RiTa.spellsLike("abated", Map.of("pos", "vbd")));
         assertTrue(result.contains("abetted"));
         assertTrue(result.contains("aborted"));
         assertFalse(result.contains("condensed"));
 
         // https://github.com/dhowe/rita/issues/177
-        assertFalse(RiTa.spellsLike("lined", Map.of("pos", "vb")).contains("lived"));
-        assertTrue(RiTa.spellsLike("lined", Map.of("pos", "vbd")).contains("lived"));
-        assertFalse(RiTa.spellsLike("let", Map.of("pos", "vb")).contains("led"));
-        assertTrue(RiTa.spellsLike("let", Map.of("pos", "vbd")).contains("led"));
-        assertFalse(RiTa.spellsLike("brake", Map.of("pos", "vb")).contains("broke"));
-        assertTrue(RiTa.spellsLike("brake", Map.of("pos", "vbd")).contains("broke"));
-        assertFalse(RiTa.spellsLike("overseas", Map.of("pos", "vb")).contains("oversaw"));
-        assertTrue(RiTa.spellsLike("overseas", Map.of("pos", "vbd")).contains("oversaw"));
+        assertFalse(Arrays.asList(RiTa.spellsLike("lined", Map.of("pos", "vb"))).contains("lived"));
+        assertTrue(Arrays.asList(RiTa.spellsLike("lined", Map.of("pos", "vbd"))).contains("lived"));
+        assertFalse(Arrays.asList(RiTa.spellsLike("let", Map.of("pos", "vb"))).contains("led"));
+        assertTrue(Arrays.asList(RiTa.spellsLike("let", Map.of("pos", "vbd"))).contains("led"));
+        assertFalse(Arrays.asList(RiTa.spellsLike("brake", Map.of("pos", "vb"))).contains("broke"));
+        assertTrue(Arrays.asList(RiTa.spellsLike("brake", Map.of("pos", "vbd"))).contains("broke"));
+        assertFalse(Arrays.asList(RiTa.spellsLike("overseas", Map.of("pos", "vb"))).contains("oversaw"));
+        assertTrue(Arrays.asList(RiTa.spellsLike("overseas", Map.of("pos", "vbd"))).contains("oversaw"));
 
-        List<String> rhyme = RiTa.spellsLike("spreads", Map.of("pos", "vbz", "limit", 1000));
+        List<String> rhyme = Arrays.asList(RiTa.spellsLike("spreads", Map.of("pos", "vbz", "limit", 1000)));
         assertFalse(rhyme.contains("discriminateds"));
         assertFalse(rhyme.contains("endeds"));
         assertFalse(rhyme.contains("finisheds"));
@@ -941,82 +942,82 @@ class LexiconTest {
 
     @Test
     void shouldCallSoundsLike() {
-        assertEquals(List.of("torpedo"), RiTa.soundsLike("tornado", Map.of("type", "sound")));
+        assertEquals(List.of("torpedo"), Arrays.asList(RiTa.soundsLike("tornado", Map.of("type", "sound"))));
 
-        List<String> result = RiTa.soundsLike("try", Map.of("limit", 20));
+        List<String> result = Arrays.asList(RiTa.soundsLike("try", Map.of("limit", 20)));
         List<String> answer = List.of("cry", "dry", "fry", "pry", "rye", "tie", "tray", "tree",
             "tribe", "tried", "tripe", "trite", "true", "wry");
         assertEquals(answer, result);
 
-        result = RiTa.soundsLike("try", Map.of("minDistance", 2, "limit", 20));
+        result = Arrays.asList(RiTa.soundsLike("try", Map.of("minDistance", 2, "limit", 20)));
         assertTrue(result.size() > answer.size()); // more
 
-        result = RiTa.soundsLike("happy", Map.of());
+        result = Arrays.asList(RiTa.soundsLike("happy", Map.of()));
         assertEquals(answer = List.of("happier", "hippie"), result);
 
-        result = RiTa.soundsLike("happy", Map.of("minDistance", 2));
+        result = Arrays.asList(RiTa.soundsLike("happy", Map.of("minDistance", 2)));
         assertTrue(result.size() > answer.size()); // more
 
-        result = RiTa.soundsLike("cat", Map.of("type", "sound"));
+        result = Arrays.asList(RiTa.soundsLike("cat", Map.of("type", "sound")));
         assertEquals(List.of("bat", "cab", "cache", "calf", "calve", "can", "can't", "cap", "cash", "cast"), result);
 
-        result = RiTa.soundsLike("cat", Map.of("type", "sound", "limit", 5));
+        result = Arrays.asList(RiTa.soundsLike("cat", Map.of("type", "sound", "limit", 5)));
         assertEquals(List.of("bat", "cab", "cache", "calf", "calve"), result);
 
-        result = RiTa.soundsLike("cat", Map.of("type", "sound", "limit", 1000, "minLength", 2, "maxLength", 4));
+        result = Arrays.asList(RiTa.soundsLike("cat", Map.of("type", "sound", "limit", 1000, "minLength", 2, "maxLength", 4)));
         assertEquals(List.of("at", "bat", "cab", "calf", "can", "cap", "cash", "cast", "chat", "coat",
             "cot", "curt", "cut", "fat", "hat", "kit", "kite", "mat", "matt", "pat", "rat", "sat",
             "that", "vat"), result);
 
-        result = RiTa.soundsLike("cat", Map.of("type", "sound", "minLength", 4, "maxLength", 5, "pos", "jj"));
+        result = Arrays.asList(RiTa.soundsLike("cat", Map.of("type", "sound", "minLength", 4, "maxLength", 5, "pos", "jj")));
         assertEquals(answer = List.of("catty", "curt"), result);
 
-        result = RiTa.soundsLike("cat", Map.of("minDistance", 2));
+        result = Arrays.asList(RiTa.soundsLike("cat", Map.of("minDistance", 2)));
         assertTrue(result.size() > answer.size());
     }
 
     @Test
     void shouldCallSoundsLikePos() {
-        List<String> result = RiTa.soundsLike("abated", Map.of("pos", "vbd"));
+        List<String> result = Arrays.asList(RiTa.soundsLike("abated", Map.of("pos", "vbd")));
         assertTrue(result.contains("abetted"));
         assertTrue(result.contains("debated"));
         assertFalse(result.contains("condensed"));
 
         // https://github.com/dhowe/rita/issues/177
-        assertFalse(RiTa.soundsLike("build", Map.of("pos", "vb", "limit", 1000)).contains("built"));
-        assertFalse(RiTa.soundsLike("computerize", Map.of("pos", "vb", "limit", 1000)).contains("computerized"));
-        assertFalse(RiTa.soundsLike("concern", Map.of("pos", "vb")).contains("concerned"));
-        assertFalse(RiTa.soundsLike("commit", Map.of("pos", "vb")).contains("committed"));
-        assertFalse(RiTa.soundsLike("involve", Map.of("pos", "vb")).contains("involved"));
-        assertFalse(RiTa.soundsLike("grained", Map.of("pos", "vb")).contains("gained"));
+        assertFalse(Arrays.asList(RiTa.soundsLike("build", Map.of("pos", "vb", "limit", 1000))).contains("built"));
+        assertFalse(Arrays.asList(RiTa.soundsLike("computerize", Map.of("pos", "vb", "limit", 1000))).contains("computerized"));
+        assertFalse(Arrays.asList(RiTa.soundsLike("concern", Map.of("pos", "vb"))).contains("concerned"));
+        assertFalse(Arrays.asList(RiTa.soundsLike("commit", Map.of("pos", "vb"))).contains("committed"));
+        assertFalse(Arrays.asList(RiTa.soundsLike("involve", Map.of("pos", "vb"))).contains("involved"));
+        assertFalse(Arrays.asList(RiTa.soundsLike("grained", Map.of("pos", "vb"))).contains("gained"));
 
-        assertTrue(RiTa.soundsLike("premade", Map.of("pos", "vbd")).contains("remade"));
-        assertTrue(RiTa.soundsLike("incriminate", Map.of("pos", "vbd")).contains("discriminated"));
-        assertTrue(RiTa.soundsLike("paunched", Map.of("pos", "vbd")).contains("pinched")); // launched ?
+        assertTrue(Arrays.asList(RiTa.soundsLike("premade", Map.of("pos", "vbd"))).contains("remade"));
+        assertTrue(Arrays.asList(RiTa.soundsLike("incriminate", Map.of("pos", "vbd"))).contains("discriminated"));
+        assertTrue(Arrays.asList(RiTa.soundsLike("paunched", Map.of("pos", "vbd"))).contains("pinched")); // launched ?
     }
 
     @Test
     void shouldCallSoundsLikeMatchSpelling() {
         List<String> result;
-        result = RiTa.soundsLike("try", Map.of("matchSpelling", true));
+        result = Arrays.asList(RiTa.soundsLike("try", Map.of("matchSpelling", true)));
         assertEquals(List.of("cry", "dry", "fry", "pry", "tray"), result);
 
-        result = RiTa.soundsLike("try", Map.of("matchSpelling", true, "maxLength", 3));
+        result = Arrays.asList(RiTa.soundsLike("try", Map.of("matchSpelling", true, "maxLength", 3)));
         assertEquals(List.of("cry", "dry", "fry", "pry", "wry"), result);
 
-        result = RiTa.soundsLike("try", Map.of("matchSpelling", true, "minLength", 4));
+        result = Arrays.asList(RiTa.soundsLike("try", Map.of("matchSpelling", true, "minLength", 4)));
         assertEquals(List.of("tray"), result);
 
-        result = RiTa.soundsLike("try", Map.of("matchSpelling", true, "limit", 3));
+        result = Arrays.asList(RiTa.soundsLike("try", Map.of("matchSpelling", true, "limit", 3)));
         assertEquals(List.of("cry", "dry", "fry"), result);
 
-        result = RiTa.soundsLike("daddy", Map.of("matchSpelling", true));
+        result = Arrays.asList(RiTa.soundsLike("daddy", Map.of("matchSpelling", true)));
         assertEquals(List.of("dandy", "paddy"), result);
 
-        result = RiTa.soundsLike("banana", Map.of("matchSpelling", true));
+        result = Arrays.asList(RiTa.soundsLike("banana", Map.of("matchSpelling", true)));
         assertEquals(List.of("bonanza"), result);
 
-        result = RiTa.soundsLike("abated", Map.of("pos", "vbd", "matchSpelling", true));
+        result = Arrays.asList(RiTa.soundsLike("abated", Map.of("pos", "vbd", "matchSpelling", true)));
         assertEquals(2, result.size());
         assertTrue(result.contains("abetted"));
         assertTrue(result.contains("awaited"));

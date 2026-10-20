@@ -109,7 +109,7 @@ class Tagger {
    */
   tag(input, opts = {
     inline: false,
-    simple: false,
+    simple: false
   }) {
 
     let result = [], choices2d = [];

@@ -176,18 +176,18 @@ public final class RiTa {
         return new RiMarkov(n, options);
     }
 
-    public static List<String> kwic(String keyword, Map<String, Object> options) {
-        return concorder.kwic(keyword, options);
+    public static String[] kwic(String keyword, Map<String, Object> options) {
+        return toArray(concorder.kwic(keyword, options));
     }
 
     /** JS {@code kwic("cat")} — keyword with no options. */
-    public static List<String> kwic(String keyword) {
-        return concorder.kwic(keyword, (Object) null);
+    public static String[] kwic(String keyword) {
+        return toArray(concorder.kwic(keyword, (Object) null));
     }
 
     /** JS {@code kwic("cat", 4)} — number of context words. */
-    public static List<String> kwic(String keyword, int numWords) {
-        return concorder.kwic(keyword, (Object) numWords);
+    public static String[] kwic(String keyword, int numWords) {
+        return toArray(concorder.kwic(keyword, (Object) numWords));
     }
 
     public static Map<String, Integer> concordance(String text, Map<String, Object> options) {
@@ -250,26 +250,40 @@ public final class RiTa {
         return lexicon.randomWord(null, options);
     }
 
+    /** JS {@code randomWord(/^[aeiou]/)} — a compiled regex pattern with no options. */
+    public static String randomWord(java.util.regex.Pattern regex) {
+        return lexicon.randomWord(regex, null);
+    }
+
     public static String randomWord() {
         return lexicon.randomWord(null, null);
     }
 
-    public static List<String> rhymes(String word, Map<String, Object> options) {
-        return lexicon.rhymesSync(word, options);
+    public static String[] rhymes(String word, Map<String, Object> options) {
+        return toArray(lexicon.rhymesSync(word, options));
     }
 
-    public static List<String> rhymes(String word, int limit) {
+    public static String[] rhymes(String word, int limit) {
         Map<String, Object> opts = new java.util.LinkedHashMap<>();
         opts.put("limit", limit);
-        return lexicon.rhymesSync(word, opts);
+        return RiTa.rhymes(word, opts);
+    }
+
+    public static String[] rhymes(String word) {
+        return RiTa.rhymes(word, null);
     }
 
     public static boolean isRhyme(String word1, String word2) {
         return lexicon.isRhyme(word1, word2);
     }
 
-    public static List<String> alliterations(String word, Map<String, Object> options) {
-        return lexicon.alliterationsSync(word, options);
+    public static String[] alliterations(String word, Map<String, Object> options) {
+        return toArray(lexicon.alliterationsSync(word, options));
+    }
+
+    /** JS {@code alliterations("cat")} — word with no options. */
+    public static String[] alliterations(String word) {
+        return RiTa.alliterations(word, null);
     }
 
     public static boolean hasWord(String word, Map<String, Object> options) {
@@ -310,12 +324,22 @@ public final class RiTa {
         return lexicon.isAlliteration(word1, word2);
     }
 
-    public static List<String> spellsLike(String word, Map<String, Object> options) {
-        return lexicon.spellsLikeSync(word, options);
+    public static String[] spellsLike(String word, Map<String, Object> options) {
+        return toArray(lexicon.spellsLikeSync(word, options));
     }
 
-    public static List<String> soundsLike(String word, Map<String, Object> options) {
-        return lexicon.soundsLikeSync(word, options);
+    /** JS {@code spellsLike("ice")} — word with no options. */
+    public static String[] spellsLike(String word) {
+        return RiTa.spellsLike(word, null);
+    }
+
+    public static String[] soundsLike(String word, Map<String, Object> options) {
+        return toArray(lexicon.soundsLikeSync(word, options));
+    }
+
+    /** JS {@code soundsLike("cat")} — word with no options. */
+    public static String[] soundsLike(String word) {
+        return RiTa.soundsLike(word, null);
     }
 
     public static String[] pos(String word, Map<String, Object> options) {
@@ -423,21 +447,26 @@ public final class RiTa {
         return "";
     }
 
-    public static List<String> search(Object pattern, Map<String, Object> options) {
-        return lexicon.searchSync(pattern, options);
+    public static String[] search(Object pattern, Map<String, Object> options) {
+        return toArray(lexicon.searchSync(pattern, options));
     }
 
     /** JS {@code search("phant")} — a pattern string with no options. */
-    public static List<String> search(String pattern) {
-        return lexicon.searchSync(pattern, null);
+    public static String[] search(String pattern) {
+        return toArray(lexicon.searchSync(pattern, null));
     }
 
-    public static List<String> search(Map<String, Object> options) {
-        return lexicon.searchSync(null, options);
+    /** JS {@code search(/phant/)} — a compiled regex pattern with no options. */
+    public static String[] search(java.util.regex.Pattern regex) {
+        return toArray(lexicon.searchSync(regex, null));
     }
 
-    public static List<String> search() {
-        return lexicon.searchSync(null, null);
+    public static String[] search(Map<String, Object> options) {
+        return toArray(lexicon.searchSync(null, options));
+    }
+
+    public static String[] search() {
+        return toArray(lexicon.searchSync(null, null));
     }
 
     public static String[] tokens(String text, Map<String, Object> options) {
@@ -554,24 +583,64 @@ public final class RiTa {
         return analyzer.analyze(input, Map.of());
     }
 
-    public static List<String> spellsLikeSync(String word, Map<String, Object> options) {
-        return lexicon.spellsLikeSync(word, options);
+    public static String[] spellsLikeSync(String word, Map<String, Object> options) {
+        return toArray(lexicon.spellsLikeSync(word, options));
     }
 
-    public static List<String> soundsLikeSync(String word, Map<String, Object> options) {
-        return lexicon.soundsLikeSync(word, options);
+    /** JS {@code spellsLikeSync("ice")} — word with no options. */
+    public static String[] spellsLikeSync(String word) {
+        return RiTa.spellsLikeSync(word, null);
     }
 
-    public static List<String> rhymesSync(String word, Map<String, Object> options) {
-        return lexicon.rhymesSync(word, options);
+    public static String[] soundsLikeSync(String word, Map<String, Object> options) {
+        return toArray(lexicon.soundsLikeSync(word, options));
     }
 
-    public static List<String> searchSync(Object pattern, Map<String, Object> options) {
-        return lexicon.searchSync(pattern, options);
+    /** JS {@code soundsLikeSync("cat")} — word with no options. */
+    public static String[] soundsLikeSync(String word) {
+        return RiTa.soundsLikeSync(word, null);
     }
 
-    public static List<String> alliterationsSync(String word, Map<String, Object> options) {
-        return lexicon.alliterationsSync(word, options);
+    public static String[] rhymesSync(String word, Map<String, Object> options) {
+        return toArray(lexicon.rhymesSync(word, options));
+    }
+
+    /** JS {@code rhymesSync("dog")} — word with no options. */
+    public static String[] rhymesSync(String word) {
+        return RiTa.rhymesSync(word, null);
+    }
+
+    public static String[] searchSync(Object pattern, Map<String, Object> options) {
+        return toArray(lexicon.searchSync(pattern, options));
+    }
+
+    /** JS {@code searchSync("phant")} — a pattern string with no options. */
+    public static String[] searchSync(String pattern) {
+        return toArray(lexicon.searchSync(pattern, null));
+    }
+
+    /** JS {@code searchSync(/phant/)} — a compiled regex pattern with no options. */
+    public static String[] searchSync(java.util.regex.Pattern regex) {
+        return toArray(lexicon.searchSync(regex, null));
+    }
+
+    /** JS {@code searchSync({ regex: "phant" })} — options only. */
+    public static String[] searchSync(Map<String, Object> options) {
+        return toArray(lexicon.searchSync(null, options));
+    }
+
+    /** JS {@code searchSync()} — all words. */
+    public static String[] searchSync() {
+        return toArray(lexicon.searchSync(null, null));
+    }
+
+    public static String[] alliterationsSync(String word, Map<String, Object> options) {
+        return toArray(lexicon.alliterationsSync(word, options));
+    }
+
+    /** JS {@code alliterationsSync("cat")} — word with no options. */
+    public static String[] alliterationsSync(String word) {
+        return RiTa.alliterationsSync(word, null);
     }
 
     public static int randi(int param1) {
@@ -602,6 +671,11 @@ public final class RiTa {
     /** JS {@code random(array)} — a random element of the list. */
     public static <T> T random(List<T> array) {
         return randomizer.random(array);
+    }
+
+    /** JS {@code random(array)} — a random element of the list. */
+    public static String random(String[] array) {
+        return array[randomizer.randi(array.length)];
     }
 
     /**
@@ -642,6 +716,11 @@ public final class RiTa {
 
     static UnsupportedOperationException notPorted(String name) {
         return new UnsupportedOperationException("RiTa." + name + " not yet ported from js/src");
+    }
+
+    /** Converts a {@code List<String>} to a {@code String[]} (JS-array parity). */
+    public static String[] toArray(List<String> list) {
+        return list == null ? new String[0] : list.toArray(new String[0]);
     }
 
     /** JS truthiness for option values. */

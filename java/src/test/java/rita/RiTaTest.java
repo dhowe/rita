@@ -636,62 +636,62 @@ class RiTaTest {
     void shouldCallKwic() {
         List<String> result;
         RiTa.concordance("A sentence includes cat.");
-        result = RiTa.kwic("cat");
+        result = Arrays.asList(RiTa.kwic("cat"));
         assertEquals("A sentence includes cat.", result.get(0));
 
         RiTa.concordance("Cats are beautiful.");
-        result = RiTa.kwic("cat");
+        result = Arrays.asList(RiTa.kwic("cat"));
         assertEquals(0, result.size());
 
         RiTa.concordance("This is a very very long sentence includes cat with many many words after it and before it.");
-        result = RiTa.kwic("cat");
+        result = Arrays.asList(RiTa.kwic("cat"));
         assertEquals("a very very long sentence includes cat with many many words after it", result.get(0));
 
         RiTa.concordance("A sentence includes cat in the middle. Another sentence includes cat in the middle.");
-        result = RiTa.kwic("cat");
+        result = Arrays.asList(RiTa.kwic("cat"));
         assertEquals("A sentence includes cat in the middle. Another sentence", result.get(0));
         assertEquals("the middle. Another sentence includes cat in the middle.", result.get(1));
 
         RiTa.concordance("A sentence includes cat. Another sentence includes cat.");
-        result = RiTa.kwic("cat");
+        result = Arrays.asList(RiTa.kwic("cat"));
         assertEquals("A sentence includes cat. Another sentence includes cat.", result.get(0));
         assertNull(result.size() > 1 ? result.get(1) : null);
 
         RiTa.concordance("A sentence includes cat. Another sentence includes cat.");
-        result = RiTa.kwic("cat", 4);
+        result = Arrays.asList(RiTa.kwic("cat", 4));
         assertEquals("A sentence includes cat. Another sentence includes", result.get(0));
         assertEquals(". Another sentence includes cat.", result.get(1));
 
         RiTa.concordance("The dog ate the cat, what a tragedy! Little Kali loves the cat, it was her best friend.");
-        result = RiTa.kwic("cat", 4);
+        result = Arrays.asList(RiTa.kwic("cat", 4));
         assertEquals("The dog ate the cat, what a tragedy", result.get(0));
         assertEquals("Little Kali loves the cat, it was her", result.get(1));
 
         RiTa.concordance("A sentence includes cat. Another sentence includes cat.");
-        result = RiTa.kwic("cat", Map.of("numWords", 4));
+        result = Arrays.asList(RiTa.kwic("cat", Map.of("numWords", 4)));
         assertEquals("A sentence includes cat. Another sentence includes", result.get(0));
         assertEquals(". Another sentence includes cat.", result.get(1));
 
         RiTa.concordance("The dog ate the cat, what a tragedy! Little Kali loves the cat, it was her best friend.");
-        result = RiTa.kwic("cat", Map.of("numWords", 4));
+        result = Arrays.asList(RiTa.kwic("cat", Map.of("numWords", 4)));
         assertEquals("The dog ate the cat, what a tragedy", result.get(0));
         assertEquals("Little Kali loves the cat, it was her", result.get(1));
 
         // use options.text or options.words to override kwic model
-        result = RiTa.kwic("fish", Map.of("text", "The dog ate the cat that ate the fish."));
+        result = Arrays.asList(RiTa.kwic("fish", Map.of("text", "The dog ate the cat that ate the fish.")));
         assertEquals(1, result.size());
         assertEquals("ate the cat that ate the fish.", result.get(0));
 
-        result = RiTa.kwic("fish", Map.of("words", RiTa.tokenize("The dog ate the cat that ate the fish.")));
+        result = Arrays.asList(RiTa.kwic("fish", Map.of("words", RiTa.tokenize("The dog ate the cat that ate the fish."))));
         assertEquals(1, result.size());
         assertEquals("ate the cat that ate the fish.", result.get(0));
 
-        result = RiTa.kwic("fish", Map.of("words", RiTa.tokenize("The dog ate the cat that ate the fish. He yelled at the dog and buy a new fish."), "numWords", 7));
+        result = Arrays.asList(RiTa.kwic("fish", Map.of("words", RiTa.tokenize("The dog ate the cat that ate the fish. He yelled at the dog and buy a new fish."), "numWords", 7)));
         assertEquals(2, result.size());
         assertEquals("dog ate the cat that ate the fish. He yelled at the dog and", result.get(0));
         assertEquals("at the dog and buy a new fish.", result.get(1));
 
-        result = RiTa.kwic("fish", Map.of("text", "The dog ate the cat that ate the fish. He yelled at the dog and buy a new fish.", "numWords", 7));
+        result = Arrays.asList(RiTa.kwic("fish", Map.of("text", "The dog ate the cat that ate the fish. He yelled at the dog and buy a new fish.", "numWords", 7)));
         assertEquals(2, result.size());
         assertEquals("dog ate the cat that ate the fish. He yelled at the dog and", result.get(0));
         assertEquals("at the dog and buy a new fish.", result.get(1));
@@ -774,18 +774,6 @@ class RiTaTest {
         }
     }
 
-    @Disabled("JS: false && it(...) — disabled block")
-    @Test
-    void shouldCallFindStem() {
-        assertTrue(RiTa.findStem("dog"));
-        assertTrue(RiTa.findStem("cat"));
-        assertTrue(RiTa.findStem("play"));
-        assertTrue(RiTa.findStem("run"));
-        assertFalse(RiTa.findStem("dogs"));
-        assertFalse(RiTa.findStem("played"));
-        assertFalse(RiTa.findStem("writing"));
-    }
-
     @Test
     void shouldNotMatchObjectPrototypeMembersInTheLexicon() {
         // Regression: prototype-chain leaks made hasWord() true for inherited props
@@ -801,9 +789,9 @@ class RiTaTest {
         // Regression: Concorder used a plain {} so keys like 'constructor' collided with inherited members
         Map<String, Integer> data = RiTa.concordance("constructor toString watch");
         assertEquals(Map.of("constructor", 1, "toString", 1, "watch", 1), data);
-        assertEquals(1, RiTa.kwic("watch").size());
-        assertEquals(1, RiTa.kwic("toString").size());
-        assertEquals(0, RiTa.kwic("nonexistentword").size());
+        assertEquals(1, RiTa.kwic("watch").length);
+        assertEquals(1, RiTa.kwic("toString").length);
+        assertEquals(0, RiTa.kwic("nonexistentword").length);
     }
 
     @Test

@@ -182,7 +182,8 @@ public class Lexicon {
         if (pattern == null && options == null) {
             return (String) RiTa.random(_getWords());
         }
-        if (!(pattern instanceof String) && pattern != null && options == null) {
+        if (!(pattern instanceof String) && !(pattern instanceof java.util.regex.Pattern)
+            && pattern != null && options == null) {
             // single argument which is opts
             opts = new java.util.LinkedHashMap<>((Map<String, Object>) pattern);
             pattern = null;
@@ -730,6 +731,9 @@ public class Lexicon {
                 s = expandStressRegex(s);
             }
             regex = java.util.regex.Pattern.compile(s);
+        } else if (pattern instanceof java.util.regex.Pattern) {
+            // compiled Pattern passed directly (JS: regex instanceof RegExp)
+            regex = (java.util.regex.Pattern) pattern;
         } else if (pattern instanceof Map || (pattern == null && opts != null)) {
             if (opts == null) {
                 opts = (Map<String, Object>) pattern;

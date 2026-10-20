@@ -11,11 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * RiScript engine — a hand-rolled tokenizer, recursive-descent parser and
- * AST-walking evaluator, ported from the Python reference ({@code python/riscript.py}).
- *
- * <p>No ANTLR and no external grammar: the lexer mirrors {@code _TOKEN_PATTERNS}, the
- * parser mirrors the {@code Parser} class, and the evaluator mirrors {@code EvalVisitor}.
+ * RiScript engine — a hand-rolled tokenizer, recursive-descent parser and AST-walking evaluator
  */
 public class RiScript {
 
