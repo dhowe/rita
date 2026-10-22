@@ -13,8 +13,10 @@ Tools for generative natural language — the Java implementation of RiTa.
 ./gradlew processingLibrary    # build/distributions/rita.zip (Processing library)
 ```
 
-The artifact is `org.rednoise:rita`, versioned in [`gradle.properties`](gradle.properties)
-(`library.properties` is checked against it by `./gradlew check`).
+The artifact is `org.rednoise:rita`, versioned in [`gradle.properties`](gradle.properties).
+The version fields in `library.properties` are expanded from it at build time
+(`version` = Processing Manager revision, e.g. `403`; `prettyVersion` = e.g. `4.0.3`), so
+bumping `gradle.properties` is the only edit needed.
 
 ## Layout
 

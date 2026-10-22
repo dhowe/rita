@@ -675,7 +675,7 @@ public final class RiTa {
 
     /** JS {@code random(array)} — a random element of the list. */
     public static String random(String[] array) {
-        return array[randomizer.randi(array.length)];
+        return array[RiTa.randi(array.length)];
     }
 
     /**

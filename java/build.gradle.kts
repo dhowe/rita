@@ -5,9 +5,16 @@ plugins {
 }
 
 group = "org.rednoise"
-// Single source of truth for the version is gradle.properties; library.properties is
-// verified against it by the checkLibraryVersion task.
+// Single source of truth for the version is gradle.properties; library.properties is a
+// template whose version fields are expanded at build time (see processLibraryProperties).
 version = property("version") as String
+
+// Processing Manager's numeric revision for a semantic version: 4.0.3 -> 403
+// (major*100 + minor*10 + patch). Keep patch < 10 so the mapping stays unambiguous.
+val versionNum = project.version.toString()
+    .split('.')
+    .map { it.toInt() }
+    .let { (major, minor, patch) -> major * 100 + minor * 10 + patch }
 
 repositories {
     mavenCentral()
@@ -147,6 +154,19 @@ val jarFile = tasks.named<Jar>("jar") {
     }
 }
 
+// library.properties is a template: ${version} / ${versionNum} are filled in from
+// gradle.properties, so the version is bumped in exactly one place.
+val processLibraryProperties = tasks.register<Copy>("processLibraryProperties") {
+    description = "Expand version fields in library.properties from gradle.properties"
+    group = "build"
+    inputs.property("version", project.version.toString())
+    inputs.property("versionNum", versionNum.toString())
+    from(file("library.properties")) {
+        expand("version" to project.version.toString(), "versionNum" to versionNum.toString())
+    }
+    into(layout.buildDirectory.dir("generated/library"))
+}
+
 val processingLib = tasks.register<Zip>("processingLibrary") {
     description = "Assemble the Processing library distribution (rita.zip)"
     group = "distribution"
@@ -156,7 +176,7 @@ val processingLib = tasks.register<Zip>("processingLibrary") {
     destinationDirectory.set(layout.buildDirectory.dir("distributions"))
 
     into("rita") {
-        from("library.properties")
+        from(processLibraryProperties)
         from(jarFile) { rename { "rita.jar" } }
         from("examples") { into("examples") }
         from(tasks.named("javadoc")) { into("reference") }
@@ -164,18 +184,20 @@ val processingLib = tasks.register<Zip>("processingLibrary") {
 }
 
 val checkLibraryVersion = tasks.register<Task>("checkLibraryVersion") {
-    description = "Fail if library.properties disagrees with gradle.properties"
+    description = "Fail if the expanded library.properties disagrees with gradle.properties"
     group = "verification"
-    val propsFile = file("library.properties")
-    inputs.file(propsFile)
+    dependsOn(processLibraryProperties)
+    val expanded = layout.buildDirectory.file("generated/library/library.properties")
+    inputs.file(expanded)
     inputs.property("version", project.version.toString())
     doLast {
-        val props = Properties().apply { propsFile.inputStream().use { load(it) } }
+        val props = Properties().apply { expanded.get().asFile.inputStream().use { load(it) } }
         val pretty = props.getProperty("prettyVersion")
-        if (pretty != project.version.toString()) {
+        val numeric = props.getProperty("version")
+        if (pretty != project.version.toString() || numeric != versionNum.toString()) {
             throw GradleException(
-                "library.properties prettyVersion '$pretty' != project version '${project.version}'. " +
-                    "Bump both together.",
+                "library.properties (prettyVersion=$pretty, version=$numeric) does not match " +
+                    "project version '${project.version}' (numeric $versionNum).",
             )
         }
     }
