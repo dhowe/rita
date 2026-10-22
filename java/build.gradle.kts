@@ -188,6 +188,19 @@ val processingLib = tasks.register<Zip>("processingLibrary") {
     }
 }
 
+// Processing's Library Guidelines require the release artifacts to share a base name and
+// sit in the same directory: rita.zip plus rita.txt (a direct copy of the expanded
+// library.properties). See https://github.com/processing/processing4/wiki/Library-Guidelines
+val processingLibraryPropertiesTxt = tasks.register<Copy>("processingLibraryPropertiesTxt") {
+    description = "Emit rita.txt (copy of library.properties) alongside rita.zip"
+    group = "distribution"
+    dependsOn(processLibraryProperties)
+    from(processLibraryProperties) {
+        rename { "rita.txt" }
+    }
+    into(layout.buildDirectory.dir("distributions"))
+}
+
 val checkLibraryVersion = tasks.register<Task>("checkLibraryVersion") {
     description = "Fail if the expanded library.properties disagrees with gradle.properties"
     group = "verification"
@@ -213,4 +226,4 @@ val checkLibraryVersion = tasks.register<Task>("checkLibraryVersion") {
 }
 
 tasks.named("check") { dependsOn(checkLibraryVersion) }
-tasks.named("build") { dependsOn(processingLib) }
+tasks.named("build") { dependsOn(processingLib, processingLibraryPropertiesTxt) }

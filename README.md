@@ -6,7 +6,6 @@ This repository contains all RiTa implementations and documentation
 rita4/
   js/        JavaScript/TypeScript implementation
   java/      Java implementation (gradle)
-  python/    Python implementation
   docs/      Website and API reference
   shared/    Shared data (rita_dict.json — canonical dictionary)
   scripts/   Maintenance scripts
@@ -50,26 +49,9 @@ The artifact is `org.rednoise:rita`. The canonical dictionary is read directly f
 is no generated copy to keep in sync.
 
 
----
-
-## Python (`python/`)
-
-**Requirements:** Python 3.10+
-
-```sh
-cd python
-python -m venv .venv && source .venv/bin/activate   # optional virtualenv
-pip install pytest
-pytest -q            # run all tests
-```
-
-No package installation is required to run tests directly from the repo.
-
----
-
 ## Docs / Website (`docs/`)
 
-The `docs/` folder is a static website — no build step required. To preview locally:
+The `docs/` folder is a static website — no build step required. To preview locally use 'Go Live' in vscode or python:
 
 ```sh
 cd docs
@@ -85,7 +67,6 @@ Reference pages are in `docs/reference/` and tutorials in `docs/tutorials/`. Bot
 
 `shared/rita_dict.json` is the source for the RiTa lexicon. All three implementations use it:
 
-- **Python** — loaded at runtime via a `__file__`-relative path in each module
 - **JS / Java** — use JS-module wrappers (`js/src/rita_dict.js`, `java/src/main/resources/rita/rita_dict.js`)
 
 To regenerate the JS/Java wrappers after editing `shared/rita_dict.json`:
@@ -104,4 +85,3 @@ GitHub Actions workflows are path-scoped and trigger when their subtree (or `sha
 |---|---|---|
 | `.github/workflows/js.yml` | `js/**`, `shared/**` | Node 18, 20, 22 |
 | `.github/workflows/java.yml` | `java/**`, `shared/**` | JDK 11 · ubuntu + macOS |
-| `.github/workflows/python.yml` | `python/**`, `shared/**` | 3.10, 3.11, 3.12, 3.13 |
