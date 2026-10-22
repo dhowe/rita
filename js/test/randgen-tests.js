@@ -3,11 +3,11 @@ import { readFileSync } from 'fs';
 import { RiTa } from './index.js';
 
 /**
- * RandGen (Mersenne Twister) golden-vector tests.
+ * RandGen golden-vector tests.
  *
- * The expected values are generated from js/src/randgen.js by
- * scripts/gen-randgen-fixtures.js and stored in shared/randgen-fixtures.json, so this
- * suite and the Java RandGenTest assert byte-identical output for the same seeds.
+ * Expected values are generated from js/src/randgen.js by scripts/gen-randgen-fixtures.js
+ * and stored in shared/randgen-fixtures.json, so this and java RandGenTest assert 
+ * identical output for the same seeds.
  */
 
 const fixtures = JSON.parse(
@@ -152,13 +152,13 @@ describe('RandGen', function () {
   });
 });
 
-// Seeds, then applies fn 5 times (each call draws from the stream), matching the generator.
+// Seeds and applies fn 5 times (each call draws from the stream), matching the generator
 function replay(seed, fn) {
   R.seed(seed);
   return Array.from({ length: 5 }, () => fn());
 }
 
-// Seeds once and applies fn a single time, for operations that consume the whole stream.
+// Seeds and applies fn once, for operations that consume the full stream
 function once(seed, fn) {
   R.seed(seed);
   return fn();

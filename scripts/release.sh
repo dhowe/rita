@@ -278,7 +278,13 @@ run git push origin "$TAG"
 
 if [[ $DO_JS -eq 1 ]]; then
   say "5/6 Publishing to npm (dist-tag: $NPM_DIST_TAG)"
-  run npm --prefix js publish --tag "$NPM_DIST_TAG"
+  # npm publish resolves package.json from the *current* directory and ignores --prefix,
+  # so it must run inside js/ rather than via `npm --prefix js publish`.
+  if [[ $DRY_RUN -eq 1 ]]; then
+    printf '   \033[36m[dry-run]\033[0m (cd js && npm publish --tag %s)\n' "$NPM_DIST_TAG"
+  else
+    (cd js && npm publish --tag "$NPM_DIST_TAG")
+  fi
 else
   say "5/6 Skipping npm publish (java only)"
 fi

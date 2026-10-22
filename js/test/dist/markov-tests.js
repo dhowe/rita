@@ -143,7 +143,7 @@ describe("Markov", function() {
     }
   });
   it("should call Random.ndist", function() {
-    expect(() => Random.ndist([1, 2, 6, -2.5, 0])).to.throw;
+    expect(() => Random.ndist([1, 2, 6, -2.5, 0])).to.throw();
     let weights, expected, results;
     weights = [2, 1];
     expected = [0.666, 0.333];
@@ -182,18 +182,18 @@ describe("Markov", function() {
   });
   it("should throw on generate for empty model", function() {
     let rm = new RiMarkov(4, { maxLengthMatch: 6 });
-    expect(() => rm.generate(5)).to.throw;
+    expect(() => rm.generate(5)).to.throw();
   });
   it("should throw on failed generate", function() {
     let rm = new RiMarkov(4, { maxLengthMatch: 6 });
     rm.addSentences(RiTa.sentences(sample));
-    expect(() => rm.generate(5)).to.throw;
+    expect(() => rm.generate(5)).to.throw();
     rm = new RiMarkov(4, { maxLengthMatch: 5 });
     rm.addSentences(RiTa.sentences(sample));
-    expect(() => rm.generate(5)).to.throw;
+    expect(() => rm.generate(5)).to.throw();
     rm = new RiMarkov(4, { maxAttempts: 1 });
-    rm.addText("This is a text that is too short.");
-    expect(() => rm.generate(5)).to.throw;
+    rm.addText("Hi.");
+    expect(() => rm.generate(5)).to.throw();
   });
   it("should apply custom tokenizers", function() {
     let sents = ["asdfasdf-", "aqwerqwer+", "asdfasdf*"];
@@ -728,18 +728,18 @@ describe("Markov", function() {
   });
   it("should throw on generate for empty model", function() {
     let rm = new BackoffModel({ maxLengthMatch: 6 });
-    expect(() => rm.generate(5)).to.throw;
+    expect(() => rm.generateSentences(5, [], {})).to.throw();
   });
   it("should throw on failed generate", function() {
     let rm = new BackoffModel({ maxLengthMatch: 6 });
     rm.addText(sample);
-    expect(() => rm.generate(5)).to.throw;
+    expect(() => rm.generateSentences(5, [], {})).to.throw();
     rm = new BackoffModel({ maxLengthMatch: 5 });
     rm.addSentences(RiTa.sentences(sample));
-    expect(() => rm.generate(5)).to.throw;
+    expect(() => rm.generateSentences(5, [], {})).to.throw();
     rm = new BackoffModel({ maxAttempts: 1 });
-    rm.addText("This is a text that is too short.");
-    expect(() => rm.generate(5)).to.throw;
+    rm.addText("Hi.");
+    expect(() => rm.generateSentences(5, [], {})).to.throw();
   });
   it("should call addText with string", function() {
     let rm = new BackoffModel({ maxLengthMatch: 6 });

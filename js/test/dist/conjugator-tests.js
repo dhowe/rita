@@ -164,8 +164,8 @@ describe("Conjugator", function() {
       number: RiTa.SINGULAR,
       person: RiTa.THIRD
     };
-    expect(() => RiTa.conjugate(args)).to.throw;
-    expect(() => RiTa.conjugate("", args)).to.throw;
+    expect(() => RiTa.conjugate(args)).to.throw();
+    expect(() => RiTa.conjugate("", args)).to.throw();
     for (let i = 0; i < s.length; i++) {
       let c2 = RiTa.conjugate(s[i], args);
       expect(c2).eq(a[i]);

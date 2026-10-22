@@ -228,7 +228,7 @@ describe("Lexicon", function() {
     lex2.data = orig;
   });
   it("Should call randomWord with pos", async function() {
-    expect(() => RiTa.randomWord({ pos: "xxx" })).to.throw;
+    expect(() => RiTa.randomWord({ pos: "xxx" })).to.throw();
     let result, pos = ["nn", "jj", "jjr", "wp"];
     for (let j = 0; j < pos.length; j++) {
       result = RiTa.randomWord({ pos: pos[j] });
