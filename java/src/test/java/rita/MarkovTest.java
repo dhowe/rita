@@ -910,25 +910,22 @@ class MarkovTest {
         rm.n = 3;
         Map<String, Object> o = opts("minTokens", 3, "maxTokens", 20);
 
-        Object norm = rm.generate(3, List.of("I"), o);
-        assertInstanceOf(String.class, norm);
-        assertTrue(((String) norm).length() > 0);
+        String[] norm = rm.generate(3, List.of("I"), o);
+        assertEquals(1, norm.length);
+        assertTrue(norm[0].length() > 0);
 
-        Object one = rm.generate(3, List.of("I"), merge(o, "numSentences", 1));
-        assertInstanceOf(String.class, one);
-        assertTrue(((String) one).length() > 0);
+        String[] one = rm.generate(3, List.of("I"), merge(o, "numSentences", 1));
+        assertEquals(1, one.length);
+        assertTrue(one[0].length() > 0);
 
-        Object two = rm.generate(3, List.of("I"), merge(o, "numSentences", 2));
-        assertInstanceOf(List.class, two);
-        assertEquals(2, list(two).size());
-        for (String s : list(two)) {
-            assertInstanceOf(String.class, (Object) s);
+        String[] two = rm.generate(3, List.of("I"), merge(o, "numSentences", 2));
+        assertEquals(2, two.length);
+        for (String s : two) {
             assertTrue(s.length() > 0);
         }
 
-        Object three = rm.generate(3, List.of("I"), opts("numSentences", 3));
-        assertInstanceOf(List.class, three);
-        assertEquals(3, list(three).size());
+        String[] three = rm.generate(3, List.of("I"), opts("numSentences", 3));
+        assertEquals(3, three.length);
     }
 
     @Test
@@ -1136,15 +1133,15 @@ class MarkovTest {
     @Test
     void riMarkovGenerateOptsOnlyForm() {
         RiMarkov rm = new RiMarkov(sample);
-        Object result = rm.generate(opts("n", 3, "prompt", List.of("I"), "minTokens", 3, "maxTokens", 20));
-        assertInstanceOf(String.class, result);
-        assertTrue(((String) result).length() > 0);
+        String[] result = rm.generate(opts("n", 3, "prompt", List.of("I"), "minTokens", 3, "maxTokens", 20));
+        assertEquals(1, result.length);
+        assertTrue(result[0].length() > 0);
 
         RiMarkov rm2 = new RiMarkov(exampleStr);
-        Object result2 = rm2.generate(opts("n", 3, "prompt", List.of("The", "brown"), "minTokens", 2, "maxTokens", 10));
-        assertInstanceOf(String.class, result2);
-        assertTrue(((String) result2).length() > 0);
-        assertTrue(((String) result2).startsWith("The brown"));
+        String[] result2 = rm2.generate(opts("n", 3, "prompt", List.of("The", "brown"), "minTokens", 2, "maxTokens", 10));
+        assertEquals(1, result2.length);
+        assertTrue(result2[0].length() > 0);
+        assertTrue(result2[0].startsWith("The brown"));
 
         RiMarkov rm3 = new RiMarkov(exampleStr);
         assertThrows(Exception.class, () -> rm3.generate(opts("prompt", List.of("The"))));
@@ -1204,9 +1201,9 @@ class MarkovTest {
             + "field. The mouse hid in the wall. The cat chased the mouse. The dog "
             + "chased the cat. The bird ate the fish.";
         try {
-            Object one = gen(text, 1);
-            Object two = gen(text, 1);
-            Object other = gen(text, 7);
+            List<String> one = gen(text, 1);
+            List<String> two = gen(text, 1);
+            List<String> other = gen(text, 7);
             assertEquals(one, two);
             assertNotEquals(one, other);
         } finally {
@@ -1214,11 +1211,11 @@ class MarkovTest {
         }
     }
 
-    private static Object gen(String text, int seed) {
+    private static List<String> gen(String text, int seed) {
         RiTa.randomSeed(seed);
         RiMarkov rm = new RiMarkov(2);
         rm.addText(text);
-        return rm.generate(opts("numSentences", 3, "maxLength", 12));
+        return list(rm.generate(opts("numSentences", 3, "maxLength", 12)));
     }
 
     @Test
@@ -1243,13 +1240,13 @@ class MarkovTest {
         assertEquals(rm.size(), copy.size());
     }
 
-    private static String str(Object o) {
-        return (String) o;
+    /** First sentence of a generate() result (the single-sentence convenience). */
+    private static String str(String[] result) {
+        return result.length == 0 ? "" : result[0];
     }
 
-    @SuppressWarnings("unchecked")
-    private static List<String> list(Object o) {
-        return (List<String>) o;
+    private static List<String> list(String[] result) {
+        return Arrays.asList(result);
     }
 
     private static List<String> drain(Iterable<String> it) {

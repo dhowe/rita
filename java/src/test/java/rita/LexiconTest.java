@@ -340,7 +340,7 @@ class LexiconTest {
         String[] pos = {"nn", "jj", "jjr", "wp"};
         for (String p : pos) {
             result = RiTa.randomWord(Map.of("pos", p));
-            String best = RiTa.tagger.allTags(result).get(0);
+            String best = RiTa.tagger.allTags(result)[0];
             assertEquals(p, best, result);
         }
 

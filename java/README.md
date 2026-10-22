@@ -7,7 +7,7 @@ Tools for generative natural language — the Java implementation of RiTa.
 ## Build
 
 ```sh
-./gradlew build                # compile, test, and assemble rita.jar + rita.zip
+./gradlew build                # compile, test, and build rita.jar + rita.zip
 ./gradlew test                 # run tests only
 ./gradlew javadoc              # API reference docs
 ./gradlew processingLibrary    # build/distributions/rita.zip (Processing library)
@@ -24,7 +24,7 @@ bumping `gradle.properties` is the only edit needed.
 java/
 ├── build.gradle.kts          # build, shared-data staging, Processing packaging
 ├── library.properties        # Processing library metadata
-├── examples/HelloRita/       # example sketch, bundled into the library
+├── examples                  # example sketches, bundled into the library
 └── src/
     ├── main/java/rita/       # library sources (package `rita`)
     ├── main/resources/rita/  # version.properties (dict data is staged, not committed)
@@ -56,13 +56,6 @@ import rita.*;
 
 void setup() {
   println(RiTa.tokenize("How now, brown cow?"));
-  println(RiTa.evaluate("i {have|own} a {blue|green} {bird|fish}"));
+  println(RiTa.evaluate("i [ have | own ] a [ blue | green ] [ bird | fish ]"));
 }
 ```
-
-See [`examples/HelloRita/HelloRita.pde`](examples/HelloRita/HelloRita.pde) for more.
-
-## Status
-
-Scaffolding only — the port of the JavaScript sources in [`../js/src`](../js/src) is in
-progress. Module names are mirrored 1:1 under `rita.*`.

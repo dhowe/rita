@@ -177,9 +177,14 @@ val processingLib = tasks.register<Zip>("processingLibrary") {
 
     into("rita") {
         from(processLibraryProperties)
-        from(jarFile) { rename { "rita.jar" } }
         from("examples") { into("examples") }
         from(tasks.named("javadoc")) { into("reference") }
+        // Processing's Library.discover() only recognises a folder whose jar lives at
+        // <name>/library/<name>.jar — a jar at the library root is silently skipped.
+        from(jarFile) {
+            into("library")
+            rename { "rita.jar" }
+        }
     }
 }
 

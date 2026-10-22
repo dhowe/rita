@@ -18,9 +18,14 @@ void setup()
   }
 }
 
-
 void draw()
 {
+  int now = millis();
+  if (now - last > 4000) { // timer
+    last = now;
+    nextWord();
+  }
+  
   background(255);
 
   fill(56, 66, 90);
@@ -37,12 +42,6 @@ void draw()
   for (int i = 0; i < bubbles.length; i++) {
     bubbles[i].draw(i);
   }
-
-  int now = millis();
-  if (now - last > 4000) { // timer
-    last = now;
-    nextWord();
-  }
 }
 
 
@@ -51,18 +50,18 @@ void nextWord() { // every 4 sec
   // random word with <= 12 letters
   word = RiTa.randomWord(Map.of("maxLength", 12));
 
-  // get various features
+  // get syllables and stresses
   String sy = RiTa.syllables(word);
   String ss = RiTa.stresses(word);
   phones = RiTa.phones(word);
 
-  // get (WordNet-style) pos-tag
-  // v4: pos() takes an options Map (no boolean overload); {simple:true} -> n/v/a/r tags
+  // get WordNet-style pos-tag
   pos = tagName(RiTa.pos(word, Map.of("simple", true))[0]);
 
   // update the bubbles
   String[] phs = phones.split("-");
   for (int i = 0; i < phs.length; i++) {
+    if (i >= bubbles.length) break; // phones can exceed maxWordLength
     bubbles[i].update(phs[i], i*50+100);
   }
 
@@ -71,7 +70,6 @@ void nextWord() { // every 4 sec
 }
 
 String ipaPhones(String aWord) {
-  // v4: lexicon is a field (not a method); IPA conversion is Analyzer.arpabetToIpa (static)
   String raw = RiTa.lexicon.rawPhones(aWord);
   return "/" + Analyzer.arpabetToIpa(raw) + "/";
 }

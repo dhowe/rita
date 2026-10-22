@@ -31,6 +31,15 @@ public class RiGrammar {
     }
 
     public RiGrammar(Object rules, Map<String, Object> context) {
+        this(rules, context, null);
+    }
+
+    /**
+     * Mirrors the JS {@code new RiGrammar(rules, context, options)}; the JS engine consumes
+     * {@code options.RiTa} for its scripting engine, which the Java port resolves statically,
+     * so {@code options} is retained for parity but otherwise inert.
+     */
+    public RiGrammar(Object rules, Map<String, Object> context, Map<String, Object> options) {
         this.context = context == null ? new LinkedHashMap<>() : context;
         this.scripting = new RiScript();
         if (rules == null) {

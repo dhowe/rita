@@ -82,7 +82,7 @@ public class Inflector {
                 return true;
             }
             // Is it in the lexicon as 'nn' (with noGuessing)?
-            if (RiTa.tagger.allTags(sing, Map.of("noGuessing", true)).contains("nn")) {
+            if (RiTa.tagger.allTagsList(sing, Map.of("noGuessing", true)).contains("nn")) {
                 return true;
             }
         }

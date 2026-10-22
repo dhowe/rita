@@ -1,6 +1,5 @@
 
 import rita.*;
-import java.util.*;
 
 int last = -9999;
 
@@ -38,12 +37,11 @@ void nextWord() { // replaces a random word in the text
     String word = words[idx].toLowerCase();
     if (word.length() < 3) continue; // len >= 3
 
-    // v4: allTags returns List<String> (was String[] in v2)
-    String pos = RiTa.tagger.allTags(word).get(0);
-    // v4: no RiTa.opts() helper — build the options Map directly
-    Map opts = Map.of("pos", pos);
+    // get the first sense of the word
+    String pos = RiTa.tagger.allTags(word)[0];
 
     // find related words
+    Map opts = Map.of("pos", pos);
     String[] rhymes = RiTa.rhymes(word, opts);
     String[] sounds = RiTa.soundsLike(word, opts);
     String[] spells = RiTa.spellsLike(word, opts);

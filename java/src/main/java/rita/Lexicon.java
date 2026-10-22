@@ -266,14 +266,14 @@ public class Lexicon {
 
         // 1) Check if word might be a plural form of a noun in the lexicon, e.g. 'dogs' or 'oxen'
         String sing = RiTa.singularize(token);
-        if (sing != null && data.containsKey(sing) && RiTa.tagger.allTags(sing).contains("nn")) {
+        if (sing != null && data.containsKey(sing) && RiTa.tagger.allTagsList(sing, Map.of()).contains("nn")) {
             return true;
         }
 
         // 2) Check if word might be a conjugated form of a verb in the lexicon, e.g. 'changed'
         String vlemma = RiTa.conjugator.unconjugate(token, options);
         if (vlemma != null && data.containsKey(vlemma)
-            && RiTa.tagger.allTags(vlemma).contains("vb")) {
+            && RiTa.tagger.allTagsList(vlemma, Map.of()).contains("vb")) {
             return true;
         }
 

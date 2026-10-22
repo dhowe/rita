@@ -93,7 +93,7 @@ public class Conjugator {
         String verb = verbWord.toLowerCase();
 
         // make sure verb is in base form
-        if (!RiTa.tagger.allTags(verb).contains("vb")) {
+        if (!RiTa.tagger.allTagsList(verb, Map.of()).contains("vb")) {
             String un = unconjugate(verb, Map.of());
             verb = (un != null && !un.isEmpty()) ? un : verb;
         }
@@ -205,7 +205,7 @@ public class Conjugator {
             return word;
         }
 
-        List<String> tags = RiTa.tagger.allTags(word, Map.of("noGuessing", true));
+        List<String> tags = RiTa.tagger.allTagsList(word, Map.of("noGuessing", true));
 
         // if it's already a base form verb, return it
         if (tags.contains("vb")) {
@@ -493,7 +493,7 @@ public class Conjugator {
     }
 
     private String computeStem(String word) {
-        if (RiTa.lexicon.data.containsKey(word) && RiTa.tagger.allTags(word).contains("vb")) {
+        if (RiTa.lexicon.data.containsKey(word) && RiTa.tagger.allTagsList(word, Map.of()).contains("vb")) {
             return word;
         }
 

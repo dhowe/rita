@@ -167,7 +167,7 @@ class Analyzer {
  *    represented as "ah", so the conversion is approximate for those cases
  *  - "er" is context-sensitive: stressed → ɜr (bird), unstressed → ər (butter)
  */
-Analyzer.arpabetToIpa = {
+Analyzer.ArpabetToIpa = {
   // Vowels
   aa: 'ɑ',   // balm, bot
   ae: 'æ',   // bat
@@ -229,7 +229,7 @@ Analyzer.arpabetToIpa = {
  * @returns {string} IPA approximation without stress markers
  */
 Analyzer.phonesToIpa = function(phones) {
-  const map = Analyzer.arpabetToIpa;
+  const map = Analyzer.ArpabetToIpa;
   return phones
     .split(' ')
     .map(word => word.split('-').map(p => map[p] ?? p).join(''))
@@ -249,7 +249,7 @@ Analyzer.phonesToIpa = function(phones) {
  * @returns {string} IPA string with ˈ before each primary-stressed syllable of polysyllabic words
  */
 Analyzer.syllablesToIpa = function(syllables, stresses, keepBoundaries = false) {
-  const map = Analyzer.arpabetToIpa;
+  const map = Analyzer.ArpabetToIpa;
   const sylWords = syllables.split(' ');
   const strWords = stresses.split(' ');
   const ipaWords = [];

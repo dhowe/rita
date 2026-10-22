@@ -11,15 +11,15 @@ String txt, over, word = buttons[7];
 void setup() {
   size(800, 500);
 
-  textFont(createFont("times", 18));
+  textFont(createFont("times", 16));
 
   args = new HashMap();
   args.put("ignorePunctuation", true);
   args.put("ignoreStopWords", true);
-  args.put("numWords", 6);   // v4: option renamed from v2 "wordCount" to "numWords"
+  args.put("numWords", 6);
 
-  String[] txt = loadStrings("kafka.txt");
-  RiTa.concordance(String.join("\n", txt));
+  String[] strs = loadStrings("kafka.txt");
+  RiTa.concordance(String.join("\n", strs), args);
 }
 
 void draw() {
@@ -30,17 +30,21 @@ void draw() {
   drawButtons();
 
   float tw = textWidth(word) / 2f;
+  int num = min(10, kwic.length); // keep the display within the canvas
 
-  for (int i = 0; i < kwic.length; i++) {
+  for (int i = 0; i < num; i++) {
 
-    String[] parts = kwic[i].split(word);
-    float x = width / 2f, y = i * 20 + 75;
+    // split on the literal keyword (not a regex) and strip stray line-breaks
+    String[] parts = kwic[i].split(java.util.regex.Pattern.quote(word));
+    String before = parts.length > 0 ? parts[0].replace("\n", " ") : "";
+    String after = parts.length > 1 ? parts[1].replace("\n", " ") : "";
+    float x = width / 2f, y = i * 24 + 90;
 
     if (y > height - 20) return;
 
     fill(0);
     textAlign(RIGHT);
-    text(parts[0], x - tw, y);
+    text(before, x - tw, y);
 
     fill(200, 0, 0);
     textAlign(CENTER);
@@ -48,7 +52,7 @@ void draw() {
 
     fill(0);
     textAlign(LEFT);
-    text(parts[1], x + tw, y);
+    text(after, x + tw, y);
   }
 }
 

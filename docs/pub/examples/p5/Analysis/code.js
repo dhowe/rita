@@ -57,7 +57,8 @@ function updateBubbles() {
 
 function ipaPhones(aWord) {
   let raw = RiTa.lexicon.rawPhones(aWord);
-  return "/" + arpaToIPA(raw) + "/";
+  console.log("raw phones for " + aWord + ": " + raw);
+  return "/" + RiTa.Analyzer.phonesToIpa(raw) + "/";
 }
 
 class Bubble {

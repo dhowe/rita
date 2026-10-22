@@ -63,7 +63,7 @@ public class Tagger {
         if (conj.IRREG_VERBS_NOLEX.containsKey(word)) {
             return true;
         }
-        List<String> pos = allTags(word, opts);
+        List<String> pos = allTagsList(word, opts);
         return anyIn(pos, VERBS);
     }
 
@@ -72,16 +72,16 @@ public class Tagger {
     }
 
     public boolean isNoun(String word) {
-        List<String> pos = allTags(word, Map.of("noGuessing", true));
+        List<String> pos = allTagsList(word, Map.of("noGuessing", true));
         return anyIn(pos, NOUNS);
     }
 
     public boolean isAdverb(String word) {
-        return anyIn(allTags(word), ADVS);
+        return anyIn(allTagsList(word, Map.of()), ADVS);
     }
 
     public boolean isAdjective(String word) {
-        return anyIn(allTags(word), ADJS);
+        return anyIn(allTagsList(word, Map.of()), ADJS);
     }
 
     public boolean hasTag(List<String> choices, String tag) {
@@ -135,7 +135,25 @@ public class Tagger {
         return "";
     }
 
-    public List<String> allTags(String word, Map<String, Object> options) {
+    public String[] allTags(String word, Map<String, Object> options) {
+        return toArray(allTagsList(word, options));
+    }
+
+    public String[] allTags(String word, boolean simple) {
+        return allTags(word, Map.of("simple", simple));
+    }
+
+    public String[] allTags(String word) {
+        return allTags(word, Map.of());
+    }
+
+    /** JS {@code allTags(array)} — a non-string input yields no tags. */
+    public String[] allTags(String[] words) {
+        return new String[0];
+    }
+
+    /** List-returning form of {@link #allTags}, used by internal callers and {@code hasTag}. */
+    List<String> allTagsList(String word, Map<String, Object> options) {
         List<String> tags = new ArrayList<>();
         boolean noGuessing = truthy(options.get("noGuessing"));
         boolean noDerivations = truthy(options.get("noDerivations"));
@@ -159,17 +177,8 @@ public class Tagger {
         return tags;
     }
 
-    public List<String> allTags(String word, boolean simple) {
-        return allTags(word, Map.of("simple", simple));
-    }
-
-    public List<String> allTags(String word) {
-        return allTags(word, Map.of());
-    }
-
-    /** JS {@code allTags(array)} — a non-string input yields no tags. */
-    public List<String> allTags(String[] words) {
-        return new ArrayList<>();
+    private static String[] toArray(List<String> list) {
+        return list.toArray(new String[0]);
     }
 
     public Object tag(String word, Map<String, Object> options) {
@@ -230,7 +239,7 @@ public class Tagger {
             } else if (word.length() == 1) {
                 result[i] = handleSingleLetter(word);
             } else {
-                List<String> opts2 = allTags(word, Map.of("noGuessingOnHyphenated", true));
+                List<String> opts2 = allTagsList(word, Map.of("noGuessingOnHyphenated", true));
                 choices[i] = opts2;
                 result[i] = opts2.isEmpty() ? HYPH : opts2.get(0);
             }
@@ -358,7 +367,7 @@ public class Tagger {
                         break;
                     }
                 }
-                if (allJJ && allTags(word).contains("jj")) {
+                if (allJJ && allTagsList(word, Map.of()).contains("jj")) {
                     tag = "jj";
                 }
             }
@@ -397,8 +406,8 @@ public class Tagger {
         String[] parts = word.split("-");
         String firstPart = parts[0];
         String lastPart = parts[parts.length - 1];
-        List<String> firstPartAllTags = allTags(firstPart);
-        List<String> lastPartAllTags = allTags(lastPart);
+        List<String> firstPartAllTags = allTagsList(firstPart, Map.of());
+        List<String> lastPartAllTags = allTagsList(lastPart, Map.of());
 
         if (parts.length == 2 && VERB_PREFIX.contains(parts[0]) && startsWith(lastPartAllTags, "vb")) {
             tag = firstMatch(lastPartAllTags, "vb");
@@ -407,7 +416,7 @@ public class Tagger {
         } else if (startsWith(firstPartAllTags, "cd")) {
             boolean allCD = true;
             for (int z = 1; z < parts.length; z++) {
-                if (!startsWith(allTags(parts[z]), "cd")) {
+                if (!startsWith(allTagsList(parts[z], Map.of()), "cd")) {
                     allCD = false;
                     break;
                 }
@@ -434,7 +443,7 @@ public class Tagger {
             } else {
                 boolean lastNounIsMajor = true;
                 for (int z = 0; z < parts.length - 1; z++) {
-                    List<String> t = allTags(parts[z]);
+                    List<String> t = allTagsList(parts[z], Map.of());
                     if (!(startsWith(t, "j") || startsWith(t, "n") || t.contains("dt") || t.contains("in"))) {
                         lastNounIsMajor = false;
                         break;
@@ -617,7 +626,7 @@ public class Tagger {
         }
     }
 
-    private boolean isLikelyPlural(String word) {
+    public boolean isLikelyPlural(String word) {
         return lexHas("n", RiTa.singularize(word));
     }
 

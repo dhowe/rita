@@ -93,6 +93,13 @@ export default class RiMarkov {
     return (numSentences === 1) ? result[0] : result;
   }
 
+  /*
+   * For API consistency only; delegates to generate() with numSentences=1.
+   */
+  generate1(n, prompt = [], opts = {}) {
+    return this.generate(n, prompt, { ...opts, numSentences: 1 });
+  }
+
   addText(...args) {
     return this.model.addText(...args);
   }

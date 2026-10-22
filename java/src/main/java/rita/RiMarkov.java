@@ -112,8 +112,12 @@ public class RiMarkov {
         return stream((Object) opts, null, null);
     }
 
-    /** JS {@code generate(n, prompt, opts)} — String when numSentences==1, else List. */
-    public Object generate(Object n, Object prompt, Map<String, Object> opts) {
+    /**
+     * JS {@code generate(n, prompt, opts)} — returns the generated sentences as a
+     * {@code String[]} (one element per {@code numSentences}, default 1). Use
+     * {@link #generate1} for the single-sentence convenience that returns a {@code String}.
+     */
+    public String[] generate(Object n, Object prompt, Map<String, Object> opts) {
         Object[] resolved = _resolveArgs(n, prompt, opts);
         @SuppressWarnings("unchecked")
         List<String> promptList = (List<String>) resolved[0];
@@ -129,31 +133,61 @@ public class RiMarkov {
         Map<String, Object> genOpts = new LinkedHashMap<>(merged);
         genOpts.put("numSentences", numSentences);
         List<String> result = model.generateSentences(this.n, promptList, genOpts);
-        return numSentences == 1 ? result.get(0) : result;
+        return result.toArray(new String[0]);
     }
 
-    public Object generate() {
+    /** Single-sentence form of {@link #generate}: returns the first generated sentence. */
+    public String generate1(Object n, Object prompt, Map<String, Object> opts) {
+        String[] result = generate(n, prompt, opts);
+        return result.length > 0 ? result[0] : "";
+    }
+
+    public String[] generate() {
         return generate(null, null, null);
     }
 
-    public Object generate(int n) {
+    public String[] generate(int n) {
         return generate((Object) n, null, null);
     }
 
-    public Object generate(Map<String, Object> opts) {
+    public String[] generate(Map<String, Object> opts) {
         return generate((Object) opts, null, null);
     }
 
-    public Object generate(int n, Map<String, Object> opts) {
+    public String[] generate(int n, Map<String, Object> opts) {
         return generate((Object) n, opts, null);
     }
 
-    public Object generate(List<String> prompt, Map<String, Object> opts) {
+    public String[] generate(List<String> prompt, Map<String, Object> opts) {
         return generate((Object) prompt, opts, null);
     }
 
-    public Object generate(int n, Object prompt, Map<String, Object> opts) {
+    public String[] generate(int n, Object prompt, Map<String, Object> opts) {
         return generate((Object) n, prompt, opts);
+    }
+
+    public String generate1() {
+        return generate1(null, null, null);
+    }
+
+    public String generate1(int n) {
+        return generate1((Object) n, null, null);
+    }
+
+    public String generate1(Map<String, Object> opts) {
+        return generate1((Object) opts, null, null);
+    }
+
+    public String generate1(int n, Map<String, Object> opts) {
+        return generate1((Object) n, opts, null);
+    }
+
+    public String generate1(List<String> prompt, Map<String, Object> opts) {
+        return generate1((Object) prompt, opts, null);
+    }
+
+    public String generate1(int n, Object prompt, Map<String, Object> opts) {
+        return generate1((Object) n, prompt, opts);
     }
 
     /** JS {@code addText}. */

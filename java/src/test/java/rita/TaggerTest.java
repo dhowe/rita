@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -574,7 +575,7 @@ class TaggerTest {
         // JS: expect(!RiTa.isNoun(["rabbit"])).true — ditto.
 
         // verbs (esp. past particle)
-        assertFalse(RiTa.isNoun("heard"), "heard: " + RiTa.tagger.allTags("heard"));
+        assertFalse(RiTa.isNoun("heard"), "heard: " + Arrays.toString(RiTa.tagger.allTags("heard")));
         assertFalse(RiTa.isNoun("deterred"));
     }
 
@@ -726,69 +727,69 @@ class TaggerTest {
 
     @Test
     void shouldCallAllTags() {
-        assertEquals(List.of("nn"), RiTa.tagger.allTags("monkey"));
-        assertEquals(List.of("nns"), RiTa.tagger.allTags("monkeys"));
-        assertEquals(List.of(), RiTa.tagger.allTags(""));
-        assertEquals(List.of(), RiTa.tagger.allTags(new String[]{"monkey"}));
-        assertEquals(List.of(), RiTa.tagger.allTags("hates", Map.of("noDerivations", true)));
-        assertEquals(List.of("vbz"), RiTa.tagger.allTags("satisfies"));
-        assertEquals(List.of("vbz"), RiTa.tagger.allTags("falsifies"));
-        assertTrue(RiTa.tagger.allTags("hates").contains("vbz"));
-        assertTrue(RiTa.tagger.allTags("hates").contains("nns"));
-        assertTrue(RiTa.tagger.allTags("cakes").contains("nns"));
-        assertTrue(RiTa.tagger.allTags("repossesses").contains("vbz"));
-        assertTrue(RiTa.tagger.allTags("thieves").contains("nns"));
-        assertTrue(RiTa.tagger.allTags("thieves").contains("vbz"));
-        assertTrue(RiTa.tagger.allTags("hated").contains("vbd"));
-        assertTrue(RiTa.tagger.allTags("hated").contains("vbn"));
-        assertTrue(RiTa.tagger.allTags("owed").contains("vbd"));
-        assertTrue(RiTa.tagger.allTags("owed").contains("vbn"));
-        assertTrue(RiTa.tagger.allTags("assenting").contains("vbg"));
-        assertTrue(RiTa.tagger.allTags("hating").contains("vbg"));
-        assertTrue(RiTa.tagger.allTags("feet").contains("nns"));
-        assertTrue(RiTa.tagger.allTags("men").contains("nns"));
+        assertEquals(List.of("nn"), Arrays.asList(RiTa.tagger.allTags("monkey")));
+        assertEquals(List.of("nns"), Arrays.asList(RiTa.tagger.allTags("monkeys")));
+        assertEquals(List.of(), Arrays.asList(RiTa.tagger.allTags("")));
+        assertEquals(List.of(), Arrays.asList(RiTa.tagger.allTags(new String[]{"monkey"})));
+        assertEquals(List.of(), Arrays.asList(RiTa.tagger.allTags("hates", Map.of("noDerivations", true))));
+        assertEquals(List.of("vbz"), Arrays.asList(RiTa.tagger.allTags("satisfies")));
+        assertEquals(List.of("vbz"), Arrays.asList(RiTa.tagger.allTags("falsifies")));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("hates")).contains("vbz"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("hates")).contains("nns"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("cakes")).contains("nns"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("repossesses")).contains("vbz"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("thieves")).contains("nns"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("thieves")).contains("vbz"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("hated")).contains("vbd"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("hated")).contains("vbn"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("owed")).contains("vbd"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("owed")).contains("vbn"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("assenting")).contains("vbg"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("hating")).contains("vbg"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("feet")).contains("nns"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("men")).contains("nns"));
         // given up
-        assertTrue(RiTa.tagger.allTags("ashdj").contains("nn"));
-        assertTrue(RiTa.tagger.allTags("kahsdly").contains("rb"));
-        assertTrue(RiTa.tagger.allTags("asdkasws").contains("nns"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("ashdj")).contains("nn"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("kahsdly")).contains("rb"));
+        assertTrue(Arrays.asList(RiTa.tagger.allTags("asdkasws")).contains("nns"));
 
         // https://github.com/dhowe/rita/issues/177
-        assertEquals(List.of("vbd", "nn", "rb"), RiTa.tagger.allTags("bit"));
-        assertEquals(List.of("vbd", "jj", "rb"), RiTa.tagger.allTags("broke"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("called"));
-        assertEquals(List.of("vbn", "jj", "vbd"), RiTa.tagger.allTags("committed"));
-        assertEquals(List.of("jj", "vbd", "vbn"), RiTa.tagger.allTags("computerized"));
-        assertEquals(List.of("vbd", "jj", "vbn"), RiTa.tagger.allTags("concerned"));
-        assertEquals(List.of("vbd", "vbn", "jj"), RiTa.tagger.allTags("discriminated"));
-        assertEquals(List.of("vbd", "jj", "vbn"), RiTa.tagger.allTags("ended"));
-        assertEquals(List.of("vbn", "vbd", "jj"), RiTa.tagger.allTags("expected"));
-        assertEquals(List.of("vbd", "jj", "vbn"), RiTa.tagger.allTags("finished"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("gained"));
+        assertEquals(List.of("vbd", "nn", "rb"), Arrays.asList(RiTa.tagger.allTags("bit")));
+        assertEquals(List.of("vbd", "jj", "rb"), Arrays.asList(RiTa.tagger.allTags("broke")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("called")));
+        assertEquals(List.of("vbn", "jj", "vbd"), Arrays.asList(RiTa.tagger.allTags("committed")));
+        assertEquals(List.of("jj", "vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("computerized")));
+        assertEquals(List.of("vbd", "jj", "vbn"), Arrays.asList(RiTa.tagger.allTags("concerned")));
+        assertEquals(List.of("vbd", "vbn", "jj"), Arrays.asList(RiTa.tagger.allTags("discriminated")));
+        assertEquals(List.of("vbd", "jj", "vbn"), Arrays.asList(RiTa.tagger.allTags("ended")));
+        assertEquals(List.of("vbn", "vbd", "jj"), Arrays.asList(RiTa.tagger.allTags("expected")));
+        assertEquals(List.of("vbd", "jj", "vbn"), Arrays.asList(RiTa.tagger.allTags("finished")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("gained")));
 
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("got"));
-        assertEquals(List.of("vbn", "jj", "vbd"), RiTa.tagger.allTags("increased"));
-        assertEquals(List.of("vbn", "vbd", "jj"), RiTa.tagger.allTags("involved"));
-        assertEquals(List.of("vbn", "vbd"), RiTa.tagger.allTags("launched"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("led"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("lived"));
-        assertEquals(List.of("vbd"), RiTa.tagger.allTags("oversaw"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("paled"));
-        assertEquals(List.of("jj", "vbd", "vbn"), RiTa.tagger.allTags("prepaid"));
-        assertEquals(List.of("vbn", "jj", "vbd"), RiTa.tagger.allTags("pressured"));
-        assertEquals(List.of("vbn", "vbd"), RiTa.tagger.allTags("proliferated"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("remade"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("reopened"));
-        assertEquals(List.of("vbd", "jj", "vbn"), RiTa.tagger.allTags("reported"));
-        assertEquals(List.of("vbd", "vbn"), RiTa.tagger.allTags("resold"));
-        assertEquals(List.of("vbd", "vbn", "jj"), RiTa.tagger.allTags("settled"));
-        assertEquals(List.of("vbd", "jj", "vbn"), RiTa.tagger.allTags("started"));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("got")));
+        assertEquals(List.of("vbn", "jj", "vbd"), Arrays.asList(RiTa.tagger.allTags("increased")));
+        assertEquals(List.of("vbn", "vbd", "jj"), Arrays.asList(RiTa.tagger.allTags("involved")));
+        assertEquals(List.of("vbn", "vbd"), Arrays.asList(RiTa.tagger.allTags("launched")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("led")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("lived")));
+        assertEquals(List.of("vbd"), Arrays.asList(RiTa.tagger.allTags("oversaw")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("paled")));
+        assertEquals(List.of("jj", "vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("prepaid")));
+        assertEquals(List.of("vbn", "jj", "vbd"), Arrays.asList(RiTa.tagger.allTags("pressured")));
+        assertEquals(List.of("vbn", "vbd"), Arrays.asList(RiTa.tagger.allTags("proliferated")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("remade")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("reopened")));
+        assertEquals(List.of("vbd", "jj", "vbn"), Arrays.asList(RiTa.tagger.allTags("reported")));
+        assertEquals(List.of("vbd", "vbn"), Arrays.asList(RiTa.tagger.allTags("resold")));
+        assertEquals(List.of("vbd", "vbn", "jj"), Arrays.asList(RiTa.tagger.allTags("settled")));
+        assertEquals(List.of("vbd", "jj", "vbn"), Arrays.asList(RiTa.tagger.allTags("started")));
     }
 
     @Test
     void shouldCallHasTag() {
         assertFalse(RiTa.tagger.hasTag());
         assertFalse(RiTa.tagger.hasTag("nn adj", "nn"));
-        assertTrue(RiTa.tagger.hasTag(RiTa.tagger.allTags("monkey"), "nn"));
+        assertTrue(RiTa.tagger.hasTag(Arrays.asList(RiTa.tagger.allTags("monkey")), "nn"));
     }
 
     @Test

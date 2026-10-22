@@ -16,6 +16,7 @@ void addSyllables(String sylls, Bubble[] bubbles) {
   for (int i = 0, past = 0; i < syllables.length; i++) {
     String[] phs = syllables[i].split("-");
     for (int j = 1; j < phs.length; j++) {
+      if (past+j >= bubbles.length) break; // phones can exceed maxWordLength
       bubbles[past+j].adjustDistance(-20 * j);
     }
     past += phs.length;
@@ -31,6 +32,7 @@ void addStresses(String stresses, String syllables, Bubble[] bubbles) {
     // if the syllable is stressed, grow its bubbles
     if (Integer.parseInt(stress[i]) == 1) {
       for (int j = 0; j < phs.length; j++) {
+        if (past+j >= bubbles.length) break; // phones can exceed maxWordLength
         bubbles[past+j].grow();
       }
     }

@@ -604,7 +604,7 @@
       "name": "posInline",
       "example": "<br/>sentence = \"The doctors treated dogs\";<br/>pos = RiTa.posInline(sentence);<br/><br/>tokenArray = RiTa.tokenize(sentence);<br/>pos = RiTa.posInline(tokenArray);<br/><br/>",
       "description": "Takes an string returns a combined string of the form:<p><pre>'The/dt doctor/nn treated/vbd dogs/nns'</pre> using lowercased tags from the <a href='../../postags.html'>Penn tag set</a>",
-      "syntax": "RiTa.posInline(word);<br>RiTa.posInline(word, simpleTags);<br>RiTa.posInline(word, option);",
+      "syntax": "RiTa.posInline(word);<br>RiTa.posInline(word, simpleTags);<br>RiTa.posInline(word, options);",
       "parameters": [
         {
           "type": "String or String[]",

@@ -132,6 +132,10 @@ public final class RiTa {
         return new RiGrammar(rules, context);
     }
 
+    public static RiGrammar grammar(Object rules, Map<String, Object> context, Map<String, Object> options) {
+        return new RiGrammar(rules, context, options);
+    }
+
     public static void addTransform(String name, Object definition) {
         riscript.addTransform(name, definition);
     }
@@ -509,10 +513,6 @@ public final class RiTa {
         return rita.Stemmer.stem(word);
     }
 
-    public static boolean findStem(String word) {
-        throw notPorted("findStem");
-    }
-
     public static String presentPart(String verbWord) {
         return conjugator.presentPart(verbWord);
     }
@@ -686,8 +686,16 @@ public final class RiTa {
         private Stemmer() {
         }
 
+        public static String stem(String word) {
+            return rita.Stemmer.stem(word);
+        }
+
         public static String[] stemAll(String[] words) {
             return rita.Stemmer.stemAll(words);
+        }
+
+        public static String stemEnglish(String word) {
+            return rita.Stemmer.stemEnglish(word);
         }
     }
 
