@@ -7,7 +7,7 @@ Tools for generative natural language — the Java implementation of RiTa.
 ## Build
 
 ```sh
-./gradlew build                # compile, test, and build rita.jar + rita.zip + rita.txt
+./gradlew build                # compile, test, and build rita.jar + rita.{zip,txt,pdex}
 ./gradlew test                 # run tests only
 ./gradlew javadoc              # API reference docs
 ./gradlew processingLibrary    # build/distributions/rita.zip (Processing library)
@@ -16,7 +16,8 @@ Tools for generative natural language — the Java implementation of RiTa.
 For Processing Manager submission, the release must host `rita.zip` and `rita.txt` (a copy
 of `library.properties`) at the same stable URL, differing only by extension — see the
 [Library Guidelines](https://github.com/processing/processing4/wiki/Library-Guidelines#release-artifacts).
-Both are produced into `build/distributions/` by `./gradlew build`.
+`rita.pdex` is also produced: byte-identical to the zip, it enables direct install via a
+`pde://` link. All three land in `build/distributions/` from `./gradlew build`.
 
 The artifact is `org.rednoise:rita`, versioned in [`gradle.properties`](gradle.properties).
 The version fields in `library.properties` are expanded from it at build time

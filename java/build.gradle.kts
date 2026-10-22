@@ -201,6 +201,21 @@ val processingLibraryPropertiesTxt = tasks.register<Copy>("processingLibraryProp
     into(layout.buildDirectory.dir("distributions"))
 }
 
+// The .pdex is byte-identical to the .zip, only renamed — it lets the PDE install the
+// library directly via a pde:// link. Kept in step with the zip so the three release
+// artifacts can never drift apart.
+val processingLibraryPdex = tasks.register<Copy>("processingLibraryPdex") {
+    description = "Emit rita.pdex (identical to rita.zip) for pde:// installs"
+    group = "distribution"
+    // All three artifacts land in build/distributions, so order against the sibling
+    // Copy tasks that write there too — otherwise Gradle flags the shared output dir.
+    dependsOn(processingLib, processingLibraryPropertiesTxt)
+    from(processingLib) {
+        rename { "rita.pdex" }
+    }
+    into(layout.buildDirectory.dir("distributions"))
+}
+
 val checkLibraryVersion = tasks.register<Task>("checkLibraryVersion") {
     description = "Fail if the expanded library.properties disagrees with gradle.properties"
     group = "verification"
@@ -226,4 +241,6 @@ val checkLibraryVersion = tasks.register<Task>("checkLibraryVersion") {
 }
 
 tasks.named("check") { dependsOn(checkLibraryVersion) }
-tasks.named("build") { dependsOn(processingLib, processingLibraryPropertiesTxt) }
+tasks.named("build") {
+    dependsOn(processingLib, processingLibraryPropertiesTxt, processingLibraryPdex)
+}
