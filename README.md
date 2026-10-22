@@ -85,3 +85,32 @@ GitHub Actions workflows are path-scoped and trigger when their subtree (or `sha
 |---|---|---|
 | `.github/workflows/js.yml` | `js/**`, `shared/**` | Node 18, 20, 22 |
 | `.github/workflows/java.yml` | `java/**`, `shared/**` | JDK 11 · ubuntu + macOS |
+
+---
+
+## Releasing
+
+`scripts/release.sh` does an end-to-end release, writing the various versions into the places 
+they live, builds and tests, publishes to npm (for `all`/`js`), commits + tags + pushes, and
+creates the GitHub release with the Processing artifacts.
+
+```sh
+scripts/release.sh 4.1.0            # both ports: tag, GitHub release, npm
+scripts/release.sh 4.1.0 java       # Java/Processing only (no npm publish)
+scripts/release.sh 4.1.0 js         # npm only
+scripts/release.sh 4.1.0 --dry-run  # print what would happen, touch nothing
+```
+
+The version lives in exactly these files (everything else is derived at build time):
+
+| File | Field | Notes |
+|---|---|---|
+| `java/gradle.properties` | `version=X` | drives `library.properties` (`version=410`, `prettyVersion=4.1.0`) |
+| `java/src/main/java/rita/RiTa.java` | `VERSION = "X"` | |
+| `js/package.json` | `"version": "X"` | `npm version` also fixes `package-lock.json` |
+| `js/src/rita.js` | injected by tsup | from `package.json` at build time |
+
+Checks: the tree must be clean and on `main`; the tag must not already exist; the patch
+must stay `< 10` for Java (the Processing Manager revision is `major*100 + minor*10 +
+patch`, so `4.0.10` would collide with `4.1.0`); prereleases (`X.Y.Z-beta.N`) are npm-only
+because the Java revision can't be derived from a dotted prerelease.
