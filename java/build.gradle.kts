@@ -190,14 +190,18 @@ val checkLibraryVersion = tasks.register<Task>("checkLibraryVersion") {
     val expanded = layout.buildDirectory.file("generated/library/library.properties")
     inputs.file(expanded)
     inputs.property("version", project.version.toString())
+    // Capture at configuration time: touching Task.project inside doLast is deprecated
+    // (Task.project at execution time) and fails under the configuration cache in Gradle 10.
+    val expectedPretty = project.version.toString()
+    val expectedNumeric = versionNum.toString()
     doLast {
         val props = Properties().apply { expanded.get().asFile.inputStream().use { load(it) } }
         val pretty = props.getProperty("prettyVersion")
         val numeric = props.getProperty("version")
-        if (pretty != project.version.toString() || numeric != versionNum.toString()) {
+        if (pretty != expectedPretty || numeric != expectedNumeric) {
             throw GradleException(
                 "library.properties (prettyVersion=$pretty, version=$numeric) does not match " +
-                    "project version '${project.version}' (numeric $versionNum).",
+                    "project version '$expectedPretty' (numeric $expectedNumeric).",
             )
         }
     }
