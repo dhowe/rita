@@ -166,6 +166,7 @@ class RiTa {
 
   /**
    * Returns true if the character is a vowel, else false
+   * @deprecated 
    * @param {string} char 
    * @returns {boolean} - true if the character is a vowel, else false
    */
@@ -175,6 +176,7 @@ class RiTa {
 
   /**
    * Returns true if the character is a consonant, else false
+   * @deprecated 
    * @param {string} char 
    * @returns {boolean} - true if the character is a consonant, else false
    */

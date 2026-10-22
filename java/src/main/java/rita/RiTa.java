@@ -225,11 +225,13 @@ public final class RiTa {
         return toks.length > 0 && QUESTIONS_SET.contains(toks[0].toLowerCase());
     }
 
+    /** @deprecated */
     public static boolean isVowel(String charOrWord) {
         return charOrWord != null && charOrWord.length() == 1
             && VOWELS.contains(charOrWord.toLowerCase());
     }
 
+    /** @deprecated */
     public static boolean isConsonant(String charOrWord) {
         return charOrWord != null && charOrWord.length() == 1
             && !VOWELS.contains(charOrWord.toLowerCase())
