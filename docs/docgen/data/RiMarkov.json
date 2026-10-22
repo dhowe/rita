@@ -94,6 +94,32 @@
       ]
     },
     {
+      "name": "generate1",
+      "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>// Generate a single sentence<br/>sent = rm.generate1();<br/><br/>// Generate from a prompt<br/>sent = rm.generate1([\"the\", \"cat\"]);",
+      "description": "Convenience method that generates exactly one sentence, returning it as a single string. For API consistency only; delegates to <a href=\"../generate/\">generate()</a> with <b>numSentences=1</b>. Accepts the same call signatures and options as <b>generate()</b>.",
+      "syntax": "generate1();<br/>generate1(opts);<br/>generate1(prompt, opts);<br/>generate1(n, prompt, opts);",
+      "parameters": [
+        {
+          "type": "int",
+          "desc": "n-gram order (optional, uses constructor value if omitted)"
+        },
+        {
+          "type": "String[]",
+          "desc": "prompt — initial tokens to seed the generation (optional)"
+        },
+        {
+          "type": "Object",
+          "desc": "options — see <a href=\"../generate/\">generate()</a> for the full list of options"
+        }
+      ],
+      "returns": [
+        {
+          "type": "String",
+          "desc": "the generated sentence"
+        }
+      ]
+    },
+    {
       "name": "probabilities",
       "example": "rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>// next-word distribution after 'the cat'<br/>dist = rm.probabilities([\"the\", \"cat\"]);<br/>// -> { sat: 0.5, jumped: 0.3, meowed: 0.2 }<br/><br/>// with temperature<br/>dist = rm.probabilities([\"the\"], { temp: 1.5 });",
       "description": "Returns the full set of possible next tokens as an object, given an array of tokens as context.<br/><br/>If no tokens are provided, returns the distribution following the implicit start token.<br/>Special start/end tokens are excluded from the result unless <b>options.allowSpecial</b> is set.",

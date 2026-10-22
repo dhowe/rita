@@ -1,5 +1,4 @@
 import rita.*;
-
 import java.util.Map;
 
 String pos="", word = "", phones;
@@ -70,6 +69,5 @@ void nextWord() { // every 4 sec
 }
 
 String ipaPhones(String aWord) {
-  String raw = RiTa.lexicon.rawPhones(aWord);
-  return "/" + Analyzer.arpabetToIpa(raw) + "/";
+  return "/" + RiTa.phones(aWord, Map.of("ipaPhones", true))+ "/";
 }

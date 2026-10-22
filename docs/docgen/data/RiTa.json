@@ -372,7 +372,7 @@
         },
         {
           "type": "Object<br>(or Map in Java)",
-          "desc": "options (optional)<br><br>{boolean} <b>options.simple:</b><br> use simple tags or not, default=false<br><br>{boolean} <b>options.silent</b>:<br> if true, will not output logs to console when running (default=false)"
+          "desc": "options (optional)<br><br>{boolean} <b>options.simple:</b><br> use simple tags or not, default=false<br><br>{boolean} <b>options.ipaPhones:</b><br> if true, return phones in <a target=_new href='https://en.wikipedia.org/wiki/International_Phonetic_Alphabet'>IPA</a> format instead of Arpabet (default=false)<br><br>{boolean} <b>options.silent</b>:<br> if true, will not output logs to console when running (default=false)"
         }
       ],
       "returns": [
@@ -1048,6 +1048,42 @@
         {
           "type": "boolean",
           "desc": "true if the word is a stop word, according to RiTa.STOP_WORDS"
+        }
+      ]
+    },
+    {
+      "name": "isVowel",
+      "example": "RiTa.isVowel(\"a\"); // returns -> true<br/>RiTa.isVowel(\"b\"); // returns -> false",
+      "description": "Returns true if the character is a vowel (a, e, i, o, u, case-insensitive), else false.",
+      "syntax": "RiTa.isVowel(char);",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "the character to test"
+        }
+      ],
+      "returns": [
+        {
+          "type": "boolean",
+          "desc": "true if the character is a vowel, else false"
+        }
+      ]
+    },
+    {
+      "name": "isConsonant",
+      "example": "RiTa.isConsonant(\"b\"); // returns -> true<br/>RiTa.isConsonant(\"a\"); // returns -> false",
+      "description": "Returns true if the character is a consonant (a letter that is not a vowel), else false.",
+      "syntax": "RiTa.isConsonant(char);",
+      "parameters": [
+        {
+          "type": "String",
+          "desc": "the character to test"
+        }
+      ],
+      "returns": [
+        {
+          "type": "boolean",
+          "desc": "true if the character is a consonant, else false"
         }
       ]
     },

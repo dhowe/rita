@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<!-- DOCGEN: THIS CLASS IS AUTO_GENERATED - DO NOT EDIT BY HAND! -->
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noodp">
+  <link rel="icon" type="image/x-icon" href="../../../img/favicon2.png">
+
+  <title>RiTa Reference — RiMarkov.generate1</title>
+
+  <link rel="stylesheet" href="../../../css/home.css">
+  <link rel="stylesheet" href="../../../css/page.css">
+  <script src="../../../js/home.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../../../index.html">
+        <img src="../../../img/RiTaLogo.png" alt="">
+        <span>RiTa</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="../../../index.html#download">Download</a></li>
+          <li><a href="../../../index.html#learning">Learning</a></li>
+          <li><a href="../../../index.html#examples">Examples</a></li>
+          <li><a href="../../../index.html#gallery">Gallery</a></li>
+          <li><a href="../../../index.html#reference">Reference</a></li>
+          <li>
+            <a class="icon" href="https://github.com/dhowe/ritajs" target="_blank" rel="noopener"
+               aria-label="RiTa on GitHub">
+              <svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2.3z"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-main" id="main">
+    <div class="wrap">
+
+      <ol class="breadcrumb">
+        <li><a href="../../../index.html">Home</a></li>
+        <li><a href="../../../index.html#reference">Reference</a></li>
+        <li><a href="../../../index.html#reference">RiMarkov</a></li>
+        <li class="current">generate1</li>
+      </ol>
+
+      <div class="ref-layout">
+        <nav class="ref-side" aria-label="Reference">
+          <ul>
+            <li><a href="../../../index.html#reference">Reference index</a></li>
+            <li><a href="../../phones.html">Phonemes</a></li>
+            <li><a href="../../postags.html">POS tags</a></li>
+            <li><a href="../../riscript.html">RiScript</a></li>
+          </ul>
+        </nav>
+
+        <div class="ref-body">
+          <table cellpadding="0" cellspacing="0" border="0" class="ref-item">
+            <tr class="name-row">
+              <th scope="row">Class</th>
+              <td>
+                <h3>RiMarkov</h3>
+              </td>
+            </tr>
+
+            <tr class="name-row">
+              <th scope="row">Name</th>
+              <td>
+                <h4>generate1 </h4>
+              </td>
+            </tr>
+
+            <tr class="">
+              <th scope="row">Description</th>
+              <td>Convenience method that generates exactly one sentence, returning it as a single string. For API consistency only; delegates to <a href="../generate/">generate()</a> with <b>numSentences=1</b>. Accepts the same call signatures and options as <b>generate()</b>.</td>
+            </tr>
+
+            <tr class='Example'>
+              <th scope='row'>Example</th>
+              <td>
+                <div class="example">
+                  <pre>rm = new RiMarkov(3);<br/>rm.addText(theText);<br/><br/>// Generate a single sentence<br/>sent = rm.generate1();<br/><br/>// Generate from a prompt<br/>sent = rm.generate1(["the", "cat"]);</pre>
+                </div>
+              </td>
+            </tr>
+
+            <tr class='Syntax'>
+              <th scope="row">Syntax</th>
+              <td>
+                <pre>generate1();<br/>generate1(opts);<br/>generate1(prompt, opts);<br/>generate1(n, prompt, opts);</pre>
+              </td>
+            </tr>
+
+            <tr class='Parameters'>
+              <th scope="row">Parameters</th>
+              <td>
+                <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>int</th><td width='75%'>n-gram order (optional, uses constructor value if omitted)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>String[]</th><td width='75%'>prompt — initial tokens to seed the generation (optional)</td></tr><tr class=''><th width='25%' scope='row' class=nobold>Object</th><td width='75%'>options — see <a href="../generate/">generate()</a> for the full list of options</td></tr></table>
+              </td>
+            </tr>
+
+            <tr class='Returns'>
+              <th scope="row">Returns</th>
+              <td>
+                <table cellpadding="0" cellspacing="0" border="0" class="sub-table"><tr class=''><th width='25%' scope='row' class=nobold>String</th><td width='75%'>the generated sentence</td></tr></table>
+              </td>
+            </tr>
+
+            <tr class='Related' style='display:none'>
+              <th scope="row">Related</th>
+              <td>tmp_related</td>
+            </tr>
+
+            <tr class='RelatedConstants' style='display:none'>
+              <th scope="row">Constants</th>
+              <td>tmp_relatedConstants</td>
+            </tr>
+
+            <tr class='Note' style='display:none'>
+              <th scope="row">Note</th>
+              <td>tmp_note</td>
+            </tr>
+
+            <tr class="">
+              <th scope="row">Platform</th>
+              <td>Java / JavaScript</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Released under the GPL License. Copyright &copy; 2020&ndash;2026 by
+        <a href="https://rednoise.org/daniel/" target="_blank" rel="noopener">Daniel Howe</a>.</p>
+      <div class="social">
+        <a class="icon" href="https://github.com/dhowe/ritajs" target="_blank" rel="noopener"
+           aria-label="RiTa on GitHub">
+          <svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2.3z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
