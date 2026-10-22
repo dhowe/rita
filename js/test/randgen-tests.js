@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { readFileSync } from 'fs';
+import { existsSync, readFileSync } from 'fs';
 import { RiTa } from './index.js';
 
 /**
@@ -10,9 +10,13 @@ import { RiTa } from './index.js';
  * identical output for the same seeds.
  */
 
-const fixtures = JSON.parse(
-  readFileSync(new URL('../../shared/randgen-fixtures.json', import.meta.url))
-);
+// This file runs from both test/ and test/dist/ (the build copies it into dist/), so
+// resolve the fixture against both candidate depths relative to this module.
+const fixtureUrl = ['../../shared/randgen-fixtures.json', '../../../shared/randgen-fixtures.json']
+  .map((p) => new URL(p, import.meta.url))
+  .find((u) => existsSync(u));
+if (!fixtureUrl) throw new Error('randgen-fixtures.json not found relative to ' + import.meta.url);
+const fixtures = JSON.parse(readFileSync(fixtureUrl));
 
 const R = RiTa.randomizer;
 

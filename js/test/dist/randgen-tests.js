@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { readFileSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import { RiTa } from "./index.js";
-const fixtures = JSON.parse(
-  readFileSync(new URL("../../shared/randgen-fixtures.json", import.meta.url))
-);
+const fixtureUrl = ["../../shared/randgen-fixtures.json", "../../../shared/randgen-fixtures.json"].map((p) => new URL(p, import.meta.url)).find((u) => existsSync(u));
+if (!fixtureUrl) throw new Error("randgen-fixtures.json not found relative to " + import.meta.url);
+const fixtures = JSON.parse(readFileSync(fixtureUrl));
 const R = RiTa.randomizer;
 describe("RandGen", function() {
   this.timeout(1e4);
