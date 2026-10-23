@@ -22,53 +22,44 @@ def _arr_from(x, fn=None):
         return [fn() if fn else None for _ in range(x["length"])]
     return list(x)
 arr = type("arr", (), {"isArray": staticmethod(lambda x: isinstance(x, list)), "from": staticmethod(_arr_from)})
-def __typeof(x):
+def _typeof(fn):
+    try: x = fn()
+    except NameError: return "undefined"
+    except AttributeError: return "undefined"
     if x is None: return "undefined"
     if isinstance(x, bool): return "boolean"
     if isinstance(x, str): return "string"
     if isinstance(x, (int, float)): return "number"
     if callable(x): return "function"
     return "object"
-def __indexof(a, x):
+def _indexof(a, x):
     try: return a.index(x)
     except ValueError: return -1
-def __re_compile(p):
+def _re_compile(p):
     return re.compile(p)
 def readFileSync(p):
     return open(p).read()
 def existsSync(p):
     return os.path.exists(p)
-def __is_integer(x):
+def _is_integer(x):
     return isinstance(x, int) and not isinstance(x, bool)
-def __is_finite(x):
+def _is_finite(x):
     return isinstance(x, (int, float)) and x == x and x not in (float("inf"), float("-inf"))
-def __is_nan(x):
+def _is_nan(x):
     return isinstance(x, float) and x != x
-def __url(rel):
+def _url(rel):
     if rel.startswith("./"):
         rel = rel[2:]
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
 
-def ok(a, m):
-    assert ((a) is True), m
-
-def def_(res, m):
-    assert not ((res) is None), m
-
-def eql(a, b, m):
-    assert (a == b)
-
-def eq(a, b, m):
-    assert (a == b)
-
 class TestCore:
     def test_should_have_access_to_statics(self):
-        if (__typeof(process)) == ("undefined"):
+        if (_typeof(lambda: process)) == ("undefined"):
             return
         if (process.env.NODE_ENV) != ("dev"):
-            if (__typeof(process.env.npm_package_version)) == ("undefined"):
+            if (_typeof(lambda: process.env.npm_package_version)) == ("undefined"):
                 console.warn("[WARN] No package version: ignore if running in vscode ")
             else:
                 eql(RiTa.VERSION, process.env.npm_package_version, (("bad version number=\"") + (RiTa.VERSION)) + ("\", "))
@@ -79,7 +70,7 @@ class TestCore:
         res = RiTa.evaluate("It was [honor].art to meet you", 0)
         assert (res == "It was an honor to meet you")
     def test_should_call_addtransform(self):
-        def addRhyme(word):
+        def addRhyme(word=None):
             res = RiTa.lexicon.rhymesSync(word, {"limit": 1})
             return ((word) + (" rhymes with ")) + (RiTa.random(res))
         assert ((RiTa.riscript.transforms.rhymes) is None)
@@ -101,8 +92,8 @@ class TestCore:
         assert (0 <= RiTa.randi(10) <= 9)
         assert (1 <= RiTa.randi(1, 10) <= 9)
         assert (RiTa.randi() == 0)
-        assert ((__is_integer)(RiTa.randi(1, 10)))
-        assert ((__is_integer)(RiTa.randi(10)))
+        assert ((_is_integer)(RiTa.randi(1, 10)))
+        assert ((_is_integer)(RiTa.randi(10)))
     def test_should_call_randomordering(self):
         assert (RiTa.randomOrdering(1) == [0])
         assert (set(RiTa.randomOrdering(2)) == set([0, 1]))
@@ -649,7 +640,7 @@ class TestCore:
         finally:
             RiTa.lexicon.data = orig
     def test_should_use_o_1_set_mirrors_consistent_with_the_word_lists(self):
-        def check(arr, set):
+        def check(arr=None, set=None):
             for w in arr:
                 assert ((w in set) is True), ("missing ") + (w)
         check(RiTa.STOP_WORDS, RiTa.STOP_WORDS_SET)
@@ -683,4 +674,16 @@ class TestCore:
     # (helper hoisted to module scope)
     # (helper hoisted to module scope)
     # (helper hoisted to module scope)
+
+def ok(a=None, m=None):
+    assert ((a) is True), m
+
+def def_(res=None, m=None):
+    assert not ((res) is None), m
+
+def eql(a=None, b=None, m=None):
+    assert (a == b)
+
+def eq(a=None, b=None, m=None):
+    assert (a == b)
 

@@ -22,91 +22,37 @@ def _arr_from(x, fn=None):
         return [fn() if fn else None for _ in range(x["length"])]
     return list(x)
 arr = type("arr", (), {"isArray": staticmethod(lambda x: isinstance(x, list)), "from": staticmethod(_arr_from)})
-def __typeof(x):
+def _typeof(fn):
+    try: x = fn()
+    except NameError: return "undefined"
+    except AttributeError: return "undefined"
     if x is None: return "undefined"
     if isinstance(x, bool): return "boolean"
     if isinstance(x, str): return "string"
     if isinstance(x, (int, float)): return "number"
     if callable(x): return "function"
     return "object"
-def __indexof(a, x):
+def _indexof(a, x):
     try: return a.index(x)
     except ValueError: return -1
-def __re_compile(p):
+def _re_compile(p):
     return re.compile(p)
 def readFileSync(p):
     return open(p).read()
 def existsSync(p):
     return os.path.exists(p)
-def __is_integer(x):
+def _is_integer(x):
     return isinstance(x, int) and not isinstance(x, bool)
-def __is_finite(x):
+def _is_finite(x):
     return isinstance(x, (int, float)) and x == x and x not in (float("inf"), float("-inf"))
-def __is_nan(x):
+def _is_nan(x):
     return isinstance(x, float) and x != x
-def __url(rel):
+def _url(rel):
     if rel.startswith("./"):
         rel = rel[2:]
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
-
-def distribution(res, dump):
-    dist = {}
-    i = 0
-    for i in range(len(res)):
-        if not (dist[res[i]]):
-            dist[res[i]] = 0
-        dist[res[i]] += 1
-    keys = list(obj.keys())
-    for k in keys:
-        dist[k] = (dist[k]) / (len(res))
-        (dump) and (console.log(k, dist[k]))
-    (dump) and (console.log())
-    return dist
-
-def markovEquals(rm, copy):
-    assert (rm.n == copy.n)
-    assert (rm.size() == copy.size())
-
-def __fn_1(_):
-    rm.generate()
-
-def __fn_2(_):
-    rm.generate()
-
-def __fn_3(_):
-    rm = RiTa.markov(3, {"text": 1})
-
-def __fn_4(_):
-    RiTa.markov(3, {"text": False})
-
-def __fn_5(_):
-    Random.pselect()
-
-def __fn_6(_):
-    Random.pselect()
-
-def __fn_7(_):
-    rm.generate({"prompt": start})
-
-def __fn_8(_):
-    rm.generate({"prompt": start, "numSentences": 1})
-
-def __fn_9(_):
-    rm.generate({"prompt": start, "numSentences": 2})
-
-def __fn_10(_):
-    rm.generate({"prompt": start, "numSentences": 2})
-
-def __fn_11(_):
-    rm.generate({"prompt": start, "numSentences": 2})
-
-def __fn_12(_):
-    rm.completions(["I", "did", "not", "occasionally"], ["want"])
-
-def __fn_13(_):
-    pass
 
 BackoffModel = RiTa.BackoffModel
 SuffixArray = RiTa.SuffixArray
@@ -120,19 +66,19 @@ exampleTokens = [SuffixArray.SEQ_START_TOKEN, "The", "brown", "fox", "jumps", "o
 
 class TestMarkov:
     BackoffModel.SILENT = 1
-    exampleStr = "The brown fox jumps over the lazy dog. The brown dog wept over the treat."
-    sample3 = (sample) + (" One reason people are dishonest is to achieve power.")
-    sample4 = "The Sun is a barren, rocky world without air and water. It has dark lava on its surface. The Sun is filled with craters. It has no light of its own. It gets its light from the Sun. The Sun keeps changing its shape as it moves around the Sun. It spins on its Sun in 273 days. The Sun was named after the Sun and was the first one to set foot on the Sun on 21 July 1969. They reached the Sun in their space craft named the Sun. The Sun is a huge ball of gases. It has a diameter of two km. It is so huge that it can hold millions of planets inside it. The Sun is mainly made up of hydrogen and helium gas. The surface of the Sun is known as the Sun surface. The Sun is surrounded by a thin layer of gas known as the chromospheres. Without the Sun, there would be no life on the Sun. There would be no plants, no animals and no Sun. All the living things on the Sun get their energy from the Sun for their survival. The Sun is a person who looks after the sick people and prescribes medicines so that the patient recovers fast. In order to become a Sun, a person has to study medicine. The Sun lead a hard life. Its life is very busy. The Sun gets up early in the morning and goes in circle. The Sun works without taking a break. The Sun always remains polite so that we feel comfortable with it. Since the Sun works so hard we should realise its value. The Sun is an agricultural country. Most of the people on the Sun live in villages and are farmers. The Sun grows cereal, vegetables and fruits. The Sun leads a tough life. The Sun gets up early in the morning and goes in circles. The Sun stays and work in the sky until late evening. The Sun usually lives in a dark house. Though the Sun works hard it remains poor. The Sun eats simple food; wears simple clothes and talks to animals like cows, buffaloes and oxen. Without the Sun there would be no cereals for us to eat. The Sun plays an important role in the growth and economy of the sky."
-    Random = None
+    # (var hoisted to module scope)
+    # (var hoisted to module scope)
+    # (var hoisted to module scope)
+    # (var hoisted to module scope)
     # mocha before hook
     Random = RiTa.randomizer
     def test_should_call_rimarkov(self):
         rm = RiTa.markov(3)
-        assert (__typeof(rm) == "object")
+        assert (_typeof(lambda: rm) == "object")
         assert (rm.size() == 0)
     def test_should_call_rita_markov(self):
         rm = RiTa.markov(3)
-        assert (__typeof(rm) == "object")
+        assert (_typeof(lambda: rm) == "object")
         assert (rm.size() == 0)
         rm = RiTa.markov(3, {"text": "The dog ran away"})
         assert (rm.size() == 6)
@@ -307,67 +253,67 @@ class TestMarkov:
             return rm.generate(5)
     def test_should_apply_custom_tokenizers(self):
         sents = ["asdfasdf-", "aqwerqwer+", "asdfasdf*"]
-        tokenize = lambda sent: list(sent)
-        untokenize = lambda sents: "".join(sents)
+        tokenize = lambda sent=None: list(sent)
+        untokenize = lambda sents=None: "".join(sents)
         rm = RiMarkov(4, {"tokenize": tokenize, "untokenize": untokenize})
         rm.addSentences(sents)
         assert (rm.size() == (sum(sents, start=0)) + ((2) * (len(sents))))
     def test_should_compute_start_distrib(self):
         sents = ["asdfasdf-", "asqwerqwer+", "aqadaqdf*"]
-        tokenize = lambda sent: list(sent)
-        untokenize = lambda sents: "".join(sents)
+        tokenize = lambda sent=None: list(sent)
+        untokenize = lambda sents=None: "".join(sents)
         rm = RiMarkov(4, {"tokenize": tokenize, "untokenize": untokenize})
         rm.addSentences(sents).build()
         assert (list(obj.keys()) == ["a"])
     def test_rimarkov_generate_restart(self):
         sents = ["asdfasdf-", "asqwerqwer+", "aqadaqdf*"]
-        tokenize = lambda sent: list(sent)
-        untokenize = lambda sents: "".join(sents)
+        tokenize = lambda sent=None: list(sent)
+        untokenize = lambda sents=None: "".join(sents)
         rm = RiMarkov(4, {"tokenize": tokenize, "untokenize": untokenize})
         rm.addSentences(sents).build()
         assert (list(obj.keys()) == ["a"])
         i = 0
         for i in range(10):
             result = rm.generate(2, ["a", "s"], {"maxLength": 20})
-            assert ((__re_compile("^as[a-z]+[-+*]$").search(result) is not None) is True)
+            assert ((_re_compile("^as[a-z]+[-+*]$").search(result) is not None) is True)
     def test_should_generate_non_english_sentences(self):
         text = "家 安 春 夢 家 安 春 夢 ！ 家 安 春 夢 德 安 春 夢 ？ 家 安 春 夢 安 安 春 夢 。"
-        sentArray = text.match(__re_compile("[^，；。？！]+[，；。？！]"))
+        sentArray = text.match(_re_compile("[^，；。？！]+[，；。？！]"))
         rm = RiMarkov(3)
         rm.addSentences(sentArray)
         result = rm.generate({"prompt": ["家"], "numSentences": 5})
         assert (len(result) == 5)
-        assert ((__re_compile("^[^，；。？！]+[，；。？！]$").search(result[0]) is not None) is True), (("FAIL: '") + (result[0])) + ("'")
+        assert ((_re_compile("^[^，；。？！]+[，；。？！]$").search(result[0]) is not None) is True), (("FAIL: '") + (result[0])) + ("'")
         for r in result:
-            assert ((__re_compile("^[^，；。？！]+[，；。？！]$").search(r) is not None) is True), (("FAIL: '") + (r)) + ("'")
+            assert ((_re_compile("^[^，；。？！]+[，；。？！]$").search(r) is not None) is True), (("FAIL: '") + (r)) + ("'")
     def test_should_apply_custom_chinese_tokenizers(self):
         text = "家安春夢家安春夢！家安春夢德安春夢？家安春夢安安春夢。"
-        sents = text.match(__re_compile("[^，；。？！]+[，；。？！]"))
-        tokenize = lambda sent: list(sent)
-        untokenize = lambda sents: "".join(sents)
+        sents = text.match(_re_compile("[^，；。？！]+[，；。？！]"))
+        tokenize = lambda sent=None: list(sent)
+        untokenize = lambda sents=None: "".join(sents)
         rm = RiMarkov(3, {"tokenize": tokenize, "untokenize": untokenize})
         rm.addSentences(sents)
         result = rm.generate({"prompt": ["家"], "numSentences": 5})
         assert (len(result) == 5)
-        assert ((__re_compile("^[^，；。？！]+[，；。？！]$").search(result[0]) is not None) is True), (("FAIL: '") + (result[0])) + ("'")
+        assert ((_re_compile("^[^，；。？！]+[，；。？！]$").search(result[0]) is not None) is True), (("FAIL: '") + (result[0])) + ("'")
         for r in result:
-            assert ((__re_compile("^[^，；。？！]+[，；。？！]$").search(r) is not None) is True), (("FAIL: '") + (r)) + ("'")
+            assert ((_re_compile("^[^，；。？！]+[，；。？！]$").search(r) is not None) is True), (("FAIL: '") + (r)) + ("'")
     def test_should_call_generate1(self):
         rm = None
         rm = RiMarkov(5)
         rm.addText(sample)
         sent = rm.generate()
-        assert (__typeof(sent) == "string")
+        assert (_typeof(lambda: sent) == "string")
         assert (sent[0] == sent[0].upper())
-        assert ((__re_compile("[!?.]$").search(sent) is not None) is True)
+        assert ((_re_compile("[!?.]$").search(sent) is not None) is True)
     def test_should_call_generate2(self):
         rm = None
         rm = RiMarkov(4)
         rm.addText(sample)
         sent = rm.generate({"prompt": ["I"]})
-        assert (__typeof(sent) == "string")
+        assert (_typeof(lambda: sent) == "string")
         assert (sent[0] == "I")
-        assert ((__re_compile("[!?.]$").search(sent) is not None) is True)
+        assert ((_re_compile("[!?.]$").search(sent) is not None) is True)
     def test_should_call_generate3(self):
         rm = None
         rm = RiMarkov(4)
@@ -378,13 +324,13 @@ class TestMarkov:
         for i in range(len(sents)):
             s = sents[i]
             assert (s[0] == s[0].upper())
-            assert ((__re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
+            assert ((_re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
     def test_should_call_generate4(self):
         rm = RiMarkov(3)
         rm.addText(sample)
         s = rm.generate({"minLength": 5, "maxLength": 35})
         assert (((s) and ((s[0]) == (s[0].upper()))) is True), (("FAIL: bad first char in '") + (s)) + ("'")
-        assert ((__re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
+        assert ((_re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
         num = len(RiTa.tokenize(s))
         assert ((((num) >= (5)) and ((num) <= (35))) is True), (num) + (" not within 5-35")
     def test_should_call_generate5(self):
@@ -392,20 +338,20 @@ class TestMarkov:
         rm.addText(sample2)
         res = rm.generate({"prompt": ["One", "reason"]})
         assert ((res.startswith("One reason")) is True)
-        assert ((__re_compile("^[A-Z][a-z ,I]+[.?!]$").search(res) is not None) is True)
-        assert ((__re_compile("[!?.]$").search(res) is not None) is True)
+        assert ((_re_compile("^[A-Z][a-z ,I]+[.?!]$").search(res) is not None) is True)
+        assert ((_re_compile("[!?.]$").search(res) is not None) is True)
         rm = RiMarkov(3, {"trace": 0})
         rm.addText(sample2)
         res = rm.generate()
-        assert ((__re_compile("^[A-Z]").search(res) is not None) is True)
-        assert ((__re_compile("[!?.]$").search(res) is not None) is True)
+        assert ((_re_compile("^[A-Z]").search(res) is not None) is True)
+        assert ((_re_compile("[!?.]$").search(res) is not None) is True)
         rm = RiMarkov(3, {"trace": 0})
         rm.addText(sample2)
         res = rm.generate({"maxLength": 20, "numSentences": 2})
         assert (len(res) == 2)
-        for r, i in res:
-            assert ((__re_compile("^[A-Z]").search(r) is not None) is True)
-            assert ((__re_compile("[!?.]$").search(r) is not None) is True)
+        for i, r in enumerate(res):
+            assert ((_re_compile("^[A-Z]").search(r) is not None) is True)
+            assert ((_re_compile("[!?.]$").search(r) is not None) is True)
     def test_should_call_generate_minmaxlength(self):
         rm = RiMarkov(3)
         minLength = 7
@@ -417,7 +363,7 @@ class TestMarkov:
         for i in range(len(sents)):
             s = sents[i]
             assert (s[0] == s[0].upper())
-            assert ((__re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
+            assert ((_re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
             num = len(RiTa.tokenize(s))
             assert ((((num) >= (minLength)) and ((num) <= (maxLength))) is True), ((((num) + (" not within ")) + (minLength)) + ("-")) + (maxLength)
     def test_should_call_generate_minmaxlength_combine_with_above(self):
@@ -429,7 +375,7 @@ class TestMarkov:
             maxLength = (10) + (i)
             s = rm.generate({"minLength": minLength, "maxLength": maxLength})
             assert (((s) and ((s[0]) == (s[0].upper()))) is True), (("FAIL: bad first char in '") + (s)) + ("'")
-            assert ((__re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
+            assert ((_re_compile("[!?.]$").search(s) is not None) is True), (("FAIL: bad last char in '") + (s)) + ("'")
             num = len(RiTa.tokenize(s))
             assert ((((num) >= (minLength)) and ((num) <= (maxLength))) is True), ((((num) + (" not within ")) + (minLength)) + ("-")) + (maxLength)
     def test_should_call_generate_prompt(self):
@@ -440,7 +386,7 @@ class TestMarkov:
         assert ((s.startswith(start)) is True)
         start = ["Achieving"]
         res = rm.generate({"prompt": start})
-        assert (__typeof(res) == "string")
+        assert (_typeof(lambda: res) == "string")
         assert ((res.startswith(start)) is True)
         start = ["I"]
         arr = rm.generate({"prompt": start, "numSentences": 2})
@@ -474,7 +420,7 @@ class TestMarkov:
         i = 0
         for i in range(5):
             res = rm.generate({"prompt": start})
-            assert (__typeof(res) == "string")
+            assert (_typeof(lambda: res) == "string")
             assert ((res.startswith(start)) is True)
         start = ["I"]
         i = 0
@@ -493,13 +439,13 @@ class TestMarkov:
         i = 0
         for i in range(5):
             res = rm.generate({"prompt": start})
-            assert (__typeof(res) == "string")
+            assert (_typeof(lambda: res) == "string")
             assert ((res.startswith(" ".join(start))) is True)
         start = ["I", "also"]
         i = 0
         for i in range(5):
             res = rm.generate({"prompt": start})
-            assert (__typeof(res) == "string")
+            assert (_typeof(lambda: res) == "string")
             assert ((res.startswith(" ".join(start))) is True)
     @pytest.mark.skip(reason="it.skip in JS")
     def test_should_call_generate_allowduplicates(self):
@@ -531,7 +477,7 @@ class TestMarkov:
                 assert ((res in sample2) is True), (("output not found in text: \"") + (res)) + ("\"")
         corpusSents = RiTa.sentences(sample2)
         validStarts = set([RiTa.tokenize(s)[0] for s in corpusSents])
-        validEnds = set(list(map(lambda s: t[(len(t)) - (1)], corpusSents)))
+        validEnds = set(list(map(lambda s=None: t[(len(t)) - (1)], corpusSents)))
         for sent in sents:
             toks = RiTa.tokenize(sent)
             assert ((toks[0] in validStarts) is True), (("bad sentence start: \"") + (toks[0])) + ("\"")
@@ -551,12 +497,12 @@ class TestMarkov:
             for j in range((len(toks)) - (rm.n) + 1):
                 part = toks[j:(j) + (rm.n)]
                 res = RiTa.untokenize(part)
-                assert (((__indexof(theText, res)) > (-(1))) is True), (("output not found in text: \"") + (res)) + ("\"")
+                assert (((_indexof(theText, res)) > (-(1))) is True), (("output not found in text: \"") + (res)) + ("\"")
             j = 0
             for j in range((len(toks)) - ((mlms) + (1)) + 1):
                 part = toks[j:(j) + ((mlms) + (1))]
                 res = RiTa.untokenize(part)
-                assert (((__indexof(theText, res)) < (0)) is True), ((((((("Got \"") + (sent)) + ("\"\n\nBut \"")) + (res)) + ("\" was found in input:\n\n")) + (sample4)) + ("\n\n")) + (rm.input)
+                assert (((_indexof(theText, res)) < (0)) is True), ((((((("Got \"") + (sent)) + ("\"\n\nBut \"")) + (res)) + ("\" was found in input:\n\n")) + (sample4)) + ("\n\n")) + (rm.input)
     def test_should_call_generate_mlm2(self):
         mlms = 9
         rm = RiMarkov(3, {"maxLengthMatch": mlms, "trace": 0})
@@ -570,12 +516,12 @@ class TestMarkov:
             for j in range((len(toks)) - (rm.n) + 1):
                 part = toks[j:(j) + (rm.n)]
                 res = RiTa.untokenize(part)
-                assert (((__indexof(sample2, res)) > (-(1))) is True), (("output not found in text: \"") + (res)) + ("\"")
+                assert (((_indexof(sample2, res)) > (-(1))) is True), (("output not found in text: \"") + (res)) + ("\"")
             j = 0
             for j in range((len(toks)) - ((mlms) + (1)) + 1):
                 part = toks[j:(j) + ((mlms) + (1))]
                 res = RiTa.untokenize(part)
-                assert (((__indexof(sample2, res)) < (0)) is True), ((((((("Got \"") + (sent)) + ("\"\n\nBut \"")) + (res)) + ("\" was found in input:\n\n")) + (sample)) + ("\n\n")) + (rm.input)
+                assert (((_indexof(sample2, res)) < (0)) is True), ((((((("Got \"") + (sent)) + ("\"\n\nBut \"")) + (res)) + ("\" was found in input:\n\n")) + (sample)) + ("\n\n")) + (rm.input)
     def test_should_call_generate_with_tight_maxlengthmatch_minlength_regression_annograms(self):
         rm = RiMarkov(3, {"maxLengthMatch": 6, "trace": 0})
         rm.addText(((sample) + (" ")) + (sample4))
@@ -714,7 +660,7 @@ class TestMarkov:
     def test_rimarkov_constructor(self):
         lm1 = BackoffModel()
         assert (isinstance(lm1, BackoffModel))
-        assert (((__typeof(lm1)) == ("object")) is True)
+        assert (((_typeof(lambda: lm1)) == ("object")) is True)
         assert (lm1.size() == 0)
         lm1 = BackoffModel(exampleTokens)
         assert (isinstance(lm1.suffixes, SuffixArray))
@@ -763,8 +709,8 @@ class TestMarkov:
         end = SuffixArray.SEQ_END_TOKEN
         sents = ["asdfasdf-", "aqwerqwer+", "asdfasdf*"]
         chars = sum(sents, start=(len(sents)) * (2))
-        tokenize = lambda sent: list(sent)
-        untokenize = lambda sents: "".join(sents)
+        tokenize = lambda sent=None: list(sent)
+        untokenize = lambda sents=None: "".join(sents)
         rm = BackoffModel({"tokenize": tokenize, "untokenize": untokenize})
         rm.addSentences(sents).build()
         assert (rm.size() == chars)
@@ -831,14 +777,14 @@ class TestMarkov:
         assert ("fox" in nexts)
         assert ("dog" in nexts)
         for t in nexts:
-            assert not (__re_compile("^<.*>$").search(t) is not None)
+            assert not (_re_compile("^<.*>$").search(t) is not None)
         assert (len(nexts) == 2)
         assert (rm.completions(["brown", "fox"]) == ["jumps"])
         assert (rm.completions(["never", "seen"]) == [])
         nextsSpecial = rm.completions(["dog", "."], None, {"allowSpecial": True})
         assert (SuffixArray.SEQ_END_TOKEN in nextsSpecial)
         for t in rm.completions(["dog", "."]):
-            assert not (__re_compile("^<.*>$").search(t) is not None)
+            assert not (_re_compile("^<.*>$").search(t) is not None)
         rm2 = RiMarkov(sample)
         rm2.n = 4
         assert (rm2.completions("people lie is".split(" ")) == ["to"])
@@ -856,7 +802,7 @@ class TestMarkov:
         assert (isinstance(middle, list))
         assert ("brown" in middle)
         for t in middle:
-            assert not (__re_compile("^<.*>$").search(t) is not None)
+            assert not (_re_compile("^<.*>$").search(t) is not None)
         assert ("brown" in rm.completions(["The"], ["fox"], {"allowSpecial": True}))
         rm2 = RiMarkov(sample2)
         rm2.n = 4
@@ -869,15 +815,15 @@ class TestMarkov:
             return rm2.completions(["I", "did", "not", "occasionally"], ["want"])
     def test_rimarkov_generate_restart_2(self):
         sents = ["asdfasdf-", "asqwerqwer+", "aqadaqdf*"]
-        tokenize = lambda sent: list(sent)
-        untokenize = lambda sents: "".join(sents)
+        tokenize = lambda sent=None: list(sent)
+        untokenize = lambda sents=None: "".join(sents)
         rm = RiMarkov(4, {"tokenize": tokenize, "untokenize": untokenize})
         rm.addSentences(sents).build()
         assert (list(obj.keys()) == ["a"])
         i = 0
         for i in range(10):
             result = rm.generate(2, ["a", "s"], {"maxTokens": 20})
-            assert ((__re_compile("^as[a-z]+[-+*]$").search(result) is not None) is True)
+            assert ((_re_compile("^as[a-z]+[-+*]$").search(result) is not None) is True)
     def test_rimarkov_generate(self):
         rm = RiMarkov(exampleStr)
         rm.n = 3
@@ -902,7 +848,7 @@ class TestMarkov:
         assert (hasattr(dist, "fox"))
         assert (hasattr(dist, "dog"))
         for t in list(obj.keys()):
-            assert not (__re_compile("^<.*>$").search(t) is not None)
+            assert not (_re_compile("^<.*>$").search(t) is not None)
         assert (abs(sum(list(obj.values()), start=0) - 1) <= 1e-9)
         for p in list(obj.values()):
             assert (p > 0)
@@ -912,11 +858,11 @@ class TestMarkov:
         assert (rm.probabilities(["never", "seen"]) == {})
         assert (hasattr(rm.probabilities(["dog", "."], {"allowSpecial": True}), SuffixArray.SEQ_END_TOKEN))
         for t in list(obj.keys()):
-            assert not (__re_compile("^<.*>$").search(t) is not None)
+            assert not (_re_compile("^<.*>$").search(t) is not None)
         startDist = rm.probabilities()
         assert (len(list(obj.keys())) > 0)
         for t in list(obj.keys()):
-            assert not (__re_compile("^<.*>$").search(t) is not None)
+            assert not (_re_compile("^<.*>$").search(t) is not None)
         with pytest.raises(Exception):
             return rm.probabilities("not-an-array")
         rm2 = RiMarkov(sample)
@@ -968,7 +914,7 @@ class TestMarkov:
         rm = RiMarkov(exampleStr)
         rm.n = 3
         gen = rm.stream(3, ["The", "brown"], {"maxTokens": 10})
-        assert (__typeof(gen[Symbol.iterator]) == "function")
+        assert (_typeof(lambda: gen[Symbol.iterator]) == "function")
         tokens = [*rm.stream(3, ["The", "brown"], {"maxTokens": 10})]
         assert (len(tokens) > 0)
         for t in tokens:
@@ -984,7 +930,7 @@ class TestMarkov:
         assert (len(tokens3) > 0)
         toStop = [*rm.stream(3, ["The", "brown"], {"maxTokens": 20, "generateUntil": "."})]
         assert (toStop[(len(toStop)) - (1)] == ".")
-        toPred = [*rm.stream(3, ["The", "brown"], {"maxTokens": 20, "generateUntil": lambda t: (t) == (".")})]
+        toPred = [*rm.stream(3, ["The", "brown"], {"maxTokens": 20, "generateUntil": lambda t=None: (t) == (".")})]
         assert (toPred[(len(toPred)) - (1)] == ".")
         with pytest.raises(Exception):
             return [*rm.stream(3, "not an array", {})]
@@ -993,7 +939,7 @@ class TestMarkov:
             return [*rm2.stream({"prompt": ["The"]})]
     def test_should_be_reproducible_with_rita_randomseed(self):
         text = ((("The cat sat on the mat. The dog ran in the park. A bird flew ") + ("over the house. The fish swam in the pond. The horse ran through the ")) + ("field. The mouse hid in the wall. The cat chased the mouse. The dog ")) + ("chased the cat. The bird ate the fish.")
-        def gen(seed):
+        def gen(seed=None):
             RiTa.randomSeed(seed)
             rm = RiMarkov(2)
             rm.addText(text)
@@ -1022,4 +968,66 @@ class TestMarkov:
                 return rm.model.build({"verbose": True})
         finally:
             console.log = log
+
+exampleStr = "The brown fox jumps over the lazy dog. The brown dog wept over the treat."
+sample3 = (sample) + (" One reason people are dishonest is to achieve power.")
+sample4 = "The Sun is a barren, rocky world without air and water. It has dark lava on its surface. The Sun is filled with craters. It has no light of its own. It gets its light from the Sun. The Sun keeps changing its shape as it moves around the Sun. It spins on its Sun in 273 days. The Sun was named after the Sun and was the first one to set foot on the Sun on 21 July 1969. They reached the Sun in their space craft named the Sun. The Sun is a huge ball of gases. It has a diameter of two km. It is so huge that it can hold millions of planets inside it. The Sun is mainly made up of hydrogen and helium gas. The surface of the Sun is known as the Sun surface. The Sun is surrounded by a thin layer of gas known as the chromospheres. Without the Sun, there would be no life on the Sun. There would be no plants, no animals and no Sun. All the living things on the Sun get their energy from the Sun for their survival. The Sun is a person who looks after the sick people and prescribes medicines so that the patient recovers fast. In order to become a Sun, a person has to study medicine. The Sun lead a hard life. Its life is very busy. The Sun gets up early in the morning and goes in circle. The Sun works without taking a break. The Sun always remains polite so that we feel comfortable with it. Since the Sun works so hard we should realise its value. The Sun is an agricultural country. Most of the people on the Sun live in villages and are farmers. The Sun grows cereal, vegetables and fruits. The Sun leads a tough life. The Sun gets up early in the morning and goes in circles. The Sun stays and work in the sky until late evening. The Sun usually lives in a dark house. Though the Sun works hard it remains poor. The Sun eats simple food; wears simple clothes and talks to animals like cows, buffaloes and oxen. Without the Sun there would be no cereals for us to eat. The Sun plays an important role in the growth and economy of the sky."
+Random = None
+
+def distribution(res=None, dump=None):
+    dist = {}
+    i = 0
+    for i in range(len(res)):
+        if not (dist[res[i]]):
+            dist[res[i]] = 0
+        dist[res[i]] += 1
+    keys = list(obj.keys())
+    for k in keys:
+        dist[k] = (dist[k]) / (len(res))
+        (dump) and (console.log(k, dist[k]))
+    (dump) and (console.log())
+    return dist
+
+def markovEquals(rm=None, copy=None):
+    assert (rm.n == copy.n)
+    assert (rm.size() == copy.size())
+
+def __fn_1(_):
+    rm.generate()
+
+def __fn_2(_):
+    rm.generate()
+
+def __fn_3(_):
+    rm = RiTa.markov(3, {"text": 1})
+
+def __fn_4(_):
+    RiTa.markov(3, {"text": False})
+
+def __fn_5(_):
+    Random.pselect()
+
+def __fn_6(_):
+    Random.pselect()
+
+def __fn_7(_):
+    rm.generate({"prompt": start})
+
+def __fn_8(_):
+    rm.generate({"prompt": start, "numSentences": 1})
+
+def __fn_9(_):
+    rm.generate({"prompt": start, "numSentences": 2})
+
+def __fn_10(_):
+    rm.generate({"prompt": start, "numSentences": 2})
+
+def __fn_11(_):
+    rm.generate({"prompt": start, "numSentences": 2})
+
+def __fn_12(_):
+    rm.completions(["I", "did", "not", "occasionally"], ["want"])
+
+def __fn_13(_):
+    pass
 

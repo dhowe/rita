@@ -22,37 +22,37 @@ def _arr_from(x, fn=None):
         return [fn() if fn else None for _ in range(x["length"])]
     return list(x)
 arr = type("arr", (), {"isArray": staticmethod(lambda x: isinstance(x, list)), "from": staticmethod(_arr_from)})
-def __typeof(x):
+def _typeof(fn):
+    try: x = fn()
+    except NameError: return "undefined"
+    except AttributeError: return "undefined"
     if x is None: return "undefined"
     if isinstance(x, bool): return "boolean"
     if isinstance(x, str): return "string"
     if isinstance(x, (int, float)): return "number"
     if callable(x): return "function"
     return "object"
-def __indexof(a, x):
+def _indexof(a, x):
     try: return a.index(x)
     except ValueError: return -1
-def __re_compile(p):
+def _re_compile(p):
     return re.compile(p)
 def readFileSync(p):
     return open(p).read()
 def existsSync(p):
     return os.path.exists(p)
-def __is_integer(x):
+def _is_integer(x):
     return isinstance(x, int) and not isinstance(x, bool)
-def __is_finite(x):
+def _is_finite(x):
     return isinstance(x, (int, float)) and x == x and x not in (float("inf"), float("-inf"))
-def __is_nan(x):
+def _is_nan(x):
     return isinstance(x, float) and x != x
-def __url(rel):
+def _url(rel):
     if rel.startswith("./"):
         rel = rel[2:]
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
-
-def eql(output, expected, msg):
-    assert (output == expected)
 
 class TestLexicon:
     # mocha this.slow — ignored
@@ -153,7 +153,7 @@ class TestLexicon:
         assert ((opts in "limit") is False), "randomWord leaked limit"
         assert ((opts in "shuffle") is False), "randomWord leaked shuffle"
         opts = {"pos": "nn"}
-        RiTa.searchSync(__re_compile("^a"), opts)
+        RiTa.searchSync(_re_compile("^a"), opts)
         assert ((opts in "targetPos") is False), "search leaked targetPos"
         assert ((opts in "minDistance") is False), "search leaked minDistance"
         opts = {"limit": 5}
@@ -161,7 +161,7 @@ class TestLexicon:
         assert ((opts in "maxLength") is False), "rhymes leaked maxLength"
     def test_should_call_randomword_with_regex(self):
         result = RiTa.randomWord("^a")
-        assert ((__re_compile("^a").search(result) is not None) is True)
+        assert ((_re_compile("^a").search(result) is not None) is True)
         assert (((len(result)) > (3)) is True)
         result = RiTa.randomWord("^apple$")
         assert (result == "apple")
@@ -179,19 +179,19 @@ class TestLexicon:
             else:
                 i += 1
         assert (((len(results)) > (1)) is True)
-        result = RiTa.randomWord(__re_compile("^a"))
-        assert ((__re_compile("^a").search(result) is not None) is True)
+        result = RiTa.randomWord(_re_compile("^a"))
+        assert ((_re_compile("^a").search(result) is not None) is True)
         assert (((len(result)) > (3)) is True)
-        result = RiTa.randomWord(__re_compile("^apple$"))
+        result = RiTa.randomWord(_re_compile("^apple$"))
         assert (result == "apple")
-        result = RiTa.randomWord(__re_compile("le"))
+        result = RiTa.randomWord(_re_compile("le"))
         assert (("le" in result) is True)
         result = RiTa.randomWord("^a")
         assert ((result.startswith("a")) is True)
         results = []
         i = 0
         for i in range(10):
-            results.append(RiTa.randomWord(__re_compile("^a")))
+            results.append(RiTa.randomWord(_re_compile("^a")))
         assert (((len(results)) == (10)) is True)
     def test_should_call_randomword_with_stress_regex(self):
         result = RiTa.randomWord("0/1/0", {"type": "stresses"})
@@ -203,47 +203,47 @@ class TestLexicon:
         assert (("0/1/0" in RiTa.analyze(result).stresses) is True)
         result = RiTa.randomWord("^010$", {"type": "stresses"})
         assert (RiTa.analyze(result).stresses == "0/1/0")
-        result = RiTa.randomWord(__re_compile("0\\/1\\/0"), {"type": "stresses"})
+        result = RiTa.randomWord(_re_compile("0\\/1\\/0"), {"type": "stresses"})
         assert (("0/1/0" in RiTa.analyze(result).stresses) is True)
-        result = RiTa.randomWord(__re_compile("^0\\/1\\/0\\/0$"), {"type": "stresses"})
+        result = RiTa.randomWord(_re_compile("^0\\/1\\/0\\/0$"), {"type": "stresses"})
         assert (RiTa.analyze(result).stresses == "0/1/0/0")
     def test_should_call_randomword_with_phones_regex(self):
         result = RiTa.randomWord("^th", {"type": "phones"})
         assert ((len(result)) > (3))
-        assert ((__re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
+        assert ((_re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
         result = RiTa.randomWord("v$", {"type": "phones"})
-        assert ((__re_compile("v$").search(RiTa.analyze(result).phones) is not None) is True)
+        assert ((_re_compile("v$").search(RiTa.analyze(result).phones) is not None) is True)
         result = RiTa.randomWord("^b-ih-l-iy-v$", {"type": "phones"})
         assert (result == "believe")
         result = RiTa.randomWord("ae", {"type": "phones"})
         assert (("ae" in RiTa.analyze(result).phones) is True)
-        result = RiTa.randomWord(__re_compile("^th"), {"type": "phones"})
+        result = RiTa.randomWord(_re_compile("^th"), {"type": "phones"})
         assert ((len(result)) > (3))
-        assert ((__re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
-        result = RiTa.randomWord(__re_compile("v$"), {"type": "phones"})
-        assert ((__re_compile("v$").search(RiTa.analyze(result).phones) is not None) is True)
-        result = RiTa.randomWord(__re_compile("^b-ih-l-iy-v$"), {"type": "phones"})
+        assert ((_re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
+        result = RiTa.randomWord(_re_compile("v$"), {"type": "phones"})
+        assert ((_re_compile("v$").search(RiTa.analyze(result).phones) is not None) is True)
+        result = RiTa.randomWord(_re_compile("^b-ih-l-iy-v$"), {"type": "phones"})
         assert (result == "believe")
-        result = RiTa.randomWord(__re_compile("ae"), {"type": "phones"})
+        result = RiTa.randomWord(_re_compile("ae"), {"type": "phones"})
         assert (("ae" in RiTa.analyze(result).phones) is True)
     def test_should_call_randomword_with_opts_regex(self):
         result = RiTa.randomWord({"regex": "^a"})
-        assert ((__re_compile("^a").search(result) is not None) is True)
+        assert ((_re_compile("^a").search(result) is not None) is True)
         assert (((len(result)) > (3)) is True)
-        result = RiTa.randomWord({"regex": __re_compile("^a")})
-        assert ((__re_compile("^a").search(result) is not None) is True)
+        result = RiTa.randomWord({"regex": _re_compile("^a")})
+        assert ((_re_compile("^a").search(result) is not None) is True)
         assert (((len(result)) > (3)) is True)
         result = RiTa.randomWord({"regex": "0/1/0", "type": "stresses"})
         assert ((len(result)) > (3))
         assert (("0/1/0" in RiTa.analyze(result).stresses) is True)
-        result = RiTa.randomWord({"regex": __re_compile("0\\/1\\/0"), "type": "stresses"})
+        result = RiTa.randomWord({"regex": _re_compile("0\\/1\\/0"), "type": "stresses"})
         assert (("0/1/0" in RiTa.analyze(result).stresses) is True)
         result = RiTa.randomWord({"regex": "^th", "type": "phones"})
         assert ((len(result)) > (3))
-        assert ((__re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
-        result = RiTa.randomWord({"regex": __re_compile("^th"), "type": "phones"})
+        assert ((_re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
+        result = RiTa.randomWord({"regex": _re_compile("^th"), "type": "phones"})
         assert ((len(result)) > (3))
-        assert ((__re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
+        assert ((_re_compile("^th").search(RiTa.analyze(result).phones) is not None) is True)
     def test_should_handle_an_augmented_lexicon(self):
         toAdd = {"deg": ["d-eh1-g", "nn"], "wadly": ["w-ae1-d l-iy", "rb"]}
         lex = RiTa.lexicon
@@ -280,7 +280,7 @@ class TestLexicon:
             if not (RiTa.inflector.isPlural(result)):
                 console.warn(((((((("Pluralize/Singularize problem: randomWord(nns) was '") + (result)) + ("' (")) + ("isPlural=")) + (RiTa.inflector.isPlural(result))) + ("), singularized is '")) + (RiTa.singularize(result))) + ("'"))
             pos = RiTa.lexicon._posData(result)
-            assert (((not (pos)) or ((__indexof(pos, "vbg")) < (0))) is True), ("randomWord nns: ") + (result)
+            assert (((not (pos)) or ((_indexof(pos, "vbg")) < (0))) is True), ("randomWord nns: ") + (result)
             assert ((not (result.endswith("ness"))) is True), ("randomWord nns: ") + (result)
             assert ((not (result.endswith("isms"))) is True), ("randomWord nns: ") + (result)
         result = RiTa.randomWord({"pos": "v"})
@@ -299,7 +299,7 @@ class TestLexicon:
         i = 0
         for i in range(10):
             results.append(RiTa.randomWord({"pos": "nns"}))
-            assert (((__typeof(results[(len(results)) - (1)])) == ("string")) is True)
+            assert (((_typeof(lambda: results[(len(results)) - (1)])) == ("string")) is True)
         assert (((len(results)) == (10)) is True)
         i = 0
         while (i) < ((len(results)) - (1)):
@@ -350,15 +350,15 @@ class TestLexicon:
         (0) and (expect("conclude" in search).to.be.true)
     def test_should_call_search_with_letters(self):
         assert (RiTa.search("phant") == ["elephant", "elephantine", "phantom", "sycophantic", "triumphant", "triumphantly"])
-        assert (RiTa.search(__re_compile("phant")) == ["elephant", "elephantine", "phantom", "sycophantic", "triumphant", "triumphantly"])
+        assert (RiTa.search(_re_compile("phant")) == ["elephant", "elephantine", "phantom", "sycophantic", "triumphant", "triumphantly"])
         assert (RiTa.search({"regex": "phant"}) == ["elephant", "elephantine", "phantom", "sycophantic", "triumphant", "triumphantly"])
-        assert (RiTa.search({"regex": __re_compile("phant")}) == ["elephant", "elephantine", "phantom", "sycophantic", "triumphant", "triumphantly"])
+        assert (RiTa.search({"regex": _re_compile("phant")}) == ["elephant", "elephantine", "phantom", "sycophantic", "triumphant", "triumphantly"])
     def test_should_call_search_with_phones_limit(self):
-        result = RiTa.search(__re_compile("f-a[eh]-n-t"), {"type": "phones", "limit": 10})
+        result = RiTa.search(_re_compile("f-a[eh]-n-t"), {"type": "phones", "limit": 10})
         assert (result == ["elephant", "elephantine", "fantasia", "fantasize", "fantastic", "fantastically", "fantasy", "infant", "infantile", "infantry"])
         result = RiTa.search("f-ah-n-t", {"type": "phones", "limit": 5})
         assert (result == ["elephant", "infant", "infantile", "infantry", "oftentimes"])
-        result = RiTa.search({"regex": __re_compile("f-a[eh]-n-t"), "type": "phones", "limit": 10})
+        result = RiTa.search({"regex": _re_compile("f-a[eh]-n-t"), "type": "phones", "limit": 10})
         assert (result == ["elephant", "elephantine", "fantasia", "fantasize", "fantastic", "fantastically", "fantasy", "infant", "infantile", "infantry"])
     def test_should_call_search_with_phones_no_limit_and_shuffle(self):
         result = RiTa.search({"regex": "f-ah-n-t", "type": "phones", "limit": -(1)})
@@ -371,12 +371,12 @@ class TestLexicon:
     def test_should_call_search_with_pos_phones_limit(self):
         res = RiTa.search("f-ah-n-t", {"type": "phones", "pos": "n", "limit": 3})
         assert (res == ["elephant", "infant", "infantry"])
-        res = RiTa.search(__re_compile("f-a[eh]-n-t"), {"type": "phones", "pos": "v", "limit": 5})
+        res = RiTa.search(_re_compile("f-a[eh]-n-t"), {"type": "phones", "pos": "v", "limit": 5})
         assert (res == ["fantasize"])
     def test_should_call_search_with_pos_regex(self):
-        res = RiTa.search(__re_compile("cares$"), {"pos": "nns", "limit": -(1)})
+        res = RiTa.search(_re_compile("cares$"), {"pos": "nns", "limit": -(1)})
         assert (res == ["cares", "scares"])
-        res = RiTa.search(__re_compile("^rice$"), {"pos": "nns", "limit": -(1)})
+        res = RiTa.search(_re_compile("^rice$"), {"pos": "nns", "limit": -(1)})
         assert (res == ["rice"])
     def test_should_call_search_with_pos_letters(self):
         res = RiTa.search("cause", {"pos": "nns"})
@@ -399,13 +399,13 @@ class TestLexicon:
         assert (("reopened" in res) is True)
         assert (("resold" in res) is True)
     def test_should_call_search_with_simple_pos_phones_limit(self):
-        assert (RiTa.search(__re_compile("f-a[eh]-n-t"), {"type": "phones", "pos": "vb", "limit": 5}) == ["fantasize"])
+        assert (RiTa.search(_re_compile("f-a[eh]-n-t"), {"type": "phones", "pos": "vb", "limit": 5}) == ["fantasize"])
         assert (RiTa.search("f-ah-n-t", {"type": "phones", "pos": "nns", "limit": 3}) == ["elephants", "infants", "infantries"])
     def test_should_call_search_with_pos_stress_limit(self):
         assert (RiTa.search("010", {"type": "stresses", "limit": 5, "pos": "n"}) == ["abalone", "abandonment", "abbreviation", "abdomen", "abduction"])
         assert (RiTa.search("010", {"type": "stresses", "limit": 5, "pos": "n", "numSyllables": 3}) == ["abdomen", "abduction", "abortion", "abruptness", "absorber"])
         assert (RiTa.search("010", {"type": "stresses", "limit": 5, "pos": "nns"}) == ["abalone", "abandonments", "abbreviations", "abductions", "abilities"])
-        assert (RiTa.search(__re_compile("0\\/1\\/0"), {"type": "stresses", "limit": 5, "pos": "nns"}) == ["abalone", "abandonments", "abbreviations", "abductions", "abilities"])
+        assert (RiTa.search(_re_compile("0\\/1\\/0"), {"type": "stresses", "limit": 5, "pos": "nns"}) == ["abalone", "abandonments", "abbreviations", "abductions", "abilities"])
         assert (RiTa.search("010", {"type": "stresses", "limit": 5, "pos": "nns", "numSyllables": 3}) == ["abductions", "abortions", "absorbers", "abstentions", "abstractions"])
     def test_should_call_search_with_stresses_limit(self):
         assert (RiTa.search("010000", {"type": "stresses", "limit": 5}) == ["accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"])
@@ -417,10 +417,10 @@ class TestLexicon:
         assert (RiTa.search({"regex": "010000", "type": "stresses", "limit": 5, "minLength": 12}) == ["accountability", "anticipatory", "appreciatively", "authoritarianism", "conciliatory"])
         assert (RiTa.search({"regex": "0/1/0/0/0/0", "type": "stresses", "limit": 5}) == ["accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"])
     def test_should_call_search_with_stress_regex_limit(self):
-        assert (RiTa.search(__re_compile("0\\/1\\/0\\/0\\/0\\/0"), {"type": "stresses", "limit": 5}) == ["accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"])
-        assert (RiTa.search({"regex": __re_compile("0\\/1\\/0\\/0\\/0\\/0"), "type": "stresses", "limit": 5}) == ["accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"])
+        assert (RiTa.search(_re_compile("0\\/1\\/0\\/0\\/0\\/0"), {"type": "stresses", "limit": 5}) == ["accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"])
+        assert (RiTa.search({"regex": _re_compile("0\\/1\\/0\\/0\\/0\\/0"), "type": "stresses", "limit": 5}) == ["accountability", "anticipatory", "appreciatively", "authoritarianism", "colonialism"])
     def test_should_call_randomword_pos_syls(self):
-        def fail(result, epos):
+        def fail(result=None, epos=None):
             test = (result[-(2)]) if (result.endswith("es")) else (result)
             ent = RiTa.lexicon[test]
             return ((((((("(") + (epos)) + (") Fail: ")) + (result)) + (": expected ")) + (epos)) + (", got ")) + ((ent[1]) if (ent) else ("null"))
@@ -741,7 +741,7 @@ class TestLexicon:
         assert ((RiTa.isRhyme("weight", "eight")) is True)
         assert ((RiTa.isRhyme("eight", "weight")) is True)
         assert ((RiTa.isRhyme("abated", "debated")) is True)
-        if (__typeof(NOLEX)) != ("undefined"):
+        if (_typeof(lambda: NOLEX)) != ("undefined"):
             assert ((RiTa.isRhyme("sieve", "give")) is True)
     def test_should_call_isalliteration(self):
         assert ((RiTa.isAlliteration("knife", "gnat")) is True)
@@ -772,7 +772,7 @@ class TestLexicon:
         assert ((not (RiTa.isAlliteration("omen", "open"))) is True)
         assert ((not (RiTa.isAlliteration("amicable", "atmosphere"))) is True)
         assert ((RiTa.isAlliteration("abated", "abetted")) is True)
-        if (__typeof(NOLEX)) != ("undefined"):
+        if (_typeof(lambda: NOLEX)) != ("undefined"):
             assert ((RiTa.isAlliteration("this", "these")) is True)
             assert ((RiTa.isAlliteration("psychology", "cholera")) is True)
             assert ((RiTa.isAlliteration("consult", "sultan")) is True)
@@ -894,4 +894,7 @@ class TestLexicon:
         ans = ["t", "ao", "r", "n", "ey", "d", "ow"]
         assert (result == ans)
     # (helper hoisted to module scope)
+
+def eql(output=None, expected=None, msg=None):
+    assert (output == expected)
 

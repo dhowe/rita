@@ -22,38 +22,37 @@ def _arr_from(x, fn=None):
         return [fn() if fn else None for _ in range(x["length"])]
     return list(x)
 arr = type("arr", (), {"isArray": staticmethod(lambda x: isinstance(x, list)), "from": staticmethod(_arr_from)})
-def __typeof(x):
+def _typeof(fn):
+    try: x = fn()
+    except NameError: return "undefined"
+    except AttributeError: return "undefined"
     if x is None: return "undefined"
     if isinstance(x, bool): return "boolean"
     if isinstance(x, str): return "string"
     if isinstance(x, (int, float)): return "number"
     if callable(x): return "function"
     return "object"
-def __indexof(a, x):
+def _indexof(a, x):
     try: return a.index(x)
     except ValueError: return -1
-def __re_compile(p):
+def _re_compile(p):
     return re.compile(p)
 def readFileSync(p):
     return open(p).read()
 def existsSync(p):
     return os.path.exists(p)
-def __is_integer(x):
+def _is_integer(x):
     return isinstance(x, int) and not isinstance(x, bool)
-def __is_finite(x):
+def _is_finite(x):
     return isinstance(x, (int, float)) and x == x and x not in (float("inf"), float("-inf"))
-def __is_nan(x):
+def _is_nan(x):
     return isinstance(x, float) and x != x
-def __url(rel):
+def _url(rel):
     if rel.startswith("./"):
         rel = rel[2:]
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
-
-def __fn_1(_):
-    g = lm2.pathGenerator(3, samplePrompt, {**opts, "forceOriginal": True})
-    g.next()
 
 BackoffModel = RiTa.BackoffModel
 SuffixArray = RiTa.SuffixArray
@@ -117,7 +116,7 @@ class TestMarkovBackoff:
             assert (len(tokens) > len(prompt))
             assert (isinstance(prob, (int, float)))
             assert (isinstance(inInput, bool))
-            for t, i in prompt:
+            for i, t in enumerate(prompt):
                 assert (tokens[i].token == t)
         total = sum(paths, start=0)
         assert (abs(total - 1) <= 1e-9)
@@ -147,7 +146,7 @@ class TestMarkovBackoff:
             prob = __it["prob"]
             assert (isinstance(len(tokens), list))
             assert (isinstance(prob, (int, float)))
-            for t, i in prompt:
+            for i, t in enumerate(prompt):
                 assert (tokens[i].token == t)
         gen = lm.pathGenerator(3, prompt, opts)
         first = gen.next()
@@ -175,9 +174,9 @@ class TestMarkovBackoff:
         assert (tokens[(len(tokens)) - (1)] == SuffixArray.SEQ_END_TOKEN)
         tokens = [*lm.streamTokens(3, prompt, {**opts, "generateUntil": "."})]
         assert (tokens[(len(tokens)) - (1)] == ".")
-        tokens = [*lm.streamTokens(3, prompt, {**opts, "generateUntil": lambda t: (t) == (".")})]
+        tokens = [*lm.streamTokens(3, prompt, {**opts, "generateUntil": lambda t=None: (t) == (".")})]
         assert (tokens[(len(tokens)) - (1)] == ".")
-        tokens = [*lm.streamTokens(3, prompt, {**opts, "minLength": 3, "generateUntil": lambda t: ((t) == ("be")) or ((t) == ("girlfriend"))})]
+        tokens = [*lm.streamTokens(3, prompt, {**opts, "minLength": 3, "generateUntil": lambda t=None: ((t) == ("be")) or ((t) == ("girlfriend"))})]
         assert (tokens[(len(tokens)) - (1)] in ["be", "girlfriend"])
         validFollowers = set(["have", "want"])
         i = 0
@@ -247,4 +246,8 @@ class TestMarkovBackoff:
             return lm.generationPaths(3, prompt, {**base, "badKey": True})
         with pytest.raises(Exception):
             return lm.streamTokens(3, prompt, {**base, "badKey": True}).next()
+
+def __fn_1(_):
+    g = lm2.pathGenerator(3, samplePrompt, {**opts, "forceOriginal": True})
+    g.next()
 

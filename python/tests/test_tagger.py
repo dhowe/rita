@@ -22,40 +22,40 @@ def _arr_from(x, fn=None):
         return [fn() if fn else None for _ in range(x["length"])]
     return list(x)
 arr = type("arr", (), {"isArray": staticmethod(lambda x: isinstance(x, list)), "from": staticmethod(_arr_from)})
-def __typeof(x):
+def _typeof(fn):
+    try: x = fn()
+    except NameError: return "undefined"
+    except AttributeError: return "undefined"
     if x is None: return "undefined"
     if isinstance(x, bool): return "boolean"
     if isinstance(x, str): return "string"
     if isinstance(x, (int, float)): return "number"
     if callable(x): return "function"
     return "object"
-def __indexof(a, x):
+def _indexof(a, x):
     try: return a.index(x)
     except ValueError: return -1
-def __re_compile(p):
+def _re_compile(p):
     return re.compile(p)
 def readFileSync(p):
     return open(p).read()
 def existsSync(p):
     return os.path.exists(p)
-def __is_integer(x):
+def _is_integer(x):
     return isinstance(x, int) and not isinstance(x, bool)
-def __is_finite(x):
+def _is_finite(x):
     return isinstance(x, (int, float)) and x == x and x not in (float("inf"), float("-inf"))
-def __is_nan(x):
+def _is_nan(x):
     return isinstance(x, float) and x != x
-def __url(rel):
+def _url(rel):
     if rel.startswith("./"):
         rel = rel[2:]
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
 
-def __fn_1(_):
-    RiTa.tagger.inlineTags(["I", "am", "Pikachu"], [], "/")
-
 class TestTagger:
-    hasLex = True
+    # (var hoisted to module scope)
     def test_should_call_pos_array(self):
         if not (hasLex):
             pytest.skip("mocha this.skip")
@@ -64,24 +64,24 @@ class TestTagger:
         assert (RiTa.pos(["freed"]) == ["jj"])
         assert (RiTa.pos(["the"]) == ["dt"])
         assert (RiTa.pos(["a"]) == ["dt"])
-        assert (RiTa.pos("the top seed".split(__re_compile(" "))) == ["dt", "jj", "nn"])
-        assert (RiTa.pos("by illegal means".split(__re_compile(" "))) == ["in", "jj", "nn"])
-        assert (RiTa.pos("He outnumbers us".split(__re_compile(" "))) == ["prp", "vbz", "prp"])
-        assert (RiTa.pos("I outnumber you".split(__re_compile(" "))) == ["prp", "vbp", "prp"])
-        assert (RiTa.pos("Elephants dance".split(__re_compile(" "))) == ["nns", "vbp"])
-        assert (RiTa.pos("the boy dances".split(__re_compile(" "))) == ["dt", "nn", "vbz"])
-        assert (RiTa.pos("Dave dances".split(__re_compile(" "))) == ["nnp", "vbz"])
+        assert (RiTa.pos(re.split(" ", "the top seed")) == ["dt", "jj", "nn"])
+        assert (RiTa.pos(re.split(" ", "by illegal means")) == ["in", "jj", "nn"])
+        assert (RiTa.pos(re.split(" ", "He outnumbers us")) == ["prp", "vbz", "prp"])
+        assert (RiTa.pos(re.split(" ", "I outnumber you")) == ["prp", "vbp", "prp"])
+        assert (RiTa.pos(re.split(" ", "Elephants dance")) == ["nns", "vbp"])
+        assert (RiTa.pos(re.split(" ", "the boy dances")) == ["dt", "nn", "vbz"])
+        assert (RiTa.pos(re.split(" ", "Dave dances")) == ["nnp", "vbz"])
     def test_should_call_simple_pos_array(self):
         assert (RiTa.pos([], {"simple": True}) == [])
         assert (RiTa.pos(["freed"], {"simple": True}) == ["a"])
         assert (RiTa.pos(["the"], {"simple": True}) == ["-"])
         assert (RiTa.pos(["a"], {"simple": True}) == ["-"])
-        assert (RiTa.pos("the top seed".split(__re_compile(" ")), {"simple": True}) == ["-", "a", "n"])
-        assert (RiTa.pos("by illegal means".split(__re_compile(" ")), {"simple": True}) == ["-", "a", "n"])
-        assert (RiTa.pos("He outnumbers us".split(__re_compile(" ")), {"simple": True}) == ["-", "v", "-"])
-        assert (RiTa.pos("I outnumber you".split(__re_compile(" ")), {"simple": True}) == ["-", "v", "-"])
-        assert (RiTa.pos("Elephants dance".split(__re_compile(" ")), {"simple": True}) == ["n", "v"])
-        assert (RiTa.pos("the boy dances".split(__re_compile(" ")), {"simple": True}) == ["-", "n", "v"])
+        assert (RiTa.pos(re.split(" ", "the top seed"), {"simple": True}) == ["-", "a", "n"])
+        assert (RiTa.pos(re.split(" ", "by illegal means"), {"simple": True}) == ["-", "a", "n"])
+        assert (RiTa.pos(re.split(" ", "He outnumbers us"), {"simple": True}) == ["-", "v", "-"])
+        assert (RiTa.pos(re.split(" ", "I outnumber you"), {"simple": True}) == ["-", "v", "-"])
+        assert (RiTa.pos(re.split(" ", "Elephants dance"), {"simple": True}) == ["n", "v"])
+        assert (RiTa.pos(re.split(" ", "the boy dances"), {"simple": True}) == ["-", "n", "v"])
     def test_should_call_posinline_array_simple(self):
         result = None
         answer = None
@@ -94,7 +94,7 @@ class TestTagger:
         result = RiTa.posInline(["teeth"], {"simple": True})
         answer = "teeth/n"
         assert (result == answer)
-        result = RiTa.posInline("There is a cat".split(__re_compile(" ")), {"simple": True})
+        result = RiTa.posInline(re.split(" ", "There is a cat"), {"simple": True})
         answer = "There/- is/v a/- cat/n"
         assert (result == answer)
         result = RiTa.posInline(RiTa.tokenize("The boy, dressed in red, ate an apple."), {"simple": True})
@@ -727,6 +727,11 @@ class TestTagger:
     def test_should_handle_hyphenated_words(self):
         pool = ["He is my father-in-law.", "We have a off-site meeting yesterday.", "I know a great place for an off-site.", "a state-of-the-art computer", "The girls wanted the merry-go-round to go faster.", "He ate twenty-one burgers today.", "The politician arrived by high-speed railway.", "People doing yoga benefit from an increased feeling of well-being.", "There is a life-size statue of the dragon in the park.", "He has a king-size bed in his room.", "I am taking a full-time job now", "The cost for the round-trip ticket is 2000 dollars.", "The cost is 2000 dollars for the round-trip.", "He come back empty-handed", "She is left-handed", "I like the dress of the long-haired girl in the photo.", "His move was breath-taking.", "Snakes are cold-blooded.", "People liked to wear bell-bottoms in the 80s.", "This shop mainly sells corn-fed meat.", "I withdraw the application and re-apply for another position.", "Our co-manager believe in neo-liberalism.", "He did a u-turn.", "We are not going to get down to the nitty-gritty analysis of value for money.", "The game require co-op with your teammates.", "He was a roly-poly little man."]
         answers = [["prp", "vbz", "prp$", "nn", "."], ["prp", "vbp", "dt", "jj", "vbg", "nn", "."], ["prp", "vbp", "dt", "jj", "nn", "in", "dt", "nn", "."], ["dt", "jj", "nn"], ["dt", "nns", "vbd", "dt", "nn", "to", "vb", "rbr", "."], ["prp", "vbd", "cd", "nns", "nn", "."], ["dt", "nn", "vbd", "in", "jj", "nn", "."], ["nn", "vbg", "nn", "nn", "in", "dt", "jj", "vbg", "in", "nn", "."], ["ex", "vbz", "dt", "jj", "nn", "in", "dt", "nn", "in", "dt", "nn", "."], ["prp", "vbz", "dt", "jj", "nn", "in", "prp$", "nn", "."], ["prp", "vbp", "vbg", "dt", "jj", "nn", "rb"], ["dt", "nn", "in", "dt", "jj", "nn", "vbz", "cd", "nns", "."], ["dt", "nn", "vbz", "cd", "nns", "in", "dt", "nn", "."], ["prp", "vbp", "rb", "jj"], ["prp", "vbz", "jj"], ["prp", "vbp", "dt", "nn", "in", "dt", "jj", "nn", "in", "dt", "nn", "."], ["prp$", "nn", "vbd", "jj", "."], ["nns", "vbp", "jj", "."], ["nn", "vbd", "to", "vb", "nn", "in", "dt", "nns", "."], ["dt", "nn", "rb", "nns", "jj", "nn", "."], ["prp", "vbp", "dt", "nn", "cc", "vb", "in", "dt", "nn", "."], ["prp$", "nn", "vbp", "in", "nn", "."], ["prp", "vbd", "dt", "nn", "."], ["prp", "vbp", "rb", "vbg", "to", "vb", "rb", "to", "dt", "nn", "nn", "in", "nn", "in", "nn", "."], ["dt", "nn", "vb", "nn", "in", "prp$", "nns", "."], ["prp", "vbd", "dt", "jj", "jj", "nn", "."]]
-        for a, i in answers:
+        for i, a in enumerate(answers):
             assert (RiTa.pos(pool[i]) == a)
+
+hasLex = True
+
+def __fn_1(_):
+    RiTa.tagger.inlineTags(["I", "am", "Pikachu"], [], "/")
 

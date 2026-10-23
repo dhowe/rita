@@ -22,43 +22,37 @@ def _arr_from(x, fn=None):
         return [fn() if fn else None for _ in range(x["length"])]
     return list(x)
 arr = type("arr", (), {"isArray": staticmethod(lambda x: isinstance(x, list)), "from": staticmethod(_arr_from)})
-def __typeof(x):
+def _typeof(fn):
+    try: x = fn()
+    except NameError: return "undefined"
+    except AttributeError: return "undefined"
     if x is None: return "undefined"
     if isinstance(x, bool): return "boolean"
     if isinstance(x, str): return "string"
     if isinstance(x, (int, float)): return "number"
     if callable(x): return "function"
     return "object"
-def __indexof(a, x):
+def _indexof(a, x):
     try: return a.index(x)
     except ValueError: return -1
-def __re_compile(p):
+def _re_compile(p):
     return re.compile(p)
 def readFileSync(p):
     return open(p).read()
 def existsSync(p):
     return os.path.exists(p)
-def __is_integer(x):
+def _is_integer(x):
     return isinstance(x, int) and not isinstance(x, bool)
-def __is_finite(x):
+def _is_finite(x):
     return isinstance(x, (int, float)) and x == x and x not in (float("inf"), float("-inf"))
-def __is_nan(x):
+def _is_nan(x):
     return isinstance(x, float) and x != x
-def __url(rel):
+def _url(rel):
     if rel.startswith("./"):
         rel = rel[2:]
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
-
-def __fn_1(_):
-    RiTa.conjugate()
-
-def __fn_2(_):
-    RiTa.conjugate("")
-
-def __fn_3(_):
-    RiTa.conjugate("walk", "invalid args")
 
 hasLex = True
 
@@ -308,40 +302,40 @@ class TestConjugator:
         assert (RiTa.conjugate("is", "2PPa") == "were")
         original = ["run", "walk", "swim", "create"]
         expected = ["is run", "is walked", "is swum", "is created"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "passive": True}) == expected[i])
         expected = ["is running", "is walking", "is swimming", "is creating"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "progressive": True}) == expected[i])
         expected = ["run", "walk", "swim", "create"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "interrogative": True}) == expected[i])
         expected = ["has run", "has walked", "has swum", "has created"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "perfect": True}) == expected[i])
         expected = ["being run", "being walked", "being swum", "being created"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "passive": True, "form": RiTa.GERUND}) == expected[i])
         expected = ["being running", "being walking", "being swimming", "being creating"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "progressive": True, "form": RiTa.GERUND}) == expected[i])
         expected = ["running", "walking", "swimming", "creating"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "interrogative": True, "form": RiTa.GERUND}) == expected[i])
         expected = ["having run", "having walked", "having swum", "having created"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "perfect": True, "form": RiTa.GERUND}) == expected[i])
         expected = ["to be run", "to be walked", "to be swum", "to be created"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "passive": True, "form": RiTa.INFINITIVE}) == expected[i])
         expected = ["to be running", "to be walking", "to be swimming", "to be creating"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "progressive": True, "form": RiTa.INFINITIVE}) == expected[i])
         expected = ["to run", "to walk", "to swim", "to create"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "interrogative": True, "form": RiTa.INFINITIVE}) == expected[i])
         expected = ["to have run", "to have walked", "to have swum", "to have created"]
-        for w, i in original:
+        for i, w in enumerate(original):
             assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "perfect": True, "form": RiTa.INFINITIVE}) == expected[i])
         RiTa.conjugate("swim", "2PPa")
         assert (RiTa.conjugate("walked", "3SPr") == "walks")
@@ -444,7 +438,7 @@ class TestConjugator:
         assert (RiTa.conjugator.unconjugate("spooning") == "spoon")
         assert (RiTa.conjugator.unconjugate("mepanning") == "mepan")
         assert (RiTa.conjugator.unconjugate("muddling") == "muddle")
-        if (__typeof(NOLEX)) != ("undefined"):
+        if (_typeof(lambda: NOLEX)) != ("undefined"):
             assert (RiTa.conjugator.unconjugate("gets") == "get")
             assert (RiTa.conjugator.unconjugate("comes") == "come")
             assert (RiTa.conjugator.unconjugate("goes") == "go")
@@ -577,4 +571,13 @@ class TestConjugator:
             assert (conj._handleStem("alien") == before)
         finally:
             RiTa.lexicon.data = orig
+
+def __fn_1(_):
+    RiTa.conjugate()
+
+def __fn_2(_):
+    RiTa.conjugate("")
+
+def __fn_3(_):
+    RiTa.conjugate("walk", "invalid args")
 
