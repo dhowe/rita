@@ -120,6 +120,32 @@ class RandGen:
 
         return len(probs) - 1
 
+    def pselect_obj(self, dist):
+        """
+        Select and return a key from an object distribution (mapping keys to
+        probabilities).
+
+        Args:
+            dist: dict mapping keys to probabilities (should sum to 1.0)
+
+        Returns:
+            The selected key
+        """
+        if not dist or not isinstance(dist, dict):
+            raise ValueError('arg required')
+        point = self._rndf()
+        cutoff = 0.0
+        for key in dist:
+            cutoff += dist[key]
+            if point < cutoff:
+                return key
+        keys = list(dist.keys())
+        return keys[-1]
+
+    def pselect_index(self, probs):
+        """Select and return the index from a probability distribution."""
+        return self.pselect(probs)
+
     def pselect2(self, weights: List[float]):
         """
         Select a value from weights using weighted random selection.

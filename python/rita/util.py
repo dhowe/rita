@@ -11,6 +11,37 @@ Provides helper functions for:
 import re
 from typing import List, Optional, Any, Dict
 
+
+class JsDict(dict):
+    """A dict that also supports JS-style attribute access (d.key).
+
+    JS returns objects (e.g. generation paths, resolved options, tree nodes) that
+    tests read both as maps (d['key']) and as objects (d.key). A plain Python dict
+    only supports the former; this subclass supports both while still comparing
+    equal to a plain dict (so `d == {...}` assertions pass).
+    """
+
+    def __getattribute__(self, name):
+        # data keys win over dict methods (e.g. a 'values' key)
+        if not name.startswith('__') and dict.__contains__(self, name):
+            return dict.__getitem__(self, name)
+        return dict.__getattribute__(self, name)
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+    def __setattr__(self, name, value):
+        self[name] = value
+
+    def __delattr__(self, name):
+        try:
+            del self[name]
+        except KeyError:
+            raise AttributeError(name)
+
 class RE:
     """Regular expression pattern for word transformations (inflection, conjugation)"""
 

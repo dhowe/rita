@@ -4,6 +4,7 @@ import json
 import math
 import os
 import re
+import time
 import types
 import functools
 from functools import cmp_to_key
@@ -12,6 +13,7 @@ import pytest
 _JS_TEST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "js", "test")
 
 from rita import RiTa
+from rita.util import JsDict
 
 # --- JS compatibility shims -------------------------------------------
 console = type("console", (), {"log": staticmethod(print), "warn": staticmethod(print), "error": staticmethod(print)})
@@ -53,131 +55,147 @@ def _url(rel):
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
+def _jsstr(x):
+    # JS String(x): arrays coerce to comma-joined, others to str().
+    if isinstance(x, list):
+        return ",".join(_jsstr(e) for e in x)
+    if x is None:
+        return "None"
+    if x is True:
+        return "true"
+    if x is False:
+        return "false"
+    return str(x)
+def _hasprop(x, k):
+    # JS expect(obj).to.have.property(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 hasLex = True
 
 class TestConjugator:
     def test_should_call_pastpart(self):
-        assert (RiTa.pastPart("pen") == "penned")
-        assert (RiTa.pastPart("red") == "red")
-        assert (RiTa.pastPart("sleep") == "slept")
-        assert (RiTa.pastPart("withhold") == "withheld")
-        assert (RiTa.pastPart("cut") == "cut")
-        assert (RiTa.pastPart("go") == "gone")
-        assert (RiTa.pastPart("swim") == "swum")
-        assert (RiTa.pastPart("would") == "would")
-        assert (RiTa.pastPart("might") == "might")
-        assert (RiTa.pastPart("run") == "run")
-        assert (RiTa.pastPart("speak") == "spoken")
-        assert (RiTa.pastPart("break") == "broken")
-        assert (RiTa.pastPart("plead") == "pled")
-        assert (RiTa.pastPart("") == "")
-        assert (RiTa.pastPart("shrink") == "shrunk")
-        assert (RiTa.pastPart("stink") == "stunk")
-        assert (RiTa.pastPart("study") == "studied")
-        assert (RiTa.pastPart("bite") == "bitten")
-        assert (RiTa.pastPart("break") == "broken")
-        assert (RiTa.pastPart("call") == "called")
-        assert (RiTa.pastPart("commit") == "committed")
-        assert (RiTa.pastPart("computerize") == "computerized")
-        assert (RiTa.pastPart("concern") == "concerned")
-        assert (RiTa.pastPart("discriminate") == "discriminated")
-        assert (RiTa.pastPart("end") == "ended")
-        assert (RiTa.pastPart("expect") == "expected")
-        assert (RiTa.pastPart("finish") == "finished")
-        assert (RiTa.pastPart("gain") == "gained")
-        assert (RiTa.pastPart("get") == "gotten")
-        assert (RiTa.pastPart("increase") == "increased")
-        assert (RiTa.pastPart("involve") == "involved")
-        assert (RiTa.pastPart("launch") == "launched")
-        assert (RiTa.pastPart("lead") == "led")
-        assert (RiTa.pastPart("live") == "lived")
-        assert (RiTa.pastPart("outpace") == "outpaced")
-        assert (RiTa.pastPart("oversee") == "overseen")
-        assert (RiTa.pastPart("oversell") == "oversold")
-        assert (RiTa.pastPart("pale") == "paled")
-        assert (RiTa.pastPart("prepay") == "prepaid")
-        assert (RiTa.pastPart("pressure") == "pressured")
-        assert (RiTa.pastPart("proliferate") == "proliferated")
-        assert (RiTa.pastPart("remake") == "remade")
-        assert (RiTa.pastPart("reopen") == "reopened")
-        assert (RiTa.pastPart("report") == "reported")
-        assert (RiTa.pastPart("resell") == "resold")
-        assert (RiTa.pastPart("settle") == "settled")
-        assert (RiTa.pastPart("bite") == "bitten")
-        assert (RiTa.pastPart("break") == "broken")
-        assert (RiTa.pastPart("build") == "built")
-        assert (RiTa.pastPart("enter") == "entered")
-        assert (RiTa.pastPart("own") == "owned")
-        assert (RiTa.pastPart("plan") == "planned")
-        assert (RiTa.pastPart("rent") == "rented")
-        assert (RiTa.pastPart("repurchase") == "repurchased")
-        assert (RiTa.pastPart("roast") == "roasted")
-        assert (RiTa.pastPart("start") == "started")
-        assert (RiTa.pastPart("bust") == "busted")
-        assert (RiTa.pastPart("heart") == "hearted")
-        assert (RiTa.pastPart("closet") == "closeted")
-        assert (RiTa.pastPart("bear") == "borne")
+        assert (RiTa.past_part("pen") == "penned")
+        assert (RiTa.past_part("red") == "red")
+        assert (RiTa.past_part("sleep") == "slept")
+        assert (RiTa.past_part("withhold") == "withheld")
+        assert (RiTa.past_part("cut") == "cut")
+        assert (RiTa.past_part("go") == "gone")
+        assert (RiTa.past_part("swim") == "swum")
+        assert (RiTa.past_part("would") == "would")
+        assert (RiTa.past_part("might") == "might")
+        assert (RiTa.past_part("run") == "run")
+        assert (RiTa.past_part("speak") == "spoken")
+        assert (RiTa.past_part("break") == "broken")
+        assert (RiTa.past_part("plead") == "pled")
+        assert (RiTa.past_part("") == "")
+        assert (RiTa.past_part("shrink") == "shrunk")
+        assert (RiTa.past_part("stink") == "stunk")
+        assert (RiTa.past_part("study") == "studied")
+        assert (RiTa.past_part("bite") == "bitten")
+        assert (RiTa.past_part("break") == "broken")
+        assert (RiTa.past_part("call") == "called")
+        assert (RiTa.past_part("commit") == "committed")
+        assert (RiTa.past_part("computerize") == "computerized")
+        assert (RiTa.past_part("concern") == "concerned")
+        assert (RiTa.past_part("discriminate") == "discriminated")
+        assert (RiTa.past_part("end") == "ended")
+        assert (RiTa.past_part("expect") == "expected")
+        assert (RiTa.past_part("finish") == "finished")
+        assert (RiTa.past_part("gain") == "gained")
+        assert (RiTa.past_part("get") == "gotten")
+        assert (RiTa.past_part("increase") == "increased")
+        assert (RiTa.past_part("involve") == "involved")
+        assert (RiTa.past_part("launch") == "launched")
+        assert (RiTa.past_part("lead") == "led")
+        assert (RiTa.past_part("live") == "lived")
+        assert (RiTa.past_part("outpace") == "outpaced")
+        assert (RiTa.past_part("oversee") == "overseen")
+        assert (RiTa.past_part("oversell") == "oversold")
+        assert (RiTa.past_part("pale") == "paled")
+        assert (RiTa.past_part("prepay") == "prepaid")
+        assert (RiTa.past_part("pressure") == "pressured")
+        assert (RiTa.past_part("proliferate") == "proliferated")
+        assert (RiTa.past_part("remake") == "remade")
+        assert (RiTa.past_part("reopen") == "reopened")
+        assert (RiTa.past_part("report") == "reported")
+        assert (RiTa.past_part("resell") == "resold")
+        assert (RiTa.past_part("settle") == "settled")
+        assert (RiTa.past_part("bite") == "bitten")
+        assert (RiTa.past_part("break") == "broken")
+        assert (RiTa.past_part("build") == "built")
+        assert (RiTa.past_part("enter") == "entered")
+        assert (RiTa.past_part("own") == "owned")
+        assert (RiTa.past_part("plan") == "planned")
+        assert (RiTa.past_part("rent") == "rented")
+        assert (RiTa.past_part("repurchase") == "repurchased")
+        assert (RiTa.past_part("roast") == "roasted")
+        assert (RiTa.past_part("start") == "started")
+        assert (RiTa.past_part("bust") == "busted")
+        assert (RiTa.past_part("heart") == "hearted")
+        assert (RiTa.past_part("closet") == "closeted")
+        assert (RiTa.past_part("bear") == "borne")
         if hasLex:
-            assert (RiTa.pastPart("hopped") == "hopped")
-            assert (RiTa.pastPart("hated") == "hated")
-            assert (RiTa.pastPart("created") == "created")
-            assert (RiTa.pastPart("committed") == "committed")
-            assert (RiTa.pastPart("submitted") == "submitted")
-            assert (RiTa.pastPart("come") == "come")
-            assert (RiTa.pastPart("forgotten") == "forgotten")
-            assert (RiTa.pastPart("arisen") == "arisen")
-            assert (RiTa.pastPart("eaten") == "eaten")
-            assert (RiTa.pastPart("chosen") == "chosen")
-            assert (RiTa.pastPart("frozen") == "frozen")
-            assert (RiTa.pastPart("stolen") == "stolen")
-            assert (RiTa.pastPart("worn") == "worn")
-            assert (RiTa.pastPart("broken") == "broken")
-            assert (RiTa.pastPart("written") == "written")
-            assert (RiTa.pastPart("ridden") == "ridden")
-            assert (RiTa.pastPart("drawn") == "drawn")
-            assert (RiTa.pastPart("known") == "known")
-            assert (RiTa.pastPart("grown") == "grown")
-            assert (RiTa.pastPart("done") == "done")
-            assert (RiTa.pastPart("gone") == "gone")
-            assert (RiTa.pastPart("awake") == "awoken")
-            assert (RiTa.pastPart("become") == "become")
-            assert (RiTa.pastPart("drink") == "drunk")
-            assert (RiTa.pastPart("run") == "run")
-            assert (RiTa.pastPart("shine") == "shone")
-            assert (RiTa.pastPart("grown") == "grown")
-            assert (RiTa.pastPart("heard") == "heard")
+            assert (RiTa.past_part("hopped") == "hopped")
+            assert (RiTa.past_part("hated") == "hated")
+            assert (RiTa.past_part("created") == "created")
+            assert (RiTa.past_part("committed") == "committed")
+            assert (RiTa.past_part("submitted") == "submitted")
+            assert (RiTa.past_part("come") == "come")
+            assert (RiTa.past_part("forgotten") == "forgotten")
+            assert (RiTa.past_part("arisen") == "arisen")
+            assert (RiTa.past_part("eaten") == "eaten")
+            assert (RiTa.past_part("chosen") == "chosen")
+            assert (RiTa.past_part("frozen") == "frozen")
+            assert (RiTa.past_part("stolen") == "stolen")
+            assert (RiTa.past_part("worn") == "worn")
+            assert (RiTa.past_part("broken") == "broken")
+            assert (RiTa.past_part("written") == "written")
+            assert (RiTa.past_part("ridden") == "ridden")
+            assert (RiTa.past_part("drawn") == "drawn")
+            assert (RiTa.past_part("known") == "known")
+            assert (RiTa.past_part("grown") == "grown")
+            assert (RiTa.past_part("done") == "done")
+            assert (RiTa.past_part("gone") == "gone")
+            assert (RiTa.past_part("awake") == "awoken")
+            assert (RiTa.past_part("become") == "become")
+            assert (RiTa.past_part("drink") == "drunk")
+            assert (RiTa.past_part("run") == "run")
+            assert (RiTa.past_part("shine") == "shone")
+            assert (RiTa.past_part("grown") == "grown")
+            assert (RiTa.past_part("heard") == "heard")
     def test_should_call_presentpart(self):
-        assert (RiTa.presentPart("") == "")
-        assert (RiTa.presentPart("sleep") == "sleeping")
-        assert (RiTa.presentPart("withhold") == "withholding")
-        assert (RiTa.presentPart("cut") == "cutting")
-        assert (RiTa.presentPart("go") == "going")
-        assert (RiTa.presentPart("run") == "running")
-        assert (RiTa.presentPart("speak") == "speaking")
-        assert (RiTa.presentPart("break") == "breaking")
-        assert (RiTa.presentPart("become") == "becoming")
-        assert (RiTa.presentPart("plead") == "pleading")
-        assert (RiTa.presentPart("awake") == "awaking")
-        assert (RiTa.presentPart("study") == "studying")
-        assert (RiTa.presentPart("lie") == "lying")
-        assert (RiTa.presentPart("swim") == "swimming")
-        assert (RiTa.presentPart("run") == "running")
-        assert (RiTa.presentPart("dig") == "digging")
-        assert (RiTa.presentPart("set") == "setting")
-        assert (RiTa.presentPart("speak") == "speaking")
-        assert (RiTa.presentPart("bring") == "bringing")
-        assert (RiTa.presentPart("speak") == "speaking")
-        assert (RiTa.presentPart("study ") == "studying")
-        assert (RiTa.presentPart(" study") == "studying")
-        assert (RiTa.presentPart("hoe") == "hoeing")
-        assert (RiTa.presentPart("shoe") == "shoeing")
+        assert (RiTa.present_part("") == "")
+        assert (RiTa.present_part("sleep") == "sleeping")
+        assert (RiTa.present_part("withhold") == "withholding")
+        assert (RiTa.present_part("cut") == "cutting")
+        assert (RiTa.present_part("go") == "going")
+        assert (RiTa.present_part("run") == "running")
+        assert (RiTa.present_part("speak") == "speaking")
+        assert (RiTa.present_part("break") == "breaking")
+        assert (RiTa.present_part("become") == "becoming")
+        assert (RiTa.present_part("plead") == "pleading")
+        assert (RiTa.present_part("awake") == "awaking")
+        assert (RiTa.present_part("study") == "studying")
+        assert (RiTa.present_part("lie") == "lying")
+        assert (RiTa.present_part("swim") == "swimming")
+        assert (RiTa.present_part("run") == "running")
+        assert (RiTa.present_part("dig") == "digging")
+        assert (RiTa.present_part("set") == "setting")
+        assert (RiTa.present_part("speak") == "speaking")
+        assert (RiTa.present_part("bring") == "bringing")
+        assert (RiTa.present_part("speak") == "speaking")
+        assert (RiTa.present_part("study ") == "studying")
+        assert (RiTa.present_part(" study") == "studying")
+        assert (RiTa.present_part("hoe") == "hoeing")
+        assert (RiTa.present_part("shoe") == "shoeing")
         if hasLex:
-            assert (RiTa.pastPart("awake") == "awoken")
-            assert (RiTa.pastPart("become") == "become")
-            assert (RiTa.pastPart("drink") == "drunk")
-            assert (RiTa.pastPart("run") == "run")
-            assert (RiTa.pastPart("shine") == "shone")
+            assert (RiTa.past_part("awake") == "awoken")
+            assert (RiTa.past_part("become") == "become")
+            assert (RiTa.past_part("drink") == "drunk")
+            assert (RiTa.past_part("run") == "run")
+            assert (RiTa.past_part("shine") == "shone")
     def test_should_conjugate_vbds(self):
         if not (hasLex):
             pytest.skip("mocha this.skip")
@@ -195,7 +213,7 @@ class TestConjugator:
             RiTa.conjugate()
         with pytest.raises(Exception):
             RiTa.conjugate("")
-        assert ("swum" == RiTa.pastPart("swim"))
+        assert ("swum" == RiTa.past_part("swim"))
         assert (RiTa.conjugate("be", {"form": RiTa.GERUND}) == "being")
         assert (RiTa.conjugate("are", {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}) == "were")
         s = ["swim", "need", "open"]
@@ -348,9 +366,9 @@ class TestConjugator:
             pytest.skip("mocha this.skip")
         assert (str(RiTa.conjugator) == "  ---------------------\n  Passive = false\n  Perfect = false\n  Progressive = false\n  ---------------------\n  Number = 8\n  Person = 2\n  Tense = 4\n  ---------------------\n")
     def test_should_accept_stems(self):
-        plurPast2 = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}
-        plurPres2 = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PRESENT}
-        singPres3 = {"number": RiTa.SINGULAR, "person": RiTa.THIRD, "tense": RiTa.PRESENT}
+        plurPast2 = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})
+        plurPres2 = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PRESENT})
+        singPres3 = JsDict({"number": RiTa.SINGULAR, "person": RiTa.THIRD, "tense": RiTa.PRESENT})
         stem = RiTa.stem("walking")
         assert (RiTa.conjugate(stem, plurPast2) == "walked")
         assert (RiTa.conjugate(stem, plurPres2) == "walk")
@@ -380,7 +398,7 @@ class TestConjugator:
         assert (RiTa.conjugate(stem, plurPres2) == "study")
         assert (RiTa.conjugate(stem, singPres3) == "studies")
     def test_should_accept_stem_pairs(self):
-        opts = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}
+        opts = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})
         pairs = [["accompanying", "accompanied"], ["feeling", "felt"], ["placating", "placated"], ["centralizing", "centralized"], ["humanized", "humanized"], ["boosted", "boosted"], ["wearing", "wore"], ["aroused", "aroused"], ["rising", "rose"], ["raising", "raised"], ["vibrating", "vibrated"], ["injection", "injected"], ["vibration", "vibrated"]]
         for p in pairs:
             res = RiTa.conjugate(RiTa.stem(p[0]), opts)
@@ -510,7 +528,7 @@ class TestConjugator:
         assert (RiTa.conjugator.unconjugate("blown") == "blow")
         assert (RiTa.conjugator.unconjugate("heard") == "hear")
     def test_should_conjugate_verbs(self):
-        opt = {"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST}
+        opt = JsDict({"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST})
         assert (RiTa.conjugate("bite", opt) == "bit")
         assert (RiTa.conjugate("break", opt) == "broke")
         assert (RiTa.conjugate("call", opt) == "called")
@@ -553,31 +571,31 @@ class TestConjugator:
     def test_should_handle_stem_lookup_correctly(self):
         conj = RiTa.conjugator
         for w in ["be", "been", "goes", "running", "walked", "bettering"]:
-            assert (conj._handleStem(w) == w)
-        assert (conj._handleStem("alien") == "alienate")
-        assert (conj._handleStem("bath") == "bathe")
-        assert (conj._handleStem("central") == "centralize")
+            assert (conj._handle_stem(w) == w)
+        assert (conj._handle_stem("alien") == "alienate")
+        assert (conj._handle_stem("bath") == "bathe")
+        assert (conj._handle_stem("central") == "centralize")
     def test_should_invalidate_the_stem_cache_on_lexicon_swap(self):
         conj = RiTa.conjugator
         orig = RiTa.lexicon.data
         try:
-            before = conj._handleStem("alien")
+            before = conj._handle_stem("alien")
             assert (before == "alienate")
             assert (conj._stemCache.size > 0)
             RiTa.lexicon.data = {**orig}
-            conj._handleStem("alien")
+            conj._handle_stem("alien")
             assert (conj._stemCacheRef == RiTa.lexicon.data)
             assert (conj._stemCache.size == 1)
-            assert (conj._handleStem("alien") == before)
+            assert (conj._handle_stem("alien") == before)
         finally:
             RiTa.lexicon.data = orig
 
-def __fn_1(_):
+def _fn_1(*args):
     RiTa.conjugate()
 
-def __fn_2(_):
+def _fn_2(*args):
     RiTa.conjugate("")
 
-def __fn_3(_):
+def _fn_3(*args):
     RiTa.conjugate("walk", "invalid args")
 

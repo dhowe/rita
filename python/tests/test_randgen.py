@@ -4,6 +4,7 @@ import json
 import math
 import os
 import re
+import time
 import types
 import functools
 from functools import cmp_to_key
@@ -12,6 +13,7 @@ import pytest
 _JS_TEST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "js", "test")
 
 from rita import RiTa
+from rita.util import JsDict
 
 # --- JS compatibility shims -------------------------------------------
 console = type("console", (), {"log": staticmethod(print), "warn": staticmethod(print), "error": staticmethod(print)})
@@ -53,13 +55,29 @@ def _url(rel):
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
+def _jsstr(x):
+    # JS String(x): arrays coerce to comma-joined, others to str().
+    if isinstance(x, list):
+        return ",".join(_jsstr(e) for e in x)
+    if x is None:
+        return "None"
+    if x is True:
+        return "true"
+    if x is False:
+        return "false"
+    return str(x)
+def _hasprop(x, k):
+    # JS expect(obj).to.have.property(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 fixtureUrl = next((u for u in [_url(p) for p in ["../../shared/randgen-fixtures.json", "../../../shared/randgen-fixtures.json"]] if existsSync(u)), None)
 
 if not (fixtureUrl):
     raise Exception(Exception(("randgen-fixtures.json not found relative to ") + (__file__)))
 
-fixtures = json.loads(readFileSync(fixtureUrl))
+fixtures = json.loads(readFileSync(fixtureUrl), object_hook=JsDict)
 
 R = RiTa.randomizer
 
@@ -68,7 +86,8 @@ class TestRandGen:
     pass
     def test_should_reproduce_the_seeded_sequences(self):
         for __it in fixtures.sequences:
-            seed, values = __it
+            seed = __it["seed"]
+            values = __it["values"]
             R.seed(seed)
             got = [R.random() for _ in values]
             assert (got == values), ("seed ") + (seed)
@@ -96,19 +115,19 @@ class TestRandGen:
             R.pselect()
         R.seed(1)
         assert (R.pselect([1]) == 0)
-        assert (fixtures.pselect.expected == replay(fixtures.pselect.seed, lambda _: R.pselect(fixtures.pselect.probs)))
+        assert (fixtures.pselect.expected == replay(fixtures.pselect.seed, lambda *args: R.pselect(fixtures.pselect.probs)))
     def test_should_call_pselectindex(self):
         with pytest.raises(Exception):
-            R.pselectIndex()
+            R.pselect_index()
         R.seed(1)
-        assert (R.pselectIndex([1]) == 0)
-        assert (fixtures.pselectIndex.expected == replay(fixtures.pselectIndex.seed, lambda _: R.pselectIndex(fixtures.pselectIndex.probs)))
+        assert (R.pselect_index([1]) == 0)
+        assert (fixtures.pselectIndex.expected == replay(fixtures.pselectIndex.seed, lambda *args: R.pselect_index(fixtures.pselectIndex.probs)))
     def test_should_call_pselect2(self):
-        assert (fixtures.pselect2.expected == replay(fixtures.pselect2.seed, lambda _: R.pselect2(fixtures.pselect2.weights)))
+        assert (fixtures.pselect2.expected == replay(fixtures.pselect2.seed, lambda *args: R.pselect2(fixtures.pselect2.weights)))
     def test_should_call_pselectobj(self):
         with pytest.raises(Exception):
-            R.pselectObj()
-        assert (fixtures.pselectObj.expected == replay(fixtures.pselectObj.seed, lambda _: R.pselectObj(fixtures.pselectObj.dist)))
+            R.pselect_obj()
+        assert (fixtures.pselectObj.expected == replay(fixtures.pselectObj.seed, lambda *args: R.pselect_obj(fixtures.pselectObj.dist)))
     def test_should_call_ndist(self):
         with pytest.raises(Exception):
             return R.ndist([1, 2, 6, -(2.5), 0])
@@ -118,51 +137,51 @@ class TestRandGen:
         d = R.ndist([3, 7, 11])
         assert (abs(sum(d, start=0) - 1) <= 1e-12)
     def test_should_call_shuffle(self):
-        assert (fixtures.shuffle.expected == once(fixtures.shuffle.seed, lambda _: R.shuffle(fixtures.shuffle.input)))
+        assert (fixtures.shuffle.expected == once(fixtures.shuffle.seed, lambda *args: R.shuffle(fixtures.shuffle.input)))
         out = sorted([*fixtures.shuffle.expected])
         assert (out == fixtures.shuffle.input)
     def test_should_call_randomordering(self):
-        assert (R.randomOrdering(1) == [0])
-        assert (R.randomOrdering(["a"]) == ["a"])
-        assert (fixtures.randomOrdering.expected == once(fixtures.randomOrdering.seed, lambda _: R.randomOrdering(fixtures.randomOrdering.k)))
-        ro = R.randomOrdering(5)
+        assert (R.random_ordering(1) == [0])
+        assert (R.random_ordering(["a"]) == ["a"])
+        assert (fixtures.randomOrdering.expected == once(fixtures.randomOrdering.seed, lambda *args: R.random_ordering(fixtures.randomOrdering.k)))
+        ro = R.random_ordering(5)
         assert (sorted([*ro]) == [0, 1, 2, 3, 4])
         with pytest.raises(Exception):
-            R.randomOrdering("x")
+            R.random_ordering("x")
     def test_should_call_random_with_ranges(self):
-        assert (fixtures.random1.expected == replay(fixtures.random1.seed, lambda _: R.random(fixtures.random1.k)))
-        assert (fixtures.random2.expected == replay(fixtures.random2.seed, lambda _: R.random(fixtures.random2.min, fixtures.random2.max)))
-        assert (fixtures.randomArray.expected == once(fixtures.randomArray.seed, lambda _: R.random(fixtures.randomArray.array)))
+        assert (fixtures.random1.expected == replay(fixtures.random1.seed, lambda *args: R.random(fixtures.random1.k)))
+        assert (fixtures.random2.expected == replay(fixtures.random2.seed, lambda *args: R.random(fixtures.random2.min, fixtures.random2.max)))
+        assert (fixtures.randomArray.expected == once(fixtures.randomArray.seed, lambda *args: R.random(fixtures.randomArray.array)))
     def test_should_call_randombias(self):
         b = fixtures.randomBias
-        assert (b.expected == replay(b.seed, lambda _: R.randomBias(b.min, b.max, b.bias, b.influence)))
+        assert (b.expected == replay(b.seed, lambda *args: R.random_bias(b.min, b.max, b.bias, b.influence)))
     def test_should_honor_rita_randomseed(self):
-        RiTa.randomSeed(42)
+        RiTa.random_seed(42)
         viaRiTa = [RiTa.random() for _ in range(10)]
         expected = next((s for s in fixtures.sequences if (s.seed) == (42)), None).values
         assert (viaRiTa == expected)
     def test_should_call_randi(self):
-        RiTa.randomSeed(42)
+        RiTa.random_seed(42)
         assert (RiTa.randi(10) == 3)
         assert (RiTa.randi(5, 15) == 12)
 
-def replay(seed=None, fn=None):
+def replay(seed=None, fn=None, *args):
     R.seed(seed)
     return [fn() for _ in range(5)]
 
-def once(seed=None, fn=None):
+def once(seed=None, fn=None, *args):
     R.seed(seed)
     return fn()
 
-def __fn_1(_):
+def _fn_1(*args):
     R.pselect()
 
-def __fn_2(_):
-    R.pselectIndex()
+def _fn_2(*args):
+    R.pselect_index()
 
-def __fn_3(_):
-    R.pselectObj()
+def _fn_3(*args):
+    R.pselect_obj()
 
-def __fn_4(_):
-    R.randomOrdering("x")
+def _fn_4(*args):
+    R.random_ordering("x")
 

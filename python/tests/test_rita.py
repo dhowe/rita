@@ -4,6 +4,7 @@ import json
 import math
 import os
 import re
+import time
 import types
 import functools
 from functools import cmp_to_key
@@ -12,6 +13,7 @@ import pytest
 _JS_TEST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "js", "test")
 
 from rita import RiTa
+from rita.util import JsDict
 
 # --- JS compatibility shims -------------------------------------------
 console = type("console", (), {"log": staticmethod(print), "warn": staticmethod(print), "error": staticmethod(print)})
@@ -53,6 +55,22 @@ def _url(rel):
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
+def _jsstr(x):
+    # JS String(x): arrays coerce to comma-joined, others to str().
+    if isinstance(x, list):
+        return ",".join(_jsstr(e) for e in x)
+    if x is None:
+        return "None"
+    if x is True:
+        return "true"
+    if x is False:
+        return "false"
+    return str(x)
+def _hasprop(x, k):
+    # JS expect(obj).to.have.property(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 class TestCore:
     def test_should_have_access_to_statics(self):
@@ -70,17 +88,17 @@ class TestCore:
         res = RiTa.evaluate("It was [honor].art to meet you", 0)
         assert (res == "It was an honor to meet you")
     def test_should_call_addtransform(self):
-        def addRhyme(word=None):
-            res = RiTa.lexicon.rhymesSync(word, {"limit": 1})
+        def addRhyme(word=None, *args):
+            res = RiTa.lexicon.rhymes_sync(word, {"limit": 1})
             return ((word) + (" rhymes with ")) + (RiTa.random(res))
         assert ((RiTa.riscript.transforms.rhymes) is None)
         assert ((hasattr(RiTa.riscript.transforms, "rhymes")) is False)
-        RiTa.addTransform("rhymes", addRhyme)
+        RiTa.add_transform("rhymes", addRhyme)
         assert not ((RiTa.riscript.transforms.rhymes) is None)
         assert ((hasattr(RiTa.riscript.transforms, "rhymes")) is True)
         res = RiTa.evaluate("The [dog | dog | dog].rhymes")
         assert (res == "The dog rhymes with cog")
-        RiTa.removeTransform("rhymes")
+        RiTa.remove_transform("rhymes")
         assert ((hasattr(RiTa.riscript.transforms, "rhymes")) is False)
         res = RiTa.evaluate("The [dog | dog | dog].rhymes", 0, {"silent": True})
         assert (res == "The dog.rhymes")
@@ -95,34 +113,34 @@ class TestCore:
         assert ((_is_integer)(RiTa.randi(1, 10)))
         assert ((_is_integer)(RiTa.randi(10)))
     def test_should_call_randomordering(self):
-        assert (RiTa.randomOrdering(1) == [0])
-        assert (set(RiTa.randomOrdering(2)) == set([0, 1]))
-        assert (RiTa.randomOrdering(["a"]) == ["a"])
-        assert (set(RiTa.randomOrdering(["a", "b"])) == set(["a", "b"]))
-        ro = RiTa.randomOrdering(4)
+        assert (RiTa.random_ordering(1) == [0])
+        assert (set(RiTa.random_ordering(2)) == set([0, 1]))
+        assert (RiTa.random_ordering(["a"]) == ["a"])
+        assert (set(RiTa.random_ordering(["a", "b"])) == set(["a", "b"]))
+        ro = RiTa.random_ordering(4)
         assert (len(ro) == 4)
         assert (set(ro) == set([0, 1, 2, 3]))
         arr = [0, 3, 5, 7]
-        ro = RiTa.randomOrdering(arr)
+        ro = RiTa.random_ordering(arr)
         assert (len(ro) == 4)
         assert (set(ro) == set(arr))
     def test_should_call_isquestion(self):
-        ok(RiTa.isQuestion("what"))
-        ok(RiTa.isQuestion("what"))
-        ok(RiTa.isQuestion("what is this"))
-        ok(RiTa.isQuestion("what is this?"))
-        ok(RiTa.isQuestion("Does it?"))
-        ok(RiTa.isQuestion("Would you believe it?"))
-        ok(RiTa.isQuestion("Have you been?"))
-        ok(RiTa.isQuestion("Is this yours?"))
-        ok(RiTa.isQuestion("Are you done?"))
-        ok(RiTa.isQuestion("what is this? , where is that?"))
-        ok(RiTa.isQuestion("Will you come tomorrow?"))
-        ok(RiTa.isQuestion("Would you do that?"))
-        ok(not (RiTa.isQuestion("That is not a toy This is an apple")))
-        ok(not (RiTa.isQuestion("string")))
-        ok(not (RiTa.isQuestion("?")))
-        ok(not (RiTa.isQuestion("")))
+        ok(RiTa.is_question("what"))
+        ok(RiTa.is_question("what"))
+        ok(RiTa.is_question("what is this"))
+        ok(RiTa.is_question("what is this?"))
+        ok(RiTa.is_question("Does it?"))
+        ok(RiTa.is_question("Would you believe it?"))
+        ok(RiTa.is_question("Have you been?"))
+        ok(RiTa.is_question("Is this yours?"))
+        ok(RiTa.is_question("Are you done?"))
+        ok(RiTa.is_question("what is this? , where is that?"))
+        ok(RiTa.is_question("Will you come tomorrow?"))
+        ok(RiTa.is_question("Would you do that?"))
+        ok(not (RiTa.is_question("That is not a toy This is an apple")))
+        ok(not (RiTa.is_question("string")))
+        ok(not (RiTa.is_question("?")))
+        ok(not (RiTa.is_question("")))
     def test_should_handle_articlize(self):
         tmp = RiTa.SILENCE_LTS
         RiTa.SILENCE_LTS = True
@@ -138,111 +156,111 @@ class TestCore:
         for i in range(len(data)):
             assert (RiTa.articlize(data[i]) == data[(i) + (1)])
     def test_should_call_isabbrev(self):
-        ok(RiTa.isAbbrev("Dr."))
-        ok(RiTa.isAbbrev("dr."))
-        ok(RiTa.isAbbrev("DR."))
-        ok(RiTa.isAbbrev("Dr. "))
-        ok(RiTa.isAbbrev(" Dr."))
-        ok(RiTa.isAbbrev("Prof."))
-        ok(RiTa.isAbbrev("prof."))
-        ok(not (RiTa.isAbbrev("Dr")))
-        ok(not (RiTa.isAbbrev("Doctor")))
-        ok(not (RiTa.isAbbrev("Doctor.")))
-        ok(not (RiTa.isAbbrev("PRFO.")))
-        ok(not (RiTa.isAbbrev("PrFo.")))
-        ok(not (RiTa.isAbbrev("Professor")))
-        ok(not (RiTa.isAbbrev("professor")))
-        ok(not (RiTa.isAbbrev("PROFESSOR")))
-        ok(not (RiTa.isAbbrev("Professor.")))
-        ok(not (RiTa.isAbbrev("@#$%^&*()")))
-        ok(not (RiTa.isAbbrev("")))
-        ok(not (RiTa.isAbbrev(None)))
-        ok(not (RiTa.isAbbrev(None)))
-        ok(not (RiTa.isAbbrev(1)))
-        ok(RiTa.isAbbrev("Dr.", {"caseSensitive": True}))
-        ok(RiTa.isAbbrev("Dr. ", {"caseSensitive": True}))
-        ok(RiTa.isAbbrev(" Dr.", {"caseSensitive": True}))
-        ok(RiTa.isAbbrev("Prof.", {"caseSensitive": True}))
-        ok(not (RiTa.isAbbrev("dr.", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("DR.", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("Dr", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("Doctor", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("Doctor.", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("prof.", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("PRFO.", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("PrFo.", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("Professor", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("professor", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("PROFESSOR", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("Professor.", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("@#$%^&*()", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev("", {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev(None, {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev(None, {"caseSensitive": True})))
-        ok(not (RiTa.isAbbrev(1, {"caseSensitive": True})))
+        ok(RiTa.is_abbrev("Dr."))
+        ok(RiTa.is_abbrev("dr."))
+        ok(RiTa.is_abbrev("DR."))
+        ok(RiTa.is_abbrev("Dr. "))
+        ok(RiTa.is_abbrev(" Dr."))
+        ok(RiTa.is_abbrev("Prof."))
+        ok(RiTa.is_abbrev("prof."))
+        ok(not (RiTa.is_abbrev("Dr")))
+        ok(not (RiTa.is_abbrev("Doctor")))
+        ok(not (RiTa.is_abbrev("Doctor.")))
+        ok(not (RiTa.is_abbrev("PRFO.")))
+        ok(not (RiTa.is_abbrev("PrFo.")))
+        ok(not (RiTa.is_abbrev("Professor")))
+        ok(not (RiTa.is_abbrev("professor")))
+        ok(not (RiTa.is_abbrev("PROFESSOR")))
+        ok(not (RiTa.is_abbrev("Professor.")))
+        ok(not (RiTa.is_abbrev("@#$%^&*()")))
+        ok(not (RiTa.is_abbrev("")))
+        ok(not (RiTa.is_abbrev(None)))
+        ok(not (RiTa.is_abbrev(None)))
+        ok(not (RiTa.is_abbrev(1)))
+        ok(RiTa.is_abbrev("Dr.", {"caseSensitive": True}))
+        ok(RiTa.is_abbrev("Dr. ", {"caseSensitive": True}))
+        ok(RiTa.is_abbrev(" Dr.", {"caseSensitive": True}))
+        ok(RiTa.is_abbrev("Prof.", {"caseSensitive": True}))
+        ok(not (RiTa.is_abbrev("dr.", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("DR.", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("Dr", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("Doctor", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("Doctor.", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("prof.", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("PRFO.", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("PrFo.", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("Professor", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("professor", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("PROFESSOR", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("Professor.", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("@#$%^&*()", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev("", {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev(None, {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev(None, {"caseSensitive": True})))
+        ok(not (RiTa.is_abbrev(1, {"caseSensitive": True})))
     def test_should_call_ispunct(self):
-        ok(not (RiTa.isPunct("What the")))
-        ok(not (RiTa.isPunct("What ! the")))
-        ok(not (RiTa.isPunct(".#\"\\!@i$%&_+=}<>")))
-        ok(RiTa.isPunct("!"))
-        ok(RiTa.isPunct("?"))
-        ok(RiTa.isPunct("?!"))
-        ok(RiTa.isPunct("."))
-        ok(RiTa.isPunct(".."))
-        ok(RiTa.isPunct("..."))
-        ok(RiTa.isPunct("...."))
-        ok(RiTa.isPunct("%..."))
-        ok(not (RiTa.isPunct("! ")))
-        ok(not (RiTa.isPunct(" !")))
-        ok(not (RiTa.isPunct("!  ")))
-        ok(not (RiTa.isPunct("  !")))
-        ok(not (RiTa.isPunct("!  ")))
-        ok(not (RiTa.isPunct("   !")))
+        ok(not (RiTa.is_punct("What the")))
+        ok(not (RiTa.is_punct("What ! the")))
+        ok(not (RiTa.is_punct(".#\"\\!@i$%&_+=}<>")))
+        ok(RiTa.is_punct("!"))
+        ok(RiTa.is_punct("?"))
+        ok(RiTa.is_punct("?!"))
+        ok(RiTa.is_punct("."))
+        ok(RiTa.is_punct(".."))
+        ok(RiTa.is_punct("..."))
+        ok(RiTa.is_punct("...."))
+        ok(RiTa.is_punct("%..."))
+        ok(not (RiTa.is_punct("! ")))
+        ok(not (RiTa.is_punct(" !")))
+        ok(not (RiTa.is_punct("!  ")))
+        ok(not (RiTa.is_punct("  !")))
+        ok(not (RiTa.is_punct("!  ")))
+        ok(not (RiTa.is_punct("   !")))
         punct = None
         punct = "$%&^,"
         i = 0
         for i in range(len(punct)):
-            ok(RiTa.isPunct(punct[i]), ("fail at:") + (punct[i]))
+            ok(RiTa.is_punct(punct[i]), ("fail at:") + (punct[i]))
         punct = ",;:!?)([].#\"\\!@$%&}<>|-/\\*{^"
         i = 0
         for i in range(len(punct)):
-            ok(RiTa.isPunct(punct[i]), ("fail at:") + (punct[i]))
+            ok(RiTa.is_punct(punct[i]), ("fail at:") + (punct[i]))
         punct = "\"��������`'"
         i = 0
         for i in range(len(punct)):
-            ok(RiTa.isPunct(punct[i]), ("fail at:") + (punct[i]))
+            ok(RiTa.is_punct(punct[i]), ("fail at:") + (punct[i]))
         punct = "\"��������`',;:!?)([].#\"\\!@$%&}<>|-/\\*{^"
         i = 0
         for i in range(len(punct)):
-            ok(RiTa.isPunct(punct[i]), ("fail at:") + (punct[i]))
+            ok(RiTa.is_punct(punct[i]), ("fail at:") + (punct[i]))
         nopunct = "Helloasdfnals  FgG   \t kjdhfakjsdhf askjdfh aaf98762348576"
         i = 0
         for i in range(len(nopunct)):
-            ok(not (RiTa.isPunct(nopunct[i])))
-        ok(not (RiTa.isPunct("")))
-        assert ((RiTa.isPunct("你")) is False)
+            ok(not (RiTa.is_punct(nopunct[i])))
+        ok(not (RiTa.is_punct("")))
+        assert ((RiTa.is_punct("你")) is False)
         chineseCharacters = "這是一些隨機的中文字後來開始都會發揮吧首度落後兩分看來都是廢話卡卡聖誕賀卡還是阿塞德就回家啊哈薩克話說快時間啊但我阿拉斯加生命太短暂了不应该用来记恨人生在世谁都会有错误但我们很快会死去我们的罪过将会随我们的身体一起消失只留下精神的火花这就是我从来不想报复从来不认为生活不公平的原因我平静的生活"
         i = 0
         for i in range(len(chineseCharacters)):
-            ok(not (RiTa.isPunct(chineseCharacters[i])), ("fail at ") + (chineseCharacters[i]))
+            ok(not (RiTa.is_punct(chineseCharacters[i])), ("fail at ") + (chineseCharacters[i]))
     def test_should_call_isstopword(self):
         stopWords = ["and", "a", "of", "in", "i", "you", "is", "to", "that", "it", "for", "on", "have", "with", "this", "be", "not", "are", "as", "was", "but", "or", "from", "my", "at", "if", "they", "your", "all", "he", "by", "one", "me", "what", "so", "can", "will", "do", "an", "about", "we", "just", "would", "there", "no", "like", "out", "his", "has", "up", "more", "who", "when", "don't", "some", "had", "them", "any", "their", "it's", "only", "which", "i'm", "been", "other", "were", "how", "then", "now", "her", "than", "she", "well", "also", "us", "very", "because", "am", "here", "could", "even", "him", "into", "our", "much", "too", "did", "should", "over", "want", "these", "may", "where", "most", "many", "those", "does", "why", "please", "off", "going", "its", "i've", "down", "that's", "can't", "you're", "didn't", "another", "around", "must", "few", "doesn't", "the", "every", "yes", "each", "maybe", "i'll", "away", "doing", "oh", "else", "isn't", "he's", "there's", "hi", "won't", "ok", "they're", "yeah", "mine", "we're", "what's", "shall", "she's", "hello", "okay", "here's", "less", "didn't", "said"]
         nonStopWords = ["apple", "orange", "cat", "dog", "play", "study", "worked", "paper"]
         for w in stopWords:
-            ok(RiTa.isStopWord(w), (w) + (" should be stop word"))
+            ok(RiTa.is_stop_word(w), (w) + (" should be stop word"))
         for w in nonStopWords:
-            ok(not (RiTa.isStopWord(w)), (w) + (" should not be stop word"))
+            ok(not (RiTa.is_stop_word(w)), (w) + (" should not be stop word"))
     def test_should_call_isconsonant(self):
         vowels = list("aeiou")
         for l in vowels:
-            ok(not (RiTa.isConsonant(l)))
-        ok(not (RiTa.isConsonant(None)))
-        ok(not (RiTa.isConsonant()))
-        ok(not (RiTa.isConsonant("word")))
-        ok(not (RiTa.isConsonant("")))
+            ok(not (RiTa.is_consonant(l)))
+        ok(not (RiTa.is_consonant(None)))
+        ok(not (RiTa.is_consonant()))
+        ok(not (RiTa.is_consonant("word")))
+        ok(not (RiTa.is_consonant("")))
         someConsonants = list("bdfks")
         for l in someConsonants:
-            ok(RiTa.isConsonant(l))
+            ok(RiTa.is_consonant(l))
     def test_should_call_tokenize(self):
         assert (RiTa.tokenize("") == [""])
         assert (RiTa.tokenize("The dog") == ["The", "dog"])
@@ -426,43 +444,43 @@ class TestCore:
             assert (RiTa.untokenize(inputs[i]) == outputs[i])
     def test_should_call_concordance(self):
         data = RiTa.concordance("The dog ate the cat")
-        assert (len(list(obj.keys())) == 5)
+        assert (len(list(data.keys())) == 5)
         assert (data["the"] == 1)
         assert (data["The"] == 1)
         assert (data["THE"] == None)
         data = RiTa.concordance("The dog ate the cat", {"ignoreCase": False, "ignoreStopWords": False, "ignorePunctuation": False})
-        assert (len(list(obj.keys())) == 5)
+        assert (len(list(data.keys())) == 5)
         assert (data["the"] == 1)
         assert (data["The"] == 1)
         assert (data["THE"] == None)
         data = RiTa.concordance("The dog ate the cat", {"ignoreCase": True})
-        assert (len(list(obj.keys())) == 4)
+        assert (len(list(data.keys())) == 4)
         assert (data["the"] == 2)
         assert (data["The"] == None)
         assert (data["THE"] == None)
         data = RiTa.concordance("The Dog ate the cat.", {"ignoreCase": True, "ignoreStopWords": True, "ignorePunctuation": True})
-        assert (len(list(obj.keys())) == 3)
+        assert (len(list(data.keys())) == 3)
         assert (data["dog"] == 1)
         assert (data["the"] == None)
         assert (data["THE"] == None)
         data = RiTa.concordance("The dog ate the cat")
-        assert (len(list(obj.keys())) == 5)
+        assert (len(list(data.keys())) == 5)
         assert (data["the"] == 1)
         assert (data["The"] == 1)
         assert (data["THE"] == None)
         data = RiTa.concordance("'What a wonderful world;!:,?.'\"", {"ignorePunctuation": True})
-        assert (len(list(obj.keys())) == 4)
+        assert (len(list(data.keys())) == 4)
         assert (data["!"] == None)
         data = RiTa.concordance("The dog ate the cat", {"ignoreStopWords": True})
-        assert (len(list(obj.keys())) == 3)
+        assert (len(list(data.keys())) == 3)
         assert (data["The"] == None)
         data = RiTa.concordance("It was a dream of you.", {"ignoreStopWords": True})
-        assert (len(list(obj.keys())) == 2)
+        assert (len(list(data.keys())) == 2)
         assert (data["It"] == None)
         assert (data["dream"] == 1)
         assert (data["."] == 1)
         data = RiTa.concordance("Fresh fried fish, Fish fresh fried.", {"wordsToIgnore": ["fish"], "ignoreCase": True, "ignorePunctuation": True})
-        assert (len(list(obj.keys())) == 2)
+        assert (len(list(data.keys())) == 2)
         assert (data["fish"] == None)
         assert (data["fresh"] == 2)
         assert (data["fried"] == 2)
@@ -583,23 +601,23 @@ class TestCore:
         eql(output, expected)
     @pytest.mark.skip(reason="disabled in JS")  # /*LTR*/
     def test_should_call_gettransforms(self):
-        transforms = RiTa.getTransforms()
+        transforms = RiTa.get_transforms()
         expected = ["articlize", "capitalize", "uppercase", "quotify", "norepeat", "pluralize", "art", "cap", "uc", "qq", "nr", "s"]
         for t in expected:
             ok(hasattr(transforms, t), ("fail at ") + (t))
     @pytest.mark.skip(reason="disabled in JS")  # /*LTR*/
     def test_should_call_findstem(self):
-        ok(RiTa.findStem("dog"))
-        ok(RiTa.findStem("cat"))
-        ok(RiTa.findStem("play"))
-        ok(RiTa.findStem("run"))
-        ok(not (RiTa.findStem("dogs")))
-        ok(not (RiTa.findStem("played")))
-        ok(not (RiTa.findStem("writing")))
+        ok(RiTa.find_stem("dog"))
+        ok(RiTa.find_stem("cat"))
+        ok(RiTa.find_stem("play"))
+        ok(RiTa.find_stem("run"))
+        ok(not (RiTa.find_stem("dogs")))
+        ok(not (RiTa.find_stem("played")))
+        ok(not (RiTa.find_stem("writing")))
     def test_should_not_match_object_prototype_members_in_the_lexicon(self):
         for w in ["toString", "constructor", "valueOf", "hasOwnProperty", "__proto__", "isPrototypeOf"]:
-            ok(not (RiTa.hasWord(w)), (w) + (" should not be a word"))
-        ok(RiTa.hasWord("dog"), "dog should still be a word")
+            ok(not (RiTa.has_word(w)), (w) + (" should not be a word"))
+        ok(RiTa.has_word("dog"), "dog should still be a word")
     def test_should_handle_words_matching_object_prototype_members_in_concordance(self):
         data = RiTa.concordance("constructor toString watch")
         assert (data == {"constructor": 1, "toString": 1, "watch": 1})
@@ -607,26 +625,26 @@ class TestCore:
         ok((len(RiTa.kwic("toString"))) == (1))
         ok((len(RiTa.kwic("nonexistentword"))) == (0))
     def test_should_call_isvowel_and_isconsonant_case_insensitively(self):
-        ok(RiTa.isVowel("A"))
-        ok(RiTa.isVowel("a"))
-        ok(RiTa.isConsonant("B"))
-        ok(RiTa.isConsonant("b"))
-        ok(not (RiTa.isVowel("B")))
-        ok(not (RiTa.isConsonant("A")))
-        ok(not (RiTa.isConsonant("1")))
-        ok(not (RiTa.isConsonant("")))
-        ok(not (RiTa.isVowel("")))
-        ok(not (RiTa.isConsonant(None)))
-        assert ((RiTa.isVowel("")) is False)
-        assert ((RiTa.isConsonant("")) is False)
-        assert ((RiTa.isVowel(None)) is False)
-        assert ((RiTa.isConsonant(None)) is False)
+        ok(RiTa.is_vowel("A"))
+        ok(RiTa.is_vowel("a"))
+        ok(RiTa.is_consonant("B"))
+        ok(RiTa.is_consonant("b"))
+        ok(not (RiTa.is_vowel("B")))
+        ok(not (RiTa.is_consonant("A")))
+        ok(not (RiTa.is_consonant("1")))
+        ok(not (RiTa.is_consonant("")))
+        ok(not (RiTa.is_vowel("")))
+        ok(not (RiTa.is_consonant(None)))
+        assert ((RiTa.is_vowel("")) is False)
+        assert ((RiTa.is_consonant("")) is False)
+        assert ((RiTa.is_vowel(None)) is False)
+        assert ((RiTa.is_consonant(None)) is False)
     def test_should_return_strict_booleans_from_ispunct_and_isabbrev(self):
-        assert ((RiTa.isPunct("")) is False)
-        assert ((RiTa.isPunct(",")) is True)
-        assert ((RiTa.isAbbrev(123)) is False)
-        assert ((RiTa.isAbbrev(None)) is False)
-        assert ((RiTa.isAbbrev("Dr.")) is True)
+        assert ((RiTa.is_punct("")) is False)
+        assert ((RiTa.is_punct(",")) is True)
+        assert ((RiTa.is_abbrev(123)) is False)
+        assert ((RiTa.is_abbrev(None)) is False)
+        assert ((RiTa.is_abbrev("Dr.")) is True)
     def test_should_cache_analyzer_results_and_invalidate_on_lexicon_swap(self):
         ok(RiTa.CACHING, "CACHING should default to true")
         orig = RiTa.lexicon.data
@@ -640,7 +658,7 @@ class TestCore:
         finally:
             RiTa.lexicon.data = orig
     def test_should_use_o_1_set_mirrors_consistent_with_the_word_lists(self):
-        def check(arr=None, set=None):
+        def check(arr=None, set=None, *args):
             for w in arr:
                 assert ((w in set) is True), ("missing ") + (w)
         check(RiTa.STOP_WORDS, RiTa.STOP_WORDS_SET)
@@ -652,20 +670,20 @@ class TestCore:
         orig = RiTa.STOP_WORDS
         try:
             RiTa.STOP_WORDS = ["zebraterm"]
-            assert ((RiTa.isStopWord("zebraterm")) is True)
-            assert ((RiTa.isStopWord("the")) is False)
+            assert ((RiTa.is_stop_word("zebraterm")) is True)
+            assert ((RiTa.is_stop_word("the")) is False)
         finally:
             RiTa.STOP_WORDS = orig
-        assert ((RiTa.isStopWord("the")) is True)
+        assert ((RiTa.is_stop_word("the")) is True)
     def test_should_honor_in_place_mutation_of_the_word_lists(self):
         list = RiTa.STOP_WORDS
         len = len(list)
         try:
             list.append("quokkaterm")
-            assert ((RiTa.isStopWord("quokkaterm")) is True)
+            assert ((RiTa.is_stop_word("quokkaterm")) is True)
             assert (RiTa.STOP_WORDS_SET.size == set(list).size)
             list.pop()
-            assert ((RiTa.isStopWord("quokkaterm")) is False)
+            assert ((RiTa.is_stop_word("quokkaterm")) is False)
         finally:
             if (len(list)) > (len):
                 del list[len:]
@@ -675,15 +693,15 @@ class TestCore:
     # (helper hoisted to module scope)
     # (helper hoisted to module scope)
 
-def ok(a=None, m=None):
+def ok(a=None, m=None, *args):
     assert ((a) is True), m
 
-def def_(res=None, m=None):
+def def_(res=None, m=None, *args):
     assert not ((res) is None), m
 
-def eql(a=None, b=None, m=None):
+def eql(a=None, b=None, m=None, *args):
     assert (a == b)
 
-def eq(a=None, b=None, m=None):
+def eq(a=None, b=None, m=None, *args):
     assert (a == b)
 

@@ -4,6 +4,7 @@ import json
 import math
 import os
 import re
+import time
 import types
 import functools
 from functools import cmp_to_key
@@ -12,6 +13,7 @@ import pytest
 _JS_TEST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "js", "test")
 
 from rita import RiTa
+from rita.util import JsDict
 
 # --- JS compatibility shims -------------------------------------------
 console = type("console", (), {"log": staticmethod(print), "warn": staticmethod(print), "error": staticmethod(print)})
@@ -53,8 +55,24 @@ def _url(rel):
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
+def _jsstr(x):
+    # JS String(x): arrays coerce to comma-joined, others to str().
+    if isinstance(x, list):
+        return ",".join(_jsstr(e) for e in x)
+    if x is None:
+        return "None"
+    if x is True:
+        return "true"
+    if x is False:
+        return "false"
+    return str(x)
+def _hasprop(x, k):
+    # JS expect(obj).to.have.property(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
-data = json.loads(readFileSync(_url("./harvard-data.json")))
+data = json.loads(readFileSync(_url("./harvard-data.json")), object_hook=JsDict)
 
 sentences = [d[0] for d in data]
 

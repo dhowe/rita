@@ -4,6 +4,7 @@ import json
 import math
 import os
 import re
+import time
 import types
 import functools
 from functools import cmp_to_key
@@ -12,6 +13,7 @@ import pytest
 _JS_TEST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "js", "test")
 
 from rita import RiTa
+from rita.util import JsDict
 
 # --- JS compatibility shims -------------------------------------------
 console = type("console", (), {"log": staticmethod(print), "warn": staticmethod(print), "error": staticmethod(print)})
@@ -53,6 +55,22 @@ def _url(rel):
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
+def _jsstr(x):
+    # JS String(x): arrays coerce to comma-joined, others to str().
+    if isinstance(x, list):
+        return ",".join(_jsstr(e) for e in x)
+    if x is None:
+        return "None"
+    if x is True:
+        return "true"
+    if x is False:
+        return "false"
+    return str(x)
+def _hasprop(x, k):
+    # JS expect(obj).to.have.property(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 class TestAnalyzer:
     # (var hoisted to module scope)
@@ -64,15 +82,15 @@ class TestAnalyzer:
     def test_should_call_analyzeword(self):
         tmp = RiTa.SILENCE_LTS
         RiTa.SILENCE_LTS = True
-        data = RiTa.analyzer.analyzeWord("abandon")
+        data = RiTa.analyzer.analyze_word("abandon")
         assert (data.phones == "ah-b-ae-n-d-ah-n")
         assert (data.stresses == "0/1/0")
         assert (data.syllables == "ah/b-ae-n/d-ah-n")
-        data = RiTa.analyzer.analyzeWord("z")
+        data = RiTa.analyzer.analyze_word("z")
         assert (data.phones == "z")
         assert (data.stresses == "0")
         assert (data.syllables == "z")
-        data = RiTa.analyzer.analyzeWord("cloze")
+        data = RiTa.analyzer.analyze_word("cloze")
         assert (data.phones == "k-l-ow-z")
         assert (data.stresses == "1")
         assert (data.syllables == "k-l-ow-z")
@@ -82,7 +100,7 @@ class TestAnalyzer:
             pytest.skip("mocha this.skip")
         tmp = RiTa.SILENCE_LTS
         RiTa.SILENCE_LTS = True
-        data = RiTa.analyzer.analyzeWord("1903")
+        data = RiTa.analyzer.analyze_word("1903")
         assert (data.phones == "w-ah-n-n-ih-n-z-ih-r-ow-th-r-iy")
         assert (data.stresses == "0/0/0/0/0")
         assert (data.syllables == "w-ah-n/n-ih-n/z-ih/r-ow/th-r-iy")
@@ -344,7 +362,7 @@ class TestAnalyzer:
     def test_should_return_true_for_already_plural_nouns(self):
         tests = ["tidings", "schnapps", "canvases", "censuses", "bonuses", "isthmuses", "thermoses", "circuses", "tongs", "emeriti"]
         for i, t in enumerate(tests):
-            res = RiTa.inflector.isPlural(t, {"dbug": 0})
+            res = RiTa.inflector.is_plural(t, {"dbug": 0})
             if not (res):
                 console.error(((((i) + (") Fail: ")) + (t)) + (" -> ")) + (res))
             assert ((res) is True)
@@ -353,12 +371,12 @@ class TestAnalyzer:
             pytest.skip("mocha this.skip")
         tests = ["tiding", "census", "bonus", "thermos", "circus"]
         for i, t in enumerate(tests):
-            res = RiTa.tagger.allTags(t, False)
+            res = RiTa.tagger.all_tags(t, False)
             if not ("nn" in res):
                 console.error(((((i) + (") Fail: ")) + (t)) + (" -> ")) + (json.dumps(res)))
             assert (("nn" in res) is True)
     def test_should_handle_number_singular_plural(self):
-        assert (RiTa.inflector.isPlural("dreariness", {"dbug": 0}) == True)
+        assert (RiTa.inflector.is_plural("dreariness", {"dbug": 0}) == True)
         assert (RiTa.singularize() == "")
         assert (RiTa.singularize("") == "")
         with pytest.raises(Exception):
@@ -385,19 +403,19 @@ class TestAnalyzer:
             singular = testPairs[(i) + (1)]
             res1 = RiTa.singularize(plural, {"dbug": dbug})
             res2 = RiTa.pluralize(singular, {"dbug": dbug})
-            res3 = RiTa.inflector.isPlural(plural, {"dbug": dbug})
-            res4 = RiTa.inflector.isPlural(singular, {"dbug": dbug})
+            res3 = RiTa.inflector.is_plural(plural, {"dbug": dbug})
+            res4 = RiTa.inflector.is_plural(singular, {"dbug": dbug})
             assert (res1 == singular)
             assert (res2 == plural)
             assert (res3 == True)
             isMass = singular.lower() in RiTa.MASS_NOUNS
-            isModal = singular.endswith("ness")
+            isModal = singular.endswith(_jsstr("ness"))
             if (not (isMass)) and (not (isModal)):
                 assert (res4 == False)
     def test_should_call_phonestostress(self):
-        assert (RiTa.analyzer.phonesToStress() == None)
-        assert (RiTa.analyzer.phonesToStress(" ") == "")
-        assert (RiTa.analyzer.phonesToStress("ah b-ae1-n d-ah-n") == "0/1/0")
+        assert (RiTa.analyzer.phones_to_stress() == None)
+        assert (RiTa.analyzer.phones_to_stress(" ") == "")
+        assert (RiTa.analyzer.phones_to_stress("ah b-ae1-n d-ah-n") == "0/1/0")
     def test_should_not_pluralize_singularize_uncountables(self):
         assert (RiTa.pluralize("honey") == "honey")
         assert (RiTa.pluralize("pasta") == "pasta")
@@ -412,37 +430,37 @@ class TestAnalyzer:
         assert (RiTa.singularize("medicare") == "medicare")
         assert (RiTa.singularize("childcare") == "childcare")
     def test_should_call_isplural(self):
-        assert (RiTa.inflector.isPlural() == False)
-        assert (RiTa.inflector.isPlural("") == False)
-        assert (RiTa.inflector.isPlural("octopus", {"dbug": 0}) == False)
-        assert (RiTa.inflector.isPlural("sheep") == True)
-        assert (RiTa.inflector.isPlural("apples") == True)
-        assert (RiTa.inflector.isPlural("leaves", {"debug": False}) == True)
-        assert (RiTa.inflector.isPlural("feet", {"debug": False}) == True)
-        assert (RiTa.inflector.isPlural("beaux", {"debug": False}) == False)
-        assert (RiTa.inflector.isPlural("child", {"debug": False}) == False)
-        assert (RiTa.inflector.isPlural("abbots", {"debug": False}) == True)
-        assert (RiTa.inflector.isPlural("happiness") == True)
-        assert (RiTa.inflector.isPlural("pasta") == True)
-        assert (RiTa.inflector.isPlural("honey") == True)
-        assert (RiTa.inflector.isPlural("fanfare") == True)
-        assert (RiTa.inflector.isPlural("medicare") == True)
-        assert (RiTa.inflector.isPlural("childcare") == True)
+        assert (RiTa.inflector.is_plural() == False)
+        assert (RiTa.inflector.is_plural("") == False)
+        assert (RiTa.inflector.is_plural("octopus", {"dbug": 0}) == False)
+        assert (RiTa.inflector.is_plural("sheep") == True)
+        assert (RiTa.inflector.is_plural("apples") == True)
+        assert (RiTa.inflector.is_plural("leaves", {"debug": False}) == True)
+        assert (RiTa.inflector.is_plural("feet", {"debug": False}) == True)
+        assert (RiTa.inflector.is_plural("beaux", {"debug": False}) == False)
+        assert (RiTa.inflector.is_plural("child", {"debug": False}) == False)
+        assert (RiTa.inflector.is_plural("abbots", {"debug": False}) == True)
+        assert (RiTa.inflector.is_plural("happiness") == True)
+        assert (RiTa.inflector.is_plural("pasta") == True)
+        assert (RiTa.inflector.is_plural("honey") == True)
+        assert (RiTa.inflector.is_plural("fanfare") == True)
+        assert (RiTa.inflector.is_plural("medicare") == True)
+        assert (RiTa.inflector.is_plural("childcare") == True)
     def test_should_call_computephones(self):
-        assert (RiTa.analyzer.computePhones("leo") == ["l", "iy", "ow"])
-        assert (RiTa.analyzer.computePhones() == None)
-        assert (RiTa.analyzer.computePhones(".") == None)
-        assert (RiTa.analyzer.computePhones("") == None)
-        assert (RiTa.analyzer.computePhones(",") == None)
-        assert (RiTa.analyzer.computePhones("你好", {"silent": True}) == None)
-        assert (RiTa.analyzer.computePhones("Künste", {"silent": True}) == None)
-        assert (RiTa.analyzer.computePhones("leo", {"silent": True}) == ["l", "iy", "ow"])
-        assert (RiTa.analyzer.computePhones("student's") == ["s", "t", "uw1", "d", "eh1", "n", "t", "z"])
-        assert (RiTa.analyzer.computePhones("-1", {"silent": True}) == None)
+        assert (RiTa.analyzer.compute_phones("leo") == ["l", "iy", "ow"])
+        assert (RiTa.analyzer.compute_phones() == None)
+        assert (RiTa.analyzer.compute_phones(".") == None)
+        assert (RiTa.analyzer.compute_phones("") == None)
+        assert (RiTa.analyzer.compute_phones(",") == None)
+        assert (RiTa.analyzer.compute_phones("你好", {"silent": True}) == None)
+        assert (RiTa.analyzer.compute_phones("Künste", {"silent": True}) == None)
+        assert (RiTa.analyzer.compute_phones("leo", {"silent": True}) == ["l", "iy", "ow"])
+        assert (RiTa.analyzer.compute_phones("student's") == ["s", "t", "uw1", "d", "eh1", "n", "t", "z"])
+        assert (RiTa.analyzer.compute_phones("-1", {"silent": True}) == None)
         if not (hasLex):
             return
-        assert (RiTa.analyzer.computePhones("1") == ["w", "ah", "n"])
-        assert (RiTa.analyzer.computePhones("50") == ["f", "ay", "v", "z", "ih", "r", "ow"])
+        assert (RiTa.analyzer.compute_phones("1") == ["w", "ah", "n"])
+        assert (RiTa.analyzer.compute_phones("50") == ["f", "ay", "v", "z", "ih", "r", "ow"])
     def test_should_call_analyze_with_ipaphones_option(self):
         feats = RiTa.analyze("", {"ipaPhones": True})
         assert (feats.phones == "")
@@ -482,24 +500,24 @@ class TestAnalyzer:
 
 hasLex = True
 
-def ok(a=None, m=None):
+def ok(a=None, m=None, *args):
     assert ((a) is True), m
 
-def eq(a=None, b=None, m=None):
+def eq(a=None, b=None, m=None, *args):
     assert (a == b)
 
-def eql(a=None, b=None, m=None):
+def eql(a=None, b=None, m=None, *args):
     assert (a == b)
 
-def __fn_1(_):
+def _fn_1(*args):
     RiTa.singularize([1])
 
-def __fn_2(_):
+def _fn_2(*args):
     RiTa.singularize(1)
 
-def __fn_3(_):
+def _fn_3(*args):
     RiTa.pluralize([1])
 
-def __fn_4(_):
+def _fn_4(*args):
     RiTa.pluralize(1)
 

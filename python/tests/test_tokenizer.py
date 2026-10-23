@@ -4,6 +4,7 @@ import json
 import math
 import os
 import re
+import time
 import types
 import functools
 from functools import cmp_to_key
@@ -12,6 +13,7 @@ import pytest
 _JS_TEST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "js", "test")
 
 from rita import RiTa
+from rita.util import JsDict
 
 # --- JS compatibility shims -------------------------------------------
 console = type("console", (), {"log": staticmethod(print), "warn": staticmethod(print), "error": staticmethod(print)})
@@ -53,6 +55,22 @@ def _url(rel):
     return os.path.normpath(os.path.join(_JS_TEST_DIR, rel))
 def expect(*a, **k):
     return a[0]
+def _jsstr(x):
+    # JS String(x): arrays coerce to comma-joined, others to str().
+    if isinstance(x, list):
+        return ",".join(_jsstr(e) for e in x)
+    if x is None:
+        return "None"
+    if x is True:
+        return "true"
+    if x is False:
+        return "false"
+    return str(x)
+def _hasprop(x, k):
+    # JS expect(obj).to.have.property(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 class TestTokenizer:
     def test_should_call_tokens(self):
@@ -454,7 +472,7 @@ class TestTokenizer:
     def test_should_space_dashes_like_ellipses(self):
         assert (RiTa.untokenize(RiTa.tokenize("sight absolute? —and in a")) == "sight absolute? —and in a")
         assert (RiTa.untokenize(RiTa.tokenize("Bang! Bang! —shot th")) == "Bang! Bang! —shot th")
-        assert (RiTa.untokenize(["absolute", "?", "—", "and"]).startswith(RiTa.untokenize(["absolute", "?", "—"])) == True)
+        assert (RiTa.untokenize(["absolute", "?", "—", "and"]).startswith(_jsstr(RiTa.untokenize(["absolute", "?", "—"]))) == True)
         assert (RiTa.untokenize(["and", "—", "shot"]) == "and—shot")
         assert (RiTa.untokenize(["face", "-", "to", "-", "face", "class"]) == "face-to-face class")
         assert (RiTa.untokenize(["the", "-", "dash"]) == "the-dash")
@@ -476,8 +494,8 @@ class TestTokenizer:
         assert (RiTa.untokenize(RiTa.tokenize("oh, didn’t I! ... Now")) == "oh, didn’t I! ... Now")
         assert (RiTa.untokenize(RiTa.tokenize("certain... But")) == "certain... But")
         assert (RiTa.untokenize(RiTa.tokenize("well... so")) == "well... so")
-        assert (RiTa.untokenize(["I", "!", "...", "Now"]).startswith(RiTa.untokenize(["I", "!", "..."])) == True)
-        assert (RiTa.untokenize(["very", "well", "...", "so"]).startswith(RiTa.untokenize(["very", "well", "..."])) == True)
+        assert (RiTa.untokenize(["I", "!", "...", "Now"]).startswith(_jsstr(RiTa.untokenize(["I", "!", "..."]))) == True)
+        assert (RiTa.untokenize(["very", "well", "...", "so"]).startswith(_jsstr(RiTa.untokenize(["very", "well", "..."]))) == True)
         assert (RiTa.tokenize("e.g. the cat.") == ["e.g.", "the", "cat", "."])
         assert (RiTa.tokenize("Pi is 3.14.") == ["Pi", "is", "3.14", "."])
         assert (RiTa.tokenize("Mr. and Mrs. Stevens.") == ["Mr.", "and", "Mrs", ".", "Stevens", "."])

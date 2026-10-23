@@ -7,5 +7,12 @@
   "mochaExplorer.env": {
     "NODE_ENV": "dev"
   },
-  "liveServer.settings.port": 5501
+  "liveServer.settings.port": 5501,
+  "chat.tools.terminal.autoApprove": {
+    "/^cd /Users/dhowe/git/rita4/python && source \\.venv/bin/activate 2>/dev/null; python -m pytest tests/test_randgen\\.py -x -q 2>&1 \\| tail -30; sed -n 1,60p tests/test_randgen\\.py$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "uniq": true
+  }
 }

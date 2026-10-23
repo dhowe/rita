@@ -359,12 +359,12 @@ class RiTa:
     # ── Inflector ─────────────────────────────────────────────────────────────
 
     @classmethod
-    def pluralize(cls, word):
-        return cls.inflector.pluralize(word)
+    def pluralize(cls, word=None, opts=None):
+        return cls.inflector.pluralize(word, opts)
 
     @classmethod
-    def singularize(cls, word):
-        return cls.inflector.singularize(word)
+    def singularize(cls, word=None, opts=None):
+        return cls.inflector.singularize(word, opts)
 
     # ── Lexicon ───────────────────────────────────────────────────────────────
 
@@ -505,7 +505,7 @@ RiTa.tokenizer.rita  = RiTa
 RiTa.concorder.rita  = RiTa
 
 # Set up RiScript with RiTa backref
-from riscript import RiScript  # noqa: E402
+from riscript import RiScript, RiGrammar  # noqa: E402
 
 def _rita_articlize(word):
     return RiTa.articlize(word)
@@ -515,6 +515,10 @@ RiTa.riscript = RiScript(
     rita=RiTa,
 )
 
+# Expose RiScript / RiGrammar as RiTa attributes (JS API parity).
+RiTa.RiScript = RiScript
+RiTa.RiGrammar = RiGrammar
+
 # Wire Stemmer tokenizer
 Stemmer.tokenizer = RiTa.tokenizer
 
@@ -523,3 +527,15 @@ RiMarkov.parent = RiTa
 
 # Expose RiMarkov as RiTa.RiMarkov (JS API parity: const { RiMarkov } = RiTa)
 RiTa.RiMarkov = RiMarkov
+
+# Wire the suffix-array model stack (BackoffModel / SuffixArray / SuffixGram).
+# These give RiTa the tokenizer/untokenizer and seeded RNG they need, and expose
+# them as RiTa attributes for JS API parity (const { BackoffModel, SuffixArray } = RiTa).
+from rita.suffixes import SuffixArray          # noqa: E402
+from rita.model import SuffixGram              # noqa: E402
+from rita.backoff import BackoffModel          # noqa: E402
+
+SuffixArray.RiTa = RiTa
+SuffixGram.RiTa = RiTa
+RiTa.SuffixArray = SuffixArray
+RiTa.BackoffModel = BackoffModel

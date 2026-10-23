@@ -11,6 +11,23 @@ _SP = ' '
 _E  = ''
 
 
+class Features(dict):
+    """Feature map returned by analyze()/analyze_word().
+
+    A dict subclass so it compares equal to a plain dict (eql) while also
+    supporting JS-style attribute access (data.phones).
+    """
+
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            raise AttributeError(name)
+
+    def __setattr__(self, name, value):
+        self[name] = value
+
+
 class Analyzer:
 
     def __init__(self):
@@ -75,8 +92,10 @@ class Analyzer:
 
     _DIGIT_WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine']
 
-    def compute_phones(self, word, opts=None):
+    def compute_phones(self, word=None, opts=None):
         """Run the LTS engine; returns list of phone strings or None."""
+        if word is None:
+            return None
         if word and len(word) == 1 and word.isdigit():
             word = self._DIGIT_WORDS[int(word)]
             # use dict phones for digit-words (LTS gives wrong results)
@@ -89,7 +108,7 @@ class Analyzer:
         result = self._get_lts().build_phones(word, opts)
         return result  # list of phoneme strings, or None
 
-    def phones_to_stress(self, phones):
+    def phones_to_stress(self, phones=None):
         """Convert a syllabified phone string to a stress pattern string."""
         if not phones:
             return None
@@ -145,11 +164,11 @@ class Analyzer:
                 syllables = '/'.join(syls)
                 stresses = '-'.join(strs)
 
-        result = {
+        result = Features({
             'phones':    phones.strip(),
             'stresses':  stresses.strip() if stresses else stresses,
             'syllables': syllables.strip(),
-        }
+        })
         self._cache[word] = result
         return result
 
@@ -158,19 +177,19 @@ class Analyzer:
         if opts is None:
             opts = {}
         if not text or not text.strip():
-            return {'tokens': '', 'pos': '', 'stresses': '', 'phones': '', 'syllables': ''}
+            return Features({'tokens': '', 'pos': '', 'stresses': '', 'phones': '', 'syllables': ''})
 
         words = self._get_tokenizer().tokenize(text)
         tagger = self._get_tagger()
         tags = tagger.tag(words, opts)
 
-        features = {
+        features = Features({
             'phones':    _E,
             'stresses':  _E,
             'syllables': _E,
             'pos':       ' '.join(tags),
             'tokens':    ' '.join(words),
-        }
+        })
 
         for word in words:
             r = self.analyze_word(word, opts)
