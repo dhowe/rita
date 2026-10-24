@@ -337,8 +337,8 @@ if [[ $DO_JAVA -eq 0 && $DO_JS -eq 1 ]]; then
 fi
 
 say "Done — RiTa $VERSION"
-printf '   release   https://github.com/dhowe/rita4/releases/tag/%s\n' "$TAG"
-printf '   artifacts https://github.com/dhowe/rita4/releases/latest/download/rita.{zip,txt,pdex}\n'
+printf '   release   https://github.com/dhowe/rita/releases/tag/%s\n' "$TAG"
+printf '   artifacts https://github.com/dhowe/rita/releases/latest/download/rita.{zip,txt,pdex}\n'
 [[ $DO_JS -eq 1 ]] && printf '   npm       https://www.npmjs.com/package/rita (%s)\n' "$NPM_DIST_TAG"
 [[ $DO_PYTHON -eq 1 ]] && printf '   pypi      https://pypi.org/project/rita-py/ (published by python-publish.yml on tag %s)\n' "$TAG"
 [[ $DRY_RUN -eq 1 ]] && printf '\n   (dry run — nothing was written, pushed, or published)\n'
