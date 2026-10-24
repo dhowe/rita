@@ -1,12 +1,12 @@
-let lines, markov, data1, data2, x = 160, y = 240;
+/* 
+ * This is a very bare-bones example. For better results, you will want to pre and post-process the text. 
+ * For more info on using rita's unbounded n-grams, see https://observablehq.com/@dhowe/tut-rita-ngrams
+ */
 
-function preload() {
+let lines, markov, txt1, txt2;
+let x = 160, y = 240;
 
-  data1 = loadStrings('../../data/wittgenstein.txt');
-  data2 = loadStrings('../../data/kafka.txt');
-}
-
-function setup() {
+async function setup() {
 
   createCanvas(500, 500);
   textFont('helvetica', 16);
@@ -15,12 +15,15 @@ function setup() {
 
   lines = ["click to (re)generate"];
 
+  txt1 = await loadStrings('wittgenstein.txt');
+  txt2 = await loadStrings('kafka.txt');
+  
   // create a markov model w' n=4
   markov = RiTa.markov(4);
 
   // load text into the model
-  markov.addText(data1.join(' '));
-  markov.addText(data2.join(' '));
+  markov.addText(txt1.join(' '));
+  markov.addText(txt2.join(' '));
 
   drawText();
 }
@@ -28,7 +31,7 @@ function setup() {
 function drawText() {
   background(50, 30, 40);
   fill(220);
-  text(lines.join(' '), x, y, 420, 420);
+  text(lines.join(' '), x, y, 420, 440);
 }
 
 function mouseClicked() {
@@ -36,3 +39,10 @@ function mouseClicked() {
   x = y = 40;
   drawText();
 }
+
+  
+ 
+
+
+
+

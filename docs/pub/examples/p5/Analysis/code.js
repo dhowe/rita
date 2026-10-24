@@ -3,7 +3,7 @@ let bubbles = [], maxWordLen = 12;
 
 function setup() {
 
-  createCanvas(600, 300);
+  createCanvas(600, 400);
   colorPalette();
   noStroke();
 

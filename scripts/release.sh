@@ -39,7 +39,7 @@
 #   * Processing Manager polls .../releases/latest/download/rita.txt, so every GitHub
 #     release carries the Processing artifacts. For a js-only release the Java version
 #     is unchanged, so the attached zip is the current Java build — a warning is shown.
-#   * Requires: git, gh (authenticated), node/npm (js), uv (python), JDK 11+ for java.
+#   * Requires: git, gh (authenticated), node/npm (js), uv (python), JDK 17+ for java.
 
 set -euo pipefail
 

@@ -11,9 +11,11 @@ rita/
   java/      Java implementation (gradle)
   python/    Python implementation (uv)
   docs/      Website and API reference
-  shared/    Shared data (rita_dict.json)
+  shared/    Shared data (dict, lts, etc.)
   scripts/   Various maintenance scripts
 ```
+
+The shared API reference is [here](https://rednoise.org/rita/index.html#reference)
 
 ---
 
@@ -38,19 +40,19 @@ The build uses [tsup](https://tsup.egoist.dev/) and outputs to `js/dist/`:
 
 ## Java (`java/`)
 
-**Requirements:** JDK 11+ (Gradle wrapper included)
+**Requirements:** JDK 17+ (Gradle wrapper included)
 
 ```sh
 cd java
-./gradlew build                # compile, test, and assemble rita.jar + rita.zip
+./gradlew build                # compile, test, and assemble rita.{jar,zip,txt,pdex}
 ./gradlew test                 # run tests only
 ./gradlew processingLibrary    # build/distributions/rita.zip (Processing library)
 ./gradlew javadoc              # reference docs (also bundled into rita.zip)
 ```
 
-The artifact is `org.rednoise:rita`. The canonical dictionary is read directly from
-`shared/rita_dict.json` (staged into the build by `gradlew processResources`), so there
-is no generated copy to keep in sync.
+The artifact is `org.rednoise:rita`. The dictionary is read directly from
+`shared/rita_dict.json` (staged into the build by `gradlew syncSharedData`), so there
+is no generated copy to sync.
 
 ---
 
@@ -96,15 +98,16 @@ Some tests read fixture files from `js/test/` (e.g. `harvard-data.json`), so kee
 
 ## Docs / Website (`docs/`)
 
-The `docs/` folder is a static website — no build required. To preview locally use 'Go Live' in vscode or python:
+The `docs/pub` folder is a static website. `scripts/gen-docs.sh` regenerates the API
+reference (`docs/pub/reference/`) and the homepage index from the Java sources; the rest
+of the site (tutorials, gallery, examples, assets) is authored in place. To preview
+locally, use 'Go Live' in vscode or python:
 
 ```sh
-cd docs
+cd docs/pub
 python3 -m http.server 8080
 # open http://localhost:8080
 ```
-
-Reference pages are in `docs/reference/` and tutorials in `docs/tutorials/`. Both are hand-authored HTML.
 
 ---
 
@@ -112,13 +115,18 @@ Reference pages are in `docs/reference/` and tutorials in `docs/tutorials/`. Bot
 
 `shared/rita_dict.json` is the source for the RiTa lexicon. All three implementations use it:
 
-- **JS / Java** — use JS-module wrappers (`js/src/rita_dict.js`, `java/src/main/resources/rita/rita_dict.js`)
+- **JS** — generated module wrapper, `js/src/rita_dict.js`
+- **Java** — loaded from the jar as `/rita/rita_dict.json`, staged from `shared/` by `syncSharedData`
+- **Python** — copied to `rita/data/rita_dict.json` for the wheel; a checkout prefers `shared/`
 
-To regenerate the JS/Java wrappers after editing `shared/rita_dict.json`:
+To regenerate the JS wrapper and the Python data copy after editing `shared/rita_dict.json`:
 
 ```sh
 node scripts/gen-dicts.js
 ```
+
+`shared/rita_lts.json` is the other shared file (generated from `js/src/rita_lts.js` by
+`node scripts/gen-lts.js`) and is staged into the Java jar the same way.
 
 ---
 
@@ -129,7 +137,7 @@ GitHub Actions workflows trigger when their subtree (or `shared/`) changes:
 | Workflow | Trigger paths | Node/JDK/Python versions |
 |---|---|---|
 | `.github/workflows/js.yml` | `js/**`, `shared/**` | Node 18, 20, 22 |
-| `.github/workflows/java.yml` | `java/**`, `shared/**` | JDK 11 · ubuntu + macOS |
+| `.github/workflows/java.yml` | `java/**`, `shared/**` | JDK 17 · ubuntu |
 | `.github/workflows/python.yml` | `python/**`, `shared/**` | Python 3.10–3.13 (uv) |
 
 ---
@@ -141,13 +149,14 @@ they live, builds and tests, publishes to npm (for `all`/`js`), commits + tags +
 creates the GitHub release with the Processing artifacts.
 
 ```sh
-scripts/release.sh 4.1.0            # both ports: tag, GitHub release, npm
+scripts/release.sh 4.1.0            # three ports: tag, GitHub release, npm, PyPI (from the tag)
 scripts/release.sh 4.1.0 java       # Java/Processing only (no npm publish)
-scripts/release.sh 4.1.0 js         # npm only
-scripts/release.sh 4.1.0 --dry-run  # print what would happen, touch nothing
+scripts/release.sh 4.1.0 js         # JavaScript/npm only
+scripts/release.sh 4.1.0 python     # PyPI (rita-py) only
+scripts/release.sh 4.1.0 --dry-run  # print what will happen, touch nothing
 ```
 
-The version lives in exactly these files (everything else is derived at build time):
+The version lives in the files below (everything else is derived at build time):
 
 | File | Field | Notes |
 |---|---|---|
@@ -155,6 +164,7 @@ The version lives in exactly these files (everything else is derived at build ti
 | `java/src/main/java/rita/RiTa.java` | `VERSION = "X"` | |
 | `js/package.json` | `"version": "X"` | `npm version` also fixes `package-lock.json` |
 | `js/src/rita.js` | injected by tsup | from `package.json` at build time |
+| `python/pyproject.toml` | `version = "X"` | written by `release.sh`; hatchling reads it |
 
 Checks: the tree must be clean and on `main`; the tag must not already exist; the patch
 must stay `< 10` for Java (the Processing Manager revision is `major*100 + minor*10 +

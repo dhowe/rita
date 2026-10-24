@@ -15,10 +15,24 @@
 
 const fs = require('fs');
 const path = require('path');
-const acorn = require('/Users/dhowe/git/rita4/js/node_modules/acorn');
 
-const JS_TEST_DIR = '/Users/dhowe/git/rita4/js/test';
-const OUT_DIR = '/Users/dhowe/git/rita4/python/tests';
+// Repo root is derived from this script's location so the generator works from any
+// checkout (and on any machine) rather than from a hardcoded absolute path.
+const REPO_ROOT = path.resolve(__dirname, '..');
+const JS_DIR = path.join(REPO_ROOT, 'js');
+
+// acorn is a devDependency of js/; resolve it from there so `npm install` in js/ is
+// what makes this script runnable.
+let acorn;
+try {
+  acorn = require(require.resolve('acorn', { paths: [JS_DIR] }));
+} catch (e) {
+  console.error("Cannot find 'acorn' — run `npm install` in js/ first.");
+  process.exit(1);
+}
+
+const JS_TEST_DIR = path.join(JS_DIR, 'test');
+const OUT_DIR = path.join(REPO_ROOT, 'python', 'tests');
 
 const argv = process.argv.slice(2);
 const files = argv.length ? argv : fs.readdirSync(JS_TEST_DIR).filter(f => /-tests?\.js$/.test(f) && !f.includes('dist'));

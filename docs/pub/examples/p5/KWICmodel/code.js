@@ -4,16 +4,12 @@ let txt, word, keywords = [
   "clerk", "room", "violin", "window"
 ];
 
-function preload() {
-
-  txt = loadStrings('../../data/kafka.txt');
-}
-
-function setup() {
+async function setup() {
 
   createCanvas(800, 500);
   textFont('Times New Roman', 16);
 
+  txt = await loadStrings('kafka.txt');
   RiTa.concordance(txt.join('\n')); // create concordance
   word = RiTa.random(keywords); // pick a word to start
 
@@ -27,14 +23,14 @@ function draw() {
   let tw = textWidth(word) / 2;
 
   background(250);
-  let num = min(10, kwic.length);
+  let num = min(20, kwic.length);
   for (let i = 0; i < num; i++) {
 
     // get the parts, stripping line-breaks
     let parts = kwic[i].split(word)
       .map(p => p.replace(/\n/g,' '));
     
-    let x = width / 2, y = i * 24 + 90;
+    let x = width / 2, y = i * 20 + 90;
     if (y > height - 20) return;
 
     fill(0);
@@ -58,7 +54,6 @@ function createButtons() {
   let buttons = [], buttonsW = 0, gap = 10;
   for (let i = 0; i < keywords.length; i++) {
     let button = createButton(keywords[i]);
-    console.log(button.elt.textContent);
     button.class("button");
     button.style('color', keywords[i] === word ? 'rgb(200,0,0)' : 'black');
     buttonsW += button.width;
@@ -81,8 +76,3 @@ function createButtons() {
     loop();
   }));
 }
-
-    
-
-
-

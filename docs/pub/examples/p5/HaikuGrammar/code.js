@@ -1,19 +1,19 @@
-let font, grammar, lines, json;
+/*
+ * Note that this is a rather bare-bones example. 
+ * For a more complete example, see https://observablehq.com/@dhowe/rita-grammars
+ * For more advanced grammar and riscript features, see https://observablehq.com/@dhowe/tut-rita-ngrams#advanced
+ */
 
-function preload() {
-
-  font = loadFont('../../data/Resagokr.otf');
-  json = loadJSON('../../data/haiku.json');
-}
+let font, grammar, json;
+let lines = ["click to", "generate", "a haiku"];
 
 function setup() {
 
   createCanvas(650, 200);
-  textFont(font, 30);
   textAlign(CENTER);
-
-  grammar = RiTa.grammar(json);
-  lines = ["click to", "generate", "a haiku"];
+  loadFont('Resagokr.otf', f => textFont(f, 30));
+  
+  grammar = RiTa.grammar(haiku); // from grammar.js
 }
 
 function draw() {
@@ -27,8 +27,7 @@ function draw() {
 function mouseReleased() {
 
   let result = grammar.expand();
-  let haiku = result.split("%");
-  for (let i = 0; i < lines.length; i++) {
-    lines[i] = haiku[i];
-  }
+  
+  // split on % characters in the grammar
+  lines = result.split("%");  
 }

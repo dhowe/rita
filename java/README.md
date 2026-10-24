@@ -2,7 +2,7 @@
 
 Tools for generative natural language — the Java implementation of RiTa.
 
-**Requirements:** JDK 11+ (the Gradle wrapper is checked in, so no Gradle install is needed)
+**Requirements:** JDK 17+ (the Gradle wrapper is checked in, so no Gradle install is needed)
 
 ## Build
 

@@ -7,7 +7,7 @@
   "mochaExplorer.env": {
     "NODE_ENV": "dev"
   },
-  "liveServer.settings.port": 5501,\
+  "liveServer.settings.port": 5501,
   "chat.tools.terminal.autoApprove": {
     "cd": true,
     "echo": true,
@@ -46,11 +46,11 @@
     "/^git(\\s+(-(?-i:C)\\s+\\S+|--no-pager))*\\s+grep\\b/": true,
     "/^git(\\s+(-(?-i:C)\\s+\\S+|--no-pager))*\\s+grep\\b.*\\s(?-i:-[aIivwhHEGPFnlLqzco]*[^\\w\\s]*O\\S*)(\\s|$)/": false,
     "/^git(\\s+(-(?-i:C)\\s+\\S+|--no-pager))*\\s+grep\\b.*\\s(?-i:--[^\\w\\s]*o[^\\w\\s]*p\\S*)(\\s|$)/": false,
-    "/^git(\\s+(-(?-i:C)\\s+\\S+|--no-pager))*\\s+branch\\b/": true,
+    "/^git(\\s+(-(?-i:C)\\s+\\S+|--no-pager))*\\s+branch\\b/": false,
     "/^git(\\s+(-(?-i:C)\\s+\\S+|--no-pager))*\\s+branch\\b.*\\s-(d|D|m|M|-delete|-force)\\b/": false,
     "/^docker\\s+(ps|images|info|version|inspect|logs|top|stats|port|diff|search|events)\\b/": true,
-    "/^docker\\s+(container|image|network|volume|context|system)\\s+(ls|ps|inspect|history|show|df|info)\\b/": true,
-    "/^docker\\s+compose\\s+(ps|ls|top|logs|images|config|version|port|events)\\b/": true,
+    "/^docker\\s+(container|image|network|volume|context|system)\\s+(ls|ps|inspect|history|show|df|info)\\b/": false,
+    "/^docker\\s+compose\\s+(ps|ls|top|logs|images|config|version|port|events)\\b/": false,
     "Get-ChildItem": true,
     "Get-Content": true,
     "Get-Date": true,
@@ -144,5 +144,5 @@
     "Invoke-Expression": false,
     "iex": false
   },
-  "chat.agent.maxRequests": 250
+  "chat.agent.maxRequests": 500
 }

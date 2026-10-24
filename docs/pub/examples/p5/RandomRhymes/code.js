@@ -1,36 +1,48 @@
-let rhymes, word;
+/* 
+ * This is a very bare-bones example. For better results, you will want to pre and post-process the text. 
+ * For more info on using rita's unbounded n-grams, see https://observablehq.com/@dhowe/tut-rita-ngrams
+ */
 
-function setup() {
-  createCanvas(300, 300);
-  fill(255);
-  textFont("Georgia");
+let lines, markov, txt1, txt2;
+let x = 160, y = 240;
 
-  findRhymes();
-}
+async function setup() {
 
-function draw() {
-  background(100, 0, 100);
-
-  textAlign(RIGHT);
-  textSize(36);
-  text(word, 280, 40);
-
+  createCanvas(500, 500);
+  textFont('helvetica', 16);
+  textLeading(21);
   textAlign(LEFT);
-  textSize(14);
-  textLeading(17);
-  text(rhymes, 30, 73);
+
+  lines = ["click to (re)generate"];
+
+  txt1 = await loadStrings('wittgenstein.txt');
+  txt2 = await loadStrings('kafka.txt');
+  
+  // create a markov model w' n=4
+  markov = RiTa.markov(4);
+
+  // load text into the model
+  markov.addText(txt1.join(' '));
+  markov.addText(txt2.join(' '));
+
+  drawText();
 }
 
-function findRhymes() {
-
-  let tmp;
-  do {
-    word = RiTa.randomWord();
-    tmp = RiTa.rhymesSync(word, { limit: 13 });
-  }
-  while (tmp.length < 3)
-
-  rhymes = tmp.join("\n");
-
-  setTimeout(findRhymes, 1500);
+function drawText() {
+  background(50, 30, 40);
+  fill(220);
+  text(lines.join(' '), x, y, 420, 440);
 }
+
+function mouseClicked() {
+  lines = markov.generate({ numSentences: 10 });
+  x = y = 40;
+  drawText();
+}
+
+  
+ 
+
+
+
+
