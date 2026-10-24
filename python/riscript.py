@@ -1486,7 +1486,12 @@ class RiScript:
     Visitor = EvalVisitor
 
 class _TransformProxy(dict):
-    """A dict proxy that writes through to the backing store."""
+    """A dict proxy that writes through to the backing store.
+
+    Attribute access mirrors JS semantics: reading a missing transform yields
+    None (undefined) rather than raising.  Membership (`k in proxy`) still
+    reflects the actual keys, which is what hasOwnProperty maps to.
+    """
     def __init__(self, backing, combined):
         super().__init__(combined)
         self._backing = backing
@@ -1498,6 +1503,13 @@ class _TransformProxy(dict):
     def __delitem__(self, key):
         super().pop(key, None)
         self._backing.pop(key, None)
+
+    def __getattr__(self, name):
+        if name.startswith('_'):
+            raise AttributeError(name)
+        if dict.__contains__(self, name):
+            return dict.__getitem__(self, name)
+        return None
 
 # ── RiGrammar ─────────────────────────────────────────────────────────────────
 

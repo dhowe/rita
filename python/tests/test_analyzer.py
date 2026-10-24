@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 class TestAnalyzer:
     # (var hoisted to module scope)
@@ -325,33 +330,33 @@ class TestAnalyzer:
         assert (RiTa.syllables("chevrolet") == ("sh-eh-v/r-ow/l-ey") if (hasLex) else ("ch-eh-v/r-ow/l-ah-t"))
         assert (RiTa.syllables("women") == ("w-ih/m-eh-n") if (hasLex) else ("w-ow/m-eh-n"))
         assert (RiTa.syllables("genuine") == ("jh-eh-n/y-uw/w-ah-n") if (hasLex) else ("jh-eh-n/y-ah/ay-n"))
-        input = None
+        input_ = None
         expected = None
-        input = "The emperor had no clothes on."
+        input_ = "The emperor had no clothes on."
         expected = ("dh-ah eh-m/p-er/er hh-ae-d n-ow k-l-ow-dh-z aa-n .") if (hasLex) else ("dh-ah eh-m/p-er/er hh-ae-d n-ow k-l-ow-dh-z ah-n .")
-        assert (RiTa.syllables(input) == expected)
-        input = "The dog ran faster than the other dog. But the other dog was prettier."
+        assert (RiTa.syllables(input_) == expected)
+        input_ = "The dog ran faster than the other dog. But the other dog was prettier."
         expected = ("dh-ah d-ao-g r-ae-n f-ae/s-t-er dh-ae-n dh-ah ah/dh-er d-ao-g . b-ah-t dh-ah ah/dh-er d-ao-g w-aa-z p-r-ih/t-iy/er .") if (hasLex) else ("dh-ah d-aa-g r-ah-n f-ae/s-t-er th-ae-n dh-ah ah/dh-er d-aa-g . b-ah-t dh-ah ah/dh-er d-aa-g w-ah-z p-r-eh/t-iy/er .")
-        assert (RiTa.syllables(input) == expected)
-        input = "The dog ran faster than the other dog. But the other dog was prettier."
+        assert (RiTa.syllables(input_) == expected)
+        input_ = "The dog ran faster than the other dog. But the other dog was prettier."
         expected = ("dh-ah d-ao-g r-ae-n f-ae/s-t-er dh-ae-n dh-ah ah/dh-er d-ao-g . b-ah-t dh-ah ah/dh-er d-ao-g w-aa-z p-r-ih/t-iy/er .") if (hasLex) else ("dh-ah d-aa-g r-ah-n f-ae/s-t-er th-ae-n dh-ah ah/dh-er d-aa-g . b-ah-t dh-ah ah/dh-er d-aa-g w-ah-z p-r-eh/t-iy/er .")
-        assert (RiTa.syllables(input) == expected)
-        input = "The emperor had no clothes on."
+        assert (RiTa.syllables(input_) == expected)
+        input_ = "The emperor had no clothes on."
         expected = ("dh-ah eh-m/p-er/er hh-ae-d n-ow k-l-ow-dh-z aa-n .") if (hasLex) else ("dh-ah eh-m/p-er/er hh-ae-d n-ow k-l-ow-dh-z ah-n .")
-        assert (RiTa.syllables(input) == expected)
+        assert (RiTa.syllables(input_) == expected)
         RiTa.SILENCE_LTS = silent
     def test_should_pluralize_phrases(self):
-        input = None
+        input_ = None
         expected = None
-        input = "set of choice"
+        input_ = "set of choice"
         expected = "set of choices"
-        assert (RiTa.pluralize(input) == expected)
-        input = "bag of chocolate"
+        assert (RiTa.pluralize(input_) == expected)
+        input_ = "bag of chocolate"
         expected = "bag of chocolates"
-        assert (RiTa.pluralize(input) == expected)
-        input = "gaggle of goose"
+        assert (RiTa.pluralize(input_) == expected)
+        input_ = "gaggle of goose"
         expected = "gaggle of geese"
-        assert (RiTa.pluralize(input) == expected)
+        assert (RiTa.pluralize(input_) == expected)
     def test_should_do_nothing_when_input_to_pluralize_is_already_plural(self):
         tests = ["tidings", "schnapps", "canvases", "censuses", "bonuses", "isthmuses", "thermoses", "circuses", "tongs", "emeriti"]
         for i, t in enumerate(tests):

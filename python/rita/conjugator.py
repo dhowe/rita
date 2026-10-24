@@ -1203,11 +1203,17 @@ class Conjugator:
     """English verb conjugator."""
 
     def __init__(self):
+        # Memo for _handle_stem, invalidated when the lexicon data object is
+        # swapped (attribute names mirror js/src/conjugator.js).
+        self._stemCache = {}
+        self._stemCacheRef = None
         self._reset()
 
     # ── Public API ───────────────────────────────────────────────────────────
     def conjugate(self, verb, args=None):
-        if not verb:
+        # JS checks `!verb || !verb.length`, which throws for non-strings
+        # (objects have no length property) as well as empty values.
+        if not isinstance(verb, str) or not verb:
             raise ValueError("No verb")
         if args is None:
             return verb
@@ -1470,6 +1476,19 @@ class Conjugator:
 
     def _handle_stem(self, word):
         """Port of JS _handleStem: find the best matching verb base form for a stem."""
+        # memoize per word, invalidating if lexicon data was swapped
+        from rita.rita import RiTa
+        data = RiTa.lexicon.data
+        if self._stemCacheRef is not data:
+            self._stemCache = {}
+            self._stemCacheRef = data
+        if word in self._stemCache:
+            return self._stemCache[word]
+        result = self._compute_stem(word)
+        self._stemCache[word] = result
+        return result
+
+    def _compute_stem(self, word):
         # already a base-form verb in the lexicon
         if _has_tag(word, "vb"):
             return word

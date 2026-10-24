@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 fixtureUrl = next((u for u in [_url(p) for p in ["../../shared/randgen-fixtures.json", "../../../shared/randgen-fixtures.json"]] if existsSync(u)), None)
 
@@ -130,7 +135,7 @@ class TestRandGen:
         assert (fixtures.pselectObj.expected == replay(fixtures.pselectObj.seed, lambda *args: R.pselect_obj(fixtures.pselectObj.dist)))
     def test_should_call_ndist(self):
         with pytest.raises(Exception):
-            return R.ndist([1, 2, 6, -(2.5), 0])
+            R.ndist([1, 2, 6, -(2.5), 0])
         assert (R.ndist([1, 2, 6, 0]) == fixtures.ndist.expected)
         assert (R.ndist([1, 2, 3], 0.5) == fixtures.ndistTemp.expected)
         assert (R.ndist([1, 2, 3], 1) == fixtures.ndistTemp1.expected)

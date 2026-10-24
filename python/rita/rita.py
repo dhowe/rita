@@ -34,7 +34,37 @@ _ONLY_PUNCT = re.compile(
 _IS_LETTER = re.compile(r'^[a-z\u00C0-\u00ff]+$', re.I)
 
 
-class RiTa:
+class _RiTaMeta(type):
+    """Metaclass providing the O(1) set mirrors of js/src/rita.js.
+
+    Each *_SET is rebuilt lazily when its source list is reassigned or
+    mutated in place (detected via identity or length change).
+    """
+
+    _MIRRORS = {
+        'STOP_WORDS_SET': 'STOP_WORDS',
+        'MASS_NOUNS_SET': 'MASS_NOUNS',
+        'QUESTIONS_SET': 'QUESTIONS',
+    }
+
+    def __getattr__(cls, name):
+        source = _RiTaMeta._MIRRORS.get(name)
+        if source is None:
+            raise AttributeError(name)
+        state = _mirror_state
+        entry = state.get(name)
+        arr = getattr(cls, source)
+        if entry is None or entry[0] is not arr or entry[1] != len(arr):
+            s = set(arr)
+            state[name] = (arr, len(arr), s)
+            return s
+        return entry[2]
+
+
+_mirror_state = {}
+
+
+class RiTa(metaclass=_RiTaMeta):
     """Top-level facade for the RiTa library (mirrors ritajs/src/rita.js)."""
 
     # ── Numeric constants ─────────────────────────────────────────────────────
@@ -56,6 +86,7 @@ class RiTa:
     SILENT            = False
     SILENCE_LTS       = False
     SPLIT_CONTRACTIONS= False
+    CACHING           = True
 
     # ── Lists ─────────────────────────────────────────────────────────────────
     PHONES = [
@@ -174,6 +205,7 @@ class RiTa:
     stemmer    = Stemmer()
     concorder  = Concorder()
     Util       = Util
+    Stemmer    = Stemmer  # JS parity: RiTa.Stemmer is the class itself
 
     # riscript is set up after class definition (needs RiTa backref)
     riscript = None
@@ -269,13 +301,13 @@ class RiTa:
         return first in cls.QUESTIONS
 
     @classmethod
-    def is_vowel(cls, char):
+    def is_vowel(cls, char=None):
         if not char or len(char) != 1:
             return False
         return char.lower() in cls.VOWELS
 
     @classmethod
-    def is_consonant(cls, char):
+    def is_consonant(cls, char=None):
         if not char or len(char) != 1:
             return False
         c = char.lower()
@@ -291,7 +323,7 @@ class RiTa:
     def is_stop_word(cls, word):
         if not word:
             return False
-        return word.lower() in cls.STOP_WORDS
+        return word.lower() in cls.STOP_WORDS_SET
 
     @classmethod
     def is_abbrev(cls, input_, opts=None):
@@ -418,6 +450,13 @@ class RiTa:
     rhymesSync      = rhymes
     searchSync      = search
     alliterationsSync = alliterations
+    # snake_case aliases (the generated tests call the camelCase JS methods
+    # after camelToSnake translation, e.g. searchSync -> search_sync)
+    rhymes_sync     = rhymes
+    search_sync     = search
+    alliterations_sync = alliterations
+    spells_like_sync = spells_like
+    sounds_like_sync = sounds_like
 
     # ── Stemmer ───────────────────────────────────────────────────────────────
 
@@ -468,7 +507,9 @@ class RiTa:
         return cls.tokenizer.tokenize(text, opts)
 
     @classmethod
-    def untokenize(cls, tokens, delim=' '):
+    def untokenize(cls, tokens=None, delim=' '):
+        if tokens is None:
+            return ''
         return cls.tokenizer.untokenize(tokens, delim)
 
     @classmethod

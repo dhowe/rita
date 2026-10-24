@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 BackoffModel = RiTa.BackoffModel
 SuffixArray = RiTa.SuffixArray
@@ -93,18 +98,18 @@ class TestMarkovBackoff:
         assert (isinstance(lm2.suffixes, SuffixArray))
         assert (lm2.size() == 21)
         with pytest.raises(Exception):
-            return BackoffModel(4)
+            BackoffModel(4)
         with pytest.raises(Exception):
-            return BackoffModel([RiTa.sentences(exampleStr)])
+            BackoffModel([RiTa.sentences(exampleStr)])
     def test_backoffmodel_suffixes_find(self):
         lm = BackoffModel(_jsstr(exampleStr) + _jsstr(" Then we ate."))
         sa = lm.suffixes
-        min = None
-        max = None
-        min, max = sa.find(["T"], JsDict({"debug": 0}))
-        assert ((max) - (min) == 0)
-        min, max = sa.find(["The"], JsDict({"debug": 0}))
-        assert ((max) - (min) == 2)
+        min_ = None
+        max_ = None
+        min_, max_ = sa.find(["T"], JsDict({"debug": 0}))
+        assert ((max_) - (min_) == 0)
+        min_, max_ = sa.find(["The"], JsDict({"debug": 0}))
+        assert ((max_) - (min_) == 2)
     # mocha .timeout(3000)
     def test_backoffmodel_to_fromjson(self):
         bom = BackoffModel(exampleStr)
@@ -141,10 +146,10 @@ class TestMarkovBackoff:
         firstGenTokens = [p.tokens[len(prompt)].token for p in paths]
         assert ("fox" in firstGenTokens)
         assert ("dog" in firstGenTokens)
-        sorted = lm.generation_paths(3, prompt, JsDict({**opts, "sortByProb": True}))
+        sorted_ = lm.generation_paths(3, prompt, JsDict({**opts, "sortByProb": True}))
         i = 1
-        for i in range(1, len(sorted), 1):
-            assert (sorted[(i) - (1)].prob >= sorted[i].prob)
+        for i in range(1, len(sorted_), 1):
+            assert (sorted_[(i) - (1)].prob >= sorted_[i].prob)
         origPaths = lm.generation_paths(3, prompt, JsDict({**opts, "forceOriginal": True}))
         for __it in origPaths:
             inInput = __it["inInput"]
@@ -209,7 +214,7 @@ class TestMarkovBackoff:
         prompt = "I did not".split(" ")
         opts = JsDict(JsDict({"minLength": 4, "maxLength": 20}))
         with pytest.raises(Exception):
-            return [*lm.stream_tokens(4, prompt, JsDict({**opts, "maxLengthMatch": 3}))]
+            [*lm.stream_tokens(4, prompt, JsDict({**opts, "maxLengthMatch": 3}))]
         free = [*lm.stream_tokens(3, prompt, JsDict({**opts, "maxLengthMatch": float("inf")}))]
         assert (len(free) >= opts.minLength)
         n = 3
@@ -259,17 +264,17 @@ class TestMarkovBackoff:
         assert (isinstance(shallow, list))
         assert (len(shallow) <= (len(deep)) + (1))
         try:
-            return lm.generation_paths(3, prompt, JsDict({**base, "temp": 0.5}))
+            lm.generation_paths(3, prompt, JsDict({**base, "temp": 0.5}))
         except Exception as _e:
             raise AssertionError("expected no throw, got: " + str(_e))
         try:
-            return lm.generation_paths(3, prompt, JsDict({**base, "temp": 2}))
+            lm.generation_paths(3, prompt, JsDict({**base, "temp": 2}))
         except Exception as _e:
             raise AssertionError("expected no throw, got: " + str(_e))
         with pytest.raises(Exception):
-            return lm.generation_paths(3, prompt, JsDict({**base, "badKey": True}))
+            lm.generation_paths(3, prompt, JsDict({**base, "badKey": True}))
         with pytest.raises(Exception):
-            return lm.stream_tokens(3, prompt, JsDict({**base, "badKey": True})).next()
+            lm.stream_tokens(3, prompt, JsDict({**base, "badKey": True})).next()
 
 def _fn_1(*args):
     g = lm2.path_generator(3, samplePrompt, JsDict({**opts, "forceOriginal": True}))

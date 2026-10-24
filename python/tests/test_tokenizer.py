@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 class TestTokenizer:
     def test_should_call_tokens(self):
@@ -79,24 +84,24 @@ class TestTokenizer:
         assert (tokens == ["a", "small", "one", "is", "like", "big"])
         tokens = RiTa.tokens("One escaped, she'd thought.", JsDict({"splitContractions": True}))
         assert (tokens == ["one", "escaped", "she", "had", "thought"])
-        input = "She wrote: \"I don't paint anymore. For a while she thought it was just a phase that she'd gotten over.\""
-        tokens = RiTa.tokens(input)
+        input_ = "She wrote: \"I don't paint anymore. For a while she thought it was just a phase that she'd gotten over.\""
+        tokens = RiTa.tokens(input_)
         assert (tokens == ["she", "wrote", "i", "don't", "paint", "anymore", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "she'd", "gotten", "over"])
-        tokens = RiTa.tokens(input)
+        tokens = RiTa.tokens(input_)
         assert (tokens == ["she", "wrote", "i", "don't", "paint", "anymore", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "she'd", "gotten", "over"])
-        tokens = RiTa.tokens(input, JsDict({"sort": True}))
+        tokens = RiTa.tokens(input_, JsDict({"sort": True}))
         assert (tokens == ["a", "anymore", "don't", "for", "gotten", "i", "it", "just", "over", "paint", "phase", "she", "she'd", "that", "thought", "was", "while", "wrote"])
-        tokens = RiTa.tokens(input, JsDict({"caseSensitive": True}))
+        tokens = RiTa.tokens(input_, JsDict({"caseSensitive": True}))
         assert (tokens == ["She", "wrote", "I", "don't", "paint", "anymore", "For", "a", "while", "she", "thought", "it", "was", "just", "phase", "that", "she'd", "gotten", "over"])
-        tokens = RiTa.tokens(input, JsDict({"caseSensitive": True, "sort": True}))
+        tokens = RiTa.tokens(input_, JsDict({"caseSensitive": True, "sort": True}))
         assert (tokens == ["For", "I", "She", "a", "anymore", "don't", "gotten", "it", "just", "over", "paint", "phase", "she", "she'd", "that", "thought", "was", "while", "wrote"])
-        tokens = RiTa.tokens(input, JsDict({"ignoreStopWords": True}))
+        tokens = RiTa.tokens(input_, JsDict({"ignoreStopWords": True}))
         assert (tokens == ["wrote", "paint", "anymore", "while", "thought", "phase", "she'd", "gotten"])
-        tokens = RiTa.tokens(input, JsDict({"splitContractions": True}))
+        tokens = RiTa.tokens(input_, JsDict({"splitContractions": True}))
         assert (tokens == ["she", "wrote", "i", "do", "not", "paint", "anymore", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "had", "gotten", "over"])
-        tokens = RiTa.tokens(input, JsDict({"splitContractions": True, "sort": True}))
+        tokens = RiTa.tokens(input_, JsDict({"splitContractions": True, "sort": True}))
         assert (tokens == ["a", "anymore", "do", "for", "gotten", "had", "i", "it", "just", "not", "over", "paint", "phase", "she", "that", "thought", "was", "while", "wrote"])
-        tokens = RiTa.tokens(input, JsDict({"splitContractions": True, "includePunct": True}))
+        tokens = RiTa.tokens(input_, JsDict({"splitContractions": True, "includePunct": True}))
         assert (tokens == ["she", "wrote", ":", "\"", "i", "do", "not", "paint", "anymore", ".", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "had", "gotten", "over"])
     def test_should_handle_tokenize_then_untokenize(self):
         sentences = ["this is www.google.com", "it is 'hell'"]
@@ -140,64 +145,64 @@ class TestTokenizer:
         assert (RiTa.tokenize("The snow-capped peaks") == ["The", "snow-capped", "peaks"])
         assert (RiTa.tokenize("The whole-hearted sighs") == ["The", "whole-hearted", "sighs"])
         assert (RiTa.tokenize("The dun-colored hills") == ["The", "dun-colored", "hills"])
-        input = None
+        input_ = None
         expected = None
         output = None
-        input = "According to the prof. climate change was real."
+        input_ = "According to the prof. climate change was real."
         expected = ["According", "to", "the", "prof.", "climate", "change", "was", "real", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "The student said 'learning is fun'"
+        input_ = "The student said 'learning is fun'"
         expected = ["The", "student", "said", "'", "learning", "is", "fun", "'"]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "\"Oh God,\" he thought."
+        input_ = "\"Oh God,\" he thought."
         expected = ["\"", "Oh", "God", ",", "\"", "he", "thought", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "The boy, dressed in red, ate an apple."
+        input_ = "The boy, dressed in red, ate an apple."
         expected = ["The", "boy", ",", "dressed", "in", "red", ",", "ate", "an", "apple", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "why? Me?huh?!"
+        input_ = "why? Me?huh?!"
         expected = ["why", "?", "Me", "?", "huh", "?", "!"]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "123 123 1 2 3 1,1 1.1 23.45.67 22/05/2012 12th May,2012"
+        input_ = "123 123 1 2 3 1,1 1.1 23.45.67 22/05/2012 12th May,2012"
         expected = ["123", "123", "1", "2", "3", "1", ",", "1", "1.1", "23.45", ".", "67", "22/05/2012", "12th", "May", ",", "2012"]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "The boy screamed, \"Where is my apple?\""
+        input_ = "The boy screamed, \"Where is my apple?\""
         expected = ["The", "boy", "screamed", ",", "\"", "Where", "is", "my", "apple", "?", "\""]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "The boy screamed, “Where is my apple?”"
+        input_ = "The boy screamed, “Where is my apple?”"
         expected = ["The", "boy", "screamed", ",", "“", "Where", "is", "my", "apple", "?", "”"]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "The boy screamed, 'Where is my apple?'"
+        input_ = "The boy screamed, 'Where is my apple?'"
         expected = ["The", "boy", "screamed", ",", "'", "Where", "is", "my", "apple", "?", "'"]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "The boy screamed, ‘Where is my apple?’"
+        input_ = "The boy screamed, ‘Where is my apple?’"
         expected = ["The", "boy", "screamed", ",", "‘", "Where", "is", "my", "apple", "?", "’"]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "dog, e.g. the cat."
+        input_ = "dog, e.g. the cat."
         expected = ["dog", ",", "e.g.", "the", "cat", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "dog, i.e. the cat."
+        input_ = "dog, i.e. the cat."
         expected = ["dog", ",", "i.e.", "the", "cat", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "What does e.g. mean? E.g. is used to introduce a few examples, not a complete list."
+        input_ = "What does e.g. mean? E.g. is used to introduce a few examples, not a complete list."
         expected = ["What", "does", "e.g.", "mean", "?", "E.g.", "is", "used", "to", "introduce", "a", "few", "examples", ",", "not", "a", "complete", "list", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
-        input = "What does i.e. mean? I.e. means in other words."
+        input_ = "What does i.e. mean? I.e. means in other words."
         expected = ["What", "does", "i.e.", "mean", "?", "I.e.", "means", "in", "other", "words", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
         inputs = ["A simple sentence.", "that's why this is our place).", "most, punctuation; is. split: from! adjoining words?", "double quotes \"OK\"", "face-to-face class", "\"it is strange\", said John, \"Katherine does not drink alchol.\"", "\"What?!\", John yelled.", "John's Katherine's Jack's Linda's students' people's", "more abbreviations: a.m. p.m. Cap. c. et al. etc. P.S. Ph.D R.I.P vs. v. Mr. Ms. Dr. Pf. Mx. Ind. Inc. Corp. Co,.Ltd. Co,. Ltd. Co. Lid. Ltd.", "(testing) [brackets] {all} ⟨kinds⟩", "elipsis dots... another elipsis dots…", "children's parents' won't gonna I'm"]
         outputs = [["A", "simple", "sentence", "."], ["that's", "why", "this", "is", "our", "place", ")", "."], ["most", ",", "punctuation", ";", "is", ".", "split", ":", "from", "!", "adjoining", "words", "?"], ["double", "quotes", "\"", "OK", "\""], ["face", "-", "to", "-", "face", "class"], ["\"", "it", "is", "strange", "\"", ",", "said", "John", ",", "\"", "Katherine", "does", "not", "drink", "alchol", ".", "\""], ["\"", "What", "?", "!", "\"", ",", "John", "yelled", "."], ["John", "'s", "katherine", "'s", "Jack", "'s", "Linda", "'s", "students", "'", "people", "'s"], ["more", "abbreviations", ":", "a.m.", "p.m.", "Cap.", "c.", "et al.", "etc.", "P.S.", "Ph.D", "R.I.P", "vs.", "v.", "Mr.", "Ms.", "Dr.", "Pf.", "Mx.", "Ind.", "Inc.", "Corp.", "Co.,Ltd", "Co., Ltd", "Co. Ltd.", "Ltd."], ["(", "testing", ")", "[", "brackets", "]", "{", "all", "}", "⟨", "kinds", "⟩"], ["elipsis", "dots", "...", "another", "elipsis", "dots", "…"], ["children", "'s", "parents", "'", "wo", "n't", "gon", "na", "I", "'m"]]
@@ -234,76 +239,76 @@ class TestTokenizer:
         assert (RiTa.untokenize(0) == "")
         assert (RiTa.untokenize([""]) == "")
         assert (RiTa.untokenize([" "]) == "")
-        input = None
+        input_ = None
         output = None
         expected = None
         expected = "We should consider the students' learning"
-        input = ["We", "should", "consider", "the", "students", "'", "learning"]
-        output = RiTa.untokenize(input)
+        input_ = ["We", "should", "consider", "the", "students", "'", "learning"]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "The boy, dressed in red, ate an apple."
-        input = ["The", "boy", ",", "dressed", "in", "red", ",", "ate", "an", "apple", "."]
-        output = RiTa.untokenize(input)
+        input_ = ["The", "boy", ",", "dressed", "in", "red", ",", "ate", "an", "apple", "."]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "We should consider the students’ learning"
-        input = ["We", "should", "consider", "the", "students", "’", "learning"]
-        output = RiTa.untokenize(input)
+        input_ = ["We", "should", "consider", "the", "students", "’", "learning"]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "The boy screamed, 'Where is my apple?'"
-        input = ["The", "boy", "screamed", ",", "'", "Where", "is", "my", "apple", "?", "'"]
-        output = RiTa.untokenize(input)
+        input_ = ["The", "boy", "screamed", ",", "'", "Where", "is", "my", "apple", "?", "'"]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "Dr. Chan is talking slowly with Mr. Cheng, and they're friends."
-        input = ["Dr", ".", "Chan", "is", "talking", "slowly", "with", "Mr", ".", "Cheng", ",", "and", "they're", "friends", "."]
-        output = RiTa.untokenize(input)
+        input_ = ["Dr", ".", "Chan", "is", "talking", "slowly", "with", "Mr", ".", "Cheng", ",", "and", "they're", "friends", "."]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
-        input = ["why", "?", "Me", "?", "huh", "?", "!"]
+        input_ = ["why", "?", "Me", "?", "huh", "?", "!"]
         expected = "why? Me? huh?!"
-        output = RiTa.untokenize(input)
+        output = RiTa.untokenize(input_)
         assert (output == expected)
-        input = ["123", "123", "1", "2", "3", "1", ",", "1", "1", ".", "1", "23", ".", "45", ".", "67", "22/05/2012", "12th", "May", ",", "2012"]
+        input_ = ["123", "123", "1", "2", "3", "1", ",", "1", "1", ".", "1", "23", ".", "45", ".", "67", "22/05/2012", "12th", "May", ",", "2012"]
         expected = "123 123 1 2 3 1, 1 1. 1 23. 45. 67 22/05/2012 12th May, 2012"
-        output = RiTa.untokenize(input)
+        output = RiTa.untokenize(input_)
         assert (output == expected)
-        input = ["\"", "Oh", "God", ",", "\"", "he", "thought", "."]
+        input_ = ["\"", "Oh", "God", ",", "\"", "he", "thought", "."]
         expected = "\"Oh God,\" he thought."
-        output = RiTa.untokenize(input)
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "The boy screamed, 'Where is my apple?'"
-        input = ["The", "boy", "screamed", ",", "'", "Where", "is", "my", "apple", "?", "'"]
-        output = RiTa.untokenize(input)
+        input_ = ["The", "boy", "screamed", ",", "'", "Where", "is", "my", "apple", "?", "'"]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
-        input = ["She", "screamed", ",", "\"", "Oh", "God", "!", "\""]
+        input_ = ["She", "screamed", ",", "\"", "Oh", "God", "!", "\""]
         expected = "She screamed, \"Oh God!\""
-        output = RiTa.untokenize(input)
+        output = RiTa.untokenize(input_)
         assert (output == expected)
-        input = ["She", "screamed", ":", "\"", "Oh", "God", "!", "\""]
+        input_ = ["She", "screamed", ":", "\"", "Oh", "God", "!", "\""]
         expected = "She screamed: \"Oh God!\""
-        output = RiTa.untokenize(input)
+        output = RiTa.untokenize(input_)
         assert (output == expected)
-        input = ["\"", "Oh", ",", "God", "\"", ",", "he", "thought", ",", "\"", "not", "rain", "!", "\""]
+        input_ = ["\"", "Oh", ",", "God", "\"", ",", "he", "thought", ",", "\"", "not", "rain", "!", "\""]
         expected = "\"Oh, God\", he thought, \"not rain!\""
-        output = RiTa.untokenize(input)
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "The student said 'learning is fun'"
-        input = ["The", "student", "said", "'", "learning", "is", "fun", "'"]
-        output = RiTa.untokenize(input)
+        input_ = ["The", "student", "said", "'", "learning", "is", "fun", "'"]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "dog, e.g. the cat."
-        input = ["dog", ",", "e.g.", "the", "cat", "."]
-        output = RiTa.untokenize(input)
+        input_ = ["dog", ",", "e.g.", "the", "cat", "."]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "dog, i.e. the cat."
-        input = ["dog", ",", "i.e.", "the", "cat", "."]
-        output = RiTa.untokenize(input)
+        input_ = ["dog", ",", "i.e.", "the", "cat", "."]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "What does e.g. mean? E.g. is used to introduce a few examples, not a complete list."
-        input = ["What", "does", "e.g.", "mean", "?", "E.g.", "is", "used", "to", "introduce", "a", "few", "examples", ",", "not", "a", "complete", "list", "."]
-        output = RiTa.untokenize(input)
+        input_ = ["What", "does", "e.g.", "mean", "?", "E.g.", "is", "used", "to", "introduce", "a", "few", "examples", ",", "not", "a", "complete", "list", "."]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         expected = "What does i.e. mean? I.e. means in other words."
-        input = ["What", "does", "i.e.", "mean", "?", "I.e.", "means", "in", "other", "words", "."]
-        output = RiTa.untokenize(input)
+        input_ = ["What", "does", "i.e.", "mean", "?", "I.e.", "means", "in", "other", "words", "."]
+        output = RiTa.untokenize(input_)
         assert (output == expected)
         outputs = ["A simple sentence.", "that's why this is our place).", "this is for semicolon; that is for else", "this is for 2^3 2*3", "this is for $30 and #30", "this is for 30°C or 30℃", "this is for a/b a⁄b", "this is for «guillemets»", "this... is… for ellipsis", "this line is 'for' single ‘quotation’ mark", "Katherine’s cat and John's cat", "this line is for (all) [kind] {of} ⟨brackets⟩ done", "this line is for the-dash", "30% of the student love day-dreaming.", "\"that test line\"", "my email address is name@domin.com", "it is www.google.com", "that is www6.cityu.edu.hk"]
         inputs = [["A", "simple", "sentence", "."], ["that's", "why", "this", "is", "our", "place", ")", "."], ["this", "is", "for", "semicolon", ";", "that", "is", "for", "else"], ["this", "is", "for", "2", "^", "3", "2", "*", "3"], ["this", "is", "for", "$", "30", "and", "#", "30"], ["this", "is", "for", "30", "°", "C", "or", "30", "℃"], ["this", "is", "for", "a", "/", "b", "a", "⁄", "b"], ["this", "is", "for", "«", "guillemets", "»"], ["this", "...", "is", "…", "for", "ellipsis"], ["this", "line", "is", "'", "for", "'", "single", "‘", "quotation", "’", "mark"], ["Katherine", "’", "s", "cat", "and", "John", "'", "s", "cat"], ["this", "line", "is", "for", "(", "all", ")", "[", "kind", "]", "{", "of", "}", "⟨", "brackets", "⟩", "done"], ["this", "line", "is", "for", "the", "-", "dash"], ["30", "%", "of", "the", "student", "love", "day", "-", "dreaming", "."], ["\"", "that", "test", "line", "\""], ["my", "email", "address", "is", "name", "@", "domin", ".", "com"], ["it", "is", "www", ".", "google", ".", "com"], ["that", "is", "www6", ".", "cityu", ".", "edu", ".", "hk"]]
@@ -319,73 +324,73 @@ class TestTokenizer:
         for i in range(0, len(inputs), 1):
             assert (RiTa.untokenize(inputs[i]) == outputs[i])
     def test_should_call_sentences(self):
-        input = "Stealth's Open Frame, OEM style LCD monitors are designed for special mounting applications. The slim profile packaging provides an excellent solution for building into kiosks, consoles, machines and control panels. If you cannot find an off the shelf solution call us today about designing a custom solution to fit your exact needs."
+        input_ = "Stealth's Open Frame, OEM style LCD monitors are designed for special mounting applications. The slim profile packaging provides an excellent solution for building into kiosks, consoles, machines and control panels. If you cannot find an off the shelf solution call us today about designing a custom solution to fit your exact needs."
         expected = ["Stealth's Open Frame, OEM style LCD monitors are designed for special mounting applications.", "The slim profile packaging provides an excellent solution for building into kiosks, consoles, machines and control panels.", "If you cannot find an off the shelf solution call us today about designing a custom solution to fit your exact needs."]
-        output = RiTa.sentences(input)
+        output = RiTa.sentences(input_)
         assert (output == expected)
-        input = "Stealth's Open Frame, OEM style LCD monitors are designed for special mounting applications.\n\nThe slim profile packaging provides an excellent solution for building into kiosks, consoles, machines and control panels.\r\n If you cannot find an off the shelf solution call us today about designing a custom solution to fit your exact needs."
+        input_ = "Stealth's Open Frame, OEM style LCD monitors are designed for special mounting applications.\n\nThe slim profile packaging provides an excellent solution for building into kiosks, consoles, machines and control panels.\r\n If you cannot find an off the shelf solution call us today about designing a custom solution to fit your exact needs."
         expected = ["Stealth's Open Frame, OEM style LCD monitors are designed for special mounting applications.", "The slim profile packaging provides an excellent solution for building into kiosks, consoles, machines and control panels.", "If you cannot find an off the shelf solution call us today about designing a custom solution to fit your exact needs."]
-        output = RiTa.sentences(input)
+        output = RiTa.sentences(input_)
         assert (output == expected)
-        input = "\"The boy went fishing.\", he said. Then he went away."
+        input_ = "\"The boy went fishing.\", he said. Then he went away."
         expected = ["\"The boy went fishing.\", he said.", "Then he went away."]
-        output = RiTa.sentences(input)
+        output = RiTa.sentences(input_)
         assert (output == expected)
-        input = "The dog"
-        output = RiTa.sentences(input)
-        assert (output == [input])
-        input = "I guess the dog ate the baby."
-        output = RiTa.sentences(input)
-        assert (output == [input])
-        input = "Oh my god, the dog ate the baby!"
-        output = RiTa.sentences(input)
+        input_ = "The dog"
+        output = RiTa.sentences(input_)
+        assert (output == [input_])
+        input_ = "I guess the dog ate the baby."
+        output = RiTa.sentences(input_)
+        assert (output == [input_])
+        input_ = "Oh my god, the dog ate the baby!"
+        output = RiTa.sentences(input_)
         expected = ["Oh my god, the dog ate the baby!"]
         assert (output == expected)
-        input = "Which dog ate the baby?"
-        output = RiTa.sentences(input)
+        input_ = "Which dog ate the baby?"
+        output = RiTa.sentences(input_)
         expected = ["Which dog ate the baby?"]
         assert (output == expected)
-        input = "'Yes, it was a dog that ate the baby', he said."
-        output = RiTa.sentences(input)
+        input_ = "'Yes, it was a dog that ate the baby', he said."
+        output = RiTa.sentences(input_)
         expected = ["'Yes, it was a dog that ate the baby', he said."]
         assert (output == expected)
-        input = "The baby belonged to Mr. and Mrs. Stevens. They will be very sad."
-        output = RiTa.sentences(input)
+        input_ = "The baby belonged to Mr. and Mrs. Stevens. They will be very sad."
+        output = RiTa.sentences(input_)
         expected = ["The baby belonged to Mr. and Mrs. Stevens.", "They will be very sad."]
         assert (output == expected)
-        input = "\"The baby belonged to Mr. and Mrs. Stevens. They will be very sad.\""
-        output = RiTa.sentences(input)
+        input_ = "\"The baby belonged to Mr. and Mrs. Stevens. They will be very sad.\""
+        output = RiTa.sentences(input_)
         expected = ["\"The baby belonged to Mr. and Mrs. Stevens.", "They will be very sad.\""]
         assert (output == expected)
-        input = "“The baby belonged to Mr. and Mrs. Stevens. They will be very sad.”"
-        output = RiTa.sentences(input)
+        input_ = "“The baby belonged to Mr. and Mrs. Stevens. They will be very sad.”"
+        output = RiTa.sentences(input_)
         expected = ["“The baby belonged to Mr. and Mrs. Stevens.", "They will be very sad.”"]
         assert (output == expected)
-        input = "\"My dear Mr. Bennet. Netherfield Park is let at last.\""
-        output = RiTa.sentences(input)
+        input_ = "\"My dear Mr. Bennet. Netherfield Park is let at last.\""
+        output = RiTa.sentences(input_)
         expected = ["\"My dear Mr. Bennet.", "Netherfield Park is let at last.\""]
         assert (output == expected)
-        input = "“My dear Mr. Bennet. Netherfield Park is let at last.”"
-        output = RiTa.sentences(input)
+        input_ = "“My dear Mr. Bennet. Netherfield Park is let at last.”"
+        output = RiTa.sentences(input_)
         expected = ["“My dear Mr. Bennet.", "Netherfield Park is let at last.”"]
         assert (output == expected)
-        input = "She wrote: \"I don't paint anymore. For a while I thought it was just a phase that I'd get over.\""
-        output = RiTa.sentences(input)
+        input_ = "She wrote: \"I don't paint anymore. For a while I thought it was just a phase that I'd get over.\""
+        output = RiTa.sentences(input_)
         expected = ["She wrote: \"I don't paint anymore.", "For a while I thought it was just a phase that I'd get over.\""]
         assert (output == expected)
-        input = " I had a visit from my \"friend\" the tax man."
-        output = RiTa.sentences(input)
+        input_ = " I had a visit from my \"friend\" the tax man."
+        output = RiTa.sentences(input_)
         expected = ["I had a visit from my \"friend\" the tax man."]
         assert (output == expected)
         assert (RiTa.sentences("") == [""])
         assert (RiTa.sentences("Today I would make something. A 4.7 inch gun. It was noon.") == ["Today I would make something.", "A 4.7 inch gun.", "It was noon."])
     def test_should_handle_dashes(self):
-        input = "Type two hyphens—without a space before, after, or between them."
-        output = RiTa.sentences(input)
+        input_ = "Type two hyphens—without a space before, after, or between them."
+        output = RiTa.sentences(input_)
         expected = ["Type two hyphens—without a space before, after, or between them."]
         assert (output == expected)
-        input = "After a split second of hesitation, the second baseman leaped for the ball—or, rather, limped for it."
-        output = RiTa.sentences(input)
+        input_ = "After a split second of hesitation, the second baseman leaped for the ball—or, rather, limped for it."
+        output = RiTa.sentences(input_)
         expected = ["After a split second of hesitation, the second baseman leaped for the ball—or, rather, limped for it."]
         assert (output == expected)
         sentence = "Type two hyphens--without a space—before, after, or between them."
@@ -428,12 +433,12 @@ class TestTokenizer:
         assert (RiTa.untokenize(RiTa.tokenize("A CARAFE, THAT IS A BLIND GLASS.\nA kind in glass and a cousin.")) == "A CARAFE, THAT IS A BLIND GLASS.\nA kind in glass and a cousin.")
         assert (RiTa.untokenize(RiTa.tokenize("A CARAFE, THAT IS A BLIND GLASS.\r\nA kind in glass and a cousin.")) == "A CARAFE, THAT IS A BLIND GLASS.\r\nA kind in glass and a cousin.")
     def test_should_handle_numbers_with_commas(self):
-        input = None
+        input_ = None
         expected = None
         output = None
-        input = "It was 19,700 square inches, the equivalent of 409 A5 pages."
+        input_ = "It was 19,700 square inches, the equivalent of 409 A5 pages."
         expected = ["It", "was", "19,700", "square", "inches", ",", "the", "equivalent", "of", "409", "A5", "pages", "."]
-        output = RiTa.tokenize(input)
+        output = RiTa.tokenize(input_)
         assert (output == expected)
     def test_should_tokenize_underscores_to_spaces(self):
         assert (RiTa.tokenize("a_là") == ["a là"])

@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 BackoffModel = RiTa.BackoffModel
 SuffixArray = RiTa.SuffixArray
@@ -130,11 +135,11 @@ class TestMarkov:
         i = None
         numTests = 100
         for sm in distrs:
-            sum = 0
+            sum_ = 0
             j = 0
             for j in range(0, numTests, 1):
-                sum += Random.pselect(sm)
-            results.append((sum) / (numTests))
+                sum_ += Random.pselect(sm)
+            results.append((sum_) / (numTests))
         assert (abs(results[(i := 0)] - expected[i]) <= 0.1), _jsstr(_jsstr(_jsstr("failed #") + _jsstr(i)) + _jsstr(" temp=")) + _jsstr(temps[i])
         assert (abs(results[(i := 1)] - expected[i]) <= 0.2), _jsstr(_jsstr(_jsstr("failed #") + _jsstr(i)) + _jsstr(" temp=")) + _jsstr(temps[i])
         assert (abs(results[(i := 2)] - expected[i]) <= 0.4), _jsstr(_jsstr(_jsstr("failed #") + _jsstr(i)) + _jsstr(" temp=")) + _jsstr(temps[i])
@@ -145,11 +150,11 @@ class TestMarkov:
         for k in range(0, 10, 1):
             results = []
             for sm in distr:
-                sum = 0
+                sum_ = 0
                 j = 0
                 for j in range(0, 1000, 1):
-                    sum += Random.pselect2(sm)
-                results.append((sum) / (1000))
+                    sum_ += Random.pselect2(sm)
+                results.append((sum_) / (1000))
             assert (abs(results[0] - expected[0]) <= 0.5)
             assert (abs(results[1] - expected[1]) <= 0.05)
             assert (abs(results[2] - expected[2]) <= 0.05)
@@ -167,11 +172,11 @@ class TestMarkov:
         i = None
         numTests = 100
         for sm in distrs:
-            sum = 0
+            sum_ = 0
             j = 0
             for j in range(0, numTests, 1):
-                sum += Random.pselect_index(sm)
-            results.append((sum) / (numTests))
+                sum_ += Random.pselect_index(sm)
+            results.append((sum_) / (numTests))
         assert (abs(results[(i := 0)] - expected[i]) <= 0.1), _jsstr(_jsstr(_jsstr("failed #") + _jsstr(i)) + _jsstr(" temp=")) + _jsstr(temps[i])
         assert (abs(results[(i := 1)] - expected[i]) <= 0.2), _jsstr(_jsstr(_jsstr("failed #") + _jsstr(i)) + _jsstr(" temp=")) + _jsstr(temps[i])
         assert (abs(results[(i := 2)] - expected[i]) <= 0.4), _jsstr(_jsstr(_jsstr("failed #") + _jsstr(i)) + _jsstr(" temp=")) + _jsstr(temps[i])
@@ -182,17 +187,17 @@ class TestMarkov:
         for k in range(0, 10, 1):
             results = []
             for sm in distr:
-                sum = 0
+                sum_ = 0
                 j = 0
                 for j in range(0, 1000, 1):
-                    sum += Random.pselect2(sm)
-                results.append((sum) / (1000))
+                    sum_ += Random.pselect2(sm)
+                results.append((sum_) / (1000))
             assert (abs(results[0] - expected[0]) <= 0.5)
             assert (abs(results[1] - expected[1]) <= 0.05)
             assert (abs(results[2] - expected[2]) <= 0.05)
     def test_should_call_random_ndist(self):
         with pytest.raises(Exception):
-            return Random.ndist([1, 2, 6, -(2.5), 0])
+            Random.ndist([1, 2, 6, -(2.5), 0])
         weights = None
         expected = None
         results = None
@@ -254,20 +259,20 @@ class TestMarkov:
     def test_should_throw_on_generate_for_empty_model(self):
         rm = RiMarkov(4, JsDict({"maxLengthMatch": 6}))
         with pytest.raises(Exception):
-            return rm.generate(5)
+            rm.generate(5)
     def test_should_throw_on_failed_generate(self):
         rm = RiMarkov(4, JsDict({"maxLengthMatch": 6}))
         rm.add_sentences(RiTa.sentences(sample))
         with pytest.raises(Exception):
-            return rm.generate(5)
+            rm.generate(5)
         rm = RiMarkov(4, JsDict({"maxLengthMatch": 5}))
         rm.add_sentences(RiTa.sentences(sample))
         with pytest.raises(Exception):
-            return rm.generate(5)
+            rm.generate(5)
         rm = RiMarkov(4, JsDict({"maxAttempts": 1}))
         rm.add_text("Hi.")
         with pytest.raises(Exception):
-            return rm.generate(5)
+            rm.generate(5)
     def test_should_apply_custom_tokenizers(self):
         sents = ["asdfasdf-", "aqwerqwer+", "asdfasdf*"]
         tokenize = lambda sent=None, *args: list(sent)
@@ -668,7 +673,7 @@ class TestMarkov:
         rm = RiMarkov(4, JsDict({"maxAttempts": 2, "trace": True}))
         rm.add_text("Hi.")
         with pytest.raises(Exception):
-            return rm.generate(5)
+            rm.generate(5)
         rm = RiMarkov(3, JsDict({"trace": True, "maxLengthMatch": 10}))
         rm.add_text(sample3)
         assert (len(rm.generate(2)) == 2)
@@ -686,26 +691,26 @@ class TestMarkov:
         assert (isinstance(lm2.suffixes, SuffixArray))
         assert (lm2.size() == 21)
         with pytest.raises(Exception):
-            return BackoffModel(123)
+            BackoffModel(123)
         with pytest.raises(Exception):
-            return BackoffModel([RiTa.sentences(exampleStr)])
+            BackoffModel([RiTa.sentences(exampleStr)])
     def test_should_throw_on_generate_for_empty_model_2(self):
         rm = BackoffModel(JsDict({"maxLengthMatch": 6}))
         with pytest.raises(Exception):
-            return rm.generate_sentences(5, [], JsDict({}))
+            rm.generate_sentences(5, [], JsDict({}))
     def test_should_throw_on_failed_generate_2(self):
         rm = BackoffModel(JsDict({"maxLengthMatch": 6}))
         rm.add_text(sample)
         with pytest.raises(Exception):
-            return rm.generate_sentences(5, [], JsDict({}))
+            rm.generate_sentences(5, [], JsDict({}))
         rm = BackoffModel(JsDict({"maxLengthMatch": 5}))
         rm.add_sentences(RiTa.sentences(sample))
         with pytest.raises(Exception):
-            return rm.generate_sentences(5, [], JsDict({}))
+            rm.generate_sentences(5, [], JsDict({}))
         rm = BackoffModel(JsDict({"maxAttempts": 1}))
         rm.add_text("Hi.")
         with pytest.raises(Exception):
-            return rm.generate_sentences(5, [], JsDict({}))
+            rm.generate_sentences(5, [], JsDict({}))
     def test_should_call_addtext_with_string(self):
         rm = BackoffModel(JsDict({"maxLengthMatch": 6}))
         rm.add_text(sample).build()
@@ -759,7 +764,7 @@ class TestMarkov:
         assert (rm1.size() == 21)
         assert (RiMarkov().size() == 0)
         with pytest.raises(Exception):
-            return rm2.add_text(123)
+            rm2.add_text(123)
     def test_rimarkov_tojson_fromjson(self):
         rm = RiMarkov(exampleStr)
         json = rm.to_json()
@@ -829,7 +834,7 @@ class TestMarkov:
         assert (rm2.completions(["I", "did"]) == ["not", "occasionally"])
         assert (rm2.completions(["I", "did"], ["want"]) == ["not", "occasionally"])
         with pytest.raises(Exception):
-            return rm2.completions(["I", "did", "not", "occasionally"], ["want"])
+            rm2.completions(["I", "did", "not", "occasionally"], ["want"])
     def test_rimarkov_generate_restart_2(self):
         sents = ["asdfasdf-", "asqwerqwer+", "aqadaqdf*"]
         tokenize = lambda sent=None, *args: list(sent)
@@ -852,10 +857,10 @@ class TestMarkov:
         assert (isinstance(text2, str) and len(text2) > 0)
         assert ((text2.startswith(_jsstr("The brown"))) is True)
         with pytest.raises(Exception):
-            return rm.generate(3, "The brown", JsDict({}))
+            rm.generate(3, "The brown", JsDict({}))
         rm2 = RiMarkov(exampleStr)
         with pytest.raises(Exception):
-            return rm2.generate(None, ["The"], JsDict({}))
+            rm2.generate(None, ["The"], JsDict({}))
     @pytest.mark.skip(reason="it.skip in JS")
     def test_rimarkov_probability(self):
         pass
@@ -881,7 +886,7 @@ class TestMarkov:
         for t in list(startDist.keys()):
             assert not (_re_compile("^<.*>$").search(t) is not None)
         with pytest.raises(Exception):
-            return rm.probabilities("not-an-array")
+            rm.probabilities("not-an-array")
         rm2 = RiMarkov(sample)
         assert (rm2.probabilities(["reason"]) == JsDict({"people": 1}))
         assert (rm2.probabilities(["people"]) == JsDict({"lie": 1}))
@@ -922,7 +927,7 @@ class TestMarkov:
         assert ((result2.startswith(_jsstr("The brown"))) is True)
         rm3 = RiMarkov(exampleStr)
         with pytest.raises(Exception):
-            return rm3.generate(JsDict({"prompt": ["The"]}))
+            rm3.generate(JsDict({"prompt": ["The"]}))
     def test_rimarkov_tostring(self):
         rm = RiMarkov(exampleStr)
         str_ = str(rm)
@@ -950,10 +955,10 @@ class TestMarkov:
         toPred = [*rm.stream(3, ["The", "brown"], JsDict({"maxTokens": 20, "generateUntil": lambda t=None, *args: (t) == (".")}))]
         assert (toPred[(len(toPred)) - (1)] == ".")
         with pytest.raises(Exception):
-            return [*rm.stream(3, "not an array", JsDict({}))]
+            [*rm.stream(3, "not an array", JsDict({}))]
         rm2 = RiMarkov(exampleStr)
         with pytest.raises(Exception):
-            return [*rm2.stream(JsDict({"prompt": ["The"]}))]
+            [*rm2.stream(JsDict({"prompt": ["The"]}))]
     def test_should_be_reproducible_with_rita_randomseed(self):
         text = _jsstr(_jsstr(_jsstr("The cat sat on the mat. The dog ran in the park. A bird flew ") + _jsstr("over the house. The fish swam in the pond. The horse ran through the ")) + _jsstr("field. The mouse hid in the wall. The cat chased the mouse. The dog ")) + _jsstr("chased the cat. The bird ate the fish.")
         def gen(seed=None, *args):
@@ -973,7 +978,7 @@ class TestMarkov:
         rm = RiMarkov(3, JsDict({"maxBacktracks": 50}))
         assert (rm.opts.maxBacktracks == 50)
         try:
-            return BackoffModel.resolve_opts(3, JsDict({"maxBacktracks": 50}))
+            BackoffModel.resolve_opts(3, JsDict({"maxBacktracks": 50}))
         except Exception as _e:
             raise AssertionError("expected no throw, got: " + str(_e))
         assert (BackoffModel.resolve_opts(3, JsDict({"maxBacktracks": 50})).maxBacktracks == 50)
@@ -984,7 +989,7 @@ class TestMarkov:
         try:
             console.log = _fn_14
             try:
-                return rm.model.build(JsDict({"verbose": True}))
+                rm.model.build(JsDict({"verbose": True}))
             except Exception as _e:
                 raise AssertionError("expected no throw, got: " + str(_e))
         finally:
@@ -996,7 +1001,7 @@ sample4 = "The Sun is a barren, rocky world without air and water. It has dark l
 Random = None
 
 # mocha before hook
-Random = RiTa.randomizer
+(Random := RiTa.randomizer)
 
 def distribution(res=None, dump=None, *args):
     dist = JsDict(JsDict({}))

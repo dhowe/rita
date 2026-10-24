@@ -32,6 +32,7 @@ class Analyzer:
 
     def __init__(self):
         self._cache = {}
+        self._cacheRef = None     # identity of lexicon.data the cache was built from
         self._lts = None          # lazy LetterToSound
         self._tokenizer = None    # lazy
         self._tagger = None       # lazy
@@ -65,11 +66,10 @@ class Analyzer:
         return self._tagger
 
     def _get_dict(self):
-        if self._dict_cache is None:
-            p = os.path.join(os.path.dirname(__file__), '..', '..', 'shared', 'rita_dict.json')
-            with open(p) as f:
-                self._dict_cache = json.load(f)
-        return self._dict_cache
+        # JS reads through the lexicon (lex.rawPhones), so a swapped
+        # RiTa.lexicon.data must be visible here too.
+        from rita.rita import RiTa
+        return RiTa.lexicon.data
 
     # ── dict helpers ─────────────────────────────────────────────────────────
 
@@ -137,7 +137,15 @@ class Analyzer:
         if word and len(word) == 1 and word.isdigit():
             word = self._DIGIT_WORDS[int(word)]
 
-        result = self._cache.get(word)
+        # invalidate the cache if the lexicon data was swapped out
+        from rita.rita import RiTa
+        data = RiTa.lexicon.data
+        if self._cacheRef is not data:
+            self._cache = {}
+            self._cacheRef = data
+
+        caching = getattr(RiTa, 'CACHING', True)
+        result = self._cache.get(word) if caching else None
         if result is not None:
             return result
 
@@ -175,7 +183,8 @@ class Analyzer:
             'stresses':  stresses.strip() if stresses else stresses,
             'syllables': syllables.strip(),
         })
-        self._cache[word] = result
+        if caching:
+            self._cache[word] = result
         return result
 
     def analyze(self, text, opts=None):

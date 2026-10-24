@@ -71,7 +71,14 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
+from rita.analyzer import Analyzer
+syllablesToIpa = Analyzer.syllables_to_ipa
 data = json.loads(readFileSync(_url("./harvard-data.json")), object_hook=JsDict)
 
 sentences = [d[0] for d in data]
@@ -90,7 +97,7 @@ class TestHarvard:
         i = 0
         for i in range(0, len(sentences), 1):
             s = sentences[i]
-            _, expectedToks, expectedTags = data[i]
+            _, expectedToks, expectedTags, *_ = data[i]
             actualToks = RiTa.tokenize(s)
             actualTags = RiTa.pos(actualToks)
             assert (actualToks == expectedToks), f"sentence {(i) + (1)} tokens"
@@ -106,8 +113,8 @@ class TestHarvard:
         RiTa.SILENCE_LTS = True
         i = 0
         for i in range(0, len(sentences), 1):
-            sentence, _, _, expectedIpa = data[i]
-            s = sentence.replace(_re_compile("[.!?,]+$"), "", 1)
+            sentence, _, _, expectedIpa, *_ = data[i]
+            s = re.sub("[.!?,]+$", "", sentence, count=1)
             actualIpa = _jsstr(_jsstr("/") + _jsstr(syllablesToIpa(RiTa.syllables(s), RiTa.stresses(s)))) + _jsstr("/")
             if (actualIpa) != (expectedIpa):
                 console.warn(f"  PHONE MISMATCH [{(i) + (1)}]: {sentence}")

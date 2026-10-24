@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 hasLex = True
 
@@ -220,9 +225,9 @@ class TestConjugator:
         a = ["swims", "needs", "opens"]
         args = JsDict({"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD})
         with pytest.raises(Exception):
-            return RiTa.conjugate(args)
+            RiTa.conjugate(args)
         with pytest.raises(Exception):
-            return RiTa.conjugate("", args)
+            RiTa.conjugate("", args)
         i = 0
         for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
@@ -581,11 +586,11 @@ class TestConjugator:
         try:
             before = conj._handle_stem("alien")
             assert (before == "alienate")
-            assert (conj._stemCache.size > 0)
+            assert (len(conj._stemCache) > 0)
             RiTa.lexicon.data = JsDict({**orig})
             conj._handle_stem("alien")
             assert (conj._stemCacheRef == RiTa.lexicon.data)
-            assert (conj._stemCache.size == 1)
+            assert (len(conj._stemCache) == 1)
             assert (conj._handle_stem("alien") == before)
         finally:
             RiTa.lexicon.data = orig

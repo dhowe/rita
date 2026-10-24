@@ -6,6 +6,7 @@ This repository contains all RiTa implementations and documentation
 rita4/
   js/        JavaScript/TypeScript implementation
   java/      Java implementation (gradle)
+  python/    Python implementation (uv)
   docs/      Website and API reference
   shared/    Shared data (rita_dict.json — canonical dictionary)
   scripts/   Maintenance scripts
@@ -48,6 +49,35 @@ The artifact is `org.rednoise:rita`. The canonical dictionary is read directly f
 `shared/rita_dict.json` (staged into the build by `gradlew processResources`), so there
 is no generated copy to keep in sync.
 
+---
+
+## Python (`python/`)
+
+**Requirements:** [uv](https://docs.astral.sh/uv/) (Python 3.10+; the environment is
+managed by `python/pyproject.toml` + `python/uv.lock`)
+
+```sh
+cd python
+uv sync              # create .venv and install dev dependencies (pytest)
+uv run pytest -q     # run the test suite
+```
+
+The package is pure Python with no runtime dependencies. It reads the canonical
+dictionary from `shared/rita_dict.json` at runtime (resolved relative to the package,
+so it works from any working directory).
+
+The pytest suite under `python/tests/` is **auto-generated** from the JavaScript tests
+in `js/test/` by `scripts/js-to-py-tests.js` — do not edit `test_*.py` by hand. To
+regenerate after changing `js/test/` (requires `npm install` in `js/` for acorn):
+
+```sh
+node scripts/js-to-py-tests.js
+```
+
+Some tests read fixture files from `js/test/` (e.g. `harvard-data.json`), so keep the
+`js/` checkout present when running the Python suite.
+
+---
 
 ## Docs / Website (`docs/`)
 
@@ -85,6 +115,7 @@ GitHub Actions workflows are path-scoped and trigger when their subtree (or `sha
 |---|---|---|
 | `.github/workflows/js.yml` | `js/**`, `shared/**` | Node 18, 20, 22 |
 | `.github/workflows/java.yml` | `java/**`, `shared/**` | JDK 11 · ubuntu + macOS |
+| `.github/workflows/python.yml` | `python/**`, `shared/**` | Python 3.10–3.13 (uv) |
 
 ---
 

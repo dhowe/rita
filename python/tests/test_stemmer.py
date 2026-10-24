@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 class TestStemmer:
     def test_should_test_stem1(self):
@@ -6464,11 +6469,11 @@ class TestStemmer:
         _test("cyrus", "cyrus")
         _test("cyttaria", "cyttaria")
     def test_should_call_stemall(self):
-        input = ["cured", "cats", "cut", "plays"]
+        input_ = ["cured", "cats", "cut", "plays"]
         expected = ["cure", "cat", "cut", "play"]
-        output = RiTa.Stemmer.stem_all(input)
+        output = RiTa.Stemmer.stem_all(input_)
         i = 0
-        for i in range(0, len(input), 1):
+        for i in range(0, len(input_), 1):
             assert (output[i] == expected[i])
     # (helper hoisted to module scope)
 

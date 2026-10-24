@@ -64,6 +64,7 @@ class Lexicon:
         self._words = None         # cached list of dict keys
         self._syl_index = None     # dict: num_syllables -> [word, ...]
         self._pos_index = None     # dict: pos_tag -> [word, ...]
+        self._data_ref = None      # identity of the dict the caches were built from
         self._plural_cache = {}    # word -> plural form
         self._conjug_cache = {}    # (word, pos) -> conjugated form
         self._analyzer = None
@@ -72,16 +73,43 @@ class Lexicon:
         self._conjugator = None
         self._randgen = None
 
-    # ── lazy deps ─────────────────────────────────────────────────────────────
+    # ── data ──────────────────────────────────────────────────────────────────
+    #
+    # Mirrors js/src/lexicon.js: `this.data = custom || dict`.  The default
+    # dictionary is loaded lazily on first access, and replacing the whole
+    # dict invalidates the derived indexes (JS only rebuilds _words, but the
+    # syllable/POS indexes are cached here so they must be dropped too).
 
-    def _get_dict(self):
-        if self._data is not None:
-            return self._data
+    @property
+    def data(self):
+        if self._data is None:
+            self._data = self._load_default_dict()
+        return self._data
+
+    @data.setter
+    def data(self, value):
+        if value is None:
+            raise ValueError('Lexicon.data must be a dict')
+        self._data = value
+        self._invalidate_caches()
+
+    def _invalidate_caches(self):
+        self._words = None
+        self._syl_index = None
+        self._pos_index = None
+        self._data_ref = None
+
+    def _load_default_dict(self):
         if self._dict_cache is None:
             p = os.path.join(os.path.dirname(__file__), '..', '..', 'shared', 'rita_dict.json')
             with open(p) as f:
                 self._dict_cache = json.load(f)
         return self._dict_cache
+
+    # ── lazy deps ─────────────────────────────────────────────────────────────
+
+    def _get_dict(self):
+        return self.data
 
     def _get_words(self):
         if self._words is None:
@@ -182,7 +210,8 @@ class Lexicon:
             opts = pattern
             pattern = None
 
-        opts = opts or {}
+        # copy so we don't mutate the caller's options object
+        opts = dict(opts or {})
         opts['limit'] = 1
         opts['shuffle'] = True
         opts['strictPos'] = True
@@ -209,7 +238,7 @@ class Lexicon:
             return list(self._get_words())
 
         regex, opts = self._parse_regex(pattern, opts or {})
-        self._parse_args(opts)
+        opts = self._parse_args(opts)
 
         num_syl = opts.get('numSyllables', 0)
         target_pos = opts.get('targetPos')
@@ -285,7 +314,7 @@ class Lexicon:
 
     def rhymes_sync(self, the_word, opts=None):
         opts = opts or {}
-        self._parse_args(opts)
+        opts = self._parse_args(opts)
 
         if not the_word or len(the_word) < 2:
             return []
@@ -336,7 +365,7 @@ class Lexicon:
 
     def alliterations_sync(self, the_word, opts=None):
         opts = opts or {}
-        self._parse_args(opts)
+        opts = self._parse_args(opts)
 
         if not the_word or not isinstance(the_word, str) or len(the_word) < 2:
             return []
@@ -402,9 +431,7 @@ class Lexicon:
     def spells_like_sync(self, word, opts=None):
         if not word or not len(word):
             return []
-        opts = opts or {}
-        opts['type'] = 'letter'
-        return self._by_type_sync(word, opts)
+        return self._by_type_sync(word, {**(opts or {}), 'type': 'letter'})
 
     spells_like = spells_like_sync
 
@@ -414,8 +441,7 @@ class Lexicon:
         opts = opts or {}
         if opts.get('matchSpelling'):
             return self._by_sound_and_letter_sync(word, opts)
-        opts['type'] = 'sound'
-        return self._by_type_sync(word, opts)
+        return self._by_type_sync(word, {**opts, 'type': 'sound'})
 
     sounds_like = sounds_like_sync
 
@@ -471,7 +497,7 @@ class Lexicon:
     # ── private helpers ───────────────────────────────────────────────────────
 
     def _by_type_sync(self, the_word, opts):
-        self._parse_args(opts)
+        opts = self._parse_args(opts)
         d = self._get_dict()
         inp = the_word.lower()
         match_sound = opts.get('type') == 'sound'
@@ -603,6 +629,9 @@ class Lexicon:
         return True
 
     def _parse_args(self, opts):
+        # Return a copy rather than mutating the caller's object (mirrors JS
+        # `const opts = { ...options }`).
+        opts = dict(opts)
         opts['limit'] = int(opts.get('limit', 10))
         opts['minDistance'] = int(opts.get('minDistance', 1))
         opts['numSyllables'] = int(opts.get('numSyllables', 0))
@@ -626,6 +655,7 @@ class Lexicon:
                 tpos = 'jj'
 
         opts['targetPos'] = tpos
+        return opts
 
     def _parse_regex(self, pattern, opts):
         """Normalize pattern to a compiled re.Pattern (or None) and return (regex, opts)."""

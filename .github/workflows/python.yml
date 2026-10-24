@@ -24,9 +24,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+
       - name: Install dependencies
-        run: pip install pytest
+        working-directory: python
+        run: uv sync --frozen
 
       - name: Run tests
         working-directory: python
-        run: pytest -q
+        run: uv run pytest -q

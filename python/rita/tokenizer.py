@@ -57,6 +57,12 @@ _NL_RE         = re.compile(r'(\r?\n)+')
 _WWW_RE        = re.compile(r'^(www[0-9]?|WWW[0-9]?)$')
 _NOSP_BF_RE    = re.compile(r'^[,\.\;\:\?\!\)"\u201c\u201d\u2019\u2018`\'%\u2026\u2103\^\*\u00b0\/\u2044\u2012\u2013\u2014\-@]+$')
 _LINEBREAK_RE  = re.compile(r'\r?\n')
+# period-run tokens: ELLIPSIS_RE matches a decoded token, ELLIPSIS_ENC_RE the
+# encoded placeholder produced by the TOKENIZE_RE rule below; DASH_RE matches
+# em/en dash tokens.
+_ELLIPSIS_RE     = re.compile(r'^(?:\.\s*){2,}$')
+_ELLIPSIS_ENC_RE = re.compile(r'^_el([\u2062\u2063]+)_$')
+_DASH_RE         = re.compile(r'^[\u2012\u2013\u2014\-]+$')
 _URL_RE        = re.compile(r'((http[s]?):(\/\/))?([-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b)([-a-zA-Z0-9()@:%_\+.~#?&\/=]*)')
 _EMAIL_RE      = re.compile(r'^\w+([\.\-]?\w+)*@\w+([\.\-]?\w+)*(\.\w{2,3})+$')
 _TAG_RE        = re.compile(r'(<\/?[a-z][a-z0-9=\'"#;:&\s\-\+\/\.\?]*\/?>|<!DOCTYPE[^>]*>|<!--[^>-]*-->)', re.I)
@@ -111,8 +117,14 @@ _TOKENIZE_RE = [
     (re.compile(r'\n\r'),   ' _LINEFEEDCARRIAGERETURN_ '),
     (re.compile(r'\n'),     ' _LINEFEED_ '),
     (re.compile(r'\r'),     ' _CARRIAGERETURN_ '),
+    # collapse any run of 2+ periods (whitespace allowed between) into a single
+    # token that preserves its exact original spelling, so ". . .", "...", "..",
+    # ". ." etc. all roundtrip verbatim. Dots and spaces are encoded as U+2062 /
+    # U+2063 so they survive the punctuation-splitting rules below, and are
+    # decoded back to the raw substring in _pop_tags.
+    (re.compile(r'\.(?:\s*\.)+'),
+     lambda m: ' _el' + re.sub(r'\s+', '\u2063', m.group(0).replace('.', '\u2062')) + '_ '),
     # punctuation spacing
-    (re.compile(r'\.\.\.\s'),                        '_elipsis_ '),
     (re.compile(r'([\?!"\u201C\.,;:@#$%&])'),        r' \1 '),
     (re.compile(r'\u2026'),                          ' \u2026 '),
     (re.compile(r'\s+'),                             ' '),
@@ -132,7 +144,6 @@ _TOKENIZE_RE = [
     (re.compile(r'^\s+'),                            ''),
     (re.compile(r'\^'),                              ' ^ '),
     (re.compile(r'\u00b0'),                          ' \u00b0 '),
-    (re.compile(r'_elipsis_'),                       ' ... '),
     # pop abbreviations --------
     (re.compile(r'_([Ee])([Gg])_'),                  r'\1.\2.'),
     (re.compile(r'_([Ii])([Ee])_'),                  r'\1.\2.'),
@@ -279,7 +290,8 @@ class Tokenizer:
             this_rb    = bool(_RB_RE.match(this_token))
             last_nb_punct = (
                 bool(_NOSP_BF_RE.match(last_token)) or
-                bool(_LINEBREAK_RE.match(last_token))
+                bool(_LINEBREAK_RE.match(last_token)) or
+                bool(_ELLIPSIS_RE.match(last_token))
             )
             last_na_punct = (
                 bool(_NOSP_AF_RE.match(last_token)) or
@@ -340,6 +352,16 @@ class Tokenizer:
             elif mid_sentence and last_comma:
                 result += delim
                 mid_sentence = False
+
+            # Period-run (ellipsis) and dash tokens: glued to a preceding word,
+            # but spaced after punctuation or after a token that already ends
+            # in a dot. Must not depend on is_last, otherwise untokenize of a
+            # token window differs from untokenize of the same tokens in the
+            # full text.
+            elif _ELLIPSIS_RE.match(this_token) or _DASH_RE.match(this_token):
+                glue = not last_nb_punct and not (last_token and last_token.endswith('.'))
+                if not glue:
+                    result += delim
 
             elif (
                 (not this_nb_punct and not last_quote and not last_na_punct
@@ -406,7 +428,11 @@ class Tokenizer:
         for tok in result:
             if _POPTAG_RE.match(tok):
                 tok = tags.pop(0) if tags else tok
-            elif '_' in tok and not _EMAIL_RE.match(tok) and not _URL_RE.match(tok):
+            # restore the raw period-run spelling captured during tokenize
+            if _ELLIPSIS_ENC_RE.match(tok):
+                tok = _ELLIPSIS_ENC_RE.sub(
+                    lambda m: m.group(1).replace('\u2062', '.').replace('\u2063', ' '), tok)
+            if '_' in tok and not _EMAIL_RE.match(tok) and not _URL_RE.match(tok):
                 tok = _UNDER_RE.sub(r'\1 \2', tok)
             out.append(tok)
         return out

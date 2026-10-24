@@ -1,0 +1,19 @@
+[project]
+name = "rita"
+version = "4.0.7"
+description = "Python port of RiTa — rule-based text analysis, rhyming, and generation"
+requires-python = ">=3.10"
+license = { text = "GPL-2.0-or-later" }
+
+# The port is currently run from the repo (tests resolve `rita`/`riscript` via
+# conftest.py's sys.path), so uv only manages the environment and dev deps.
+[tool.uv]
+package = false
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

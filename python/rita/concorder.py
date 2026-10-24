@@ -4,6 +4,25 @@ Python port of ritajs/src/concorder.js
 """
 
 
+class _JsResult(dict):
+    """Dict whose missing keys read as None, like JS object properties."""
+
+    def __missing__(self, key):
+        return None
+
+
+class _JsArray(list):
+    """List whose out-of-range index reads as None, like JS arrays."""
+
+    def __getitem__(self, i):
+        if isinstance(i, int):
+            try:
+                return list.__getitem__(self, i)
+            except IndexError:
+                return None
+        return list.__getitem__(self, i)
+
+
 class Concorder:
     """Builds word-frequency models and supports keyword-in-context (KWIC) queries."""
 
@@ -34,7 +53,7 @@ class Concorder:
         result = {}
         for key, entry in self.model.items():
             result[key] = len(entry['indexes'])
-        return result
+        return _JsResult(result)
 
     def kwic(self, word, opts=None):
         num_words = 6
@@ -59,7 +78,7 @@ class Concorder:
                 sub = self.words[max(0, idx - num_words):min(len(self.words), idx + num_words + 1)]
                 if i < 1 or (idx - idxs[i - 1]) > num_words:
                     result.append(self.rita.untokenize(sub))
-        return result
+        return _JsArray(result)
 
     def count(self, word):
         entry = self._lookup(word)

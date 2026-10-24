@@ -71,6 +71,11 @@ def _hasprop(x, k):
     if isinstance(x, dict):
         return k in x
     return hasattr(x, k)
+def _has_own(x, k):
+    # JS obj.hasOwnProperty(k): key membership for dicts, attr for objects.
+    if isinstance(x, dict):
+        return k in x
+    return hasattr(x, k)
 
 class TestLexicon:
     # mocha this.slow — ignored
@@ -168,15 +173,15 @@ class TestLexicon:
     def test_should_not_mutate_the_caller_options_object(self):
         opts = JsDict(JsDict({"numSyllables": 2}))
         RiTa.random_word(opts)
-        assert ((opts in "limit") is False), "randomWord leaked limit"
-        assert ((opts in "shuffle") is False), "randomWord leaked shuffle"
+        assert ((("limit") in (opts)) is False), "randomWord leaked limit"
+        assert ((("shuffle") in (opts)) is False), "randomWord leaked shuffle"
         opts = JsDict({"pos": "nn"})
         RiTa.search_sync(_re_compile("^a"), opts)
-        assert ((opts in "targetPos") is False), "search leaked targetPos"
-        assert ((opts in "minDistance") is False), "search leaked minDistance"
+        assert ((("targetPos") in (opts)) is False), "search leaked targetPos"
+        assert ((("minDistance") in (opts)) is False), "search leaked minDistance"
         opts = JsDict({"limit": 5})
         RiTa.rhymes_sync("cat", opts)
-        assert ((opts in "maxLength") is False), "rhymes leaked maxLength"
+        assert ((("maxLength") in (opts)) is False), "rhymes leaked maxLength"
     def test_should_call_randomword_with_regex(self):
         result = RiTa.random_word("^a")
         assert ((_re_compile("^a").search(result) is not None) is True)
@@ -284,7 +289,7 @@ class TestLexicon:
         lex.data = orig
     def test_should_call_randomword_with_pos(self):
         with pytest.raises(Exception):
-            return RiTa.random_word(JsDict({"pos": "xxx"}))
+            RiTa.random_word(JsDict({"pos": "xxx"}))
         result = None
         pos = ["nn", "jj", "jjr", "wp"]
         j = 0
@@ -695,7 +700,7 @@ class TestLexicon:
         result = RiTa.sounds_like("try", JsDict({"minDistance": 2, "limit": 20}))
         assert (((len(result)) > (len(answer))) is True)
         result = RiTa.sounds_like("happy")
-        eql(result, answer = ["happier", "hippie"])
+        eql(result, (answer := ["happier", "hippie"]))
         result = RiTa.sounds_like("happy", JsDict({"minDistance": 2}))
         assert (((len(result)) > (len(answer))) is True)
         result = RiTa.sounds_like("cat", JsDict({"type": "sound"}))
@@ -705,7 +710,7 @@ class TestLexicon:
         result = RiTa.sounds_like("cat", JsDict({"type": "sound", "limit": 1000, "minLength": 2, "maxLength": 4}))
         eql(result, ["at", "bat", "cab", "calf", "can", "cap", "cash", "cast", "chat", "coat", "cot", "curt", "cut", "fat", "hat", "kit", "kite", "mat", "matt", "pat", "rat", "sat", "that", "vat"])
         result = RiTa.sounds_like("cat", JsDict({"type": "sound", "minLength": 4, "maxLength": 5, "pos": "jj"}))
-        eql(result, answer = ["catty", "curt"])
+        eql(result, (answer := ["catty", "curt"]))
         result = RiTa.sounds_like("cat", JsDict({"minDistance": 2}))
         assert (((len(result)) > (len(answer))) is True)
     def test_should_call_soundslike_pos(self):
