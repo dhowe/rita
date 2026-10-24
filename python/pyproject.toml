@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rita-py"
-version = "4.0.9.post1"
+version = "4.1.0"
 description = "Python port of RiTa — a library for natural language and generative writing"
 requires-python = ">=3.10"
 license = "GPL-3.0-only"
