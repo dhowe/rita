@@ -1,7 +1,7 @@
 <!--![ritajs](pen.jpg)-->
 
 
-<a href="https://github.com/dhowe/rjs3/actions"><img src="https://github.com/dhowe/rjs3/actions/workflows/node.js.yml/badge.svg" alt="ci tests"></a> <a href="https://www.npmjs.com/package/rita"><img src="https://img.shields.io/npm/v/rita.svg" alt="npm version"></a> <a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/license-GPL-orange.svg" alt="license"></a> <img src="https://img.shields.io/badge/%E2%99%A8_ai--free-100%25-green" alt="100% ai-free">
+<a href="https://github.com/dhowe/rita/actions/workflows/js.yml"><img src="https://github.com/dhowe/rita/actions/workflows/js.yml/badge.svg" alt="ci tests"></a> <a href="https://www.npmjs.com/package/rita"><img src="https://img.shields.io/npm/v/rita.svg" alt="npm version"></a> <a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/license-GPL-orange.svg" alt="license"></a> <img src="https://img.shields.io/badge/%E2%99%A8_ai--free-100%25-green" alt="100% ai-free">
 
 
 ## RiTa: tools for computational writing
