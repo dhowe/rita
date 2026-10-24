@@ -199,8 +199,8 @@ class TestConjugator:
     def test_should_conjugate_vbds(self):
         if not (hasLex):
             pytest.skip("mocha this.skip")
-        assert (RiTa.conjugate("go", {"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST}) == "went")
-        assert (RiTa.conjugate("run", {"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST}) == "ran")
+        assert (RiTa.conjugate("go", JsDict({"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST})) == "went")
+        assert (RiTa.conjugate("run", JsDict({"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST})) == "ran")
     def test_should_call_conjugate(self):
         if not (hasLex):
             pytest.skip("mocha this.skip")
@@ -214,96 +214,96 @@ class TestConjugator:
         with pytest.raises(Exception):
             RiTa.conjugate("")
         assert ("swum" == RiTa.past_part("swim"))
-        assert (RiTa.conjugate("be", {"form": RiTa.GERUND}) == "being")
-        assert (RiTa.conjugate("are", {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}) == "were")
+        assert (RiTa.conjugate("be", JsDict({"form": RiTa.GERUND})) == "being")
+        assert (RiTa.conjugate("are", JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})) == "were")
         s = ["swim", "need", "open"]
         a = ["swims", "needs", "opens"]
-        args = {"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD}
+        args = JsDict({"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD})
         with pytest.raises(Exception):
             return RiTa.conjugate(args)
         with pytest.raises(Exception):
             return RiTa.conjugate("", args)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
             assert (c == a[i])
-        args = {"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "passive": True}
+        args = JsDict({"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "passive": True})
         a = ["is swum", "is needed", "is opened"]
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             assert (RiTa.conjugate(s[i], args) == a[i])
-        args = {"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST}
+        args = JsDict({"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST})
         assert (RiTa.conjugate("swim", args) == "swam")
         s = ["swim", "need", "open"]
         a = ["swam", "needed", "opened"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
             assert (c == a[i])
-        args = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}
+        args = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})
         a = ["swam", "needed", "opened"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             assert (RiTa.conjugate(s[i], args) == a[i])
-        args = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.FUTURE}
+        args = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.FUTURE})
         a = ["will swim", "will need", "will open"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             assert (RiTa.conjugate(s[i], args) == a[i])
-        args = {"tense": RiTa.PAST, "number": RiTa.SINGULAR, "person": RiTa.THIRD}
+        args = JsDict({"tense": RiTa.PAST, "number": RiTa.SINGULAR, "person": RiTa.THIRD})
         a = ["swam", "needed", "opened"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
             assert (c == a[i])
-        args = {"tense": RiTa.PAST, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "form": RiTa.INFINITIVE}
+        args = JsDict({"tense": RiTa.PAST, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "form": RiTa.INFINITIVE})
         a = ["to swim", "to need", "to open"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
             assert (c == a[i])
-        args = {"tense": RiTa.PAST, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "passive": True}
+        args = JsDict({"tense": RiTa.PAST, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "passive": True})
         s = ["scorch", "burn", "hit"]
         a = ["was scorched", "was burned", "was hit"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
             assert (c == a[i])
         s = ["swim", "need", "open"]
-        args = {"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "form": RiTa.INFINITIVE, "progressive": True}
+        args = JsDict({"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "form": RiTa.INFINITIVE, "progressive": True})
         a = ["to be swimming", "to be needing", "to be opening"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
             assert (c == a[i])
-        args = {"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "form": RiTa.INFINITIVE, "perfect": True}
+        args = JsDict({"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "person": RiTa.THIRD, "form": RiTa.INFINITIVE, "perfect": True})
         a = ["to have swum", "to have needed", "to have opened"]
         assert (((len(a)) == (len(s))) is True)
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             c = RiTa.conjugate(s[i], args)
             assert (c == a[i])
-        args = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}
+        args = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})
         assert (RiTa.conjugate("barter", args) == "bartered")
         assert (RiTa.conjugate("run", args) == "ran")
-        args = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}
+        args = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})
         s = ["compete", "complete", "eject"]
         a = ["competed", "completed", "ejected"]
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             assert (RiTa.conjugate(s[i], args) == a[i])
-        args = {"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST, "interrogative": True}
+        args = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST, "interrogative": True})
         s = ["compete", "complete", "eject"]
         a = ["compete", "complete", "eject"]
         i = 0
-        for i in range(len(s)):
+        for i in range(0, len(s), 1):
             assert (RiTa.conjugate(s[i], args) == a[i])
         with pytest.raises(Exception):
             RiTa.conjugate("walk", "invalid args")
@@ -321,40 +321,40 @@ class TestConjugator:
         original = ["run", "walk", "swim", "create"]
         expected = ["is run", "is walked", "is swum", "is created"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "passive": True}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "passive": True})) == expected[i])
         expected = ["is running", "is walking", "is swimming", "is creating"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "progressive": True}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "progressive": True})) == expected[i])
         expected = ["run", "walk", "swim", "create"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "interrogative": True}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "interrogative": True})) == expected[i])
         expected = ["has run", "has walked", "has swum", "has created"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "perfect": True}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "perfect": True})) == expected[i])
         expected = ["being run", "being walked", "being swum", "being created"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "passive": True, "form": RiTa.GERUND}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "passive": True, "form": RiTa.GERUND})) == expected[i])
         expected = ["being running", "being walking", "being swimming", "being creating"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "progressive": True, "form": RiTa.GERUND}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "progressive": True, "form": RiTa.GERUND})) == expected[i])
         expected = ["running", "walking", "swimming", "creating"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "interrogative": True, "form": RiTa.GERUND}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "interrogative": True, "form": RiTa.GERUND})) == expected[i])
         expected = ["having run", "having walked", "having swum", "having created"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "perfect": True, "form": RiTa.GERUND}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "perfect": True, "form": RiTa.GERUND})) == expected[i])
         expected = ["to be run", "to be walked", "to be swum", "to be created"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "passive": True, "form": RiTa.INFINITIVE}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "passive": True, "form": RiTa.INFINITIVE})) == expected[i])
         expected = ["to be running", "to be walking", "to be swimming", "to be creating"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "progressive": True, "form": RiTa.INFINITIVE}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "progressive": True, "form": RiTa.INFINITIVE})) == expected[i])
         expected = ["to run", "to walk", "to swim", "to create"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "interrogative": True, "form": RiTa.INFINITIVE}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "interrogative": True, "form": RiTa.INFINITIVE})) == expected[i])
         expected = ["to have run", "to have walked", "to have swum", "to have created"]
         for i, w in enumerate(original):
-            assert (RiTa.conjugate(w, {"person": RiTa.THIRD, "perfect": True, "form": RiTa.INFINITIVE}) == expected[i])
+            assert (RiTa.conjugate(w, JsDict({"person": RiTa.THIRD, "perfect": True, "form": RiTa.INFINITIVE})) == expected[i])
         RiTa.conjugate("swim", "2PPa")
         assert (RiTa.conjugate("walked", "3SPr") == "walks")
         assert (RiTa.conjugate("changed", "3SPr") == "changes")
@@ -366,9 +366,9 @@ class TestConjugator:
             pytest.skip("mocha this.skip")
         assert (str(RiTa.conjugator) == "  ---------------------\n  Passive = false\n  Perfect = false\n  Progressive = false\n  ---------------------\n  Number = 8\n  Person = 2\n  Tense = 4\n  ---------------------\n")
     def test_should_accept_stems(self):
-        plurPast2 = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})
-        plurPres2 = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PRESENT})
-        singPres3 = JsDict({"number": RiTa.SINGULAR, "person": RiTa.THIRD, "tense": RiTa.PRESENT})
+        plurPast2 = JsDict(JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}))
+        plurPres2 = JsDict(JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PRESENT}))
+        singPres3 = JsDict(JsDict({"number": RiTa.SINGULAR, "person": RiTa.THIRD, "tense": RiTa.PRESENT}))
         stem = RiTa.stem("walking")
         assert (RiTa.conjugate(stem, plurPast2) == "walked")
         assert (RiTa.conjugate(stem, plurPres2) == "walk")
@@ -398,7 +398,7 @@ class TestConjugator:
         assert (RiTa.conjugate(stem, plurPres2) == "study")
         assert (RiTa.conjugate(stem, singPres3) == "studies")
     def test_should_accept_stem_pairs(self):
-        opts = JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST})
+        opts = JsDict(JsDict({"number": RiTa.PLURAL, "person": RiTa.SECOND, "tense": RiTa.PAST}))
         pairs = [["accompanying", "accompanied"], ["feeling", "felt"], ["placating", "placated"], ["centralizing", "centralized"], ["humanized", "humanized"], ["boosted", "boosted"], ["wearing", "wore"], ["aroused", "aroused"], ["rising", "rose"], ["raising", "raised"], ["vibrating", "vibrated"], ["injection", "injected"], ["vibration", "vibrated"]]
         for p in pairs:
             res = RiTa.conjugate(RiTa.stem(p[0]), opts)
@@ -528,7 +528,7 @@ class TestConjugator:
         assert (RiTa.conjugator.unconjugate("blown") == "blow")
         assert (RiTa.conjugator.unconjugate("heard") == "hear")
     def test_should_conjugate_verbs(self):
-        opt = JsDict({"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST})
+        opt = JsDict(JsDict({"number": RiTa.SINGULAR, "person": RiTa.FIRST, "tense": RiTa.PAST}))
         assert (RiTa.conjugate("bite", opt) == "bit")
         assert (RiTa.conjugate("break", opt) == "broke")
         assert (RiTa.conjugate("call", opt) == "called")
@@ -558,7 +558,7 @@ class TestConjugator:
         assert (RiTa.conjugate("resell", opt) == "resold")
         assert (RiTa.conjugate("settle", opt) == "settled")
         assert (RiTa.conjugate("start", opt) == "started")
-        opt = {"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "perfect": True}
+        opt = JsDict({"tense": RiTa.PRESENT, "number": RiTa.SINGULAR, "perfect": True})
         assert (RiTa.conjugate("bite", opt) == "have bitten")
         assert (RiTa.conjugate("break", opt) == "have broken")
         assert (RiTa.conjugate("build", opt) == "have built")
@@ -582,7 +582,7 @@ class TestConjugator:
             before = conj._handle_stem("alien")
             assert (before == "alienate")
             assert (conj._stemCache.size > 0)
-            RiTa.lexicon.data = {**orig}
+            RiTa.lexicon.data = JsDict({**orig})
             conj._handle_stem("alien")
             assert (conj._stemCacheRef == RiTa.lexicon.data)
             assert (conj._stemCache.size == 1)

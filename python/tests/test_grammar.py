@@ -78,29 +78,29 @@ class TestGrammar:
         rg = RiTa.grammar()
         assert (isinstance(rg, RiTa.RiGrammar))
     def test_should_call_rigrammar_fromjson_rules(self):
-        rules = JsDict({"start": "Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"})
+        rules = JsDict(JsDict({"start": "Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"}))
         rg = RiTa.RiGrammar.from_json(json.dumps(rules))
         assert (isinstance(rg, RiTa.RiGrammar))
     def test_should_allow_constructions_from_object_or_string(self):
-        rules = JsDict({"start": "Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"})
+        rules = JsDict(JsDict({"start": "Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"}))
         rg1 = RiTa.grammar(rules)
         rg2 = RiTa.grammar(json.dumps(rules))
         rg3 = RiTa.RiGrammar.from_json(json.dumps(rules))
         assert (rg1.to_json() == rg2.to_json())
         assert (rg1.to_json() == rg3.to_json())
     def test_should_call_rita_grammar_expand(self):
-        context = JsDict({"lucy": {"name": "Lucy", "pronoun": "she", "car": "Acura"}, "sam": {"name": "Sam", "pronoun": "he", "car": "Subaru"}})
-        rules = JsDict({"start": "Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"})
+        context = JsDict(JsDict({"lucy": JsDict({"name": "Lucy", "pronoun": "she", "car": "Acura"}), "sam": JsDict({"name": "Sam", "pronoun": "he", "car": "Subaru"})}))
+        rules = JsDict(JsDict({"start": "Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"}))
         result = RiTa.grammar(rules, context).expand()
         assert (result in ["Meet Lucy. She drives an Acura.", "Meet Sam. He drives a Subaru."])
     @pytest.mark.skip(reason="disabled in JS")  # /*LTR*/
     def test_should_reference_context_from_transforms(self):
-        context = JsDict({"characters": [{"name": "Lucy", "pronoun": "she", "car": "Acura"}, {"name": "Sam", "pronoun": "he", "car": "Subaru"}], "chooseChar": _fn_1})
-        rules = JsDict({"start": "$person=$chooseChar() $sentence", "sentence": "$Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"})
+        context = JsDict(JsDict({"characters": [JsDict({"name": "Lucy", "pronoun": "she", "car": "Acura"}), JsDict({"name": "Sam", "pronoun": "he", "car": "Subaru"})], "chooseChar": _fn_1}))
+        rules = JsDict(JsDict({"start": "$person=$chooseChar() $sentence", "sentence": "$Meet $person.name. $person.pronoun.cap() drives $person.car.art().", "#person": "$sam | $lucy"}))
         result = RiTa.grammar(rules, context).expand()
         assert (result in ["Meet Lucy. She drives an Acura.", "Meet Sam. He drives a Subaru."])
 
-T = JsDict({"trace": 1})
+T = JsDict(JsDict({"trace": 1}))
 
 def _fn_1(*args):
     console.log("chooseChar:", _typeof(lambda: self))

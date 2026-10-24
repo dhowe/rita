@@ -35,15 +35,21 @@ class Analyzer:
         self._lts = None          # lazy LetterToSound
         self._tokenizer = None    # lazy
         self._tagger = None       # lazy
-        self.SILENCE_LTS = False  # suppress LTS log messages
+        self.rita = None
         self._dict_cache = None
+
+    def _silent_lts(self, opts=None):
+        return bool(
+            (self.rita and self.rita.SILENCE_LTS)
+            or (opts and opts.get('silent'))
+        )
 
     # ── lazy deps ────────────────────────────────────────────────────────────
 
     def _get_lts(self):
         if self._lts is None:
             from rita.rita_lts import LetterToSound
-            self._lts = LetterToSound()
+            self._lts = LetterToSound(self.rita)
         return self._lts
 
     def _get_tokenizer(self):
@@ -200,7 +206,60 @@ class Analyzer:
         for k in features:
             features[k] = features[k].strip()
 
+        if opts.get('ipaPhones'):
+            features['phones'] = self.syllables_to_ipa(
+                features['syllables'], features['stresses']
+            )
+
         return features
+
+    _ARPABET_TO_IPA = {
+        'aa': 'ɑ', 'ae': 'æ', 'ah': 'ʌ', 'ao': 'ɔ', 'aw': 'aʊ',
+        'ax': 'ə', 'ay': 'aɪ', 'eh': 'ɛ', 'er': 'ɜr', 'ey': 'eɪ',
+        'ih': 'ɪ', 'ix': 'ɨ', 'iy': 'i', 'ow': 'oʊ', 'oy': 'ɔɪ',
+        'uh': 'ʊ', 'uw': 'u', 'b': 'b', 'ch': 'tʃ', 'd': 'd',
+        'dh': 'ð', 'dx': 'ɾ', 'el': 'l̩', 'em': 'm̩', 'en': 'n̩',
+        'f': 'f', 'g': 'ɡ', 'hh': 'h', 'jh': 'dʒ', 'k': 'k',
+        'l': 'l', 'm': 'm', 'n': 'n', 'ng': 'ŋ', 'p': 'p',
+        'q': 'ʔ', 'r': 'ɹ', 's': 's', 'sh': 'ʃ', 't': 't',
+        'th': 'θ', 'v': 'v', 'w': 'w', 'wh': 'ʍ', 'y': 'j',
+        'z': 'z', 'zh': 'ʒ',
+    }
+
+    @classmethod
+    def syllables_to_ipa(cls, syllables, stresses, keep_boundaries=False):
+        syllable_words = syllables.split(' ')
+        stress_words = stresses.split(' ')
+        ipa_words = []
+        stress_index = 0
+        for word in syllable_words:
+            if len(word) == 1 and not (word.isalpha() or word in '-/'):
+                stress_index += 1
+                continue
+            syllable_list = word.split('/')
+            stress_list = (stress_words[stress_index] if stress_index < len(stress_words) else '0').split('/')
+            stress_index += 1
+            monosyllable = len(syllable_list) == 1
+            ipa_syllables = []
+            for index, syllable in enumerate(syllable_list):
+                stressed = index < len(stress_list) and stress_list[index] == '1'
+                parts = []
+                for phone in syllable.split('-'):
+                    if phone == 'ah':
+                        parts.append('ʌ' if stressed else 'ə')
+                    elif phone == 'er':
+                        parts.append('ɜr' if stressed else 'ər')
+                    else:
+                        ipa = cls._ARPABET_TO_IPA.get(phone, phone)
+                        if stressed and phone in ('aa', 'iy', 'ao', 'uw'):
+                            ipa += 'ː'
+                        parts.append(ipa)
+                value = ''.join(parts)
+                if stressed and not monosyllable:
+                    value = 'ˈ' + value
+                ipa_syllables.append(value)
+            ipa_words.append('/'.join(ipa_syllables) if keep_boundaries else ''.join(ipa_syllables))
+        return ' '.join(ipa_words)
 
     # ── phone helpers ─────────────────────────────────────────────────────────
 
@@ -230,7 +289,7 @@ class Analyzer:
             if raw_phones:
                 raw_phones += '-z'
 
-        silent = self.SILENCE_LTS or (opts and opts.get('silent'))
+        silent = self._silent_lts(opts)
 
         if not raw_phones:
             lts_phones = self.compute_phones(word, opts)
@@ -255,35 +314,22 @@ class Analyzer:
         """Return space-separated phone strings for each token."""
         if not text or not text.strip():
             return ''
-        words = self._get_tokenizer().tokenize(text)
-        raw_opts = dict(opts) if opts else {}
-        raw_flag = raw_opts.pop('rawPhones', False)
-        parts = []
-        for w in words:
-            r = self.analyze_word(w, raw_opts)
-            parts.append(r['phones'])
-        return ' '.join(parts)
+        features = self.analyze(text, opts)
+        return features['phones']
 
     def syllables(self, text, opts=None):
         """Return space-separated syllable strings for each token."""
         if not text or not text.strip():
             return ''
-        words = self._get_tokenizer().tokenize(text)
-        raw_opts = dict(opts) if opts else {}
-        parts = []
-        for w in words:
-            r = self.analyze_word(w, raw_opts)
-            parts.append(r['syllables'])
-        return ' '.join(parts)
+        features = self.analyze(text, opts)
+        if opts and opts.get('ipaPhones'):
+            return self.syllables_to_ipa(
+                features['syllables'], features['stresses'], keep_boundaries=True
+            )
+        return features['syllables']
 
     def stresses(self, text, opts=None):
         """Return space-separated stress patterns for each token."""
         if not text or not text.strip():
             return ''
-        words = self._get_tokenizer().tokenize(text)
-        raw_opts = dict(opts) if opts else {}
-        parts = []
-        for w in words:
-            r = self.analyze_word(w, raw_opts)
-            parts.append(r['stresses'])
-        return ' '.join(parts)
+        return self.analyze(text, opts)['stresses']

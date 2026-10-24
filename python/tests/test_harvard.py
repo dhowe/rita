@@ -88,7 +88,7 @@ class TestHarvard:
     def test_should_assign_correct_pos_tags_to_all_sentences(self):
         mismatches = 0
         i = 0
-        for i in range(len(sentences)):
+        for i in range(0, len(sentences), 1):
             s = sentences[i]
             _, expectedToks, expectedTags = data[i]
             actualToks = RiTa.tokenize(s)
@@ -105,10 +105,10 @@ class TestHarvard:
         skipped = 0
         RiTa.SILENCE_LTS = True
         i = 0
-        for i in range(len(sentences)):
+        for i in range(0, len(sentences), 1):
             sentence, _, _, expectedIpa = data[i]
             s = sentence.replace(_re_compile("[.!?,]+$"), "", 1)
-            actualIpa = (("/") + (syllablesToIpa(RiTa.syllables(s), RiTa.stresses(s)))) + ("/")
+            actualIpa = _jsstr(_jsstr("/") + _jsstr(syllablesToIpa(RiTa.syllables(s), RiTa.stresses(s)))) + _jsstr("/")
             if (actualIpa) != (expectedIpa):
                 console.warn(f"  PHONE MISMATCH [{(i) + (1)}]: {sentence}")
                 console.warn(f"    expected: {expectedIpa}")

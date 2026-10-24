@@ -22,6 +22,7 @@ from rita.lexicon import Lexicon
 from rita.conjugator import Conjugator
 from rita.concorder import Concorder
 from rita.markov import RiMarkov
+from rita.util import Util
 
 
 # ── Only-punctuation regex (mirrors JS ONLY_PUNCT) ───────────────────────────
@@ -172,6 +173,7 @@ class RiTa:
     conjugator = Conjugator()
     stemmer    = Stemmer()
     concorder  = Concorder()
+    Util       = Util
 
     # riscript is set up after class definition (needs RiTa backref)
     riscript = None
@@ -453,11 +455,11 @@ class RiTa:
 
     @classmethod
     def syllables(cls, input_, opts=None):
-        return cls.analyzer.analyze(input_, opts).get('syllables', '')
+        return cls.analyzer.syllables(input_, opts)
 
     @classmethod
     def phones(cls, input_, opts=None):
-        return cls.analyzer.analyze(input_, opts).get('phones', '')
+        return cls.analyzer.phones(input_, opts)
 
     # ── Tokenizer ─────────────────────────────────────────────────────────────
 
@@ -503,6 +505,7 @@ class RiTa:
 # Give components a reference to RiTa so they can read SPLIT_CONTRACTIONS, etc.
 RiTa.tokenizer.rita  = RiTa
 RiTa.concorder.rita  = RiTa
+RiTa.analyzer.rita   = RiTa
 
 # Set up RiScript with RiTa backref
 from riscript import RiScript, RiGrammar  # noqa: E402

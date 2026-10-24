@@ -142,7 +142,7 @@ class Tagger:
 
     def all_tags(self, word, opts=None):
         """Return list of all possible POS tags for word."""
-        if opts is None:
+        if not isinstance(opts, dict):
             opts = {}
         no_guessing    = opts.get('noGuessing', False)
         no_derivations = opts.get('noDerivations', False)

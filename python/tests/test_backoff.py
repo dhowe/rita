@@ -97,13 +97,13 @@ class TestMarkovBackoff:
         with pytest.raises(Exception):
             return BackoffModel([RiTa.sentences(exampleStr)])
     def test_backoffmodel_suffixes_find(self):
-        lm = BackoffModel((exampleStr) + (" Then we ate."))
+        lm = BackoffModel(_jsstr(exampleStr) + _jsstr(" Then we ate."))
         sa = lm.suffixes
         min = None
         max = None
-        min, max = sa.find(["T"], {"debug": 0})
+        min, max = sa.find(["T"], JsDict({"debug": 0}))
         assert ((max) - (min) == 0)
-        min, max = sa.find(["The"], {"debug": 0})
+        min, max = sa.find(["The"], JsDict({"debug": 0}))
         assert ((max) - (min) == 2)
     # mocha .timeout(3000)
     def test_backoffmodel_to_fromjson(self):
@@ -122,7 +122,7 @@ class TestMarkovBackoff:
     def test_backoffmodel_generationpaths(self):
         lm = BackoffModel(exampleStr)
         prompt = ["The", "brown"]
-        opts = JsDict({"minLength": 1, "maxLength": 10})
+        opts = JsDict(JsDict({"minLength": 1, "maxLength": 10}))
         paths = lm.generation_paths(3, prompt, opts)
         assert (isinstance(paths, list))
         assert (len(paths) > 0)
@@ -141,18 +141,18 @@ class TestMarkovBackoff:
         firstGenTokens = [p.tokens[len(prompt)].token for p in paths]
         assert ("fox" in firstGenTokens)
         assert ("dog" in firstGenTokens)
-        sorted = lm.generation_paths(3, prompt, {**opts, "sortByProb": True})
+        sorted = lm.generation_paths(3, prompt, JsDict({**opts, "sortByProb": True}))
         i = 1
-        for i in range(len(sorted)):
+        for i in range(1, len(sorted), 1):
             assert (sorted[(i) - (1)].prob >= sorted[i].prob)
-        origPaths = lm.generation_paths(3, prompt, {**opts, "forceOriginal": True})
+        origPaths = lm.generation_paths(3, prompt, JsDict({**opts, "forceOriginal": True}))
         for __it in origPaths:
             inInput = __it["inInput"]
             assert ((inInput) is False)
     def test_backoffmodel_pathgenerator(self):
         lm = BackoffModel(exampleStr)
         prompt = ["The", "brown"]
-        opts = JsDict({"minLength": 1, "maxLength": 10})
+        opts = JsDict(JsDict({"minLength": 1, "maxLength": 10}))
         generated = []
         for entry in lm.path_generator(3, prompt, opts):
             generated.append(entry)
@@ -173,14 +173,14 @@ class TestMarkovBackoff:
         lm2 = BackoffModel(sample)
         samplePrompt = "I did not".split(" ")
         try:
-            g = lm2.path_generator(3, samplePrompt, {**opts, "forceOriginal": True})
+            g = lm2.path_generator(3, samplePrompt, JsDict({**opts, "forceOriginal": True}))
             g.next()
         except Exception as _e:
             raise AssertionError("expected no throw, got: " + str(_e))
     def test_backoffmodel_streamtokens(self):
         lm = BackoffModel(sample)
         prompt = "I did not".split(" ")
-        opts = JsDict({"minLength": 4, "maxLength": 20})
+        opts = JsDict(JsDict({"minLength": 4, "maxLength": 20}))
         tokens = [*lm.stream_tokens(3, prompt, opts)]
         assert (isinstance(tokens, list))
         assert (len(tokens) >= opts.minLength)
@@ -190,53 +190,53 @@ class TestMarkovBackoff:
         specials = set([SuffixArray.SEQ_START_TOKEN, SuffixArray.SEQ_END_TOKEN])
         for t in tokens:
             assert ((t in specials) is False)
-        tokens = [*lm.stream_tokens(3, prompt, {**opts, "allowSpecial": True})]
+        tokens = [*lm.stream_tokens(3, prompt, JsDict({**opts, "allowSpecial": True}))]
         assert (tokens[(len(tokens)) - (1)] == SuffixArray.SEQ_END_TOKEN)
-        tokens = [*lm.stream_tokens(3, prompt, {**opts, "generateUntil": "."})]
+        tokens = [*lm.stream_tokens(3, prompt, JsDict({**opts, "generateUntil": "."}))]
         assert (tokens[(len(tokens)) - (1)] == ".")
-        tokens = [*lm.stream_tokens(3, prompt, {**opts, "generateUntil": lambda t=None, *args: (t) == (".")})]
+        tokens = [*lm.stream_tokens(3, prompt, JsDict({**opts, "generateUntil": lambda t=None, *args: (t) == (".")}))]
         assert (tokens[(len(tokens)) - (1)] == ".")
-        tokens = [*lm.stream_tokens(3, prompt, {**opts, "minLength": 3, "generateUntil": lambda t=None, *args: ((t) == ("be")) or ((t) == ("girlfriend"))})]
+        tokens = [*lm.stream_tokens(3, prompt, JsDict({**opts, "minLength": 3, "generateUntil": lambda t=None, *args: ((t) == ("be")) or ((t) == ("girlfriend"))}))]
         assert (tokens[(len(tokens)) - (1)] in ["be", "girlfriend"])
         validFollowers = set(["have", "want"])
         i = 0
-        for i in range(5):
-            tokens = [*lm.stream_tokens(3, prompt, {"minLength": 1, "maxLength": 5})]
+        for i in range(0, 5, 1):
+            tokens = [*lm.stream_tokens(3, prompt, JsDict({"minLength": 1, "maxLength": 5}))]
             assert (len(tokens) <= 5)
             assert ((tokens[0] in validFollowers) is True)
     def test_backoffmodel_streamtokens_maxlengthmatch(self):
         lm = BackoffModel(sample)
         prompt = "I did not".split(" ")
-        opts = JsDict({"minLength": 4, "maxLength": 20})
+        opts = JsDict(JsDict({"minLength": 4, "maxLength": 20}))
         with pytest.raises(Exception):
-            return [*lm.stream_tokens(4, prompt, {**opts, "maxLengthMatch": 3})]
-        free = [*lm.stream_tokens(3, prompt, {**opts, "maxLengthMatch": float("inf")})]
+            return [*lm.stream_tokens(4, prompt, JsDict({**opts, "maxLengthMatch": 3}))]
+        free = [*lm.stream_tokens(3, prompt, JsDict({**opts, "maxLengthMatch": float("inf")}))]
         assert (len(free) >= opts.minLength)
         n = 3
         mlm = 5
         i = 0
-        for i in range(10):
-            tokens = [*lm.stream_tokens(n, prompt, {**opts, "maxLengthMatch": mlm})]
+        for i in range(0, 10, 1):
+            tokens = [*lm.stream_tokens(n, prompt, JsDict({**opts, "maxLengthMatch": mlm}))]
             assert (isinstance(tokens, list))
             full = [*prompt, *tokens]
             j = (len(prompt)) - (1)
-            for j in range((len(full)) - ((mlm) + (1)) + 1):
+            for j in range((len(prompt)) - (1), (len(full)) - ((mlm) + (1)) + 1, 1):
                 window = full[j:((j) + (mlm)) + (1)]
                 windowStr = " ".join(window)
                 assert ((windowStr in sample) is False), f"verbatim window found: \"{windowStr}\""
     def test_backoffmodel_generatesentences(self):
         lm = BackoffModel(sample)
         prompt = ["I"]
-        opts = JsDict({"minLength": 3, "maxLength": 20})
+        opts = JsDict(JsDict({"minLength": 3, "maxLength": 20}))
         three = lm.generate_sentences(3, prompt, opts)
         assert (isinstance(three, list))
         for s in three:
             assert (isinstance(s, str) and len(s) > 0)
-        two = lm.generate_sentences(3, prompt, {**opts, "numSentences": 2})
+        two = lm.generate_sentences(3, prompt, JsDict({**opts, "numSentences": 2}))
         assert (isinstance(two, list))
         for s in two:
             assert (isinstance(s, str) and len(s) > 0)
-        one = lm.generate_sentences(3, prompt, {**opts, "numSentences": 1})
+        one = lm.generate_sentences(3, prompt, JsDict({**opts, "numSentences": 1}))
         assert (isinstance(one, list))
         assert (isinstance(one[0], str) and len(one[0]) > 0)
         specials = set([SuffixArray.SEQ_START_TOKEN, SuffixArray.SEQ_END_TOKEN])
@@ -246,32 +246,32 @@ class TestMarkovBackoff:
     def test_backoffmodel_generationpaths_options(self):
         lm = BackoffModel(exampleStr)
         prompt = ["The", "brown"]
-        base = JsDict({"minLength": 1, "maxLength": 10})
-        narrow = lm.generation_paths(3, prompt, {**base, "topK": 1})
+        base = JsDict(JsDict({"minLength": 1, "maxLength": 10}))
+        narrow = lm.generation_paths(3, prompt, JsDict({**base, "topK": 1}))
         assert (isinstance(narrow, list) and len(narrow) > 0)
         for __it in narrow:
             tokens = __it["tokens"]
             prob = __it["prob"]
             assert (isinstance(tokens, list))
             assert (isinstance(prob, (int, float)))
-        shallow = lm.generation_paths(3, prompt, {**base, "depth": 2})
-        deep = lm.generation_paths(3, prompt, {**base, "depth": 20})
+        shallow = lm.generation_paths(3, prompt, JsDict({**base, "depth": 2}))
+        deep = lm.generation_paths(3, prompt, JsDict({**base, "depth": 20}))
         assert (isinstance(shallow, list))
         assert (len(shallow) <= (len(deep)) + (1))
         try:
-            return lm.generation_paths(3, prompt, {**base, "temp": 0.5})
+            return lm.generation_paths(3, prompt, JsDict({**base, "temp": 0.5}))
         except Exception as _e:
             raise AssertionError("expected no throw, got: " + str(_e))
         try:
-            return lm.generation_paths(3, prompt, {**base, "temp": 2})
+            return lm.generation_paths(3, prompt, JsDict({**base, "temp": 2}))
         except Exception as _e:
             raise AssertionError("expected no throw, got: " + str(_e))
         with pytest.raises(Exception):
-            return lm.generation_paths(3, prompt, {**base, "badKey": True})
+            return lm.generation_paths(3, prompt, JsDict({**base, "badKey": True}))
         with pytest.raises(Exception):
-            return lm.stream_tokens(3, prompt, {**base, "badKey": True}).next()
+            return lm.stream_tokens(3, prompt, JsDict({**base, "badKey": True})).next()
 
 def _fn_1(*args):
-    g = lm2.path_generator(3, samplePrompt, {**opts, "forceOriginal": True})
+    g = lm2.path_generator(3, samplePrompt, JsDict({**opts, "forceOriginal": True}))
     g.next()
 

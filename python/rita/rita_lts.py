@@ -129,8 +129,8 @@ class LetterToSound:
             from rita.util import Util
             result = []
             for ch in word:
-                as_word = Util.Numbers.to_words.get(int(ch), ch)
-                phs = rita.lexicon.raw_phones(as_word, {'no_lts': True})
+                as_word = Util.NUMBERS_TO_WORDS.get(int(ch), ch)
+                phs = rita.lexicon.raw_phones(as_word, {'noLts': True})
                 if phs:
                     phs = phs.replace('1', '').replace(' ', '-')
                     result.extend(phs.split('-'))

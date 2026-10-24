@@ -77,32 +77,32 @@ class TestTokenizer:
         tokens = None
         tokens = RiTa.tokens("A small one is like a big one.")
         assert (tokens == ["a", "small", "one", "is", "like", "big"])
-        tokens = RiTa.tokens("One escaped, she'd thought.", {"splitContractions": True})
+        tokens = RiTa.tokens("One escaped, she'd thought.", JsDict({"splitContractions": True}))
         assert (tokens == ["one", "escaped", "she", "had", "thought"])
         input = "She wrote: \"I don't paint anymore. For a while she thought it was just a phase that she'd gotten over.\""
         tokens = RiTa.tokens(input)
         assert (tokens == ["she", "wrote", "i", "don't", "paint", "anymore", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "she'd", "gotten", "over"])
         tokens = RiTa.tokens(input)
         assert (tokens == ["she", "wrote", "i", "don't", "paint", "anymore", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "she'd", "gotten", "over"])
-        tokens = RiTa.tokens(input, {"sort": True})
+        tokens = RiTa.tokens(input, JsDict({"sort": True}))
         assert (tokens == ["a", "anymore", "don't", "for", "gotten", "i", "it", "just", "over", "paint", "phase", "she", "she'd", "that", "thought", "was", "while", "wrote"])
-        tokens = RiTa.tokens(input, {"caseSensitive": True})
+        tokens = RiTa.tokens(input, JsDict({"caseSensitive": True}))
         assert (tokens == ["She", "wrote", "I", "don't", "paint", "anymore", "For", "a", "while", "she", "thought", "it", "was", "just", "phase", "that", "she'd", "gotten", "over"])
-        tokens = RiTa.tokens(input, {"caseSensitive": True, "sort": True})
+        tokens = RiTa.tokens(input, JsDict({"caseSensitive": True, "sort": True}))
         assert (tokens == ["For", "I", "She", "a", "anymore", "don't", "gotten", "it", "just", "over", "paint", "phase", "she", "she'd", "that", "thought", "was", "while", "wrote"])
-        tokens = RiTa.tokens(input, {"ignoreStopWords": True})
+        tokens = RiTa.tokens(input, JsDict({"ignoreStopWords": True}))
         assert (tokens == ["wrote", "paint", "anymore", "while", "thought", "phase", "she'd", "gotten"])
-        tokens = RiTa.tokens(input, {"splitContractions": True})
+        tokens = RiTa.tokens(input, JsDict({"splitContractions": True}))
         assert (tokens == ["she", "wrote", "i", "do", "not", "paint", "anymore", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "had", "gotten", "over"])
-        tokens = RiTa.tokens(input, {"splitContractions": True, "sort": True})
+        tokens = RiTa.tokens(input, JsDict({"splitContractions": True, "sort": True}))
         assert (tokens == ["a", "anymore", "do", "for", "gotten", "had", "i", "it", "just", "not", "over", "paint", "phase", "she", "that", "thought", "was", "while", "wrote"])
-        tokens = RiTa.tokens(input, {"splitContractions": True, "includePunct": True})
+        tokens = RiTa.tokens(input, JsDict({"splitContractions": True, "includePunct": True}))
         assert (tokens == ["she", "wrote", ":", "\"", "i", "do", "not", "paint", "anymore", ".", "for", "a", "while", "thought", "it", "was", "just", "phase", "that", "had", "gotten", "over"])
     def test_should_handle_tokenize_then_untokenize(self):
         sentences = ["this is www.google.com", "it is 'hell'"]
         tokens = [["this", "is", "www.google.com"], ["it", "is", "'", "hell", "'"]]
         i = 0
-        for i in range(len(sentences)):
+        for i in range(0, len(sentences), 1):
             usingTokenize = RiTa.tokenize(sentences[i])
             assert (usingTokenize == tokens[i])
             usingUntokenize = RiTa.untokenize(usingTokenize)
@@ -113,7 +113,7 @@ class TestTokenizer:
         tokens = [["<a>", "link", "</a>"], ["<span class=\"test\">", "in", "line", "</span>"], ["<!DOCTYPE html>", "<head>", "<title>", "Test", "Page", "</title>", "</head>"], ["<!--comment lines-->"], ["<p>", "this", "<br>", "is", "</br>", "a", "<br>", "paragraph", "<br/>", "</p>"], ["<p>", "Link", "<a herf=\"https://hk.search.yahoo.com/search?p=cute+cat\">", "here", "</a>", "is", "about", "<span class=\"cat\">", "cute", "cat", "</span>", "</p>", "<img src=\"cutecat.com/catpic001.jpg\" width=\"600\" />"], ["<p>", "a", "paragraph", "with", "an", "<span class=\"test\">", "in", "line", "element", "</span>", "and", "a", "<a href=\"https://www.google.com\">", "link", "to", "google", "</a>", ".", "</p>"], ["a", "<br/>", "b"]]
         assert (len(strings) == len(tokens))
         i = 0
-        for i in range(len(strings)):
+        for i in range(0, len(strings), 1):
             afterTokenize = RiTa.tokenize(strings[i])
             assert (afterTokenize == tokens[i])
             afterUntokenize = RiTa.untokenize(afterTokenize)
@@ -122,8 +122,8 @@ class TestTokenizer:
         inputs = ["That's why this is our place.", "that's why he'll win.", "that's why I'd lost."]
         outputs = [["That", "is", "why", "this", "is", "our", "place", "."], ["that", "is", "why", "he", "will", "win", "."], ["that", "is", "why", "I", "had", "lost", "."]]
         i = 0
-        for i in range(len(inputs)):
-            res = RiTa.tokenize(inputs[i], {"splitContractions": 1})
+        for i in range(0, len(inputs), 1):
+            res = RiTa.tokenize(inputs[i], JsDict({"splitContractions": 1}))
             assert (res == outputs[i])
     def test_should_tokenize_compound_words(self):
         assert (RiTa.tokenize("snow-capped") == ["snow-capped"])
@@ -135,8 +135,8 @@ class TestTokenizer:
         assert (RiTa.tokenize("The dog") == ["The", "dog"])
         assert (RiTa.tokenize("The programs.") == ["The", "programs", "."])
         assert (RiTa.tokenize("The find.") == ["The", "find", "."])
-        assert (RiTa.tokenize("The bancor.", {"debug": 0}) == ["The", "bancor", "."])
-        assert (RiTa.tokenize("The prof. ate.", {"debug": 0}) == ["The", "prof.", "ate", "."])
+        assert (RiTa.tokenize("The bancor.", JsDict({"debug": 0})) == ["The", "bancor", "."])
+        assert (RiTa.tokenize("The prof. ate.", JsDict({"debug": 0})) == ["The", "prof.", "ate", "."])
         assert (RiTa.tokenize("The snow-capped peaks") == ["The", "snow-capped", "peaks"])
         assert (RiTa.tokenize("The whole-hearted sighs") == ["The", "whole-hearted", "sighs"])
         assert (RiTa.tokenize("The dun-colored hills") == ["The", "dun-colored", "hills"])
@@ -226,7 +226,7 @@ class TestTokenizer:
         outputs = [["<br>"], ["<br/>"], ["</br>"], ["<a>", "link", "</a>"], ["<!DOCTYPE html>"], ["<span>", "inline", "</span>"], ["<h1>", "header", "</h1>"], ["<!-- this is a comment -->"], ["<a href=\"www.google.com\">", "a", "link", "to", "google", "</a>"], ["<p>", "this", "<br>", "is", "</br>", "a", "<br>", "paragraph", "<br/>", "</p>"], ["<p>", "Link", "<a herf=\"https://hk.search.yahoo.com/search?p=cute+cat\">", "here", "</a>", "is", "about", "<span class=\"cat\">", "cute", "cat", "</span>", "</p>", "<img src=\"cutecat.com/catpic001.jpg\" width=\"600\" />"], ["1", "<", "2", "and", "3", ">", "2", "."]]
         assert (len(inputs) == len(outputs))
         i = 0
-        for i in range(len(inputs)):
+        for i in range(0, len(inputs), 1):
             res = RiTa.tokenize(inputs[i])
             assert (res == outputs[i])
     def test_should_call_untokenize(self):
@@ -309,14 +309,14 @@ class TestTokenizer:
         inputs = [["A", "simple", "sentence", "."], ["that's", "why", "this", "is", "our", "place", ")", "."], ["this", "is", "for", "semicolon", ";", "that", "is", "for", "else"], ["this", "is", "for", "2", "^", "3", "2", "*", "3"], ["this", "is", "for", "$", "30", "and", "#", "30"], ["this", "is", "for", "30", "°", "C", "or", "30", "℃"], ["this", "is", "for", "a", "/", "b", "a", "⁄", "b"], ["this", "is", "for", "«", "guillemets", "»"], ["this", "...", "is", "…", "for", "ellipsis"], ["this", "line", "is", "'", "for", "'", "single", "‘", "quotation", "’", "mark"], ["Katherine", "’", "s", "cat", "and", "John", "'", "s", "cat"], ["this", "line", "is", "for", "(", "all", ")", "[", "kind", "]", "{", "of", "}", "⟨", "brackets", "⟩", "done"], ["this", "line", "is", "for", "the", "-", "dash"], ["30", "%", "of", "the", "student", "love", "day", "-", "dreaming", "."], ["\"", "that", "test", "line", "\""], ["my", "email", "address", "is", "name", "@", "domin", ".", "com"], ["it", "is", "www", ".", "google", ".", "com"], ["that", "is", "www6", ".", "cityu", ".", "edu", ".", "hk"]]
         assert (len(inputs) == len(outputs))
         i = 0
-        for i in range(len(inputs)):
+        for i in range(0, len(inputs), 1):
             assert (RiTa.untokenize(inputs[i]) == outputs[i])
     def test_should_untokenize_tags(self):
         inputs = [["1", "<", "2"], ["<", "a", ">"], ["<", "a", ">", "link", "<", "/", "a", ">"], ["<", "span", ">", "some", "text", "here", "<", "/", "span", ">"], ["<", "p", ">", "some", "text", "<", "br", "/", ">", "new", "line", "<", "/", "p", ">"], ["something", "<", "a", "href", "=", "\"", "www", ".", "google", ".", "com", "\"", ">", "link", "to", "google", "<", "/", "a", ">"], ["<", "!", "DOCTYPE", "html", ">"], ["<", "p", ">", "1", "<", "2", "is", "truth", "<", "/", "p", ">"], ["a", "<", "!", "-", "-", "code", "comment", "-", "-", ">", "b"]]
         outputs = ["1 < 2", "<a>", "<a>link</a>", "<span>some text here</span>", "<p>some text <br/> new line</p>", "something <a href = \"www.google.com\">link to google</a>", "<!DOCTYPE html>", "<p>1 < 2 is truth</p>", "a <!--code comment--> b"]
         assert (len(inputs) == len(outputs))
         i = 0
-        for i in range(len(inputs)):
+        for i in range(0, len(inputs), 1):
             assert (RiTa.untokenize(inputs[i]) == outputs[i])
     def test_should_call_sentences(self):
         input = "Stealth's Open Frame, OEM style LCD monitors are designed for special mounting applications. The slim profile packaging provides an excellent solution for building into kiosks, consoles, machines and control panels. If you cannot find an off the shelf solution call us today about designing a custom solution to fit your exact needs."

@@ -6468,7 +6468,7 @@ class TestStemmer:
         expected = ["cure", "cat", "cut", "play"]
         output = RiTa.Stemmer.stem_all(input)
         i = 0
-        for i in range(len(input)):
+        for i in range(0, len(input), 1):
             assert (output[i] == expected[i])
     # (helper hoisted to module scope)
 

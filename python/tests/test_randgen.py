@@ -75,7 +75,7 @@ def _hasprop(x, k):
 fixtureUrl = next((u for u in [_url(p) for p in ["../../shared/randgen-fixtures.json", "../../../shared/randgen-fixtures.json"]] if existsSync(u)), None)
 
 if not (fixtureUrl):
-    raise Exception(Exception(("randgen-fixtures.json not found relative to ") + (__file__)))
+    raise Exception(Exception(_jsstr("randgen-fixtures.json not found relative to ") + _jsstr(__file__)))
 
 fixtures = json.loads(readFileSync(fixtureUrl), object_hook=JsDict)
 
@@ -90,7 +90,7 @@ class TestRandGen:
             values = __it["values"]
             R.seed(seed)
             got = [R.random() for _ in values]
-            assert (got == values), ("seed ") + (seed)
+            assert (got == values), _jsstr("seed ") + _jsstr(seed)
     def test_should_be_reproducible_across_reseeds(self):
         R.seed(42)
         first = [R.random() for _ in range(10)]
@@ -106,7 +106,7 @@ class TestRandGen:
     def test_should_return_floats_in_0_1(self):
         R.seed(7)
         i = 0
-        for i in range(1000):
+        for i in range(0, 1000, 1):
             v = R.random()
             assert (v >= 0)
             assert (v < 1)
