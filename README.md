@@ -3,8 +3,6 @@
 
 ## RiTa: tools for generative natural language
 
-This repository contains all RiTa implementations and documentation
-
 ```
 rita/
   js/        JavaScript implementation
