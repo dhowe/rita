@@ -272,9 +272,11 @@ fi
 
 if [[ $DO_PYTHON -eq 1 ]]; then
   if [[ $DRY_RUN -eq 1 ]]; then
-    printf '   \033[36m[dry-run]\033[0m uv sync --frozen && uv run pytest -q && uv build (in python/)\n'
+    printf '   \033[36m[dry-run]\033[0m uv sync --frozen && uv run python -m pytest -q && uv build (in python/)\n'
   else
-    (cd python && uv sync --frozen >/dev/null && uv run pytest -q >/dev/null && uv build >/dev/null)
+    # 'python -m pytest' rather than the 'pytest' shim: the shim's shebang holds the
+    # absolute path of the venv it was built in, so it breaks if the checkout moves.
+    (cd python && uv sync --frozen >/dev/null && uv run python -m pytest -q >/dev/null && uv build >/dev/null)
     ls python/dist/rita_py-"$VERSION"-py3-none-any.whl >/dev/null 2>&1 \
       || die "python build did not produce rita_py-$VERSION wheel"
     info "python: tests pass, rita_py-$VERSION wheel built (published from the tag by CI)"
