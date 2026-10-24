@@ -78,9 +78,9 @@ wheels = [
 ]
 
 [[package]]
-name = "rita"
+name = "rita-py"
 version = "4.0.7"
-source = { virtual = "." }
+source = { editable = "." }
 
 [package.dev-dependencies]
 dev = [

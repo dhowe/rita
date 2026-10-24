@@ -222,7 +222,7 @@ class RiTa(metaclass=_RiTaMeta):
 
     @classmethod
     def grammar(cls, rules=None, context=None, opts=None):
-        from riscript import RiGrammar
+        from .riscript import RiGrammar
         opts = opts or {}
         return RiGrammar(rules, context, **opts)
 
@@ -236,7 +236,7 @@ class RiTa(metaclass=_RiTaMeta):
 
     @classmethod
     def get_transforms(cls):
-        from riscript import DEFAULT_TRANSFORMS
+        from .riscript import DEFAULT_TRANSFORMS
         result = dict(DEFAULT_TRANSFORMS)
         result.update(cls.riscript.extra_transforms)
         return result
@@ -549,7 +549,7 @@ RiTa.concorder.rita  = RiTa
 RiTa.analyzer.rita   = RiTa
 
 # Set up RiScript with RiTa backref
-from riscript import RiScript, RiGrammar  # noqa: E402
+from .riscript import RiScript, RiGrammar  # noqa: E402
 
 def _rita_articlize(word):
     return RiTa.articlize(word)

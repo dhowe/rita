@@ -2,11 +2,12 @@
 #
 # release.sh — cut a RiTa release from the mono-repo.
 #
-# Usage:  scripts/release.sh <version> [all|java|js]... [--dry-run]
+# Usage:  scripts/release.sh <version> [all|java|js|python]... [--dry-run]
 #
-#   scripts/release.sh 4.1.0            # both ports: tag, GitHub release, npm
+#   scripts/release.sh 4.1.0            # all ports: tag, GitHub release, npm, PyPI
 #   scripts/release.sh 4.1.0 java       # Java/Processing only (no npm publish)
 #   scripts/release.sh 4.1.0 js         # npm only
+#   scripts/release.sh 4.1.0 python     # PyPI (rita-py) only
 #   scripts/release.sh 4.1.0 --dry-run  # print what would happen, touch nothing
 #
 # What it does, in order:
@@ -17,6 +18,10 @@
 #   5. Publish to npm            (only for all/js)     (irreversible, so after git)
 #   6. Create the GitHub release with the Processing artifacts
 #
+# PyPI publishing is not done here: pushing the vX.Y.Z tag triggers
+# .github/workflows/python-publish.yml, which builds and publishes rita-py via
+# PyPI trusted publishing (OIDC). So a python/all release just needs the tag.
+#
 # Version sources (all bumped together, nothing is generated into git):
 #   java/gradle.properties              version=X        -> drives library.properties
 #                                                        (version=404 / prettyVersion=4.0.4
@@ -25,6 +30,7 @@
 #   js/package.json                     "version": "X"   -> npm version also fixes
 #   js/package-lock.json                                 package-lock for us
 #   js/src/rita.js                      injected from package.json by tsup at build
+#   python/pyproject.toml               version = "X"    -> published to PyPI as rita-py
 #
 # Notes:
 #   * The Java port cannot carry a prerelease version: build.gradle.kts derives the
@@ -33,7 +39,7 @@
 #   * Processing Manager polls .../releases/latest/download/rita.txt, so every GitHub
 #     release carries the Processing artifacts. For a js-only release the Java version
 #     is unchanged, so the attached zip is the current Java build — a warning is shown.
-#   * Requires: git, gh (authenticated), node/npm (publish only), JDK 11+ for java.
+#   * Requires: git, gh (authenticated), node/npm (js), uv (python), JDK 11+ for java.
 
 set -euo pipefail
 
@@ -45,16 +51,18 @@ usage() {
   cat <<'EOF'
 release.sh — cut a RiTa release from the mono-repo.
 
-Usage:  scripts/release.sh <version> [all|java|js]... [--dry-run]
+Usage:  scripts/release.sh <version> [all|java|js|python]... [--dry-run]
 
-  scripts/release.sh 4.1.0            # both ports: tag, GitHub release, npm
+  scripts/release.sh 4.1.0            # all ports: tag, GitHub release, npm, PyPI
   scripts/release.sh 4.1.0 java       # Java/Processing only (no npm publish)
   scripts/release.sh 4.1.0 js         # npm only
+  scripts/release.sh 4.1.0 python     # PyPI (rita-py) only
   scripts/release.sh 4.1.0 --dry-run  # print what would happen, touch nothing
 
 Order: validate -> write version -> build+test -> commit "release: X" + tag vX +
        push -> npm publish (all/js) -> GitHub release with the Processing
-       artifacts (rita.zip / rita.txt / rita.pdex).
+       artifacts (rita.zip / rita.txt / rita.pdex). PyPI publish (all/python)
+       runs automatically from the tag via .github/workflows/python-publish.yml.
 
 Prereleases (X.Y.Z-beta.N) are npm-only; java requires a plain X.Y.Z because
 the Processing Manager revision is derived by splitting the version on '.'.
@@ -69,7 +77,7 @@ for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=1 ;;
     -h|--help) usage; exit 0 ;;
-    all|java|js) TARGETS+=("$arg") ;;
+    all|java|js|python) TARGETS+=("$arg") ;;
     -*) echo "release.sh: unknown option '$arg'" >&2; usage; exit 1 ;;
     *) if [[ -n "$VERSION" ]]; then echo "release.sh: version given twice" >&2; usage; exit 1; fi; VERSION="$arg" ;;
   esac
@@ -79,7 +87,7 @@ done
 
 # "all" subsumes the rest; no targets means "all".
 if [[ ${#TARGETS[@]} -eq 0 ]] || printf '%s\n' "${TARGETS[@]}" | grep -qx all; then
-  TARGETS=(java js)
+  TARGETS=(java js python)
 fi
 # De-duplicate while preserving order.
 UNIQUE_TARGETS=()
@@ -88,9 +96,10 @@ for t in "${TARGETS[@]}"; do
 done
 TARGETS=("${UNIQUE_TARGETS[@]}")
 
-DO_JAVA=0; DO_JS=0
+DO_JAVA=0; DO_JS=0; DO_PYTHON=0
 printf '%s\n' "${TARGETS[@]}" | grep -qx java && DO_JAVA=1
 printf '%s\n' "${TARGETS[@]}" | grep -qx js && DO_JS=1
+printf '%s\n' "${TARGETS[@]}" | grep -qx python && DO_PYTHON=1
 
 TAG="v$VERSION"
 if [[ "$VERSION" == *-* ]]; then NPM_DIST_TAG="beta"; PRERELEASE=1; else NPM_DIST_TAG="latest"; PRERELEASE=0; fi
@@ -138,6 +147,7 @@ say "1/6 Validating"
 command -v git >/dev/null || die "git not found"
 command -v gh  >/dev/null || die "gh not found — needed for the GitHub release"
 if [[ $DO_JS -eq 1 ]]; then command -v npm >/dev/null || die "npm not found"; fi
+if [[ $DO_PYTHON -eq 1 ]]; then command -v uv >/dev/null || die "uv not found — needed for the python port"; fi
 
 if [[ $DRY_RUN -eq 0 ]]; then
   gh auth status >/dev/null 2>&1 || die "gh is not authenticated — run 'gh auth login'"
@@ -182,11 +192,13 @@ fi
 
 CURRENT_JAVA="$(sed -nE 's/^version=//p' java/gradle.properties)"
 CURRENT_JS="$(node -p "require('./js/package.json').version")"
+CURRENT_PY="$(sed -nE 's/^version = "([^"]*)"/\1/p' python/pyproject.toml)"
 
 info "version      $VERSION  (Processing Manager revision $REVISION)"
 info "targets      ${TARGETS[*]}"
 info "java         $CURRENT_JAVA -> $([[ $DO_JAVA -eq 1 ]] && echo "$VERSION" || echo "$CURRENT_JAVA (unchanged)")"
 info "js           $CURRENT_JS -> $([[ $DO_JS -eq 1 ]] && echo "$VERSION" || echo "$CURRENT_JS (unchanged)")"
+info "python       $CURRENT_PY -> $([[ $DO_PYTHON -eq 1 ]] && echo "$VERSION" || echo "$CURRENT_PY (unchanged)")"
 info "branch       $BRANCH"
 info "dry-run      $([[ $DRY_RUN -eq 1 ]] && echo yes || echo no)"
 
@@ -215,6 +227,11 @@ if [[ $DO_JS -eq 1 ]]; then
   fi
   info "js/package.json + js/package-lock.json"
   info "js/src/rita.js gets its version injected from package.json by tsup"
+fi
+
+if [[ $DO_PYTHON -eq 1 ]]; then
+  edit python/pyproject.toml "s/^version = \"[^\"]*\"/version = \"$VERSION\"/" "version = \"$VERSION\""
+  info "python/pyproject.toml (published to PyPI as rita-py)"
 fi
 
 # ---------------------------------------------------------------------------
@@ -253,6 +270,17 @@ if [[ $DO_JS -eq 1 ]]; then
   fi
 fi
 
+if [[ $DO_PYTHON -eq 1 ]]; then
+  if [[ $DRY_RUN -eq 1 ]]; then
+    printf '   \033[36m[dry-run]\033[0m uv sync --frozen && uv run pytest -q && uv build (in python/)\n'
+  else
+    (cd python && uv sync --frozen >/dev/null && uv run pytest -q >/dev/null && uv build >/dev/null)
+    ls python/dist/rita_py-"$VERSION"-py3-none-any.whl >/dev/null 2>&1 \
+      || die "python build did not produce rita_py-$VERSION wheel"
+    info "python: tests pass, rita_py-$VERSION wheel built (published from the tag by CI)"
+  fi
+fi
+
 # ---------------------------------------------------------------------------
 # 4. Commit + tag + push
 #
@@ -265,6 +293,7 @@ say "4/6 Commit, tag, push"
 STAGED=()
 [[ $DO_JAVA -eq 1 ]] && STAGED+=(java/gradle.properties java/src/main/java/rita/RiTa.java)
 [[ $DO_JS -eq 1 ]] && STAGED+=(js/package.json js/package-lock.json)
+[[ $DO_PYTHON -eq 1 ]] && STAGED+=(python/pyproject.toml)
 
 run git add -- "${STAGED[@]}"
 run git commit -m "release: $VERSION"
@@ -286,7 +315,7 @@ if [[ $DO_JS -eq 1 ]]; then
     (cd js && npm publish --tag "$NPM_DIST_TAG")
   fi
 else
-  say "5/6 Skipping npm publish (java only)"
+  say "5/6 Skipping npm publish (${TARGETS[*]} only)"
 fi
 
 # ---------------------------------------------------------------------------
@@ -311,4 +340,5 @@ say "Done — RiTa $VERSION"
 printf '   release   https://github.com/dhowe/rita4/releases/tag/%s\n' "$TAG"
 printf '   artifacts https://github.com/dhowe/rita4/releases/latest/download/rita.{zip,txt,pdex}\n'
 [[ $DO_JS -eq 1 ]] && printf '   npm       https://www.npmjs.com/package/rita (%s)\n' "$NPM_DIST_TAG"
+[[ $DO_PYTHON -eq 1 ]] && printf '   pypi      https://pypi.org/project/rita-py/ (published by python-publish.yml on tag %s)\n' "$TAG"
 [[ $DRY_RUN -eq 1 ]] && printf '\n   (dry run — nothing was written, pushed, or published)\n'

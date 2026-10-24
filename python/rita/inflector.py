@@ -8,6 +8,8 @@ import re
 import json
 import os
 
+from . import dictdata
+
 
 # ---------------------------------------------------------------------------
 # Rule helpers (mirrors Util.RE in ritajs/src/util.js)
@@ -134,9 +136,7 @@ _DICT = None
 def _get_dict():
     global _DICT
     if _DICT is None:
-        path = os.path.join(os.path.dirname(__file__), '..', '..', 'shared', 'rita_dict.json')
-        with open(path) as f:
-            _DICT = json.load(f)
+        _DICT = dictdata.load_dict()
     return _DICT
 
 

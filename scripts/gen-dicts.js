@@ -6,7 +6,7 @@
  *   node scripts/gen-dicts.js
  */
 
-import { readFileSync, writeFileSync } from 'fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { join, dirname } from 'path';
 
@@ -43,3 +43,13 @@ for (const { path, content } of targets) {
   writeFileSync(path, content, 'utf8');
   console.log(`Written: ${path}`);
 }
+
+// Python ships the dictionary as package data (python/rita/data/), because an
+// installed wheel cannot reach the mono-repo's shared/ directory. In a source
+// checkout rita.dictdata still prefers shared/ when present, so this copy is
+// what makes the wheel self-contained.
+const pyDataDir = join(root, 'python', 'rita', 'data');
+mkdirSync(pyDataDir, { recursive: true });
+const pyDataPath = join(pyDataDir, 'rita_dict.json');
+writeFileSync(pyDataPath, JSON.stringify(data) + '\n', 'utf8');
+console.log(`Written: ${pyDataPath}`);

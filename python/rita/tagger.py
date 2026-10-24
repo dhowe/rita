@@ -6,6 +6,8 @@ import re
 import json
 import os
 
+from . import dictdata
+
 # ── Constants ────────────────────────────────────────────────────────────────
 
 ADJS  = ['jj', 'jjr', 'jjs']
@@ -41,9 +43,7 @@ _dict_cache = None
 def _get_dict():
     global _dict_cache
     if _dict_cache is None:
-        p = os.path.join(os.path.dirname(__file__), '..', '..', 'shared', 'rita_dict.json')
-        with open(p) as f:
-            _dict_cache = json.load(f)
+        _dict_cache = dictdata.load_dict()
     return _dict_cache
 
 def _pos_arr(word):

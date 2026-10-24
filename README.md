@@ -1,10 +1,10 @@
-# RiTa — mono-repo
+# RiTa v4
 
 This repository contains all RiTa implementations and documentation
 
 ```
-rita4/
-  js/        JavaScript/TypeScript implementation
+rita/
+  js/        JavaScript implementation
   java/      Java implementation (gradle)
   python/    Python implementation (uv)
   docs/      Website and API reference
@@ -53,20 +53,32 @@ is no generated copy to keep in sync.
 
 ## Python (`python/`)
 
-**Requirements:** [uv](https://docs.astral.sh/uv/) (Python 3.10+; the environment is
+Install the published package from PyPI (import name `rita`):
+
+```sh
+pip install rita-py
+```
+
+**Requirements for development:** [uv](https://docs.astral.sh/uv/) (Python 3.10+; 
 managed by `python/pyproject.toml` + `python/uv.lock`)
 
 ```sh
 cd python
-uv sync              # create .venv and install dev dependencies (pytest)
+uv sync              # create .venv and install the package + dev deps (pytest)
 uv run pytest -q     # run the test suite
+uv build             # build the sdist + wheel for PyPI (dist/)
 ```
 
-The package is pure Python with no runtime dependencies. It reads the canonical
-dictionary from `shared/rita_dict.json` at runtime (resolved relative to the package,
-so it works from any working directory).
+The package is pure Python with no runtime dependencies. The rita dictionary ships
+inside the wheel (`rita/data/rita_dict.json`, staged from `shared/rita_dict.json` by
+`node scripts/gen-dicts.js`); in a repo checkout the canonical `shared/rita_dict.json`
+is preferred, so both work from any working directory.
 
-The pytest suite under `python/tests/` is **auto-generated** from the JavaScript tests
+To publish a new version to PyPI, bump `version` in `python/pyproject.toml` (alongside
+the js/java versions), commit, and push a `vX.Y.Z` tag: `.github/workflows/python-publish.yml`
+builds and publishes via PyPI trusted publishing (OIDC — no token in the repo).
+
+The pytest suite under `python/tests/` is **generated** from the JavaScript tests
 in `js/test/` by `scripts/js-to-py-tests.js` — do not edit `test_*.py` by hand. To
 regenerate after changing `js/test/` (requires `npm install` in `js/` for acorn):
 
@@ -81,7 +93,7 @@ Some tests read fixture files from `js/test/` (e.g. `harvard-data.json`), so kee
 
 ## Docs / Website (`docs/`)
 
-The `docs/` folder is a static website — no build step required. To preview locally use 'Go Live' in vscode or python:
+The `docs/` folder is a static website — no build required. To preview locally use 'Go Live' in vscode or python:
 
 ```sh
 cd docs
@@ -109,7 +121,7 @@ node scripts/gen-dicts.js
 
 ## CI
 
-GitHub Actions workflows are path-scoped and trigger when their subtree (or `shared/`) changes:
+GitHub Actions workflows trigger when their subtree (or `shared/`) changes:
 
 | Workflow | Trigger paths | Node/JDK/Python versions |
 |---|---|---|

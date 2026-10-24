@@ -1,19 +1,49 @@
-[project]
-name = "rita"
-version = "4.0.7"
-description = "Python port of RiTa — rule-based text analysis, rhyming, and generation"
-requires-python = ">=3.10"
-license = { text = "GPL-2.0-or-later" }
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-# The port is currently run from the repo (tests resolve `rita`/`riscript` via
-# conftest.py's sys.path), so uv only manages the environment and dev deps.
-[tool.uv]
-package = false
+[project]
+name = "rita-py"
+version = "4.0.7"
+description = "Python port of RiTa — a library for natural language and generative writing"
+requires-python = ">=3.10"
+license = "GPL-3.0-only"
+authors = [{ name = "Daniel Howe", email = "ritapy@rednoise.org" }]
+readme = "README.md"
+keywords = ["natural-language", "generative-text", "phonemes", "rhyming", "text-analysis"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Other Scripting Engines",
+    "Natural Language :: English",
+    "Topic :: Artistic Software",
+    "Topic :: Text Processing",
+]
+
+[project.urls]
+Homepage = "https://rednoise.org/rita"
+Repository = "https://github.com/dhowe/rita4"
+Documentation = "https://rednoise.org/rita/reference"
+Issues = "https://github.com/dhowe/rita4/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["rita"]
+
+[tool.hatch.build.targets.sdist]
+artifacts = ["rita/data/*.json"]
 
 [dependency-groups]
-dev = [
-    "pytest>=8.0",
-]
+dev = ["pytest>=8.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+filterwarnings = [
+    # expected when a word contains no LTS entry (e.g. '#$%^&*').
+    "ignore:Unable to generate LTS.*:UserWarning",
+]
+

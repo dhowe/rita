@@ -8,6 +8,7 @@ import re as _re
 import random as _random
 
 from rita.util import Util
+from . import dictdata
 
 _STRESS = '1'
 _SYLLABLE_BOUNDARY = '/'
@@ -101,9 +102,7 @@ class Lexicon:
 
     def _load_default_dict(self):
         if self._dict_cache is None:
-            p = os.path.join(os.path.dirname(__file__), '..', '..', 'shared', 'rita_dict.json')
-            with open(p) as f:
-                self._dict_cache = json.load(f)
+            self._dict_cache = dictdata.load_dict()
         return self._dict_cache
 
     # ── lazy deps ─────────────────────────────────────────────────────────────

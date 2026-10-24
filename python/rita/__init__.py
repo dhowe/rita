@@ -17,15 +17,7 @@ from rita.concorder import Concorder
 from rita.rita import RiTa
 
 # RiScript / RiGrammar (already fully ported)
-import sys
-import os
-
-# riscript.py lives at project root, not inside the rita/ package
-_root = os.path.dirname(os.path.dirname(__file__))
-if _root not in sys.path:
-    sys.path.insert(0, _root)
-
-from riscript import RiScript, RiGrammar  # noqa: E402
+from .riscript import RiScript, RiGrammar
 
 __all__ = [
     "RiScript",
