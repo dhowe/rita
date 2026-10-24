@@ -7,13 +7,14 @@
 let font, grammar, json;
 let lines = ["click to", "generate", "a haiku"];
 
-function setup() {
+async function setup() {
 
   createCanvas(650, 200);
   textAlign(CENTER);
-  loadFont('Resagokr.otf', f => textFont(f, 30));
-  
-  grammar = RiTa.grammar(haiku); // from grammar.js
+  loadFont('../../data/Resagokr.otf', f => textFont(f, 30));
+
+  json = await loadJSON('../../data/haiku.json');
+  grammar = RiTa.grammar(json);
 }
 
 function draw() {

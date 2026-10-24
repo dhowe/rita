@@ -9,7 +9,7 @@ async function setup() {
   createCanvas(800, 500);
   textFont('Times New Roman', 16);
 
-  txt = await loadStrings('kafka.txt');
+  txt = await loadStrings('../../data/kafka.txt');
   RiTa.concordance(txt.join('\n')); // create concordance
   word = RiTa.random(keywords); // pick a word to start
 

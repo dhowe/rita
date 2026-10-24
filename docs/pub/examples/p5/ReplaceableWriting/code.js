@@ -8,7 +8,7 @@ function setup() {
   createCanvas(600, 400).parent('#cdiv');
   noStroke();
   textSize(17.5);
-  loadFont('Chaparral.otf', nextWord);
+  loadFont('../../data/Chaparral.otf', nextWord);
 }
 
 // replace a random word in the text every 2 seconds

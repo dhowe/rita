@@ -15,8 +15,8 @@ async function setup() {
 
   lines = ["click to (re)generate"];
 
-  txt1 = await loadStrings('wittgenstein.txt');
-  txt2 = await loadStrings('kafka.txt');
+  txt1 = await loadStrings('../../data/wittgenstein.txt');
+  txt2 = await loadStrings('../../data/kafka.txt');
   
   // create a markov model w' n=4
   markov = RiTa.markov(4);
