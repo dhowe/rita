@@ -2,7 +2,7 @@ name: Python Publish
 
 # Publishes rita-py to PyPI when a release tag is pushed.
 # Uses PyPI trusted publishing (OIDC), so no API token is stored in the repo:
-# add the repository dhowe/rita4 and this workflow file as a trusted publisher
+# add the repository dhowe/rita and this workflow file as a trusted publisher
 # on https://pypi.org/manage/project/rita-py/settings/publishing/ .
 
 on:

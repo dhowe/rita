@@ -30,7 +30,8 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dhowe/ritajs.git"
+    "url": "git+https://github.com/dhowe/rita.git",
+    "directory": "js"
   },
   "engines": {
     "node": ">=18.0"
@@ -41,7 +42,7 @@
     "text analysis"
   ],
   "bugs": {
-    "url": "https://github.com/dhowe/ritajs/issues"
+    "url": "https://github.com/dhowe/rita/issues"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

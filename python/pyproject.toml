@@ -27,9 +27,9 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://rednoise.org/rita"
-Repository = "https://github.com/dhowe/rita4"
+Repository = "https://github.com/dhowe/rita"
 Documentation = "https://rednoise.org/rita/reference"
-Issues = "https://github.com/dhowe/rita4/issues"
+Issues = "https://github.com/dhowe/rita/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["rita"]

@@ -6,7 +6,7 @@
 
 ## RiTa: tools for computational writing
 
-RiTa is implemented in JavaScript and Java, with a common [API](https://github.com/dhowe/rita4j/blob/master/README.md#api) for both, and is free/libre/open-source.
+RiTa is implemented in JavaScript and Java, with a common [API](https://rednoise.org/rita/reference/) for both, and is free/libre/open-source.
 
 ### Features
 
@@ -127,11 +127,11 @@ console.log(grammar.expand());
 <br>&nbsp;<br>
 
 ## Developing
-To install/build the library and run tests (with npm/mocha and node v14.x):
+To install/build the library and run tests (with npm/mocha and node v18.x):
 ```sh
 
-$ git clone https://github.com/dhowe/ritajs.git
-$ cd ritajs 
+$ git clone https://github.com/dhowe/rita.git
+$ cd rita/js
 $ npm install
 $ npm run build 
 $ npm test
