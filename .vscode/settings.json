@@ -144,5 +144,6 @@
     "Invoke-Expression": false,
     "iex": false
   },
-  "chat.agent.maxRequests": 500
+  "chat.agent.maxRequests": 500,
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
