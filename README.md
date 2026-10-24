@@ -168,3 +168,15 @@ Checks: the tree must be clean and on `main`; the tag must not already exist; th
 must stay `< 10` for Java (the Processing Manager revision is `major*100 + minor*10 +
 patch`, so `4.0.10` would collide with `4.1.0`); prereleases (`X.Y.Z-beta.N`) are npm-only
 because the Java revision can't be derived from a dotted prerelease.
+
+## Contributors
+
+### Code Contributors
+
+This project exists only because of the people who contribute. Thank you!
+<a href="https://github.com/dhowe/rita/graphs/contributors"><img src="https://opencollective.com/rita/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+<a href="https://opencollective.com/rita/donate" target="_blank">
+  <img src="https://opencollective.com/rita/contribute/button@2x.png?color=blue" width=300 />
+</a>
