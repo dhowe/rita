@@ -1,7 +1,7 @@
 /*
  * Note that this is a rather bare-bones example. 
  * For a more complete example, see https://observablehq.com/@dhowe/rita-grammars
- * For more advanced grammar and riscript features, see https://observablehq.com/@dhowe/tut-rita-ngrams#advanced
+ * For more advanced grammar and riscript features, see https://observablehq.com/@dhowe/riscript
  */
 
 let font, grammar, json;
