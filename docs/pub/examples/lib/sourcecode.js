@@ -31,7 +31,10 @@ $('<style>').text(`
   padding: 10px !important;
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-size: 14px;
+  font-size: 11px;
+}
+.code pre code {
+  font-size: 11px;
 }
 /* kill the prism-coy "curled paper" shadows */
 .code pre::before,
