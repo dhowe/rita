@@ -24,20 +24,19 @@ async function setup() {
   // load text into the model
   markov.addText(txt1.join(' '));
   markov.addText(txt2.join(' '));
-
-  drawText();
 }
 
-function drawText() {
+function draw() {
   background(50, 30, 40);
   fill(220);
   text(lines.join(' '), x, y, 420, 440);
+  noLoop();
 }
 
 function mouseClicked() {
   lines = markov.generate({ numSentences: 10 });
   x = y = 40;
-  drawText();
+  loop();
 }
 
   
