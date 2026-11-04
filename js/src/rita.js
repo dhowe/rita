@@ -90,7 +90,6 @@ class RiTa {
    * @param {number} [options.maxAttempts=999] - max attempts before to complete one ore more generations before erroring, default=999
    * @param {function} [options.tokenize] - custom tokenizer with tokenize() method, defaults to RiTa.tokenize()
    * @param {function} [options.untokenize] - custom untokenizer with untokenize() method, defaults to RiTa.untokenize()
-   * @param {boolean} [options.disableInputChecks=false] - if true, allow result to be present in the input, default
    * @param {boolean} [options.trace] - output trace info to the console
    * @returns {RiMarkov}
    */
